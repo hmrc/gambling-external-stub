@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gamblingexternalstub
+package uk.gov.hmrc.gamblingexternalstub.controllers.config
 
-import play.api.{Configuration, Environment}
-import play.api.inject.{Binding, Module => AppModule}
+import org.scalatestplus.play.PlaySpec
+import play.api.Configuration
+import uk.gov.hmrc.gamblingexternalstub.config.AppConfig
 
-import java.time.Clock
+class AppConfigSpec extends PlaySpec {
 
-class Module extends AppModule:
+  "AppConfig" should {
 
-  override def bindings(
-    environment  : Environment,
-    configuration: Configuration
-  ): Seq[Binding[_]] =
-    bind[Clock].toInstance(Clock.systemDefaultZone) :: // inject if current time needs to be controlled in unit tests
-    Nil
+    "return appName from configuration" in {
+      val config = Configuration("appName" -> "test-app")
+
+      val appConfig = new AppConfig(config)
+
+      appConfig.appName mustBe "test-app"
+    }
+  }
+}
