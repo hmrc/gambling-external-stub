@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gamblingexternalstub.config
+package uk.gov.hmrc.gamblingexternalstub.models
 
-import javax.inject.{Inject, Singleton}
-import play.api.Configuration
+import play.api.libs.json.{Json, OFormat}
 
-@Singleton
-class AppConfig @Inject() (config: Configuration):
+case class ReturnSummary(
+  mgdRegNumber: String,
+  returnsDue: Int,
+  returnsOverdue: Int,
+  totalDueAmount: Option[BigDecimal] = None
+)
 
-  val appName: String = config.get[String]("appName")
+object ReturnSummary {
+  implicit val format: OFormat[ReturnSummary] = Json.format[ReturnSummary]
+}

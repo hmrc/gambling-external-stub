@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gamblingexternalstub.config
+package uk.gov.hmrc.gamblingexternalstub.controllers.base
 
-import javax.inject.{Inject, Singleton}
-import play.api.Configuration
+import play.api.inject.guice.GuiceApplicationBuilder
 
-@Singleton
-class AppConfig @Inject() (config: Configuration):
+trait SpecBase {
 
-  val appName: String = config.get[String]("appName")
+  def applicationBuilder(): GuiceApplicationBuilder =
+    new GuiceApplicationBuilder()
+}
