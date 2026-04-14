@@ -20,7 +20,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.controllers.base.SpecBase
 import uk.gov.hmrc.gamblingexternalstub.models.ReturnSummary
 
@@ -64,7 +64,7 @@ class MgdControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
       status(result) shouldBe BAD_REQUEST
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "INVALID_MGD_REG_NUMBER",
+        "code"    -> "INVALID_MGD_REG_NUMBER",
         "message" -> "mgdRegNumber must be provided"
       )
     }
@@ -74,7 +74,7 @@ class MgdControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "UNEXPECTED_ERROR",
+        "code"    -> "UNEXPECTED_ERROR",
         "message" -> "Unexpected error occurred"
       )
     }
