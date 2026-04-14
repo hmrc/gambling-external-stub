@@ -35,7 +35,7 @@ class GamblingController @Inject() (
 
       // simulate service-level InvalidMgdRegNumber
       case "invalid" =>
-        logger.warn("[MGD Stub] Invalid MGD reg number")
+        logger.warn("[Gambling Stub] Invalid MGD reg number")
         BadRequest(
           Json.obj(
             "code"    -> "INVALID_MGD_REG_NUMBER",
@@ -45,7 +45,7 @@ class GamblingController @Inject() (
 
       // simulate service-level UnexpectedError
       case "error" =>
-        logger.error("[MGD Stub] Unexpected error")
+        logger.error("[Gambling Stub] Unexpected error")
         InternalServerError(
           Json.obj(
             "code"    -> "UNEXPECTED_ERROR",
