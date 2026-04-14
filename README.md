@@ -173,7 +173,7 @@ Response:
 app/
 ├── controllers/
 │   └── rdsDataCacheProxy/
-│       └── MgdController.scala
+│       └── GamblingController.scala
 ├── models/
 │   └── ReturnSummary.scala
 ```

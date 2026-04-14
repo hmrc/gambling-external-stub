@@ -24,13 +24,13 @@ import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.controllers.base.SpecBase
 import uk.gov.hmrc.gamblingexternalstub.models.ReturnSummary
 
-class MgdControllerSpec extends AnyWordSpec with Matchers with SpecBase {
+class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
   private val app = applicationBuilder().build()
 
-  private val controller = app.injector.instanceOf[MgdController]
+  private val controller = app.injector.instanceOf[GamblingController]
 
-  "MgdController#getReturnSummary" should {
+  "GamblingController#getReturnSummary" should {
 
     "return OK for GAM0000000001" in {
       val result = controller.getReturnSummary("GAM0000000001")(FakeRequest())

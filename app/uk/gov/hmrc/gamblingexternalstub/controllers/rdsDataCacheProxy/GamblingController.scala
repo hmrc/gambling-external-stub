@@ -23,9 +23,8 @@ import uk.gov.hmrc.gamblingexternalstub.models.ReturnSummary
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
 
-class MgdController @Inject() (
+class GamblingController @Inject() (
   cc: ControllerComponents
 )() extends BackendController(cc)
     with Logging {

@@ -2,4 +2,4 @@
 
 
 # MGD stub
-GET  /mgd/:mgdRegNumber  uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.MgdController.getReturnSummary(mgdRegNumber: String)
+GET  /mgd/:mgdRegNumber  uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getReturnSummary(mgdRegNumber: String)
