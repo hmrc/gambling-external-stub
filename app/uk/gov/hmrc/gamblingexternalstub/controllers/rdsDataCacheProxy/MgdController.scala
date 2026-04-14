@@ -34,8 +34,9 @@ class MgdController @Inject() (
 
     mgdRegNumber match {
 
-      case "" =>
-        logger.warn("[MGD Stub] Missing mgdRegNumber")
+      // simulate service-level InvalidMgdRegNumber
+      case "invalid" =>
+        logger.warn("[MGD Stub] Invalid MGD reg number")
         BadRequest(
           Json.obj(
             "code"    -> "INVALID_MGD_REG_NUMBER",
@@ -43,8 +44,9 @@ class MgdController @Inject() (
           )
         )
 
+      // simulate service-level UnexpectedError
       case "error" =>
-        logger.error("[MGD Stub] Forced unexpected error")
+        logger.error("[MGD Stub] Unexpected error")
         InternalServerError(
           Json.obj(
             "code"    -> "UNEXPECTED_ERROR",
@@ -52,42 +54,17 @@ class MgdController @Inject() (
           )
         )
 
-      // Scenario 1
+      // scenario 1
       case "GAM0000000001" =>
-        Ok(
-          Json.toJson(
-            ReturnSummary(
-              mgdRegNumber   = "GAM0000000001",
-              returnsDue     = 0,
-              returnsOverdue = 1
-            )
-          )
-        )
+        Ok(Json.toJson(ReturnSummary("GAM0000000001", 0, 1)))
 
-      // Scenario 2
+      // scenario 2
       case "GAM0000000002" =>
-        Ok(
-          Json.toJson(
-            ReturnSummary(
-              mgdRegNumber   = "GAM0000000002",
-              returnsDue     = 0,
-              returnsOverdue = 0
-            )
-          )
-        )
+        Ok(Json.toJson(ReturnSummary("GAM0000000002", 0, 0)))
 
-      // Default fallback
+      // default
       case reg =>
-        logger.info(s"[MGD Stub] Default response for $reg")
-        Ok(
-          Json.toJson(
-            ReturnSummary(
-              mgdRegNumber   = reg,
-              returnsDue     = 2,
-              returnsOverdue = 1
-            )
-          )
-        )
+        Ok(Json.toJson(ReturnSummary(reg, 2, 1)))
     }
   }
 }

@@ -2,7 +2,7 @@
 
 The gambling-external-stub provides stubs for downstream services used by gambling-related backend services. It is used to simulate external dependencies for local development and integration testing.
 
-This module includes a stub for the RDS-Cache-repository  service used by downstream data cache proxy integrations.
+This module includes a stub for the RDS-Cache-repository service used by downstream data cache proxy integrations.
 
 ---
 
@@ -18,6 +18,11 @@ To start the server locally:
 
 ```
 sbt run
+```
+
+Base URL:
+```
+http://localhost:10405/gambling-external-stub
 ```
 
 ---
@@ -48,20 +53,28 @@ sbt clean coverage test it/test coverageReport
 
 ### MGD (Machine Games Duty) Stub
 
-**GET** `/mgd/reg-number?mgdRegNumber={mgdRegNumber}`
+**GET**
+```
+/mgd/{mgdRegNumber}
+```
+
+Full URL:
+```
+http://localhost:10405/gambling-external-stub/mgd/{mgdRegNumber}
+```
 
 Controller mapping:
-`uk.gov.hmrc.gamblingexternalstub.mgd.controllers.MgdController.getReturnSummary(mgdRegNumber: String)`
+`uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.MgdController.getReturnSummary(mgdRegNumber: String)`
 
 ---
 
 ## Behaviour
 
-### Happy path
+### Happy path - Scenario 1
 
 Request:
 ```
-GET /mgd/reg-number?mgdRegNumber=ABC123
+GET http://localhost:10405/gambling-external-stub/mgd/GAM0000000001
 ```
 
 Response:
@@ -71,19 +84,41 @@ Response:
 
 ```json
 {
-  "mgdRegNumber": "ABC123",
-  "returnsDue": 2,
+  "mgdRegNumber": "GAM0000000001",
+  "returnsDue": 0,
   "returnsOverdue": 1
 }
 ```
 
 ---
 
-### Missing mgdRegNumber
+### Happy path - Scenario 2
 
 Request:
 ```
-GET /mgd/reg-number?mgdRegNumber=
+GET http://localhost:10405/gambling-external-stub/mgd/GAM0000000002
+```
+
+Response:
+```
+200 OK
+```
+
+```json
+{
+  "mgdRegNumber": "GAM0000000002",
+  "returnsDue": 0,
+  "returnsOverdue": 0
+}
+```
+
+---
+
+### Invalid MGD registration number
+
+Request:
+```
+GET http://localhost:10405/gambling-external-stub/mgd/invalid
 ```
 
 Response:
@@ -100,11 +135,11 @@ Response:
 
 ---
 
-### Forced error
+### Forced unexpected error
 
 Request:
 ```
-GET /mgd/reg-number?mgdRegNumber=error
+GET http://localhost:10405/gambling-external-stub/mgd/error
 ```
 
 Response:
@@ -127,6 +162,7 @@ Response:
 - No database
 - No service layer
 - Deterministic responses only
+- Errors are simulated using special path values (`invalid`, `error`)
 - Used for local/dev/testing only
 
 ---
@@ -147,7 +183,15 @@ app/
 ## Example curl
 
 ```
-curl "http://localhost:9000/mgd/reg-number?mgdRegNumber=ABC123"
+curl http://localhost:10405/gambling-external-stub/mgd/GAM0000000001
+```
+
+```
+curl http://localhost:10405/gambling-external-stub/mgd/invalid
+```
+
+```
+curl http://localhost:10405/gambling-external-stub/mgd/error
 ```
 
 ---
