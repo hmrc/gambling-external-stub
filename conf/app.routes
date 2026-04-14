@@ -1,7 +1,5 @@
 # microservice specific routes
 
-GET        /hello-world             uk.gov.hmrc.gamblingexternalstub.controllers.MicroserviceHelloWorldController.hello
-
 
 # MGD stub
-GET /mgd/reg-number uk.gov.hmrc.gamblingexternalstub.mgd.controllers.MgdController.getReturnSummary(mgdRegNumber: String)
+GET  /mgd/:mgdRegNumber  uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.MgdController.getReturnSummary(mgdRegNumber: String)
