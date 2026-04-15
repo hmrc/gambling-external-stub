@@ -27,17 +27,16 @@ class MgdCertificateSpec extends AnyWordSpec with Matchers {
   "PartnerMember" should {
     "serialize and deserialize correctly" in {
       val model = PartnerMember(
-        namesOfPartMems = "Test Partner Ltd",
-        solePropTitle = Some("Mr"),
-        solePropFirstName = Some("John"),
+        namesOfPartMems    = "Test Partner Ltd",
+        solePropTitle      = Some("Mr"),
+        solePropFirstName  = Some("John"),
         solePropMiddleName = None,
-        solePropLastName = Some("Doe"),
-        typeOfBusiness = 2
+        solePropLastName   = Some("Doe"),
+        typeOfBusiness     = 2
       )
       val json = Json.toJson(model)
       json.as[PartnerMember] shouldBe model
     }
-
 
   }
 
@@ -49,7 +48,6 @@ class MgdCertificateSpec extends AnyWordSpec with Matchers {
       val json = Json.toJson(model)
       json.as[GroupMember] shouldBe model
     }
-
 
   }
 
@@ -92,17 +90,17 @@ class MgdCertificateSpec extends AnyWordSpec with Matchers {
       val json = Json.toJson(model)
 
       (json \ "registrationDate").as[String] shouldBe "2023-01-15"
-      (json \ "dateCertIssued").as[String] shouldBe "2024-02-01"
+      (json \ "dateCertIssued").as[String]   shouldBe "2024-02-01"
     }
 
     "have correct sample1 structure" in {
       val model = MgdCertificate.sample1("GAM0000000001")
 
-      model.mgdRegNumber shouldBe "GAM0000000001"
-      model.noOfPartners shouldBe 2
-      model.groupReg shouldBe "Y"
-      model.partMembers.size shouldBe 2
-      model.groupMembers.size shouldBe 1
+      model.mgdRegNumber              shouldBe "GAM0000000001"
+      model.noOfPartners              shouldBe 2
+      model.groupReg                  shouldBe "Y"
+      model.partMembers.size          shouldBe 2
+      model.groupMembers.size         shouldBe 1
       model.returnPeriodEndDates.size shouldBe 5
     }
   }

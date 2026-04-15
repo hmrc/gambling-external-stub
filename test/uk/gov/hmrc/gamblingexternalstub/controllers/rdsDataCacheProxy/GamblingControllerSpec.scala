@@ -99,38 +99,33 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
         MgdCertificate(
-          mgdRegNumber = "GAM0000000002",
-          registrationDate = LocalDate.parse("2022-10-05"),
-          individualName = None,
-          businessName = Some("Example Sole Trader"),
-          tradingName = None,
-          repMemName = None,
-
-          busAddrLine1 = Some("10 Market Road"),
-          busAddrLine2 = Some("Gateshead"),
-          busAddrLine3 = None,
-          busAddrLine4 = None,
-          busPostcode = Some("NE8 1ZZ"),
-          busCountry = Some("United Kingdom"),
-          busAdi = None,
-
-          repMemLine1 = None,
-          repMemLine2 = None,
-          repMemLine3 = None,
-          repMemLine4 = None,
-          repMemPostcode = None,
-          repMemAdi = None,
-
-          typeOfBusiness = Some("Sole proprietor"),
+          mgdRegNumber       = "GAM0000000002",
+          registrationDate   = LocalDate.parse("2022-10-05"),
+          individualName     = None,
+          businessName       = Some("Example Sole Trader"),
+          tradingName        = None,
+          repMemName         = None,
+          busAddrLine1       = Some("10 Market Road"),
+          busAddrLine2       = Some("Gateshead"),
+          busAddrLine3       = None,
+          busAddrLine4       = None,
+          busPostcode        = Some("NE8 1ZZ"),
+          busCountry         = Some("United Kingdom"),
+          busAdi             = None,
+          repMemLine1        = None,
+          repMemLine2        = None,
+          repMemLine3        = None,
+          repMemLine4        = None,
+          repMemPostcode     = None,
+          repMemAdi          = None,
+          typeOfBusiness     = Some("Sole proprietor"),
           businessTradeClass = Some(1),
-          noOfPartners = 0,
-          groupReg = "N",
-          noOfGroupMems = 0,
-
-          dateCertIssued = LocalDate.parse("2024-01-10"),
-
-          partMembers = Seq.empty,
-          groupMembers = Seq.empty,
+          noOfPartners       = 0,
+          groupReg           = "N",
+          noOfGroupMems      = 0,
+          dateCertIssued     = LocalDate.parse("2024-01-10"),
+          partMembers        = Seq.empty,
+          groupMembers       = Seq.empty,
           returnPeriodEndDates = Seq(
             ReturnPeriodEndDate(LocalDate.parse("2026-03-31")),
             ReturnPeriodEndDate(LocalDate.parse("2026-06-30"))
@@ -145,38 +140,33 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
         MgdCertificate(
-          mgdRegNumber = "GAM9999999999",
-          registrationDate = LocalDate.parse("2021-01-01"),
-          individualName = None,
-          businessName = Some("Business for GAM9999999999"),
-          tradingName = None,
-          repMemName = None,
-
-          busAddrLine1 = Some("Unknown Address Line 1"),
-          busAddrLine2 = Some("Unknown Address Line 2"),
-          busAddrLine3 = None,
-          busAddrLine4 = None,
-          busPostcode = Some("AA1 1AA"),
-          busCountry = Some("United Kingdom"),
-          busAdi = None,
-
-          repMemLine1 = None,
-          repMemLine2 = None,
-          repMemLine3 = None,
-          repMemLine4 = None,
-          repMemPostcode = None,
-          repMemAdi = None,
-
-          typeOfBusiness = Some("Corporate Body"),
+          mgdRegNumber       = "GAM9999999999",
+          registrationDate   = LocalDate.parse("2021-01-01"),
+          individualName     = None,
+          businessName       = Some("Business for GAM9999999999"),
+          tradingName        = None,
+          repMemName         = None,
+          busAddrLine1       = Some("Unknown Address Line 1"),
+          busAddrLine2       = Some("Unknown Address Line 2"),
+          busAddrLine3       = None,
+          busAddrLine4       = None,
+          busPostcode        = Some("AA1 1AA"),
+          busCountry         = Some("United Kingdom"),
+          busAdi             = None,
+          repMemLine1        = None,
+          repMemLine2        = None,
+          repMemLine3        = None,
+          repMemLine4        = None,
+          repMemPostcode     = None,
+          repMemAdi          = None,
+          typeOfBusiness     = Some("Corporate Body"),
           businessTradeClass = Some(2),
-          noOfPartners = 0,
-          groupReg = "N",
-          noOfGroupMems = 0,
-
-          dateCertIssued = LocalDate.parse("2024-01-01"),
-
-          partMembers = Seq.empty,
-          groupMembers = Seq.empty,
+          noOfPartners       = 0,
+          groupReg           = "N",
+          noOfGroupMems      = 0,
+          dateCertIssued     = LocalDate.parse("2024-01-01"),
+          partMembers        = Seq.empty,
+          groupMembers       = Seq.empty,
           returnPeriodEndDates = Seq(
             ReturnPeriodEndDate(LocalDate.parse("2026-03-31"))
           )
@@ -188,10 +178,9 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
     "return BAD_REQUEST for invalid" in {
       val result = controller.getMgdCertificate("invalid")(FakeRequest())
 
-
       status(result) shouldBe BAD_REQUEST
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "INVALID_MGD_REG_NUMBER",
+        "code"    -> "INVALID_MGD_REG_NUMBER",
         "message" -> "mgdRegNumber must be provided"
       )
     }
@@ -200,13 +189,11 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       val result = controller.getMgdCertificate("error")(FakeRequest())
       status(result) shouldBe INTERNAL_SERVER_ERROR
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "UNEXPECTED_ERROR",
+        "code"    -> "UNEXPECTED_ERROR",
         "message" -> "Unexpected error occurred"
       )
 
-
     }
   }
-
 
 }
