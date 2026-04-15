@@ -195,6 +195,150 @@ curl http://localhost:10405/gambling-external-stub/mgd/error
 ```
 
 ---
+---
+
+### 2. MGD Certificate
+
+**GET**
+
+```
+/mgd/{mgdRegNumber}/certificate
+```
+
+Full URL:
+
+```
+http://localhost:10405/gambling-external-stub/mgd/{mgdRegNumber}/certificate
+```
+
+Controller mapping:
+`uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getMgdCertificate(mgdRegNumber: String)`
+
+---
+
+## Behaviour
+
+### Happy path - Scenario 1 (Full data)
+
+Request:
+
+```
+GET /mgd/GAM0000000001/certificate
+```
+
+Response:
+
+```
+200 OK
+```
+
+```json
+{
+  "mgdRegNumber": "GAM0000000001",
+  "registrationDate": "2023-01-15",
+  "businessName": "Acme Gaming Ltd",
+  "typeOfBusiness": "Corporate Body",
+  "noOfPartners": 2,
+  "groupReg": "Y",
+  "noOfGroupMems": 1,
+  "dateCertIssued": "2024-02-01"
+}
+```
+
+---
+
+### Happy path - Scenario 2 (Minimal data)
+
+Request:
+
+```
+GET /mgd/GAM0000000002/certificate
+```
+
+Response:
+
+```
+200 OK
+```
+
+```json
+{
+  "mgdRegNumber": "GAM0000000002",
+  "registrationDate": "2022-10-05",
+  "businessName": "Example Sole Trader",
+  "typeOfBusiness": "Sole proprietor",
+  "noOfPartners": 0,
+  "groupReg": "N",
+  "noOfGroupMems": 0,
+  "dateCertIssued": "2024-01-10"
+}
+```
+
+---
+
+### Default scenario
+
+Request:
+
+```
+GET /mgd/{anyOtherReg}/certificate
+```
+
+Response:
+
+```
+200 OK
+```
+
+* Returns a generic payload
+* No partners or group members
+
+---
+
+### Invalid MGD registration number
+
+Request:
+
+```
+GET /mgd/invalid/certificate
+```
+
+Response:
+
+```
+400 BAD_REQUEST
+```
+
+```json
+{
+  "code": "INVALID_MGD_REG_NUMBER",
+  "message": "mgdRegNumber must be provided"
+}
+```
+
+---
+
+### Forced unexpected error
+
+Request:
+
+```
+GET /mgd/error/certificate
+```
+
+Response:
+
+```
+500 INTERNAL_SERVER_ERROR
+```
+
+```json
+{
+  "code": "UNEXPECTED_ERROR",
+  "message": "Unexpected error occurred"
+}
+```
+
 
 ## License
 

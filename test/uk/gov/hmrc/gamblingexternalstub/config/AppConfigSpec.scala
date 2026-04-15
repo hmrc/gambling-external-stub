@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gamblingexternalstub.controllers.config
+package uk.gov.hmrc.gamblingexternalstub.config
 
 import org.scalatestplus.play.PlaySpec
 import play.api.Configuration
