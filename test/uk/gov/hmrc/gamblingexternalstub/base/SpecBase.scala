@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gamblingexternalstub.controllers.base
+package uk.gov.hmrc.gamblingexternalstub.base
 
 import play.api.inject.guice.GuiceApplicationBuilder
 
