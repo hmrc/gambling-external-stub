@@ -22,7 +22,7 @@ sbt run
 
 Base URL:
 ```
-http://localhost:10405/gambling-external-stub
+http://localhost:10405/rds-datacache-proxy
 ```
 
 ---
@@ -60,7 +60,7 @@ sbt clean coverage test it/test coverageReport
 
 Full URL:
 ```
-http://localhost:10405/gambling-external-stub/mgd/{mgdRegNumber}
+http://localhost:10405/rds-datacache-proxy/mgd/{mgdRegNumber}
 ```
 
 Controller mapping:
@@ -74,7 +74,7 @@ Controller mapping:
 
 Request:
 ```
-GET http://localhost:10405/gambling-external-stub/mgd/GAM0000000001
+GET http://localhost:10405/rds-datacache-proxy/mgd/GAM0000000001
 ```
 
 Response:
@@ -96,7 +96,7 @@ Response:
 
 Request:
 ```
-GET http://localhost:10405/gambling-external-stub/mgd/GAM0000000002
+GET http://localhost:10405/rds-datacache-proxy/mgd/GAM0000000002
 ```
 
 Response:
@@ -118,7 +118,7 @@ Response:
 
 Request:
 ```
-GET http://localhost:10405/gambling-external-stub/mgd/invalid
+GET http://localhost:10405/rds-datacache-proxy/mgd/invalid
 ```
 
 Response:
@@ -139,7 +139,7 @@ Response:
 
 Request:
 ```
-GET http://localhost:10405/gambling-external-stub/mgd/error
+GET http://localhost:10405/rds-datacache-proxy/mgd/error
 ```
 
 Response:
@@ -183,15 +183,15 @@ app/
 ## Example curl
 
 ```
-curl http://localhost:10405/gambling-external-stub/mgd/GAM0000000001
+curl http://localhost:10405/rds-datacache-proxy/mgd/GAM0000000001
 ```
 
 ```
-curl http://localhost:10405/gambling-external-stub/mgd/invalid
+curl http://localhost:10405/rds-datacache-proxy/mgd/invalid
 ```
 
 ```
-curl http://localhost:10405/gambling-external-stub/mgd/error
+curl http://localhost:10405/rds-datacache-proxy/mgd/error
 ```
 
 ---
@@ -208,7 +208,7 @@ curl http://localhost:10405/gambling-external-stub/mgd/error
 Full URL:
 
 ```
-http://localhost:10405/gambling-external-stub/mgd/{mgdRegNumber}/certificate
+http://localhost:10405/rds-datacache-proxy/mgd/{mgdRegNumber}/certificate
 ```
 
 Controller mapping:
