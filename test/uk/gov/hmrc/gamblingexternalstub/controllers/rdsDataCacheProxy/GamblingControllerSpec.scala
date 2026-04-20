@@ -22,34 +22,32 @@ import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.base.SpecBase
-import uk.gov.hmrc.gamblingexternalstub.models.ReturnSummary
-import uk.gov.hmrc.gamblingexternalstub.models.{MgdCertificate, ReturnPeriodEndDate}
+import uk.gov.hmrc.gamblingexternalstub.models.{MgdCertificate, ReturnPeriodEndDate, ReturnSummary}
 
 import java.time.LocalDate
 
 class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
   private val app = applicationBuilder().build()
-
   private val controller = app.injector.instanceOf[GamblingController]
 
   "GamblingController#getReturnSummary" should {
 
-    "return OK for GAM0000000001" in {
-      val result = controller.getReturnSummary("GAM0000000001")(FakeRequest())
+    "return OK for XGM00000001761" in {
+      val result = controller.getReturnSummary("XGM00000001761")(FakeRequest())
 
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
-        ReturnSummary("GAM0000000001", 0, 1)
+        ReturnSummary("XGM00000001761", 0, 1)
       )
     }
 
-    "return OK for GAM0000000002" in {
-      val result = controller.getReturnSummary("GAM0000000002")(FakeRequest())
+    "return OK for XGM00000001762" in {
+      val result = controller.getReturnSummary("XGM00000001762")(FakeRequest())
 
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
-        ReturnSummary("GAM0000000002", 0, 0)
+        ReturnSummary("XGM00000001762", 0, 0)
       )
     }
 
@@ -58,7 +56,7 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
-        ReturnSummary("GAM9999999999", 2, 1)
+        ReturnSummary("GAM9999999999", 0, 0)
       )
     }
 
@@ -85,22 +83,23 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
   "GamblingController#getMgdCertificate" should {
 
-    "return OK for GAM0000000001" in {
-      val result = controller.getMgdCertificate("GAM0000000001")(FakeRequest())
+    "return OK for XGM00000001761" in {
+      val result = controller.getMgdCertificate("XGM00000001761")(FakeRequest())
+
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
-        MgdCertificate.sample1("GAM0000000001")
+        MgdCertificate.sample1("XGM00000001761")
       )
-
     }
 
-    "return OK for GAM0000000002" in {
-      val result = controller.getMgdCertificate("GAM0000000002")(FakeRequest())
+    "return OK for XGM00000001762" in {
+      val result = controller.getMgdCertificate("XGM00000001762")(FakeRequest())
+
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
         MgdCertificate(
-          mgdRegNumber       = "GAM0000000002",
-          registrationDate   = LocalDate.parse("2022-10-05"),
+          mgdRegNumber       = "XGM00000001762",
+          registrationDate   = Some(LocalDate.parse("2022-10-05")),
           individualName     = None,
           businessName       = Some("Example Sole Trader"),
           tradingName        = None,
@@ -120,28 +119,30 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
           repMemAdi          = None,
           typeOfBusiness     = Some("Sole proprietor"),
           businessTradeClass = Some(1),
-          noOfPartners       = 0,
-          groupReg           = "N",
-          noOfGroupMems      = 0,
-          dateCertIssued     = LocalDate.parse("2024-01-10"),
-          partMembers        = Seq.empty,
-          groupMembers       = Seq.empty,
+
+          // FIXED: Option[Int]
+          noOfPartners   = Some(0),
+          groupReg       = "N",
+          noOfGroupMems  = Some(0),
+          dateCertIssued = Some(LocalDate.parse("2024-01-10")),
+          partMembers    = Seq.empty,
+          groupMembers   = Seq.empty,
           returnPeriodEndDates = Seq(
             ReturnPeriodEndDate(LocalDate.parse("2026-03-31")),
             ReturnPeriodEndDate(LocalDate.parse("2026-06-30"))
           )
         )
       )
-
     }
 
     "return default response" in {
       val result = controller.getMgdCertificate("GAM9999999999")(FakeRequest())
+
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
         MgdCertificate(
           mgdRegNumber       = "GAM9999999999",
-          registrationDate   = LocalDate.parse("2021-01-01"),
+          registrationDate   = Some(LocalDate.parse("2021-01-01")),
           individualName     = None,
           businessName       = Some("Business for GAM9999999999"),
           tradingName        = None,
@@ -161,10 +162,10 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
           repMemAdi          = None,
           typeOfBusiness     = Some("Corporate Body"),
           businessTradeClass = Some(2),
-          noOfPartners       = 0,
+          noOfPartners       = Some(0),
           groupReg           = "N",
-          noOfGroupMems      = 0,
-          dateCertIssued     = LocalDate.parse("2024-01-01"),
+          noOfGroupMems      = Some(0),
+          dateCertIssued     = Some(LocalDate.parse("2024-01-01")),
           partMembers        = Seq.empty,
           groupMembers       = Seq.empty,
           returnPeriodEndDates = Seq(
@@ -172,7 +173,6 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
           )
         )
       )
-
     }
 
     "return BAD_REQUEST for invalid" in {
@@ -187,13 +187,12 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
     "return INTERNAL_SERVER_ERROR for error" in {
       val result = controller.getMgdCertificate("error")(FakeRequest())
+
       status(result) shouldBe INTERNAL_SERVER_ERROR
       contentAsJson(result) shouldBe Json.obj(
         "code"    -> "UNEXPECTED_ERROR",
         "message" -> "Unexpected error occurred"
       )
-
     }
   }
-
 }

@@ -26,16 +26,15 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 class GamblingController @Inject() (
-                                     cc: ControllerComponents
-                                   ) extends BackendController(cc)
-  with Logging {
+  cc: ControllerComponents
+) extends BackendController(cc)
+    with Logging {
 
   def getReturnSummary(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
 
     mgdRegNumber match {
 
       case "invalid" =>
-        logger.warn("[Gambling Stub] Invalid MGD reg number")
         BadRequest(
           Json.obj(
             "code"    -> "INVALID_MGD_REG_NUMBER",
@@ -44,7 +43,6 @@ class GamblingController @Inject() (
         )
 
       case "error" =>
-        logger.error("[Gambling Stub] Unexpected error")
         InternalServerError(
           Json.obj(
             "code"    -> "UNEXPECTED_ERROR",
@@ -52,14 +50,17 @@ class GamblingController @Inject() (
           )
         )
 
-      case "GAM0000000001" =>
-        Ok(Json.toJson(ReturnSummary("GAM0000000001", 0, 1)))
+      // Scenario 1 → overdue exists
+      case "XGM00000001761" | "GAM0000000001" =>
+        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 0, returnsOverdue = 1)))
 
-      case "GAM0000000002" =>
-        Ok(Json.toJson(ReturnSummary("GAM0000000002", 0, 0)))
+      // Scenario 2 → nothing due
+      case "XGM00000001762" | "GAM0000000002" =>
+        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 0, returnsOverdue = 0)))
 
+      // default fallback
       case reg =>
-        Ok(Json.toJson(ReturnSummary(reg, 2, 1)))
+        Ok(Json.toJson(ReturnSummary(reg, returnsDue = 0, returnsOverdue = 0)))
     }
   }
 
@@ -115,7 +116,6 @@ class GamblingController @Inject() (
               groupReg           = "Y",
               noOfGroupMems      = Some(1),
               dateCertIssued     = Some(LocalDate.parse("2024-02-01")),
-
               partMembers = Seq(
                 PartnerMember(
                   namesOfPartMems    = "Partner Member One Ltd",
@@ -134,11 +134,9 @@ class GamblingController @Inject() (
                   typeOfBusiness     = 1
                 )
               ),
-
               groupMembers = Seq(
                 GroupMember("Group Member One Ltd")
               ),
-
               returnPeriodEndDates = Seq(
                 ReturnPeriodEndDate(LocalDate.parse("2026-03-31")),
                 ReturnPeriodEndDate(LocalDate.parse("2026-06-30")),
@@ -180,10 +178,8 @@ class GamblingController @Inject() (
               groupReg           = "N",
               noOfGroupMems      = Some(0),
               dateCertIssued     = Some(LocalDate.parse("2024-01-10")),
-
               partMembers        = Seq.empty,
               groupMembers       = Seq.empty,
-
               returnPeriodEndDates = Seq(
                 ReturnPeriodEndDate(LocalDate.parse("2026-03-31")),
                 ReturnPeriodEndDate(LocalDate.parse("2026-06-30"))
@@ -222,10 +218,8 @@ class GamblingController @Inject() (
               groupReg           = "N",
               noOfGroupMems      = Some(0),
               dateCertIssued     = Some(LocalDate.parse("2024-01-01")),
-
               partMembers        = Seq.empty,
               groupMembers       = Seq.empty,
-
               returnPeriodEndDates = Seq(
                 ReturnPeriodEndDate(LocalDate.parse("2026-03-31"))
               )

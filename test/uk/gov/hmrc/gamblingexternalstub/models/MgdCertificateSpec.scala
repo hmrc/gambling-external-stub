@@ -34,21 +34,19 @@ class MgdCertificateSpec extends AnyWordSpec with Matchers {
         solePropLastName   = Some("Doe"),
         typeOfBusiness     = 2
       )
+
       val json = Json.toJson(model)
       json.as[PartnerMember] shouldBe model
     }
-
   }
 
   "GroupMember" should {
-
     "serialize and deserialize correctly" in {
       val model = GroupMember("Group Ltd")
 
       val json = Json.toJson(model)
       json.as[GroupMember] shouldBe model
     }
-
   }
 
   "ReturnPeriodEndDate" should {
@@ -72,7 +70,6 @@ class MgdCertificateSpec extends AnyWordSpec with Matchers {
       json.as[ReturnPeriodEndDate] shouldBe
         ReturnPeriodEndDate(LocalDate.parse("2026-03-31"))
     }
-
   }
 
   "MgdCertificate" should {
@@ -96,11 +93,16 @@ class MgdCertificateSpec extends AnyWordSpec with Matchers {
     "have correct sample1 structure" in {
       val model = MgdCertificate.sample1("GAM0000000001")
 
-      model.mgdRegNumber              shouldBe "GAM0000000001"
-      model.noOfPartners              shouldBe 2
-      model.groupReg                  shouldBe "Y"
-      model.partMembers.size          shouldBe 2
-      model.groupMembers.size         shouldBe 1
+      model.mgdRegNumber shouldBe "GAM0000000001"
+
+      // FIXED: Option[Int]
+      model.noOfPartners shouldBe Some(2)
+      model.noOfGroupMems shouldBe Some(1)
+
+      model.groupReg shouldBe "Y"
+
+      model.partMembers.size shouldBe 2
+      model.groupMembers.size shouldBe 1
       model.returnPeriodEndDates.size shouldBe 5
     }
   }
