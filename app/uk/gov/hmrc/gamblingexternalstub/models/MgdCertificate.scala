@@ -15,6 +15,7 @@
  */
 
 package uk.gov.hmrc.gamblingexternalstub.models
+
 import play.api.libs.json.{Json, OFormat, Writes}
 
 import java.time.LocalDate
@@ -26,7 +27,7 @@ final case class PartnerMember(
   solePropFirstName: Option[String],
   solePropMiddleName: Option[String],
   solePropLastName: Option[String],
-  typeOfBusiness: Int // 1..5 mapping
+  typeOfBusiness: Int
 )
 
 object PartnerMember {
@@ -55,7 +56,7 @@ object ReturnPeriodEndDate {
 
 final case class MgdCertificate(
   mgdRegNumber: String,
-  registrationDate: LocalDate,
+  registrationDate: Option[LocalDate],
   individualName: Option[String],
   businessName: Option[String],
   tradingName: Option[String],
@@ -73,29 +74,29 @@ final case class MgdCertificate(
   repMemLine4: Option[String],
   repMemPostcode: Option[String],
   repMemAdi: Option[String],
-  typeOfBusiness: Option[String], // as returned by md.TYPE_OF_BUSINESS
-  businessTradeClass: Option[Int], // nvl(md.TRADE_CLASS, mgm.TRADE_CLASS)
-  noOfPartners: Int,
-  groupReg: String, // "Y" or "N"
-  noOfGroupMems: Int,
-  dateCertIssued: LocalDate,
-  partMembers: Seq[PartnerMember], // cursor P_PART_MEMBERS
-  groupMembers: Seq[GroupMember], // cursor P_GROUP_MEMBERS
-  returnPeriodEndDates: Seq[ReturnPeriodEndDate] // cursor RETURN_PERIOD_END_DATES (max 5)
+  typeOfBusiness: Option[String],
+  businessTradeClass: Option[Int],
+  noOfPartners: Option[Int],
+  groupReg: String,
+  noOfGroupMems: Option[Int],
+  dateCertIssued: Option[LocalDate],
+  partMembers: Seq[PartnerMember],
+  groupMembers: Seq[GroupMember],
+  returnPeriodEndDates: Seq[ReturnPeriodEndDate]
 )
 
 object MgdCertificate {
   private val fmt = DateTimeFormatter.ISO_LOCAL_DATE
+
   implicit val localDateWrites: Writes[LocalDate] =
     Writes.temporalWrites[LocalDate, DateTimeFormatter](fmt)
 
   implicit val format: OFormat[MgdCertificate] = Json.format[MgdCertificate]
 
-  // handy sample builders (used by controller scenarios)
   def sample1(reg: String): MgdCertificate =
     MgdCertificate(
       mgdRegNumber       = reg,
-      registrationDate   = LocalDate.parse("2023-01-15", fmt),
+      registrationDate   = Some(LocalDate.parse("2023-01-15", fmt)),
       individualName     = Some("Mr John A Smith"),
       businessName       = Some("Acme Gaming Ltd"),
       tradingName        = Some("Acme Bets"),
@@ -115,10 +116,10 @@ object MgdCertificate {
       repMemAdi          = Some("Rep ADI Value"),
       typeOfBusiness     = Some("Corporate Body"),
       businessTradeClass = Some(2),
-      noOfPartners       = 2,
+      noOfPartners       = Some(2),
       groupReg           = "Y",
-      noOfGroupMems      = 1,
-      dateCertIssued     = LocalDate.parse("2024-02-01", fmt),
+      noOfGroupMems      = Some(1),
+      dateCertIssued     = Some(LocalDate.parse("2024-02-01", fmt)),
       partMembers = Seq(
         PartnerMember(
           namesOfPartMems    = "Partner Member One Ltd",
@@ -126,7 +127,7 @@ object MgdCertificate {
           solePropFirstName  = None,
           solePropMiddleName = None,
           solePropLastName   = None,
-          typeOfBusiness     = 2 // Corporate Body
+          typeOfBusiness     = 2
         ),
         PartnerMember(
           namesOfPartMems    = "Sole Prop Example",
@@ -134,11 +135,11 @@ object MgdCertificate {
           solePropFirstName  = Some("Jane"),
           solePropMiddleName = None,
           solePropLastName   = Some("Doe"),
-          typeOfBusiness     = 1 // Sole proprietor
+          typeOfBusiness     = 1
         )
       ),
       groupMembers = Seq(
-        GroupMember(namesOfGroupMems = "Group Member One Ltd")
+        GroupMember("Group Member One Ltd")
       ),
       returnPeriodEndDates = Seq(
         ReturnPeriodEndDate(LocalDate.parse("2026-03-31", fmt)),

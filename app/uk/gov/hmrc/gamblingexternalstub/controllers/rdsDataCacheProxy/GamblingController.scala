@@ -26,15 +26,14 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 class GamblingController @Inject() (
-  cc: ControllerComponents
-)() extends BackendController(cc)
-    with Logging {
+                                     cc: ControllerComponents
+                                   ) extends BackendController(cc)
+  with Logging {
 
   def getReturnSummary(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
 
     mgdRegNumber match {
 
-      // simulate service-level InvalidMgdRegNumber
       case "invalid" =>
         logger.warn("[Gambling Stub] Invalid MGD reg number")
         BadRequest(
@@ -44,7 +43,6 @@ class GamblingController @Inject() (
           )
         )
 
-      // simulate service-level UnexpectedError
       case "error" =>
         logger.error("[Gambling Stub] Unexpected error")
         InternalServerError(
@@ -54,15 +52,12 @@ class GamblingController @Inject() (
           )
         )
 
-      // scenario 1
       case "GAM0000000001" =>
         Ok(Json.toJson(ReturnSummary("GAM0000000001", 0, 1)))
 
-      // scenario 2
       case "GAM0000000002" =>
         Ok(Json.toJson(ReturnSummary("GAM0000000002", 0, 0)))
 
-      // default
       case reg =>
         Ok(Json.toJson(ReturnSummary(reg, 2, 1)))
     }
@@ -72,7 +67,6 @@ class GamblingController @Inject() (
 
     mgdRegNumber match {
 
-      // simulate service-level InvalidMgdRegNumber
       case "invalid" =>
         logger.warn("[Gambling Stub] Invalid MGD reg number (certificate)")
         BadRequest(
@@ -82,7 +76,6 @@ class GamblingController @Inject() (
           )
         )
 
-      // simulate service-level UnexpectedError
       case "error" =>
         logger.error("[Gambling Stub] Unexpected error (certificate)")
         InternalServerError(
@@ -92,13 +85,13 @@ class GamblingController @Inject() (
           )
         )
 
-      // scenario 1: has partners + group reg + 5 return period end dates
+      // ===== SCENARIO 1 =====
       case "GAM0000000001" =>
         Ok(
           Json.toJson(
             MgdCertificate(
               mgdRegNumber       = "GAM0000000001",
-              registrationDate   = LocalDate.parse("2023-01-15"),
+              registrationDate   = Some(LocalDate.parse("2023-01-15")),
               individualName     = Some("Mr John A Smith"),
               businessName       = Some("Acme Gaming Ltd"),
               tradingName        = Some("Acme Bets"),
@@ -118,10 +111,11 @@ class GamblingController @Inject() (
               repMemAdi          = Some("Rep ADI Value"),
               typeOfBusiness     = Some("Corporate Body"),
               businessTradeClass = Some(2),
-              noOfPartners       = 2,
+              noOfPartners       = Some(2),
               groupReg           = "Y",
-              noOfGroupMems      = 1,
-              dateCertIssued     = LocalDate.parse("2024-02-01"),
+              noOfGroupMems      = Some(1),
+              dateCertIssued     = Some(LocalDate.parse("2024-02-01")),
+
               partMembers = Seq(
                 PartnerMember(
                   namesOfPartMems    = "Partner Member One Ltd",
@@ -129,7 +123,7 @@ class GamblingController @Inject() (
                   solePropFirstName  = None,
                   solePropMiddleName = None,
                   solePropLastName   = None,
-                  typeOfBusiness     = 2 // Corporate Body
+                  typeOfBusiness     = 2
                 ),
                 PartnerMember(
                   namesOfPartMems    = "Sole Prop Example",
@@ -137,14 +131,14 @@ class GamblingController @Inject() (
                   solePropFirstName  = Some("Jane"),
                   solePropMiddleName = None,
                   solePropLastName   = Some("Doe"),
-                  typeOfBusiness     = 1 // Sole proprietor
+                  typeOfBusiness     = 1
                 )
               ),
+
               groupMembers = Seq(
-                GroupMember(namesOfGroupMems = "Group Member One Ltd")
+                GroupMember("Group Member One Ltd")
               ),
 
-              // max 5 rows as per stored proc behaviour
               returnPeriodEndDates = Seq(
                 ReturnPeriodEndDate(LocalDate.parse("2026-03-31")),
                 ReturnPeriodEndDate(LocalDate.parse("2026-06-30")),
@@ -156,12 +150,13 @@ class GamblingController @Inject() (
           )
         )
 
+      // ===== SCENARIO 2 =====
       case "GAM0000000002" =>
         Ok(
           Json.toJson(
             MgdCertificate(
               mgdRegNumber       = "GAM0000000002",
-              registrationDate   = LocalDate.parse("2022-10-05"),
+              registrationDate   = Some(LocalDate.parse("2022-10-05")),
               individualName     = None,
               businessName       = Some("Example Sole Trader"),
               tradingName        = None,
@@ -181,12 +176,14 @@ class GamblingController @Inject() (
               repMemAdi          = None,
               typeOfBusiness     = Some("Sole proprietor"),
               businessTradeClass = Some(1),
-              noOfPartners       = 0,
+              noOfPartners       = Some(0),
               groupReg           = "N",
-              noOfGroupMems      = 0,
-              dateCertIssued     = LocalDate.parse("2024-01-10"),
+              noOfGroupMems      = Some(0),
+              dateCertIssued     = Some(LocalDate.parse("2024-01-10")),
+
               partMembers        = Seq.empty,
               groupMembers       = Seq.empty,
+
               returnPeriodEndDates = Seq(
                 ReturnPeriodEndDate(LocalDate.parse("2026-03-31")),
                 ReturnPeriodEndDate(LocalDate.parse("2026-06-30"))
@@ -195,13 +192,13 @@ class GamblingController @Inject() (
           )
         )
 
-      // default: return a generic but consistent payload
+      // ===== DEFAULT =====
       case reg =>
         Ok(
           Json.toJson(
             MgdCertificate(
               mgdRegNumber       = reg,
-              registrationDate   = LocalDate.parse("2021-01-01"),
+              registrationDate   = Some(LocalDate.parse("2021-01-01")),
               individualName     = None,
               businessName       = Some(s"Business for $reg"),
               tradingName        = None,
@@ -221,12 +218,14 @@ class GamblingController @Inject() (
               repMemAdi          = None,
               typeOfBusiness     = Some("Corporate Body"),
               businessTradeClass = Some(2),
-              noOfPartners       = 0,
+              noOfPartners       = Some(0),
               groupReg           = "N",
-              noOfGroupMems      = 0,
-              dateCertIssued     = LocalDate.parse("2024-01-01"),
+              noOfGroupMems      = Some(0),
+              dateCertIssued     = Some(LocalDate.parse("2024-01-01")),
+
               partMembers        = Seq.empty,
               groupMembers       = Seq.empty,
+
               returnPeriodEndDates = Seq(
                 ReturnPeriodEndDate(LocalDate.parse("2026-03-31"))
               )
@@ -235,5 +234,4 @@ class GamblingController @Inject() (
         )
     }
   }
-
 }
