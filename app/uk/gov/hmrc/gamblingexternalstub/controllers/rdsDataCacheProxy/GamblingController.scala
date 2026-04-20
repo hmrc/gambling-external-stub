@@ -86,11 +86,11 @@ class GamblingController @Inject() (
         )
 
       // ===== SCENARIO 1 =====
-      case "GAM0000000001" =>
+      case "XGM00000001761" =>
         Ok(
           Json.toJson(
             MgdCertificate(
-              mgdRegNumber       = "GAM0000000001",
+              mgdRegNumber       = "XGM00000001761",
               registrationDate   = Some(LocalDate.parse("2023-01-15")),
               individualName     = Some("Mr John A Smith"),
               businessName       = Some("Acme Gaming Ltd"),
@@ -151,11 +151,11 @@ class GamblingController @Inject() (
         )
 
       // ===== SCENARIO 2 =====
-      case "GAM0000000002" =>
+      case "XGM00000001762" =>
         Ok(
           Json.toJson(
             MgdCertificate(
-              mgdRegNumber       = "GAM0000000002",
+              mgdRegNumber       = "XGM00000001762",
               registrationDate   = Some(LocalDate.parse("2022-10-05")),
               individualName     = None,
               businessName       = Some("Example Sole Trader"),
