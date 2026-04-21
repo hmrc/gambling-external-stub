@@ -96,13 +96,13 @@ class MgdCertificateSpec extends AnyWordSpec with Matchers {
       model.mgdRegNumber shouldBe "GAM0000000001"
 
       // FIXED: Option[Int]
-      model.noOfPartners shouldBe Some(2)
+      model.noOfPartners  shouldBe Some(2)
       model.noOfGroupMems shouldBe Some(1)
 
       model.groupReg shouldBe "Y"
 
-      model.partMembers.size shouldBe 2
-      model.groupMembers.size shouldBe 1
+      model.partMembers.size          shouldBe 2
+      model.groupMembers.size         shouldBe 1
       model.returnPeriodEndDates.size shouldBe 5
     }
   }
