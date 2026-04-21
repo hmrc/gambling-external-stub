@@ -1,3 +1,5 @@
 # Add all the application routes to the app.routes file
-->         /gambling-external-stub              app.Routes
-->         /                          health.Routes
+# Add all the rds-cache routes to the rdsdatacacheproxy.routes file
+->   /rds-datacache-proxy    rdsdatacacheproxy.Routes
+->   /                       app.Routes
+->   /                       health.Routes

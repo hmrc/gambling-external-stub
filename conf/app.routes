@@ -1,5 +1,3 @@
 # microservice specific routes
 
-
-# MGD stub
-GET  /mgd/:mgdRegNumber  uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getReturnSummary(mgdRegNumber: String)
+# Add all the application routes to the app.routes file
