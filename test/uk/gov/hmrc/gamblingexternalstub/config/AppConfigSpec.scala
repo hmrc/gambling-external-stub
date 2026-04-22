@@ -18,7 +18,6 @@ package uk.gov.hmrc.gamblingexternalstub.config
 
 import org.scalatestplus.play.PlaySpec
 import play.api.Configuration
-import uk.gov.hmrc.gamblingexternalstub.config.AppConfig
 
 class AppConfigSpec extends PlaySpec {
 
