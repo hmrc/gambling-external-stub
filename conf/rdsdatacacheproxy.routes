@@ -1,7 +1,5 @@
-# MGD stub
-GET  /mgd/:mgdRegNumber/certificate     uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getMgdCertificate(mgdRegNumber: String)
 
-#Stubbed rds-cache-proxy returns
+#Stubbed rds-cache-proxy
 GET     /gambling/return-summary/:mgdRegNumber      uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getReturnSummary(mgdRegNumber: String)
 
 GET  /gambling/get-mgd-certificate/:mgdRegNumber     uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getMgdCertificate(mgdRegNumber: String)
