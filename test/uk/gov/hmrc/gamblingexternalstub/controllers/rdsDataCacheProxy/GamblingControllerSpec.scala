@@ -33,7 +33,7 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
   "GamblingController#getReturnSummary" should {
 
-    "return OK for XGM00000001761" in {
+    "return returnsOverDue for XGM00000001761" in {
       val result = controller.getReturnSummary("XGM00000001761")(FakeRequest())
 
       status(result) shouldBe OK
@@ -42,12 +42,21 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       )
     }
 
-    "return OK for XGM00000001762" in {
+    "return returnsDue for XGM00000001762" in {
       val result = controller.getReturnSummary("XGM00000001762")(FakeRequest())
 
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
-        ReturnSummary("XGM00000001762", 0, 0)
+        ReturnSummary("XGM00000001762", 1, 0)
+      )
+    }
+
+    "return both returnsDue and returnsOverDue for XGM00000001763" in {
+      val result = controller.getReturnSummary("XGM00000001763")(FakeRequest())
+
+      status(result) shouldBe OK
+      contentAsJson(result) shouldBe Json.toJson(
+        ReturnSummary("XGM00000001763", 1, 2)
       )
     }
 
