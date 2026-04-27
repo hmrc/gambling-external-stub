@@ -22,7 +22,7 @@ import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.base.SpecBase
-import uk.gov.hmrc.gamblingexternalstub.models.{MgdCertificate, ReturnPeriodEndDate, ReturnSummary, BusinessDetails}
+import uk.gov.hmrc.gamblingexternalstub.models.{MgdCertificate, ReturnPeriodEndDate, ReturnSummary, BusinessName, BusinessDetails}
 
 import java.time.LocalDate
 
@@ -72,6 +72,85 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
     "return INTERNAL_SERVER_ERROR for error" in {
       val result = controller.getReturnSummary("error")(FakeRequest())
+
+      status(result) shouldBe INTERNAL_SERVER_ERROR
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "UNEXPECTED_ERROR",
+        "message" -> "Unexpected error occurred"
+      )
+    }
+  }
+
+  "GamblingController#getBusinessName" should {
+
+    "return OK for XGM00000001761" in {
+      val result = controller.getBusinessName("XGM00000001761")(FakeRequest())
+
+      status(result) shouldBe OK
+      contentAsJson(result) shouldBe Json.toJson(
+        BusinessName(
+          "XGM00000001761",
+          "Mr",
+          "Joe",
+          Some("B"),
+          "Blogs",
+          "Joe Blogs Co.",
+          "Sole Proprietor",
+          "BlogsBlogs",
+          Some(LocalDate.of(1991,1,1))
+      ))
+    }
+
+    "return OK for XGM00000001762" in {
+      val result = controller.getBusinessName("XGM00000001762")(FakeRequest())
+
+      status(result) shouldBe OK
+      contentAsJson(result) shouldBe Json.toJson(
+        BusinessName(
+          "XGM00000001762",
+          "Mrs",
+          "Jane",
+          None,
+          "Doe",
+          "Doe Co.",
+          "Sole Proprietor",
+          "DoeDoe",
+          Some(LocalDate.of(1992,1,1)
+        )
+      ))
+    }
+
+    "return default response" in {
+      val result = controller.getBusinessName("GAM9999999999")(FakeRequest())
+
+      status(result) shouldBe OK
+      contentAsJson(result) shouldBe Json.toJson(
+        BusinessName(
+          "GAM9999999999",
+          "Mr",
+          "Foo",
+          Some("B"),
+          "Bar",
+          "Foo Bar Co.",
+          "Sole Proprietor",
+          "FooBar",
+          Some(LocalDate.of(2026,4,7)
+        )
+      ))
+    }
+
+    "return BAD_REQUEST for invalid" in {
+      val result = controller.getBusinessName("invalid")(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "INVALID_MGD_REG_NUMBER",
+        "message" -> "mgdRegNumber must be provided"
+      )
+    }
+
+    "return INTERNAL_SERVER_ERROR for error" in {
+      val result = controller.getBusinessName("error")(FakeRequest())
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
       contentAsJson(result) shouldBe Json.obj(
@@ -243,7 +322,7 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
     "return INTERNAL_SERVER_ERROR for error" in {
       val result = controller.getMgdCertificate("error")(FakeRequest())
-      
+
       status(result) shouldBe INTERNAL_SERVER_ERROR
       contentAsJson(result) shouldBe Json.obj(
         "code"    -> "UNEXPECTED_ERROR",
