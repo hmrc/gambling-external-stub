@@ -93,7 +93,7 @@ class GamblingController @Inject() (
           solePropMidName = Some("B"),
           solePropLastName = "Blogs",
           businessName = "Joe Blogs Co.",
-          businessType = "Sole Proprietor",
+          businessType = 1,
           tradingName = "BlogsBlogs",
           systemDate = Some(LocalDate.of(1991, 1,1 ))
         )))
@@ -107,23 +107,9 @@ class GamblingController @Inject() (
           solePropMidName = None,
           solePropLastName = "Doe",
           businessName = "Doe Co.",
-          businessType = "Sole Proprietor",
+          businessType = 1,
           tradingName = "DoeDoe",
           systemDate = Some(LocalDate.of(1992, 1,1 ))
-        )))
-
-      // default fallback
-      case reg =>
-        Ok(Json.toJson(BusinessName(
-          mgdRegNumber,
-          solePropTitle = "Mr",
-          solePropFirstName = "Foo",
-          solePropMidName = Some("B"),
-          solePropLastName = "Bar",
-          businessName = "Foo Bar Co.",
-          businessType = "Sole Proprietor",
-          tradingName = "FooBar",
-          systemDate = Some(LocalDate.of(2026, 4, 7 ))
         )))
     }
   }

@@ -36,7 +36,7 @@ class BusinessNameSpec extends AnyWordSpec with Matchers {
         solePropMidName = Some("B"),
         solePropLastName = "Bar",
         businessName = "Foo Bar Co",
-        businessType = "Sole Proprietor",
+        businessType = 1,
         tradingName = "FooBar",
         systemDate = Some(dateBusinessName))
 
@@ -49,7 +49,7 @@ class BusinessNameSpec extends AnyWordSpec with Matchers {
         "solePropMidName" -> "B",
         "solePropLastName" -> "Bar",
         "businessName" -> "Foo Bar Co",
-        "businessType" -> "Sole Proprietor",
+        "businessType" -> 1,
         "tradingName" -> "FooBar",
         "systemDate" -> dateBusinessName
       )
@@ -65,7 +65,7 @@ class BusinessNameSpec extends AnyWordSpec with Matchers {
           "solePropMidName" -> "abc",
           "solePropLastName" -> "abc",
           "businessName" -> "abc",
-          "businessType" -> "abc",
+          "businessType" -> 1,
           "tradingName" -> "abc",
           "systemDate" -> dateBusinessName
         )
@@ -79,7 +79,7 @@ class BusinessNameSpec extends AnyWordSpec with Matchers {
           solePropMidName = Some("abc"),
           solePropLastName = "abc",
           businessName = "abc",
-          businessType = "abc",
+          businessType = 1,
           tradingName = "abc",
           systemDate = Some(dateBusinessName)
         )
