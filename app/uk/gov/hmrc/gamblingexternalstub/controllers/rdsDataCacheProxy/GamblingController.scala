@@ -64,6 +64,70 @@ class GamblingController @Inject() (
     }
   }
 
+  def getBusinessName(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
+
+    mgdRegNumber match {
+
+      case "invalid" =>
+        BadRequest(
+          Json.obj(
+            "code"    -> "INVALID_MGD_REG_NUMBER",
+            "message" -> "mgdRegNumber must be provided"
+          )
+        )
+
+      case "error" =>
+        InternalServerError(
+          Json.obj(
+            "code"    -> "UNEXPECTED_ERROR",
+            "message" -> "Unexpected error occurred"
+          )
+        )
+
+      // Scenario 1 → middle name included
+      case "XGM00000001761" | "GAM0000000001" =>
+        Ok(Json.toJson(BusinessName(
+          mgdRegNumber,
+          solePropTitle = "Mr",
+          solePropFirstName = "Joe",
+          solePropMidName = Some("B"),
+          solePropLastName = "Blogs",
+          businessName = "Joe Blogs Co.",
+          businessType = "Sole Proprietor",
+          tradingName = "BlogsBlogs",
+          systemDate = Some(LocalDate.of(1991, 1,1 ))
+        )))
+
+      // Scenario 2 → no middle name
+      case "XGM00000001762" | "GAM0000000002" =>
+        Ok(Json.toJson(BusinessName(
+          mgdRegNumber,
+          solePropTitle = "Mrs",
+          solePropFirstName = "Jane",
+          solePropMidName = None,
+          solePropLastName = "Doe",
+          businessName = "Doe Co.",
+          businessType = "Sole Proprietor",
+          tradingName = "DoeDoe",
+          systemDate = Some(LocalDate.of(1992, 1,1 ))
+        )))
+
+      // default fallback
+      case reg =>
+        Ok(Json.toJson(BusinessName(
+          mgdRegNumber,
+          solePropTitle = "Mr",
+          solePropFirstName = "Foo",
+          solePropMidName = Some("B"),
+          solePropLastName = "Bar",
+          businessName = "Foo Bar Co.",
+          businessType = "Sole Proprietor",
+          tradingName = "FooBar",
+          systemDate = Some(LocalDate.of(2026, 4, 7 ))
+        )))
+    }
+  }
+
   def getMgdCertificate(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
 
     mgdRegNumber match {
