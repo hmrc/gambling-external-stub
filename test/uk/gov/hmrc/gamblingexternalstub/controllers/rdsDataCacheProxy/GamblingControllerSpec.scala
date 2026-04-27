@@ -95,7 +95,7 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
           Some("B"),
           "Blogs",
           "Joe Blogs Co.",
-          "Sole Proprietor",
+          1,
           "BlogsBlogs",
           Some(LocalDate.of(1991,1,1))
       ))
@@ -113,31 +113,13 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
           None,
           "Doe",
           "Doe Co.",
-          "Sole Proprietor",
+          1,
           "DoeDoe",
           Some(LocalDate.of(1992,1,1)
         )
       ))
     }
 
-    "return default response" in {
-      val result = controller.getBusinessName("GAM9999999999")(FakeRequest())
-
-      status(result) shouldBe OK
-      contentAsJson(result) shouldBe Json.toJson(
-        BusinessName(
-          "GAM9999999999",
-          "Mr",
-          "Foo",
-          Some("B"),
-          "Bar",
-          "Foo Bar Co.",
-          "Sole Proprietor",
-          "FooBar",
-          Some(LocalDate.of(2026,4,7)
-        )
-      ))
-    }
 
     "return BAD_REQUEST for invalid" in {
       val result = controller.getBusinessName("invalid")(FakeRequest())

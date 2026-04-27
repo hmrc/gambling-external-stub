@@ -27,7 +27,7 @@ case class BusinessName(
                          solePropMidName: Option[String],
                          solePropLastName: String,
                          businessName: String,
-                         businessType: String,
+                         businessType: Int,
                          tradingName: String,
                          systemDate: Option[LocalDate])
 
