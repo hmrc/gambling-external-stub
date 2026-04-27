@@ -54,9 +54,13 @@ class GamblingController @Inject() (
       case "XGM00000001761" | "GAM0000000001" =>
         Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 0, returnsOverdue = 1)))
 
-      // Scenario 2 → nothing due
-      case "XGM00000001762" | "GAM0000000002" =>
-        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 0, returnsOverdue = 0)))
+      // Scenario 2 → returns due
+      case "XGM00000001762" | "GAM0000000010" =>
+        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 1, returnsOverdue = 0)))
+
+      // Scenario 3 → both returns due and overdue exists
+      case "XGM00000001763" | "GAM0000000012" =>
+        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 1, returnsOverdue = 2)))
 
       // default fallback
       case reg =>
