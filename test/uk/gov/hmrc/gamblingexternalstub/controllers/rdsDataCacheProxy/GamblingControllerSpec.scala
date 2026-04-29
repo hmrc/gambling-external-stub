@@ -22,7 +22,7 @@ import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.base.SpecBase
-import uk.gov.hmrc.gamblingexternalstub.models.{MgdCertificate, ReturnPeriodEndDate, ReturnSummary}
+import uk.gov.hmrc.gamblingexternalstub.models.{MgdCertificate, ReturnPeriodEndDate, ReturnSummary, BusinessDetails}
 
 import java.time.LocalDate
 
@@ -33,7 +33,7 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
   "GamblingController#getReturnSummary" should {
 
-    "return returnsOverDue for XGM00000001761" in {
+    "return OK for XGM00000001761" in {
       val result = controller.getReturnSummary("XGM00000001761")(FakeRequest())
 
       status(result) shouldBe OK
@@ -42,21 +42,12 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       )
     }
 
-    "return returnsDue for XGM00000001762" in {
+    "return OK for XGM00000001762" in {
       val result = controller.getReturnSummary("XGM00000001762")(FakeRequest())
 
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
-        ReturnSummary("XGM00000001762", 1, 0)
-      )
-    }
-
-    "return both returnsDue and returnsOverDue for XGM00000001763" in {
-      val result = controller.getReturnSummary("XGM00000001763")(FakeRequest())
-
-      status(result) shouldBe OK
-      contentAsJson(result) shouldBe Json.toJson(
-        ReturnSummary("XGM00000001763", 1, 2)
+        ReturnSummary("XGM00000001762", 0, 0)
       )
     }
 
@@ -81,6 +72,62 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
     "return INTERNAL_SERVER_ERROR for error" in {
       val result = controller.getReturnSummary("error")(FakeRequest())
+
+      status(result) shouldBe INTERNAL_SERVER_ERROR
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "UNEXPECTED_ERROR",
+        "message" -> "Unexpected error occurred"
+      )
+    }
+  }
+
+  "GamblingController#getBusinessDetails" should {
+
+    "return OK for XGM00000001761" in {
+      val result = controller.getBusinessDetails("XGM00000001761")(FakeRequest())
+
+      status(result) shouldBe OK
+      contentAsJson(result) shouldBe Json.toJson(
+        BusinessDetails(
+          "XGM00000001761",
+          1,
+          1,
+          "foo",
+          Some(LocalDate.of(1991,1,1)),
+          "bar",
+          Some(LocalDate.of(1991,1,1))
+      ))
+    }
+
+    "return OK for XGM00000001762" in {
+      val result = controller.getBusinessDetails("XGM00000001762")(FakeRequest())
+
+      status(result) shouldBe OK
+      contentAsJson(result) shouldBe Json.toJson(
+        BusinessDetails(
+          "XGM00000001762",
+          1,
+          0,
+          "foo",
+          Some(LocalDate.of(1991,1,1)),
+          "bar",
+          Some(LocalDate.of(1991,1,1))
+        ))
+    }
+
+
+    "return BAD_REQUEST for invalid" in {
+      val result = controller.getBusinessDetails("invalid")(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "INVALID_MGD_REG_NUMBER",
+        "message" -> "mgdRegNumber must be provided"
+      )
+    }
+
+    "return INTERNAL_SERVER_ERROR for error" in {
+      val result = controller.getBusinessDetails("error")(FakeRequest())
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
       contentAsJson(result) shouldBe Json.obj(

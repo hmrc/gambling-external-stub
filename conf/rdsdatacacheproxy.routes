@@ -1,5 +1,6 @@
 
 #Stubbed rds-cache-proxy
 GET     /gambling/return-summary/:mgdRegNumber      uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getReturnSummary(mgdRegNumber: String)
+GET     /gambling/business-details/:mgdRegNumber      uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getBusinessDetails(mgdRegNumber: String)
 
 GET  /gambling/get-mgd-certificate/:mgdRegNumber     uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getMgdCertificate(mgdRegNumber: String)

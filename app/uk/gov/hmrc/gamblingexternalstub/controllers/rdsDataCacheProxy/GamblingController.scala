@@ -54,17 +54,45 @@ class GamblingController @Inject() (
       case "XGM00000001761" | "GAM0000000001" =>
         Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 0, returnsOverdue = 1)))
 
-      // Scenario 2 → returns due
-      case "XGM00000001762" | "GAM0000000010" =>
-        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 1, returnsOverdue = 0)))
-
-      // Scenario 3 → both returns due and overdue exists
-      case "XGM00000001763" | "GAM0000000012" =>
-        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 1, returnsOverdue = 2)))
+      // Scenario 2 → nothing due
+      case "XGM00000001762" | "GAM0000000002" =>
+        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 0, returnsOverdue = 0)))
 
       // default fallback
       case reg =>
         Ok(Json.toJson(ReturnSummary(reg, returnsDue = 0, returnsOverdue = 0)))
+    }
+  }
+
+  def getBusinessDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
+
+    mgdRegNumber match {
+
+      case "invalid" =>
+        BadRequest(
+          Json.obj(
+            "code"    -> "INVALID_MGD_REG_NUMBER",
+            "message" -> "mgdRegNumber must be provided"
+          )
+        )
+
+      case "error" =>
+        InternalServerError(
+          Json.obj(
+            "code"    -> "UNEXPECTED_ERROR",
+            "message" -> "Unexpected error occurred"
+          )
+        )
+
+      // Scenario 1 → Registered
+      case "XGM00000001761" | "GAM0000000001" =>
+        Ok(Json.toJson(BusinessDetails(mgdRegNumber, businessType = 1, currentlyRegistered = 1, groupReg = "foo", dateOfRegistration = Some(LocalDate.of(1991, 1,1 )), businessPartnerNumber = "bar", systemDate = Some(LocalDate.of(1991, 1,1 ))
+        )))
+
+      // Scenario 2 → Not Registered
+      case "XGM00000001762" | "GAM0000000002" =>
+        Ok(Json.toJson(BusinessDetails(mgdRegNumber, businessType = 1, currentlyRegistered = 0, groupReg = "foo", dateOfRegistration = Some(LocalDate.of(1991, 1,1 )), businessPartnerNumber = "bar", systemDate = Some(LocalDate.of(1991, 1,1 ))
+        )))
     }
   }
 
