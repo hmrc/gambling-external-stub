@@ -243,7 +243,6 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
     "return INTERNAL_SERVER_ERROR for error" in {
       val result = controller.getMgdCertificate("error")(FakeRequest())
-
       status(result) shouldBe INTERNAL_SERVER_ERROR
       contentAsJson(result) shouldBe Json.obj(
         "code"    -> "UNEXPECTED_ERROR",
