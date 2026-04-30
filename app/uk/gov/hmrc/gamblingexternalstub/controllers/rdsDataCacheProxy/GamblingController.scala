@@ -102,6 +102,7 @@ class GamblingController @Inject() (
 
       case "invalid" =>
         logger.warn("[Gambling Stub] Invalid MGD reg number (certificate)")
+
         BadRequest(
           Json.obj(
             "code"    -> "INVALID_MGD_REG_NUMBER",
