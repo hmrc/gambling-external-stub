@@ -88,13 +88,13 @@ class GamblingController @Inject() (
       case "XGM00000001761" | "GAM0000000001" =>
         Ok(Json.toJson(BusinessName(
           mgdRegNumber,
-          solePropTitle = "Mr",
-          solePropFirstName = "Joe",
+          solePropTitle = Some("Mr"),
+          solePropFirstName = Some("Joe"),
           solePropMidName = Some("B"),
-          solePropLastName = "Blogs",
-          businessName = "Joe Blogs Co.",
-          businessType = 1,
-          tradingName = "BlogsBlogs",
+          solePropLastName = Some("Blogs"),
+          businessName = Some("Joe Blogs Co."),
+          businessType = Some(1),
+          tradingName = Some("BlogsBlogs"),
           systemDate = Some(LocalDate.of(1991, 1,1 ))
         )))
 
@@ -102,14 +102,46 @@ class GamblingController @Inject() (
       case "XGM00000001762" | "GAM0000000002" =>
         Ok(Json.toJson(BusinessName(
           mgdRegNumber,
-          solePropTitle = "Mrs",
-          solePropFirstName = "Jane",
+          solePropTitle = Some("Mrs"),
+          solePropFirstName = Some("Jane"),
           solePropMidName = None,
-          solePropLastName = "Doe",
-          businessName = "Doe Co.",
-          businessType = 1,
-          tradingName = "DoeDoe",
+          solePropLastName = Some("Doe"),
+          businessName = Some("Doe Co."),
+          businessType = Some(1),
+          tradingName = Some("DoeDoe"),
           systemDate = Some(LocalDate.of(1992, 1,1 ))
+        )))
+    }
+  }
+
+  def getBusinessDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
+
+    mgdRegNumber match {
+
+      case "invalid" =>
+        BadRequest(
+          Json.obj(
+            "code"    -> "INVALID_MGD_REG_NUMBER",
+            "message" -> "mgdRegNumber must be provided"
+          )
+        )
+
+      case "error" =>
+        InternalServerError(
+          Json.obj(
+            "code"    -> "UNEXPECTED_ERROR",
+            "message" -> "Unexpected error occurred"
+          )
+        )
+
+      // Scenario 1 → Registered
+      case "XGM00000001761" | "GAM0000000001" =>
+        Ok(Json.toJson(BusinessDetails(mgdRegNumber, businessType = Some(1), currentlyRegistered = Some(1), groupReg = Some("foo"), dateOfRegistration = Some(LocalDate.of(1991, 1,1 )), businessPartnerNumber = Some("bar"), systemDate = Some(LocalDate.of(1991, 1,1 ))
+        )))
+
+      // Scenario 2 → Not Registered
+      case "XGM00000001762" | "GAM0000000002" =>
+        Ok(Json.toJson(BusinessDetails(mgdRegNumber, businessType = Some(1), currentlyRegistered = Some(0), groupReg = Some("foo"), dateOfRegistration = Some(LocalDate.of(1991, 1,1 )), businessPartnerNumber = Some("bar"), systemDate = Some(LocalDate.of(1991, 1,1 ))
         )))
     }
   }
@@ -120,6 +152,7 @@ class GamblingController @Inject() (
 
       case "invalid" =>
         logger.warn("[Gambling Stub] Invalid MGD reg number (certificate)")
+
         BadRequest(
           Json.obj(
             "code"    -> "INVALID_MGD_REG_NUMBER",
