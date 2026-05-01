@@ -22,7 +22,7 @@ import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.base.SpecBase
-import uk.gov.hmrc.gamblingexternalstub.models.{MgdCertificate, ReturnPeriodEndDate, ReturnSummary}
+import uk.gov.hmrc.gamblingexternalstub.models.{MgdCertificate, ReturnPeriodEndDate, ReturnSummary, BusinessName, BusinessDetails}
 
 import java.time.LocalDate
 
@@ -81,6 +81,123 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
     "return INTERNAL_SERVER_ERROR for error" in {
       val result = controller.getReturnSummary("error")(FakeRequest())
+
+      status(result) shouldBe INTERNAL_SERVER_ERROR
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "UNEXPECTED_ERROR",
+        "message" -> "Unexpected error occurred"
+      )
+    }
+  }
+
+  "GamblingController#getBusinessName" should {
+
+    "return OK for XGM00000001761" in {
+      val result = controller.getBusinessName("XGM00000001761")(FakeRequest())
+
+      status(result) shouldBe OK
+      contentAsJson(result) shouldBe Json.toJson(
+        BusinessName(
+          "XGM00000001761",
+          Some("Mr"),
+          Some("Joe"),
+          Some("B"),
+          Some("Blogs"),
+          Some("Joe Blogs Co."),
+          Some(1),
+          Some("BlogsBlogs"),
+          Some(LocalDate.of(1991,1,1))
+      ))
+    }
+
+    "return OK for XGM00000001762" in {
+      val result = controller.getBusinessName("XGM00000001762")(FakeRequest())
+
+      status(result) shouldBe OK
+      contentAsJson(result) shouldBe Json.toJson(
+        BusinessName(
+          "XGM00000001762",
+          Some("Mrs"),
+          Some("Jane"),
+          None,
+          Some("Doe"),
+          Some("Doe Co."),
+          Some(1),
+          Some("DoeDoe"),
+          Some(LocalDate.of(1992,1,1)
+        )
+      ))
+    }
+
+
+    "return BAD_REQUEST for invalid" in {
+      val result = controller.getBusinessName("invalid")(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "INVALID_MGD_REG_NUMBER",
+        "message" -> "mgdRegNumber must be provided"
+      )
+    }
+
+    "return INTERNAL_SERVER_ERROR for error" in {
+      val result = controller.getBusinessName("error")(FakeRequest())
+
+      status(result) shouldBe INTERNAL_SERVER_ERROR
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "UNEXPECTED_ERROR",
+        "message" -> "Unexpected error occurred"
+      )
+    }
+  }
+
+  "GamblingController#getBusinessDetails" should {
+
+    "return OK for XGM00000001761" in {
+      val result = controller.getBusinessDetails("XGM00000001761")(FakeRequest())
+
+      status(result) shouldBe OK
+      contentAsJson(result) shouldBe Json.toJson(
+        BusinessDetails(
+          "XGM00000001761",
+          Some(1),
+          Some(1),
+          Some("foo"),
+          Some(LocalDate.of(1991,1,1)),
+          Some("bar"),
+          Some(LocalDate.of(1991,1,1))
+      ))
+    }
+
+    "return OK for XGM00000001762" in {
+      val result = controller.getBusinessDetails("XGM00000001762")(FakeRequest())
+
+      status(result) shouldBe OK
+      contentAsJson(result) shouldBe Json.toJson(
+        BusinessDetails(
+          "XGM00000001762",
+          Some(1),
+          Some(0),
+          Some("foo"),
+          Some(LocalDate.of(1991,1,1)),
+          Some("bar"),
+          Some(LocalDate.of(1991,1,1))
+        ))
+    }
+
+
+    "return BAD_REQUEST for invalid" in {
+      val result = controller.getBusinessDetails("invalid")(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "INVALID_MGD_REG_NUMBER",
+        "message" -> "mgdRegNumber must be provided"
+      )
+    }
+
+    "return INTERNAL_SERVER_ERROR for error" in {
+      val result = controller.getBusinessDetails("error")(FakeRequest())
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
       contentAsJson(result) shouldBe Json.obj(
