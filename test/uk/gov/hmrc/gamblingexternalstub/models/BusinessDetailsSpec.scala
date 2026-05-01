@@ -30,11 +30,11 @@ class BusinessDetailsSpec extends AnyWordSpec with Matchers {
     "serialize to JSON when defined" in {
       val dateBusinessDetails = LocalDate.of(1991, 4, 7)
       val model = BusinessDetails(mgdRegNumber = "GAM0000000001",
-        businessType = 1,
-        currentlyRegistered = 1,
-        groupReg = "foo",
+        businessType = Some(1),
+        currentlyRegistered = Some(1),
+        groupReg = Some("foo"),
         dateOfRegistration = Some(LocalDate.of(1991, 4, 7)),
-        businessPartnerNumber = "bar",
+        businessPartnerNumber = Some("bar"),
         systemDate = Some(LocalDate.of(1991, 4, 7)))
 
       val json = Json.toJson(model)
@@ -65,7 +65,7 @@ class BusinessDetailsSpec extends AnyWordSpec with Matchers {
 
         val result = json.as[BusinessDetails]
 
-        result shouldBe BusinessDetails(mgdRegNumber = "GAM0000000001", businessType = 0, currentlyRegistered = 0, groupReg = "foofoo", dateOfRegistration = Some(LocalDate.of(1991, 4, 7)), businessPartnerNumber = "barbar", systemDate = Some(LocalDate.of(1991, 4, 7)))
+        result shouldBe BusinessDetails(mgdRegNumber = "GAM0000000001", businessType = Some(0), currentlyRegistered = Some(0), groupReg = Some("foofoo"), dateOfRegistration = Some(LocalDate.of(1991, 4, 7)), businessPartnerNumber = Some("barbar"), systemDate = Some(LocalDate.of(1991, 4, 7)))
 
       }
   }

@@ -90,13 +90,13 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       contentAsJson(result) shouldBe Json.toJson(
         BusinessName(
           "XGM00000001761",
-          "Mr",
-          "Joe",
+          Some("Mr"),
+          Some("Joe"),
           Some("B"),
-          "Blogs",
-          "Joe Blogs Co.",
-          1,
-          "BlogsBlogs",
+          Some("Blogs"),
+          Some("Joe Blogs Co."),
+          Some(1),
+          Some("BlogsBlogs"),
           Some(LocalDate.of(1991,1,1))
       ))
     }
@@ -108,13 +108,13 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       contentAsJson(result) shouldBe Json.toJson(
         BusinessName(
           "XGM00000001762",
-          "Mrs",
-          "Jane",
+          Some("Mrs"),
+          Some("Jane"),
           None,
-          "Doe",
-          "Doe Co.",
-          1,
-          "DoeDoe",
+          Some("Doe"),
+          Some("Doe Co."),
+          Some(1),
+          Some("DoeDoe"),
           Some(LocalDate.of(1992,1,1)
         )
       ))
@@ -151,11 +151,11 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       contentAsJson(result) shouldBe Json.toJson(
         BusinessDetails(
           "XGM00000001761",
-          1,
-          1,
-          "foo",
+          Some(1),
+          Some(1),
+          Some("foo"),
           Some(LocalDate.of(1991,1,1)),
-          "bar",
+          Some("bar"),
           Some(LocalDate.of(1991,1,1))
       ))
     }
@@ -167,11 +167,11 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       contentAsJson(result) shouldBe Json.toJson(
         BusinessDetails(
           "XGM00000001762",
-          1,
-          0,
-          "foo",
+          Some(1),
+          Some(0),
+          Some("foo"),
           Some(LocalDate.of(1991,1,1)),
-          "bar",
+          Some("bar"),
           Some(LocalDate.of(1991,1,1))
         ))
     }
