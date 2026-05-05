@@ -210,31 +210,31 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
     "return corporate group member for XGM00000001761" in {
       val result = controller.getBusinessDetails("XGM00000001761")(FakeRequest())
 
-      status(result) shouldBe OK
-      (contentAsJson(result) \ "mgdRegNumber").as[String] shouldBe "XGM00000001761"
-      (contentAsJson(result) \ "businessType").as[Int] shouldBe 2
+      status(result)                                        shouldBe OK
+      (contentAsJson(result) \ "mgdRegNumber").as[String]   shouldBe "XGM00000001761"
+      (contentAsJson(result) \ "businessType").as[Int]      shouldBe 2
       (contentAsJson(result) \ "isGroupMember").as[Boolean] shouldBe true
     }
 
     "return sole trader for XGM00000001762" in {
       val result = controller.getBusinessDetails("XGM00000001762")(FakeRequest())
 
-      status(result) shouldBe OK
-      (contentAsJson(result) \ "businessType").as[Int] shouldBe 1
+      status(result)                                        shouldBe OK
+      (contentAsJson(result) \ "businessType").as[Int]      shouldBe 1
       (contentAsJson(result) \ "isGroupMember").as[Boolean] shouldBe false
     }
 
     "return partnership for XGM00000001763" in {
       val result = controller.getBusinessDetails("XGM00000001763")(FakeRequest())
 
-      status(result) shouldBe OK
+      status(result)                                   shouldBe OK
       (contentAsJson(result) \ "businessType").as[Int] shouldBe 4
     }
 
     "return default response" in {
       val result = controller.getBusinessDetails("GAM999")(FakeRequest())
 
-      status(result) shouldBe OK
+      status(result)                                          shouldBe OK
       (contentAsJson(result) \ "currentlyRegistered").as[Int] shouldBe 0
     }
 
@@ -256,40 +256,40 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
     "return corporate operator for XGM00000001761" in {
       val result = controller.getOperatorDetails("XGM00000001761")(FakeRequest())
 
-      status(result) shouldBe OK
+      status(result)                                      shouldBe OK
       (contentAsJson(result) \ "businessName").as[String] shouldBe "Acme Gaming Ltd"
-      (contentAsJson(result) \ "tradingName").as[String] shouldBe "Acme Bets"
-      (contentAsJson(result) \ "businessType").as[Int] shouldBe 2
+      (contentAsJson(result) \ "tradingName").as[String]  shouldBe "Acme Bets"
+      (contentAsJson(result) \ "businessType").as[Int]    shouldBe 2
     }
 
     "return sole proprietor for XGM00000001762" in {
       val result = controller.getOperatorDetails("XGM00000001762")(FakeRequest())
 
-      status(result) shouldBe OK
+      status(result)                                      shouldBe OK
       (contentAsJson(result) \ "solePropName").as[String] shouldBe "Jane Doe"
-      (contentAsJson(result) \ "businessType").as[Int] shouldBe 1
+      (contentAsJson(result) \ "businessType").as[Int]    shouldBe 1
     }
 
     "return overseas operator for XGM00000001763" in {
       val result = controller.getOperatorDetails("XGM00000001763")(FakeRequest())
 
-      status(result) shouldBe OK
-      (contentAsJson(result) \ "country").as[String] shouldBe "Ireland"
+      status(result)                                   shouldBe OK
+      (contentAsJson(result) \ "country").as[String]   shouldBe "Ireland"
       (contentAsJson(result) \ "abroadSig").as[String] shouldBe "Y"
     }
 
     "return partnership operator for XGM00000001764" in {
       val result = controller.getOperatorDetails("XGM00000001764")(FakeRequest())
 
-      status(result) shouldBe OK
-      (contentAsJson(result) \ "businessType").as[Int] shouldBe 4
+      status(result)                                      shouldBe OK
+      (contentAsJson(result) \ "businessType").as[Int]    shouldBe 4
       (contentAsJson(result) \ "businessName").as[String] shouldBe "ABC Partnership"
     }
 
     "return default operator" in {
       val result = controller.getOperatorDetails("GAM999")(FakeRequest())
 
-      status(result) shouldBe OK
+      status(result)                                      shouldBe OK
       (contentAsJson(result) \ "businessName").as[String] shouldBe "Business for GAM999"
     }
 
@@ -305,6 +305,5 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       status(result) shouldBe INTERNAL_SERVER_ERROR
     }
   }
-
 
 }
