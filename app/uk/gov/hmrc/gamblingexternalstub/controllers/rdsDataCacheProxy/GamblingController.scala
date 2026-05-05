@@ -327,38 +327,42 @@ class GamblingController @Inject() (
 
   private def baseOperator(reg: String) =
     OperatorDetails(
-      mgdRegNumber = reg,
-      solePropName = None,
-      solePropTitle = None,
-      solePropFirstName = None,
+      mgdRegNumber       = reg,
+      solePropName       = None,
+      solePropTitle      = None,
+      solePropFirstName  = None,
       solePropMiddleName = None,
-      solePropLastName = None,
-      tradingName = None,
-      businessName = Some(s"Business for $reg"),
-      businessType = Some(CorporateBody),
-      adi = None,
-      address1 = Some("Unknown Address Line 1"),
-      address2 = Some("Unknown Address Line 2"),
-      address3 = None,
-      address4 = None,
-      postcode = Some("AA1 1AA"),
-      country = Some("United Kingdom"),
-      abroadSig = Some("N"),
-      agentOwnRef = None,
-      systemDate = Some(fixedDate)
+      solePropLastName   = None,
+      tradingName        = None,
+      businessName       = Some(s"Business for $reg"),
+      businessType       = Some(CorporateBody),
+      adi                = None,
+      address1           = Some("Unknown Address Line 1"),
+      address2           = Some("Unknown Address Line 2"),
+      address3           = None,
+      address4           = None,
+      postcode           = Some("AA1 1AA"),
+      country            = Some("United Kingdom"),
+      abroadSig          = Some("N"),
+      agentOwnRef        = None,
+      systemDate         = Some(fixedDate)
     )
 
   private val invalidResponse =
-    BadRequest(Json.obj(
-      "code" -> "INVALID_MGD_REG_NUMBER",
-      "message" -> "mgdRegNumber must be provided"
-    ))
+    BadRequest(
+      Json.obj(
+        "code"    -> "INVALID_MGD_REG_NUMBER",
+        "message" -> "mgdRegNumber must be provided"
+      )
+    )
 
   private val errorResponse =
-    InternalServerError(Json.obj(
-      "code" -> "UNEXPECTED_ERROR",
-      "message" -> "Unexpected error occurred"
-    ))
+    InternalServerError(
+      Json.obj(
+        "code"    -> "UNEXPECTED_ERROR",
+        "message" -> "Unexpected error occurred"
+      )
+    )
 
   def getOperatorDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
 
@@ -368,67 +372,69 @@ class GamblingController @Inject() (
 
       case "error" => errorResponse
 
-      // ===== SCENARIO 1: Corporate business =====
       case "XGM00000001761" =>
-        Ok(Json.toJson(
-          baseOperator("XGM00000001761").copy(
-            tradingName = Some("Acme Bets"),
-            businessName = Some("Acme Gaming Ltd"),
-            adi = Some("ADI123"),
-            address1 = Some("1 High Street"),
-            address2 = Some("Newcastle"),
-            postcode = Some("NE1 1AA"),
-            agentOwnRef = Some("AGENT001")
+        Ok(
+          Json.toJson(
+            baseOperator("XGM00000001761").copy(
+              tradingName  = Some("Acme Bets"),
+              businessName = Some("Acme Gaming Ltd"),
+              adi          = Some("ADI123"),
+              address1     = Some("1 High Street"),
+              address2     = Some("Newcastle"),
+              postcode     = Some("NE1 1AA"),
+              agentOwnRef  = Some("AGENT001")
+            )
           )
-        ))
+        )
 
-      // ===== SCENARIO 2: Sole proprietor =====
       case "XGM00000001762" =>
-        Ok(Json.toJson(
-          baseOperator("XGM00000001762").copy(
-            solePropName = Some("Jane Doe"),
-            solePropTitle = Some("Ms"),
-            solePropFirstName = Some("Jane"),
-            solePropLastName = Some("Doe"),
-            tradingName = None,
-            businessName = Some("Jane's Bets"),
-            businessType = Some(SoleProprietor),
-            address1 = Some("10 Market Road"),
-            address2 = Some("Gateshead"),
-            postcode = Some("NE8 1ZZ")
+        Ok(
+          Json.toJson(
+            baseOperator("XGM00000001762").copy(
+              solePropName      = Some("Jane Doe"),
+              solePropTitle     = Some("Ms"),
+              solePropFirstName = Some("Jane"),
+              solePropLastName  = Some("Doe"),
+              tradingName       = None,
+              businessName      = Some("Jane's Bets"),
+              businessType      = Some(SoleProprietor),
+              address1          = Some("10 Market Road"),
+              address2          = Some("Gateshead"),
+              postcode          = Some("NE8 1ZZ")
+            )
           )
-        ))
-
-      // ===== SCENARIO 3: Overseas operator =====
+        )
       case "XGM00000001763" =>
-        Ok(Json.toJson(
-          baseOperator("XGM00000001763").copy(
-            tradingName = Some("Global Bets"),
-            businessName = Some("Global Gaming Inc"),
-            address1 = Some("123 International Way"),
-            address2 = Some("Dublin"),
-            postcode = Some("D01 ABC"),
-            country = Some("Ireland"),
-            abroadSig = Some("Y"),
-            adi = Some("ADI999"),
-            agentOwnRef = Some("AGENT999")
+        Ok(
+          Json.toJson(
+            baseOperator("XGM00000001763").copy(
+              tradingName  = Some("Global Bets"),
+              businessName = Some("Global Gaming Inc"),
+              address1     = Some("123 International Way"),
+              address2     = Some("Dublin"),
+              postcode     = Some("D01 ABC"),
+              country      = Some("Ireland"),
+              abroadSig    = Some("Y"),
+              adi          = Some("ADI999"),
+              agentOwnRef  = Some("AGENT999")
+            )
           )
-        ))
+        )
 
-      // ===== SCENARIO 4: Partnership =====
       case "XGM00000001764" =>
-        Ok(Json.toJson(
-          baseOperator("XGM00000001764").copy(
-            businessName = Some("ABC Partnership"),
-            tradingName = Some("Partnership Bets"),
-            businessType = Some(Partnership),
-            address1 = Some("50 King Street"),
-            address2 = Some("Leeds"),
-            postcode = Some("LS1 1AA")
+        Ok(
+          Json.toJson(
+            baseOperator("XGM00000001764").copy(
+              businessName = Some("ABC Partnership"),
+              tradingName  = Some("Partnership Bets"),
+              businessType = Some(Partnership),
+              address1     = Some("50 King Street"),
+              address2     = Some("Leeds"),
+              postcode     = Some("LS1 1AA")
+            )
           )
-        ))
+        )
 
-      // ===== DEFAULT =====
       case reg =>
         Ok(Json.toJson(baseOperator(reg)))
     }
