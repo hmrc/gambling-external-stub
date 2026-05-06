@@ -68,12 +68,190 @@ class GamblingController @Inject() (
     }
   }
 
+  def getBusinessName(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
+
+    mgdRegNumber match {
+
+      case "invalid" =>
+        BadRequest(
+          Json.obj(
+            "code"    -> "INVALID_MGD_REG_NUMBER",
+            "message" -> "mgdRegNumber must be provided"
+          )
+        )
+
+      case "error" =>
+        InternalServerError(
+          Json.obj(
+            "code"    -> "UNEXPECTED_ERROR",
+            "message" -> "Unexpected error occurred"
+          )
+        )
+
+      // Scenario 1 → middle name included
+      case "XGM00000001761" | "GAM0000000001" =>
+        Ok(
+          Json.toJson(
+            BusinessName(
+              mgdRegNumber,
+              solePropTitle     = Some("Mr"),
+              solePropFirstName = Some("Joe"),
+              solePropMidName   = Some("B"),
+              solePropLastName  = Some("Blogs"),
+              businessName      = Some("Joe Blogs Co."),
+              businessType      = Some(1),
+              tradingName       = Some("BlogsBlogs"),
+              systemDate        = Some(LocalDate.of(1991, 1, 1))
+            )
+          )
+        )
+
+      // Scenario 2 → no middle name
+      case "XGM00000001762" | "GAM0000000002" =>
+        Ok(
+          Json.toJson(
+            BusinessName(
+              mgdRegNumber,
+              solePropTitle     = Some("Mrs"),
+              solePropFirstName = Some("Jane"),
+              solePropMidName   = None,
+              solePropLastName  = Some("Doe"),
+              businessName      = Some("Doe Co."),
+              businessType      = Some(1),
+              tradingName       = Some("DoeDoe"),
+              systemDate        = Some(LocalDate.of(1992, 1, 1))
+            )
+          )
+        )
+      // Scenario 2 → unincorporated body
+      case "XGM00000001763" | "GAM0000000003" =>
+        Ok(
+          Json.toJson(
+            BusinessName(
+              mgdRegNumber,
+              solePropTitle     = Some("Mrs"),
+              solePropFirstName = Some("Jane"),
+              solePropMidName   = None,
+              solePropLastName  = Some("Doe"),
+              businessName      = Some("Doe Co."),
+              businessType      = Some(2),
+              tradingName       = Some("DoeDoe"),
+              systemDate        = Some(LocalDate.of(1992, 1, 1))
+            )
+          )
+        )
+
+      // ===== DEFAULT =====
+      case reg =>
+        Ok(
+          Json.toJson(
+            BusinessDetails(
+              mgdRegNumber          = reg,
+              businessType          = Some(BusinessType.CorporateBody),
+              currentlyRegistered   = 0,
+              groupReg              = false,
+              dateOfRegistration    = Some(LocalDate.parse("2021-01-01")),
+              businessPartnerNumber = None,
+              systemDate            = LocalDate.now()
+            )
+          )
+        )
+    }
+  }
+
+  def getBusinessDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
+
+    mgdRegNumber match {
+
+      case "invalid" =>
+        BadRequest(
+          Json.obj(
+            "code"    -> "INVALID_MGD_REG_NUMBER",
+            "message" -> "mgdRegNumber must be provided"
+          )
+        )
+
+      case "error" =>
+        InternalServerError(
+          Json.obj(
+            "code"    -> "UNEXPECTED_ERROR",
+            "message" -> "Unexpected error occurred"
+          )
+        )
+
+      // Scenario 1 → Registered
+      case "XGM00000001761" | "GAM0000000001" =>
+        Ok(
+          Json.toJson(
+            BusinessDetails(
+              mgdRegNumber,
+              businessType          = Some(BusinessType.SoleProprietor),
+              currentlyRegistered   = 1,
+              groupReg              = false,
+              dateOfRegistration    = Some(LocalDate.of(1991, 1, 1)),
+              businessPartnerNumber = Some("bar"),
+              systemDate            = LocalDate.of(1991, 1, 1)
+            )
+          )
+        )
+
+      // Scenario 2 → Not Registered
+      case "XGM00000001762" | "GAM0000000002" =>
+        Ok(
+          Json.toJson(
+            BusinessDetails(
+              mgdRegNumber,
+              businessType          = Some(BusinessType.SoleProprietor),
+              currentlyRegistered   = 0,
+              groupReg              = false,
+              dateOfRegistration    = Some(LocalDate.of(1991, 1, 1)),
+              businessPartnerNumber = Some("bar"),
+              systemDate            = LocalDate.of(1991, 1, 1)
+            )
+          )
+        )
+
+      // ===== SCENARIO 3: Partnership =====
+      case "XGM00000001763" =>
+        Ok(
+          Json.toJson(
+            BusinessDetails(
+              mgdRegNumber          = "XGM00000001763",
+              businessType          = Some(BusinessType.Partnership),
+              currentlyRegistered   = 1,
+              groupReg              = false,
+              dateOfRegistration    = Some(LocalDate.parse("2021-06-20")),
+              businessPartnerNumber = Some("9876543210"),
+              systemDate            = LocalDate.now()
+            )
+          )
+        )
+
+      // ===== DEFAULT =====
+      case reg =>
+        Ok(
+          Json.toJson(
+            BusinessDetails(
+              mgdRegNumber          = reg,
+              businessType          = Some(BusinessType.CorporateBody),
+              currentlyRegistered   = 0,
+              groupReg              = false,
+              dateOfRegistration    = Some(LocalDate.parse("2021-01-01")),
+              businessPartnerNumber = None,
+              systemDate            = LocalDate.now()
+            )
+          )
+        )
+    }
+  }
+
   def getMgdCertificate(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
 
     mgdRegNumber match {
 
       case "invalid" =>
         logger.warn("[Gambling Stub] Invalid MGD reg number (certificate)")
+
         BadRequest(
           Json.obj(
             "code"    -> "INVALID_MGD_REG_NUMBER",
@@ -227,92 +405,6 @@ class GamblingController @Inject() (
               returnPeriodEndDates = Seq(
                 ReturnPeriodEndDate(LocalDate.parse("2026-03-31"))
               )
-            )
-          )
-        )
-    }
-  }
-
-  def getBusinessDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
-
-    mgdRegNumber match {
-
-      case "invalid" =>
-        BadRequest(
-          Json.obj(
-            "code"    -> "INVALID_MGD_REG_NUMBER",
-            "message" -> "mgdRegNumber must be provided"
-          )
-        )
-
-      case "error" =>
-        InternalServerError(
-          Json.obj(
-            "code"    -> "UNEXPECTED_ERROR",
-            "message" -> "Unexpected error occurred"
-          )
-        )
-
-      // ===== SCENARIO 1: Corporate body, group member =====
-      case "XGM00000001761" =>
-        Ok(
-          Json.toJson(
-            BusinessDetails(
-              mgdRegNumber          = "XGM00000001761",
-              businessType          = Some(BusinessType.CorporateBody),
-              currentlyRegistered   = 1,
-              isGroupMember         = true,
-              dateOfRegistration    = Some(LocalDate.parse("2023-01-15")),
-              businessPartnerNumber = Some("1234567890"),
-              systemDate            = LocalDate.now()
-            )
-          )
-        )
-
-      // ===== SCENARIO 2: Sole trader =====
-      case "XGM00000001762" =>
-        Ok(
-          Json.toJson(
-            BusinessDetails(
-              mgdRegNumber          = "XGM00000001762",
-              businessType          = Some(BusinessType.SoleProprietor),
-              currentlyRegistered   = 1,
-              isGroupMember         = false,
-              dateOfRegistration    = Some(LocalDate.parse("2022-10-05")),
-              businessPartnerNumber = None,
-              systemDate            = LocalDate.now()
-            )
-          )
-        )
-
-      // ===== SCENARIO 3: Partnership =====
-      case "XGM00000001763" =>
-        Ok(
-          Json.toJson(
-            BusinessDetails(
-              mgdRegNumber          = "XGM00000001763",
-              businessType          = Some(BusinessType.Partnership),
-              currentlyRegistered   = 1,
-              isGroupMember         = false,
-              dateOfRegistration    = Some(LocalDate.parse("2021-06-20")),
-              businessPartnerNumber = Some("9876543210"),
-              systemDate            = LocalDate.now()
-            )
-          )
-        )
-
-      // ===== DEFAULT =====
-      case reg =>
-        Ok(
-          Json.toJson(
-            BusinessDetails(
-              mgdRegNumber          = reg,
-              businessType          = Some(BusinessType.CorporateBody),
-              currentlyRegistered   = 0,
-              isGroupMember         = false,
-              dateOfRegistration    = Some(LocalDate.parse("2021-01-01")),
-              businessPartnerNumber = None,
-              systemDate            = LocalDate.now()
             )
           )
         )

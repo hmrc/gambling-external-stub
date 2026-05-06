@@ -22,7 +22,8 @@ import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.base.SpecBase
-import uk.gov.hmrc.gamblingexternalstub.models.{MgdCertificate, ReturnPeriodEndDate, ReturnSummary}
+import uk.gov.hmrc.gamblingexternalstub.models.*
+import uk.gov.hmrc.gamblingexternalstub.models.BusinessType.SoleProprietor
 
 import java.time.LocalDate
 
@@ -88,6 +89,123 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
         "message" -> "Unexpected error occurred"
       )
     }
+  }
+
+  "GamblingController#getBusinessName" should {
+
+    "return OK for XGM00000001761" in {
+      val result = controller.getBusinessName("XGM00000001761")(FakeRequest())
+
+      status(result) shouldBe OK
+      contentAsJson(result) shouldBe Json.toJson(
+        BusinessName(
+          "XGM00000001761",
+          Some("Mr"),
+          Some("Joe"),
+          Some("B"),
+          Some("Blogs"),
+          Some("Joe Blogs Co."),
+          Some(1),
+          Some("BlogsBlogs"),
+          Some(LocalDate.of(1991, 1, 1))
+        )
+      )
+    }
+
+    "return OK for XGM00000001762" in {
+      val result = controller.getBusinessName("XGM00000001762")(FakeRequest())
+
+      status(result) shouldBe OK
+      contentAsJson(result) shouldBe Json.toJson(
+        BusinessName(
+          "XGM00000001762",
+          Some("Mrs"),
+          Some("Jane"),
+          None,
+          Some("Doe"),
+          Some("Doe Co."),
+          Some(1),
+          Some("DoeDoe"),
+          Some(LocalDate.of(1992, 1, 1))
+        )
+      )
+    }
+
+    "return BAD_REQUEST for invalid" in {
+      val result = controller.getBusinessName("invalid")(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "INVALID_MGD_REG_NUMBER",
+        "message" -> "mgdRegNumber must be provided"
+      )
+    }
+
+    "return INTERNAL_SERVER_ERROR for error" in {
+      val result = controller.getBusinessName("error")(FakeRequest())
+
+      status(result) shouldBe INTERNAL_SERVER_ERROR
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "UNEXPECTED_ERROR",
+        "message" -> "Unexpected error occurred"
+      )
+    }
+  }
+
+  "GamblingController#getBusinessDetails" should {
+
+    "return OK for XGM00000001761" in {
+      val result = controller.getBusinessDetails("XGM00000001761")(FakeRequest())
+
+      status(result) shouldBe OK
+      contentAsJson(result) shouldBe Json.toJson(
+        BusinessDetails(
+          "XGM00000001761",
+          Some(SoleProprietor),
+          1,
+          false,
+          Some(LocalDate.of(1991, 1, 1)),
+          Some("bar"),
+          LocalDate.of(1991, 1, 1)
+        )
+      )
+    }
+
+    "return sole trader for XGM00000001762" in {
+      val result = controller.getBusinessDetails("XGM00000001762")(FakeRequest())
+
+      status(result)                                   shouldBe OK
+      (contentAsJson(result) \ "businessType").as[Int] shouldBe 1
+      (contentAsJson(result) \ "groupReg").as[Boolean] shouldBe false
+    }
+
+    "return BAD_REQUEST for invalid" in {
+      val result = controller.getBusinessDetails("invalid")(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "INVALID_MGD_REG_NUMBER",
+        "message" -> "mgdRegNumber must be provided"
+      )
+    }
+
+    "return INTERNAL_SERVER_ERROR for error" in {
+      val result = controller.getBusinessDetails("error")(FakeRequest())
+
+      status(result) shouldBe INTERNAL_SERVER_ERROR
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "UNEXPECTED_ERROR",
+        "message" -> "Unexpected error occurred"
+      )
+    }
+
+    "return default response" in {
+      val result = controller.getBusinessDetails("GAM999")(FakeRequest())
+
+      status(result)                                          shouldBe OK
+      (contentAsJson(result) \ "currentlyRegistered").as[Int] shouldBe 0
+    }
+
   }
 
   "GamblingController#getMgdCertificate" should {
@@ -202,52 +320,6 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
         "code"    -> "UNEXPECTED_ERROR",
         "message" -> "Unexpected error occurred"
       )
-    }
-  }
-
-  "GamblingController#getBusinessDetails" should {
-
-    "return corporate group member for XGM00000001761" in {
-      val result = controller.getBusinessDetails("XGM00000001761")(FakeRequest())
-
-      status(result)                                        shouldBe OK
-      (contentAsJson(result) \ "mgdRegNumber").as[String]   shouldBe "XGM00000001761"
-      (contentAsJson(result) \ "businessType").as[Int]      shouldBe 2
-      (contentAsJson(result) \ "isGroupMember").as[Boolean] shouldBe true
-    }
-
-    "return sole trader for XGM00000001762" in {
-      val result = controller.getBusinessDetails("XGM00000001762")(FakeRequest())
-
-      status(result)                                        shouldBe OK
-      (contentAsJson(result) \ "businessType").as[Int]      shouldBe 1
-      (contentAsJson(result) \ "isGroupMember").as[Boolean] shouldBe false
-    }
-
-    "return partnership for XGM00000001763" in {
-      val result = controller.getBusinessDetails("XGM00000001763")(FakeRequest())
-
-      status(result)                                   shouldBe OK
-      (contentAsJson(result) \ "businessType").as[Int] shouldBe 4
-    }
-
-    "return default response" in {
-      val result = controller.getBusinessDetails("GAM999")(FakeRequest())
-
-      status(result)                                          shouldBe OK
-      (contentAsJson(result) \ "currentlyRegistered").as[Int] shouldBe 0
-    }
-
-    "return BAD_REQUEST for invalid" in {
-      val result = controller.getBusinessDetails("invalid")(FakeRequest())
-
-      status(result) shouldBe BAD_REQUEST
-    }
-
-    "return INTERNAL_SERVER_ERROR for error" in {
-      val result = controller.getBusinessDetails("error")(FakeRequest())
-
-      status(result) shouldBe INTERNAL_SERVER_ERROR
     }
   }
 
