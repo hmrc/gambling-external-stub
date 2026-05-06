@@ -31,13 +31,13 @@ class BusinessNameSpec extends AnyWordSpec with Matchers {
       val dateBusinessName = LocalDate.of(1991, 4, 7)
       val model = BusinessName(
         mgdRegNumber = "GAM0000000001",
-        solePropTitle = "Mr",
-        solePropFirstName = "Foo",
+        solePropTitle = Some("Mr"),
+        solePropFirstName = Some("Foo"),
         solePropMidName = Some("B"),
-        solePropLastName = "Bar",
-        businessName = "Foo Bar Co",
-        businessType = 1,
-        tradingName = "FooBar",
+        solePropLastName = Some("Bar"),
+        businessName = Some("Foo Bar Co"),
+        businessType = Some(1),
+        tradingName = Some("FooBar"),
         systemDate = Some(dateBusinessName))
 
       val json = Json.toJson(model)
@@ -74,13 +74,13 @@ class BusinessNameSpec extends AnyWordSpec with Matchers {
 
         result shouldBe BusinessName(
           mgdRegNumber = "GAM0000000002",
-          solePropTitle = "abc",
-          solePropFirstName = "abc",
+          solePropTitle = Some("abc"),
+          solePropFirstName = Some("abc"),
           solePropMidName = Some("abc"),
-          solePropLastName = "abc",
-          businessName = "abc",
-          businessType = 1,
-          tradingName = "abc",
+          solePropLastName = Some("abc"),
+          businessName = Some("abc"),
+          businessType = Some(1),
+          tradingName = Some("abc"),
           systemDate = Some(dateBusinessName)
         )
 
