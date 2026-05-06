@@ -33,7 +33,7 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
   "GamblingController#getReturnSummary" should {
 
-    "return OK for XGM00000001761" in {
+    "return returnsOverDue for XGM00000001761" in {
       val result = controller.getReturnSummary("XGM00000001761")(FakeRequest())
 
       status(result) shouldBe OK
@@ -42,12 +42,21 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       )
     }
 
-    "return OK for XGM00000001762" in {
+    "return returnsDue for XGM00000001762" in {
       val result = controller.getReturnSummary("XGM00000001762")(FakeRequest())
 
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
-        ReturnSummary("XGM00000001762", 0, 0)
+        ReturnSummary("XGM00000001762", 1, 0)
+      )
+    }
+
+    "return both returnsDue and returnsOverDue for XGM00000001763" in {
+      val result = controller.getReturnSummary("XGM00000001763")(FakeRequest())
+
+      status(result) shouldBe OK
+      contentAsJson(result) shouldBe Json.toJson(
+        ReturnSummary("XGM00000001763", 1, 2)
       )
     }
 
@@ -256,4 +265,106 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       )
     }
   }
+
+  "GamblingController#getBusinessDetails" should {
+
+    "return corporate group member for XGM00000001761" in {
+      val result = controller.getBusinessDetails("XGM00000001761")(FakeRequest())
+
+      status(result)                                        shouldBe OK
+      (contentAsJson(result) \ "mgdRegNumber").as[String]   shouldBe "XGM00000001761"
+      (contentAsJson(result) \ "businessType").as[Int]      shouldBe 2
+      (contentAsJson(result) \ "isGroupMember").as[Boolean] shouldBe true
+    }
+
+    "return sole trader for XGM00000001762" in {
+      val result = controller.getBusinessDetails("XGM00000001762")(FakeRequest())
+
+      status(result)                                        shouldBe OK
+      (contentAsJson(result) \ "businessType").as[Int]      shouldBe 1
+      (contentAsJson(result) \ "isGroupMember").as[Boolean] shouldBe false
+    }
+
+    "return partnership for XGM00000001763" in {
+      val result = controller.getBusinessDetails("XGM00000001763")(FakeRequest())
+
+      status(result)                                   shouldBe OK
+      (contentAsJson(result) \ "businessType").as[Int] shouldBe 4
+    }
+
+    "return default response" in {
+      val result = controller.getBusinessDetails("GAM999")(FakeRequest())
+
+      status(result)                                          shouldBe OK
+      (contentAsJson(result) \ "currentlyRegistered").as[Int] shouldBe 0
+    }
+
+    "return BAD_REQUEST for invalid" in {
+      val result = controller.getBusinessDetails("invalid")(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+    }
+
+    "return INTERNAL_SERVER_ERROR for error" in {
+      val result = controller.getBusinessDetails("error")(FakeRequest())
+
+      status(result) shouldBe INTERNAL_SERVER_ERROR
+    }
+  }
+
+  "GamblingController#getOperatorDetails" should {
+
+    "return corporate operator for XGM00000001761" in {
+      val result = controller.getOperatorDetails("XGM00000001761")(FakeRequest())
+
+      status(result)                                      shouldBe OK
+      (contentAsJson(result) \ "businessName").as[String] shouldBe "Acme Gaming Ltd"
+      (contentAsJson(result) \ "tradingName").as[String]  shouldBe "Acme Bets"
+      (contentAsJson(result) \ "businessType").as[Int]    shouldBe 2
+    }
+
+    "return sole proprietor for XGM00000001762" in {
+      val result = controller.getOperatorDetails("XGM00000001762")(FakeRequest())
+
+      status(result)                                      shouldBe OK
+      (contentAsJson(result) \ "solePropName").as[String] shouldBe "Jane Doe"
+      (contentAsJson(result) \ "businessType").as[Int]    shouldBe 1
+    }
+
+    "return overseas operator for XGM00000001763" in {
+      val result = controller.getOperatorDetails("XGM00000001763")(FakeRequest())
+
+      status(result)                                   shouldBe OK
+      (contentAsJson(result) \ "country").as[String]   shouldBe "Ireland"
+      (contentAsJson(result) \ "abroadSig").as[String] shouldBe "Y"
+    }
+
+    "return partnership operator for XGM00000001764" in {
+      val result = controller.getOperatorDetails("XGM00000001764")(FakeRequest())
+
+      status(result)                                      shouldBe OK
+      (contentAsJson(result) \ "businessType").as[Int]    shouldBe 4
+      (contentAsJson(result) \ "businessName").as[String] shouldBe "ABC Partnership"
+    }
+
+    "return default operator" in {
+      val result = controller.getOperatorDetails("GAM999")(FakeRequest())
+
+      status(result)                                      shouldBe OK
+      (contentAsJson(result) \ "businessName").as[String] shouldBe "Business for GAM999"
+    }
+
+    "return BAD_REQUEST for invalid" in {
+      val result = controller.getOperatorDetails("invalid")(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+    }
+
+    "return INTERNAL_SERVER_ERROR for error" in {
+      val result = controller.getOperatorDetails("error")(FakeRequest())
+
+      status(result) shouldBe INTERNAL_SERVER_ERROR
+    }
+  }
+
 }

@@ -54,9 +54,13 @@ class GamblingController @Inject() (
       case "XGM00000001761" | "GAM0000000001" =>
         Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 0, returnsOverdue = 1)))
 
-      // Scenario 2 → nothing due
-      case "XGM00000001762" | "GAM0000000002" =>
-        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 0, returnsOverdue = 0)))
+      // Scenario 2 → returns due
+      case "XGM00000001762" | "GAM0000000010" =>
+        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 1, returnsOverdue = 0)))
+
+      // Scenario 3 → both returns due and overdue exists
+      case "XGM00000001763" | "GAM0000000012" =>
+        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 1, returnsOverdue = 2)))
 
       // default fallback
       case reg =>
@@ -291,4 +295,212 @@ class GamblingController @Inject() (
         )
     }
   }
+
+  def getBusinessDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
+
+    mgdRegNumber match {
+
+      case "invalid" =>
+        BadRequest(
+          Json.obj(
+            "code"    -> "INVALID_MGD_REG_NUMBER",
+            "message" -> "mgdRegNumber must be provided"
+          )
+        )
+
+      case "error" =>
+        InternalServerError(
+          Json.obj(
+            "code"    -> "UNEXPECTED_ERROR",
+            "message" -> "Unexpected error occurred"
+          )
+        )
+
+      // ===== SCENARIO 1: Corporate body, group member =====
+      case "XGM00000001761" =>
+        Ok(
+          Json.toJson(
+            BusinessDetails(
+              mgdRegNumber          = "XGM00000001761",
+              businessType          = Some(BusinessType.CorporateBody),
+              currentlyRegistered   = 1,
+              isGroupMember         = true,
+              dateOfRegistration    = Some(LocalDate.parse("2023-01-15")),
+              businessPartnerNumber = Some("1234567890"),
+              systemDate            = LocalDate.now()
+            )
+          )
+        )
+
+      // ===== SCENARIO 2: Sole trader =====
+      case "XGM00000001762" =>
+        Ok(
+          Json.toJson(
+            BusinessDetails(
+              mgdRegNumber          = "XGM00000001762",
+              businessType          = Some(BusinessType.SoleProprietor),
+              currentlyRegistered   = 1,
+              isGroupMember         = false,
+              dateOfRegistration    = Some(LocalDate.parse("2022-10-05")),
+              businessPartnerNumber = None,
+              systemDate            = LocalDate.now()
+            )
+          )
+        )
+
+      // ===== SCENARIO 3: Partnership =====
+      case "XGM00000001763" =>
+        Ok(
+          Json.toJson(
+            BusinessDetails(
+              mgdRegNumber          = "XGM00000001763",
+              businessType          = Some(BusinessType.Partnership),
+              currentlyRegistered   = 1,
+              isGroupMember         = false,
+              dateOfRegistration    = Some(LocalDate.parse("2021-06-20")),
+              businessPartnerNumber = Some("9876543210"),
+              systemDate            = LocalDate.now()
+            )
+          )
+        )
+
+      // ===== DEFAULT =====
+      case reg =>
+        Ok(
+          Json.toJson(
+            BusinessDetails(
+              mgdRegNumber          = reg,
+              businessType          = Some(BusinessType.CorporateBody),
+              currentlyRegistered   = 0,
+              isGroupMember         = false,
+              dateOfRegistration    = Some(LocalDate.parse("2021-01-01")),
+              businessPartnerNumber = None,
+              systemDate            = LocalDate.now()
+            )
+          )
+        )
+    }
+  }
+
+  private val fixedDate = LocalDate.parse("2026-01-01")
+
+  private val SoleProprietor = 1
+  private val CorporateBody = 2
+  private val Partnership = 4
+
+  private def baseOperator(reg: String) =
+    OperatorDetails(
+      mgdRegNumber       = reg,
+      solePropName       = None,
+      solePropTitle      = None,
+      solePropFirstName  = None,
+      solePropMiddleName = None,
+      solePropLastName   = None,
+      tradingName        = None,
+      businessName       = Some(s"Business for $reg"),
+      businessType       = Some(CorporateBody),
+      adi                = None,
+      address1           = Some("Unknown Address Line 1"),
+      address2           = Some("Unknown Address Line 2"),
+      address3           = None,
+      address4           = None,
+      postcode           = Some("AA1 1AA"),
+      country            = Some("United Kingdom"),
+      abroadSig          = Some("N"),
+      agentOwnRef        = None,
+      systemDate         = Some(fixedDate)
+    )
+
+  private val invalidResponse =
+    BadRequest(
+      Json.obj(
+        "code"    -> "INVALID_MGD_REG_NUMBER",
+        "message" -> "mgdRegNumber must be provided"
+      )
+    )
+
+  private val errorResponse =
+    InternalServerError(
+      Json.obj(
+        "code"    -> "UNEXPECTED_ERROR",
+        "message" -> "Unexpected error occurred"
+      )
+    )
+
+  def getOperatorDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
+
+    mgdRegNumber match {
+
+      case "invalid" => invalidResponse
+
+      case "error" => errorResponse
+
+      case "XGM00000001761" =>
+        Ok(
+          Json.toJson(
+            baseOperator("XGM00000001761").copy(
+              tradingName  = Some("Acme Bets"),
+              businessName = Some("Acme Gaming Ltd"),
+              adi          = Some("ADI123"),
+              address1     = Some("1 High Street"),
+              address2     = Some("Newcastle"),
+              postcode     = Some("NE1 1AA"),
+              agentOwnRef  = Some("AGENT001")
+            )
+          )
+        )
+
+      case "XGM00000001762" =>
+        Ok(
+          Json.toJson(
+            baseOperator("XGM00000001762").copy(
+              solePropName      = Some("Jane Doe"),
+              solePropTitle     = Some("Ms"),
+              solePropFirstName = Some("Jane"),
+              solePropLastName  = Some("Doe"),
+              tradingName       = None,
+              businessName      = Some("Jane's Bets"),
+              businessType      = Some(SoleProprietor),
+              address1          = Some("10 Market Road"),
+              address2          = Some("Gateshead"),
+              postcode          = Some("NE8 1ZZ")
+            )
+          )
+        )
+      case "XGM00000001763" =>
+        Ok(
+          Json.toJson(
+            baseOperator("XGM00000001763").copy(
+              tradingName  = Some("Global Bets"),
+              businessName = Some("Global Gaming Inc"),
+              address1     = Some("123 International Way"),
+              address2     = Some("Dublin"),
+              postcode     = Some("D01 ABC"),
+              country      = Some("Ireland"),
+              abroadSig    = Some("Y"),
+              adi          = Some("ADI999"),
+              agentOwnRef  = Some("AGENT999")
+            )
+          )
+        )
+
+      case "XGM00000001764" =>
+        Ok(
+          Json.toJson(
+            baseOperator("XGM00000001764").copy(
+              businessName = Some("ABC Partnership"),
+              tradingName  = Some("Partnership Bets"),
+              businessType = Some(Partnership),
+              address1     = Some("50 King Street"),
+              address2     = Some("Leeds"),
+              postcode     = Some("LS1 1AA")
+            )
+          )
+        )
+
+      case reg =>
+        Ok(Json.toJson(baseOperator(reg)))
+    }
+  }
+
 }
