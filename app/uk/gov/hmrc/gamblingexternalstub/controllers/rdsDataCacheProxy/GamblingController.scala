@@ -149,7 +149,7 @@ class GamblingController @Inject() (
               mgdRegNumber          = reg,
               businessType          = Some(BusinessType.CorporateBody),
               currentlyRegistered   = 0,
-              isGroupMember         = false,
+              groupReg         = false,
               dateOfRegistration    = Some(LocalDate.parse("2021-01-01")),
               businessPartnerNumber = None,
               systemDate            = LocalDate.now()
@@ -187,7 +187,7 @@ class GamblingController @Inject() (
               mgdRegNumber,
               businessType          = Some(BusinessType.SoleProprietor),
               currentlyRegistered   = 1,
-              isGroupMember         = false,
+              groupReg         = false,
               dateOfRegistration    = Some(LocalDate.of(1991, 1, 1)),
               businessPartnerNumber = Some("bar"),
               systemDate            = LocalDate.of(1991, 1, 1)
@@ -203,7 +203,7 @@ class GamblingController @Inject() (
               mgdRegNumber,
               businessType          = Some(BusinessType.SoleProprietor),
               currentlyRegistered   = 0,
-              isGroupMember         = false,
+              groupReg         = false,
               dateOfRegistration    = Some(LocalDate.of(1991, 1, 1)),
               businessPartnerNumber = Some("bar"),
               systemDate            = LocalDate.of(1991, 1, 1)
@@ -219,7 +219,7 @@ class GamblingController @Inject() (
               mgdRegNumber          = "XGM00000001763",
               businessType          = Some(BusinessType.Partnership),
               currentlyRegistered   = 1,
-              isGroupMember         = false,
+              groupReg         = false,
               dateOfRegistration    = Some(LocalDate.parse("2021-06-20")),
               businessPartnerNumber = Some("9876543210"),
               systemDate            = LocalDate.now()
@@ -235,7 +235,7 @@ class GamblingController @Inject() (
               mgdRegNumber          = reg,
               businessType          = Some(BusinessType.CorporateBody),
               currentlyRegistered   = 0,
-              isGroupMember         = false,
+              groupReg         = false,
               dateOfRegistration    = Some(LocalDate.parse("2021-01-01")),
               businessPartnerNumber = None,
               systemDate            = LocalDate.now()

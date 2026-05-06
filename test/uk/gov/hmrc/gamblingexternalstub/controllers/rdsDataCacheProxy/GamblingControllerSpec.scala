@@ -174,9 +174,9 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
     "return sole trader for XGM00000001762" in {
       val result = controller.getBusinessDetails("XGM00000001762")(FakeRequest())
 
-      status(result)                                        shouldBe OK
-      (contentAsJson(result) \ "businessType").as[Int]      shouldBe 1
-      (contentAsJson(result) \ "isGroupMember").as[Boolean] shouldBe false
+      status(result)                                   shouldBe OK
+      (contentAsJson(result) \ "businessType").as[Int] shouldBe 1
+      (contentAsJson(result) \ "groupReg").as[Boolean] shouldBe false
     }
 
     "return BAD_REQUEST for invalid" in {

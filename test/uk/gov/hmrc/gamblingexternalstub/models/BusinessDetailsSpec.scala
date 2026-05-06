@@ -33,7 +33,7 @@ class BusinessDetailsSpec extends AnyWordSpec with Matchers {
         mgdRegNumber          = "GAM0000000001",
         businessType          = Some(SoleProprietor),
         currentlyRegistered   = 1,
-        isGroupMember         = false,
+        groupReg              = false,
         dateOfRegistration    = Some(LocalDate.of(1991, 4, 7)),
         businessPartnerNumber = Some("bar"),
         systemDate            = LocalDate.of(1991, 4, 7)
@@ -45,7 +45,7 @@ class BusinessDetailsSpec extends AnyWordSpec with Matchers {
         "mgdRegNumber"          -> "GAM0000000001",
         "businessType"          -> 1,
         "currentlyRegistered"   -> 1,
-        "isGroupMember"         -> false,
+        "groupReg"              -> false,
         "dateOfRegistration"    -> dateBusinessDetails,
         "businessPartnerNumber" -> "bar",
         "systemDate"            -> dateBusinessDetails
@@ -58,7 +58,7 @@ class BusinessDetailsSpec extends AnyWordSpec with Matchers {
         "mgdRegNumber"          -> "GAM0000000001",
         "businessType"          -> 1,
         "currentlyRegistered"   -> 0,
-        "isGroupMember"         -> false,
+        "groupReg"              -> false,
         "dateOfRegistration"    -> dateBusinessDetails,
         "businessPartnerNumber" -> "barbar",
         "systemDate"            -> dateBusinessDetails
@@ -70,7 +70,7 @@ class BusinessDetailsSpec extends AnyWordSpec with Matchers {
         mgdRegNumber          = "GAM0000000001",
         businessType          = Some(SoleProprietor),
         currentlyRegistered   = 0,
-        isGroupMember         = false,
+        groupReg              = false,
         dateOfRegistration    = Some(LocalDate.of(1991, 4, 7)),
         businessPartnerNumber = Some("barbar"),
         systemDate            = LocalDate.of(1991, 4, 7)
