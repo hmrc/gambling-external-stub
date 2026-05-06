@@ -123,8 +123,9 @@ class GamblingController @Inject() (
             )
           )
         )
-      // Scenario 2 → unincorporated body
-      case "XGM00000001763" | "GAM0000000003" =>
+
+      // ===== DEFAULT =====
+      case reg =>
         Ok(
           Json.toJson(
             BusinessName(
@@ -137,22 +138,6 @@ class GamblingController @Inject() (
               businessType      = Some(2),
               tradingName       = Some("DoeDoe"),
               systemDate        = Some(LocalDate.of(1992, 1, 1))
-            )
-          )
-        )
-
-      // ===== DEFAULT =====
-      case reg =>
-        Ok(
-          Json.toJson(
-            BusinessDetails(
-              mgdRegNumber          = reg,
-              businessType          = Some(BusinessType.CorporateBody),
-              currentlyRegistered   = 0,
-              groupReg              = false,
-              dateOfRegistration    = Some(LocalDate.parse("2021-01-01")),
-              businessPartnerNumber = None,
-              systemDate            = LocalDate.now()
             )
           )
         )
