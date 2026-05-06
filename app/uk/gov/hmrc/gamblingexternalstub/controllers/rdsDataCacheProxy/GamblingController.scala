@@ -19,7 +19,7 @@ package uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy
 import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import uk.gov.hmrc.gamblingexternalstub.models.{BusinessType, *}
+import uk.gov.hmrc.gamblingexternalstub.models.*
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import java.time.LocalDate
@@ -90,44 +90,56 @@ class GamblingController @Inject() (
 
       // Scenario 1 → middle name included
       case "XGM00000001761" | "GAM0000000001" =>
-        Ok(Json.toJson(BusinessName(
-          mgdRegNumber,
-          solePropTitle = Some("Mr"),
-          solePropFirstName = Some("Joe"),
-          solePropMidName = Some("B"),
-          solePropLastName = Some("Blogs"),
-          businessName = Some("Joe Blogs Co."),
-          businessType = Some(1),
-          tradingName = Some("BlogsBlogs"),
-          systemDate = Some(LocalDate.of(1991, 1,1 ))
-        )))
+        Ok(
+          Json.toJson(
+            BusinessName(
+              mgdRegNumber,
+              solePropTitle     = Some("Mr"),
+              solePropFirstName = Some("Joe"),
+              solePropMidName   = Some("B"),
+              solePropLastName  = Some("Blogs"),
+              businessName      = Some("Joe Blogs Co."),
+              businessType      = Some(1),
+              tradingName       = Some("BlogsBlogs"),
+              systemDate        = Some(LocalDate.of(1991, 1, 1))
+            )
+          )
+        )
 
       // Scenario 2 → no middle name
       case "XGM00000001762" | "GAM0000000002" =>
-        Ok(Json.toJson(BusinessName(
-          mgdRegNumber,
-          solePropTitle = Some("Mrs"),
-          solePropFirstName = Some("Jane"),
-          solePropMidName = None,
-          solePropLastName = Some("Doe"),
-          businessName = Some("Doe Co."),
-          businessType = Some(1),
-          tradingName = Some("DoeDoe"),
-          systemDate = Some(LocalDate.of(1992, 1,1 ))
-        )))
+        Ok(
+          Json.toJson(
+            BusinessName(
+              mgdRegNumber,
+              solePropTitle     = Some("Mrs"),
+              solePropFirstName = Some("Jane"),
+              solePropMidName   = None,
+              solePropLastName  = Some("Doe"),
+              businessName      = Some("Doe Co."),
+              businessType      = Some(1),
+              tradingName       = Some("DoeDoe"),
+              systemDate        = Some(LocalDate.of(1992, 1, 1))
+            )
+          )
+        )
       // Scenario 2 → unincorporated body
       case "XGM00000001763" | "GAM0000000003" =>
-        Ok(Json.toJson(BusinessName(
-          mgdRegNumber,
-          solePropTitle = Some("Mrs"),
-          solePropFirstName = Some("Jane"),
-          solePropMidName = None,
-          solePropLastName = Some("Doe"),
-          businessName = Some("Doe Co."),
-          businessType = Some(2),
-          tradingName = Some("DoeDoe"),
-          systemDate = Some(LocalDate.of(1992, 1,1 ))
-        )))
+        Ok(
+          Json.toJson(
+            BusinessName(
+              mgdRegNumber,
+              solePropTitle     = Some("Mrs"),
+              solePropFirstName = Some("Jane"),
+              solePropMidName   = None,
+              solePropLastName  = Some("Doe"),
+              businessName      = Some("Doe Co."),
+              businessType      = Some(2),
+              tradingName       = Some("DoeDoe"),
+              systemDate        = Some(LocalDate.of(1992, 1, 1))
+            )
+          )
+        )
 
       // ===== DEFAULT =====
       case reg =>
@@ -169,13 +181,35 @@ class GamblingController @Inject() (
 
       // Scenario 1 → Registered
       case "XGM00000001761" | "GAM0000000001" =>
-        Ok(Json.toJson(BusinessDetails(mgdRegNumber, businessType = Some(BusinessType.SoleProprietor), currentlyRegistered = 1, isGroupMember = false, dateOfRegistration = Some(LocalDate.of(1991, 1,1 )), businessPartnerNumber = Some("bar"), systemDate = LocalDate.of(1991, 1,1 )
-        )))
+        Ok(
+          Json.toJson(
+            BusinessDetails(
+              mgdRegNumber,
+              businessType          = Some(BusinessType.SoleProprietor),
+              currentlyRegistered   = 1,
+              isGroupMember         = false,
+              dateOfRegistration    = Some(LocalDate.of(1991, 1, 1)),
+              businessPartnerNumber = Some("bar"),
+              systemDate            = LocalDate.of(1991, 1, 1)
+            )
+          )
+        )
 
       // Scenario 2 → Not Registered
       case "XGM00000001762" | "GAM0000000002" =>
-        Ok(Json.toJson(BusinessDetails(mgdRegNumber, businessType = Some(BusinessType.SoleProprietor), currentlyRegistered = 0, isGroupMember = false, dateOfRegistration = Some(LocalDate.of(1991, 1,1 )), businessPartnerNumber = Some("bar"), systemDate = LocalDate.of(1991, 1,1 )
-        )))
+        Ok(
+          Json.toJson(
+            BusinessDetails(
+              mgdRegNumber,
+              businessType          = Some(BusinessType.SoleProprietor),
+              currentlyRegistered   = 0,
+              isGroupMember         = false,
+              dateOfRegistration    = Some(LocalDate.of(1991, 1, 1)),
+              businessPartnerNumber = Some("bar"),
+              systemDate            = LocalDate.of(1991, 1, 1)
+            )
+          )
+        )
 
       // ===== SCENARIO 3: Partnership =====
       case "XGM00000001763" =>

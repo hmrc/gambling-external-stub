@@ -22,8 +22,8 @@ import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.base.SpecBase
+import uk.gov.hmrc.gamblingexternalstub.models.*
 import uk.gov.hmrc.gamblingexternalstub.models.BusinessType.SoleProprietor
-import uk.gov.hmrc.gamblingexternalstub.models.{BusinessDetails, BusinessName, MgdCertificate, ReturnPeriodEndDate, ReturnSummary}
 
 import java.time.LocalDate
 
@@ -107,8 +107,9 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
           Some("Joe Blogs Co."),
           Some(1),
           Some("BlogsBlogs"),
-          Some(LocalDate.of(1991,1,1))
-      ))
+          Some(LocalDate.of(1991, 1, 1))
+        )
+      )
     }
 
     "return OK for XGM00000001762" in {
@@ -125,11 +126,10 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
           Some("Doe Co."),
           Some(1),
           Some("DoeDoe"),
-          Some(LocalDate.of(1992,1,1)
+          Some(LocalDate.of(1992, 1, 1))
         )
-      ))
+      )
     }
-
 
     "return BAD_REQUEST for invalid" in {
       val result = controller.getBusinessName("invalid")(FakeRequest())
@@ -164,17 +164,18 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
           Some(SoleProprietor),
           1,
           false,
-          Some(LocalDate.of(1991,1,1)),
+          Some(LocalDate.of(1991, 1, 1)),
           Some("bar"),
-          LocalDate.of(1991,1,1)
-      ))
+          LocalDate.of(1991, 1, 1)
+        )
+      )
     }
 
     "return sole trader for XGM00000001762" in {
       val result = controller.getBusinessDetails("XGM00000001762")(FakeRequest())
 
-      status(result) shouldBe OK
-      (contentAsJson(result) \ "businessType").as[Int] shouldBe 1
+      status(result)                                        shouldBe OK
+      (contentAsJson(result) \ "businessType").as[Int]      shouldBe 1
       (contentAsJson(result) \ "isGroupMember").as[Boolean] shouldBe false
     }
 
@@ -201,7 +202,7 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
     "return default response" in {
       val result = controller.getBusinessDetails("GAM999")(FakeRequest())
 
-      status(result) shouldBe OK
+      status(result)                                          shouldBe OK
       (contentAsJson(result) \ "currentlyRegistered").as[Int] shouldBe 0
     }
 

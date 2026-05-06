@@ -29,43 +29,53 @@ class BusinessDetailsSpec extends AnyWordSpec with Matchers {
 
     "serialize to JSON when defined" in {
       val dateBusinessDetails = LocalDate.of(1991, 4, 7)
-      val model = BusinessDetails(mgdRegNumber = "GAM0000000001",
-        businessType = Some(SoleProprietor),
-        currentlyRegistered = 1,
-        isGroupMember = false,
-        dateOfRegistration = Some(LocalDate.of(1991, 4, 7)),
+      val model = BusinessDetails(
+        mgdRegNumber          = "GAM0000000001",
+        businessType          = Some(SoleProprietor),
+        currentlyRegistered   = 1,
+        isGroupMember         = false,
+        dateOfRegistration    = Some(LocalDate.of(1991, 4, 7)),
         businessPartnerNumber = Some("bar"),
-        systemDate = LocalDate.of(1991, 4, 7))
+        systemDate            = LocalDate.of(1991, 4, 7)
+      )
 
       val json = Json.toJson(model)
 
       json shouldBe Json.obj(
-        "mgdRegNumber" -> "GAM0000000001",
-        "businessType" -> 1,
-        "currentlyRegistered" -> 1,
-        "isGroupMember" -> false,
-        "dateOfRegistration" -> dateBusinessDetails,
+        "mgdRegNumber"          -> "GAM0000000001",
+        "businessType"          -> 1,
+        "currentlyRegistered"   -> 1,
+        "isGroupMember"         -> false,
+        "dateOfRegistration"    -> dateBusinessDetails,
         "businessPartnerNumber" -> "bar",
-        "systemDate" -> dateBusinessDetails
+        "systemDate"            -> dateBusinessDetails
       )
     }
 
     "deserialize JSON" in {
-        val dateBusinessDetails = LocalDate.of(1991, 4, 7)
-        val json = Json.obj(
-          "mgdRegNumber" -> "GAM0000000001",
-          "businessType" -> 1,
-          "currentlyRegistered" -> 0,
-          "isGroupMember" -> false,
-          "dateOfRegistration" -> dateBusinessDetails,
-          "businessPartnerNumber" -> "barbar",
-          "systemDate" -> dateBusinessDetails
-        )
+      val dateBusinessDetails = LocalDate.of(1991, 4, 7)
+      val json = Json.obj(
+        "mgdRegNumber"          -> "GAM0000000001",
+        "businessType"          -> 1,
+        "currentlyRegistered"   -> 0,
+        "isGroupMember"         -> false,
+        "dateOfRegistration"    -> dateBusinessDetails,
+        "businessPartnerNumber" -> "barbar",
+        "systemDate"            -> dateBusinessDetails
+      )
 
-        val result = json.as[BusinessDetails]
+      val result = json.as[BusinessDetails]
 
-        result shouldBe BusinessDetails(mgdRegNumber = "GAM0000000001", businessType = Some(SoleProprietor), currentlyRegistered = 0, isGroupMember = false, dateOfRegistration = Some(LocalDate.of(1991, 4, 7)), businessPartnerNumber = Some("barbar"), systemDate = LocalDate.of(1991, 4, 7))
+      result shouldBe BusinessDetails(
+        mgdRegNumber          = "GAM0000000001",
+        businessType          = Some(SoleProprietor),
+        currentlyRegistered   = 0,
+        isGroupMember         = false,
+        dateOfRegistration    = Some(LocalDate.of(1991, 4, 7)),
+        businessPartnerNumber = Some("barbar"),
+        systemDate            = LocalDate.of(1991, 4, 7)
+      )
 
-      }
+    }
   }
 }
