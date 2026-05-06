@@ -111,6 +111,19 @@ class GamblingController @Inject() (
           tradingName = "DoeDoe",
           systemDate = Some(LocalDate.of(1992, 1,1 ))
         )))
+      // Scenario 2 → unincorporated body
+      case "XGM00000001763" | "GAM0000000003" =>
+        Ok(Json.toJson(BusinessName(
+          mgdRegNumber,
+          solePropTitle = "Mrs",
+          solePropFirstName = "Jane",
+          solePropMidName = None,
+          solePropLastName = "Doe",
+          businessName = "Doe Co.",
+          businessType = 2,
+          tradingName = "DoeDoe",
+          systemDate = Some(LocalDate.of(1992, 1,1 ))
+        )))
     }
   }
 
