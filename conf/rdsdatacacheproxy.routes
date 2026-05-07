@@ -9,3 +9,5 @@ GET  /gambling/mgd-certificate/:mgdRegNumber     uk.gov.hmrc.gamblingexternalstu
 GET  /gambling/business-details/:mgdRegNumber     uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getBusinessDetails(mgdRegNumber: String)
 
 GET  /gambling/operator-details/:mgdRegNumber     uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getOperatorDetails(mgdRegNumber: String)
+
+GET  /gambling/returns-submitted/:regime/:regNumber  uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingReturnsController.getReturnsSubmitted(regime: String, regNumber: String, pageNo: Int ?=1, pageSize: Int ?=10)

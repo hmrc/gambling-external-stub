@@ -2,7 +2,21 @@
 
 The gambling-external-stub provides stubs for downstream services used by gambling-related backend services. It is used to simulate external dependencies for local development and integration testing.
 
-This module includes a stub for the RDS-Cache-repository service used by downstream data cache proxy integrations.
+This module includes a stub for the rds-datacache-proxy service used by downstream data cache proxy integrations.
+
+---
+
+## How to use
+
+The real `rds-datacache-proxy` service runs on port `6992`. This stub runs on port `10405` and provides the same API surface with deterministic, scenario-driven responses.
+
+To point the [gambling](https://github.com/hmrc/gambling) backend at the stub, override the `rds-datacache-proxy` base URL in `application.conf`:
+
+```
+microservice.services.rds-datacache-proxy.port = 10405
+```
+
+This allows you to exercise various edge cases and error responses (400, 401, 404, 500) without depending on the real downstream service.
 
 ---
 
@@ -11,7 +25,7 @@ This module includes a stub for the RDS-Cache-repository service used by downstr
 Service Manager:
 
 ```
-sm2 --start GAMBLING_ALL
+sm2 --start DASS_GAMBLING_ALL
 ```
 
 To start the server locally:
@@ -339,6 +353,16 @@ Response:
 }
 ```
 
+
+---
+
+### 3. Returns Submitted
+
+`GET /gambling/returns-submitted/{regime}/{regNumber}`
+
+See [docs/returns-submitted.md](docs/returns-submitted.md) for full details including regime validation, reg number encoding convention, all response scenarios, and example curl commands.
+
+---
 
 ## License
 
