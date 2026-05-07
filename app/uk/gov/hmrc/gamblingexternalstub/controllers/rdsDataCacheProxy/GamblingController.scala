@@ -229,7 +229,6 @@ class GamblingController @Inject() (
         )
     }
   }
-
   def getMgdCertificate(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
 
     mgdRegNumber match {
@@ -516,5 +515,4 @@ class GamblingController @Inject() (
         Ok(Json.toJson(baseOperator(reg)))
     }
   }
-
 }

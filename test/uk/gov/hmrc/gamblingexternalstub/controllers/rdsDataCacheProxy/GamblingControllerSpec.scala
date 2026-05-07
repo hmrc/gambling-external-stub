@@ -24,6 +24,7 @@ import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.base.SpecBase
 import uk.gov.hmrc.gamblingexternalstub.models.*
 import uk.gov.hmrc.gamblingexternalstub.models.BusinessType.SoleProprietor
+import uk.gov.hmrc.gamblingexternalstub.models.{MgdCertificate, ReturnPeriodEndDate, ReturnSummary}
 
 import java.time.LocalDate
 
