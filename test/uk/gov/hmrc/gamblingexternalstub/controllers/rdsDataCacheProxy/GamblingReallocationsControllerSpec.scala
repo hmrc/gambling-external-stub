@@ -93,7 +93,7 @@ class GamblingReallocationsControllerSpec extends AnyWordSpec with Matchers with
       status(result) shouldBe OK
       val json = contentAsJson(result)
 
-      (json \ "totalRecords").as[Int]       shouldBe 0
+      (json \ "totalRecords").as[Int]           shouldBe 0
       (json \ "items").as[JsArray].value.length shouldBe 0
     }
 
@@ -103,7 +103,7 @@ class GamblingReallocationsControllerSpec extends AnyWordSpec with Matchers with
       status(result) shouldBe OK
       val json = contentAsJson(result)
 
-      (json \ "totalRecords").as[Int]       shouldBe 3
+      (json \ "totalRecords").as[Int]           shouldBe 3
       (json \ "items").as[JsArray].value.length shouldBe 3
     }
 
@@ -113,7 +113,7 @@ class GamblingReallocationsControllerSpec extends AnyWordSpec with Matchers with
       status(result) shouldBe OK
       val json = contentAsJson(result)
 
-      (json \ "totalRecords").as[Int]       shouldBe 9
+      (json \ "totalRecords").as[Int]           shouldBe 9
       (json \ "items").as[JsArray].value.length shouldBe 5
     }
 
@@ -123,7 +123,7 @@ class GamblingReallocationsControllerSpec extends AnyWordSpec with Matchers with
       status(result) shouldBe OK
       val json = contentAsJson(result)
 
-      (json \ "totalRecords").as[Int]       shouldBe 9
+      (json \ "totalRecords").as[Int]           shouldBe 9
       (json \ "items").as[JsArray].value.length shouldBe 4
     }
 
@@ -133,7 +133,7 @@ class GamblingReallocationsControllerSpec extends AnyWordSpec with Matchers with
       status(result) shouldBe OK
       val json = contentAsJson(result)
 
-      (json \ "totalRecords").as[Int]       shouldBe 50
+      (json \ "totalRecords").as[Int]           shouldBe 50
       (json \ "items").as[JsArray].value.length shouldBe 10
     }
 
@@ -143,7 +143,7 @@ class GamblingReallocationsControllerSpec extends AnyWordSpec with Matchers with
       status(result) shouldBe OK
       val json = contentAsJson(result)
 
-      (json \ "totalRecords").as[Int]       shouldBe 50
+      (json \ "totalRecords").as[Int]           shouldBe 50
       (json \ "items").as[JsArray].value.length shouldBe 10
     }
   }

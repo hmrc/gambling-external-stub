@@ -21,9 +21,9 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 final case class ReallocationItem(
-                                   dateProcessed: Option[LocalDate],
-                                   amount: Option[BigDecimal]
-                                 )
+  dateProcessed: Option[LocalDate],
+  amount: Option[BigDecimal]
+)
 
 object ReallocationItem {
   private val fmt = DateTimeFormatter.ISO_LOCAL_DATE
@@ -36,12 +36,12 @@ object ReallocationItem {
 }
 
 final case class Reallocations(
-                                periodStartDate: Option[LocalDate],
-                                periodEndDate: Option[LocalDate],
-                                total: Option[BigDecimal],
-                                totalRecords: Option[Int],
-                                items: Seq[ReallocationItem]
-                              )
+  periodStartDate: Option[LocalDate],
+  periodEndDate: Option[LocalDate],
+  total: Option[BigDecimal],
+  totalRecords: Option[Int],
+  items: Seq[ReallocationItem]
+)
 
 object Reallocations {
   import ReallocationItem.localDateWrites
