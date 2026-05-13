@@ -81,14 +81,14 @@ class GamblingReallocationsController @Inject() (
           )
 
         case _ =>
-          val today        = LocalDate.now()
-          val periodStart  = today.minusMonths(18).withDayOfMonth(1)
-          val periodEnd    = today.withDayOfMonth(today.lengthOfMonth())
+          val today = LocalDate.now()
+          val periodStart = today.minusMonths(18).withDayOfMonth(1)
+          val periodEnd = today.withDayOfMonth(today.lengthOfMonth())
           val windowMonths = (periodEnd.getYear - periodStart.getYear) * 12 +
-                               (periodEnd.getMonthValue - periodStart.getMonthValue) + 1
+            (periodEnd.getMonthValue - periodStart.getMonthValue) + 1
 
           val allRecords = (1 to recordCount).map { i =>
-            val monthOffset   = (i - 1) % windowMonths
+            val monthOffset = (i - 1) % windowMonths
             val dateProcessed = periodStart.plusMonths(monthOffset)
 
             ReallocationItem(
