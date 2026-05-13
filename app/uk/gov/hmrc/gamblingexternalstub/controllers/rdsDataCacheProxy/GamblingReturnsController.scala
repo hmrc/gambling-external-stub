@@ -79,9 +79,15 @@ class GamblingReturnsController @Inject() (
           )
 
         case _ =>
+          val today = LocalDate.now()
+          val periodStart = today.minusMonths(18).withDayOfMonth(1)
+          val periodEnd = today.withDayOfMonth(today.lengthOfMonth())
+          val windowMonths = (periodEnd.getYear - periodStart.getYear) * 12 +
+            (periodEnd.getMonthValue - periodStart.getMonthValue) + 1
+
           val allRecords = (1 to recordCount).map { i =>
-            val month = ((i - 1) % 12) + 1
-            val start = LocalDate.of(2025, month, 1)
+            val monthOffset = (i - 1) % windowMonths
+            val start = periodStart.plusMonths(monthOffset)
             AmountDeclared(
               descriptionCode = Some(i),
               periodStartDate = Some(start),
@@ -94,8 +100,8 @@ class GamblingReturnsController @Inject() (
           Ok(
             Json.toJson(
               ReturnsSubmitted(
-                periodStartDate    = Some(LocalDate.parse("2026-01-01")),
-                periodEndDate      = Some(LocalDate.parse("2026-12-31")),
+                periodStartDate    = Some(periodStart),
+                periodEndDate      = Some(periodEnd),
                 total              = Some(allRecords.flatMap(_.amount).sum),
                 totalPeriodRecords = Some(recordCount),
                 amountDeclared     = page
