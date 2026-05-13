@@ -5,7 +5,8 @@ object CodeCoverageSettings {
 
   private val excludedPackages: Seq[String] = Seq(
     "<empty>",
-    "Reverse.*",
+    ".*Reverse.*",
+    ".*javascript.*",
     "uk.gov.hmrc.BuildInfo",
     "app.*",
     "prod.*",
