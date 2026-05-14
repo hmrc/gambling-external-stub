@@ -23,22 +23,23 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import java.time.LocalDate
 import javax.inject.Inject
+import scala.util.Random
 
 class GamblingOtherAssessmentsController @Inject()(
-                                                  cc: ControllerComponents
-                                                ) extends BackendController(cc) {
+                                                    cc: ControllerComponents
+                                                  ) extends BackendController(cc) {
 
   def getOtherAssessments(
-                          regime: String,
-                          regNumber: String,
-                          pageNo: Int,
-                          pageSize: Int
-                        ): Action[AnyContent] = Action { _ =>
+                           regime: String,
+                           regNumber: String,
+                           pageNo: Int,
+                           pageSize: Int
+                         ): Action[AnyContent] = Action { _ =>
 
     if (Regime.fromString(regime).isEmpty) {
       BadRequest(
         Json.obj(
-          "code"    -> "INVALID_REGIME",
+          "code" -> "INVALID_REGIME",
           "message" -> s"regime must be one of: ${Regime.validCodes}"
         )
       )
@@ -51,7 +52,7 @@ class GamblingOtherAssessmentsController @Inject()(
         case 400 =>
           BadRequest(
             Json.obj(
-              "code"    -> "INVALID_REQUEST",
+              "code" -> "INVALID_REQUEST",
               "message" -> "Bad request"
             )
           )
@@ -59,7 +60,7 @@ class GamblingOtherAssessmentsController @Inject()(
         case 401 =>
           Unauthorized(
             Json.obj(
-              "code"    -> "UNAUTHORIZED",
+              "code" -> "UNAUTHORIZED",
               "message" -> "Unauthorized to access this resource"
             )
           )
@@ -67,7 +68,7 @@ class GamblingOtherAssessmentsController @Inject()(
         case 404 =>
           NotFound(
             Json.obj(
-              "code"    -> "NOT_FOUND",
+              "code" -> "NOT_FOUND",
               "message" -> "No assessments found for the given registration number"
             )
           )
@@ -75,7 +76,7 @@ class GamblingOtherAssessmentsController @Inject()(
         case 500 =>
           InternalServerError(
             Json.obj(
-              "code"    -> "UNEXPECTED_ERROR",
+              "code" -> "UNEXPECTED_ERROR",
               "message" -> "Unexpected error occurred"
             )
           )
@@ -83,17 +84,24 @@ class GamblingOtherAssessmentsController @Inject()(
         case _ =>
           val today = LocalDate.now()
           val periodStart = today.minusMonths(18).withDayOfMonth(1)
-          val periodEnd = today.withDayOfMonth(today.lengthOfMonth())
+          val periodStartItem = today.minusMonths(15).withDayOfMonth(1)
+          val periodEnd = today.plusMonths(3).withDayOfMonth(today.lengthOfMonth())
+          val periodEndItem = today.withDayOfMonth(today.lengthOfMonth())
           val windowMonths = (periodEnd.getYear - periodStart.getYear) * 12 +
             (periodEnd.getMonthValue - periodStart.getMonthValue) + 1
 
           val allRecords = (1 to recordCount).map { i =>
             val monthOffset = (i - 1) % windowMonths
-            val dateProcessed = periodStart.plusMonths(monthOffset)
+            val dateRaised = periodStart.plusMonths(monthOffset)
+            val baseAmount = BigDecimal(i * Random.nextInt(100))
+            val randomPennies = if (i == 1) BigDecimal(0.00) else BigDecimal(Random.between(0.00, 0.99))
+            val amountWithPennies = (baseAmount + randomPennies) * -1
 
             AssessmentItem(
-              dateProcessed = Some(dateProcessed),
-              amount        = Some(BigDecimal(i * 1000))
+              dateRaised = Some(dateRaised),
+              periodStartDate = Some(periodStartItem),
+              periodEndDate = Some(periodEndItem),
+              amount = Some(amountWithPennies)
             )
           }
 
@@ -104,10 +112,10 @@ class GamblingOtherAssessmentsController @Inject()(
             Json.toJson(
               Assessments(
                 periodStartDate = Some(periodStart),
-                periodEndDate   = Some(periodEnd),
-                total           = Some(allRecords.flatMap(_.amount).sum),
-                totalRecords    = Some(recordCount),
-                items           = page
+                periodEndDate = Some(periodEnd),
+                total = Some(allRecords.flatMap(_.amount).sum),
+                totalRecords = Some(recordCount),
+                items = page
               )
             )
           )

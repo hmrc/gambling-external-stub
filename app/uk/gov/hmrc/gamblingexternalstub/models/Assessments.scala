@@ -22,18 +22,16 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 final case class AssessmentItem(
-  dateProcessed: Option[LocalDate],
-  amount: Option[BigDecimal]
+ dateRaised: Option[LocalDate],
+ periodStartDate: Option[LocalDate],
+ periodEndDate: Option[LocalDate],
+ amount: Option[BigDecimal]
 )
 
 object AssessmentItem {
   private val fmt = DateTimeFormatter.ISO_LOCAL_DATE
-
-  implicit val localDateWrites: Writes[LocalDate] =
-    Writes.temporalWrites[LocalDate, DateTimeFormatter](fmt)
-
-  implicit val writes: OWrites[AssessmentItem] =
-    Json.writes[AssessmentItem]
+  implicit val localDateWrites: Writes[LocalDate] = Writes.temporalWrites[LocalDate, DateTimeFormatter](fmt)
+  implicit val writes: OWrites[AssessmentItem] = Json.writes[AssessmentItem]
 }
 
 final case class Assessments(
@@ -46,7 +44,5 @@ final case class Assessments(
 
 object Assessments {
   import AssessmentItem.localDateWrites
-
-  implicit val writes: OWrites[AssessmentItem] =
-    Json.writes[AssessmentItem]
+  implicit val writes: OWrites[Assessments] = Json.writes[Assessments]
 }
