@@ -1,19 +1,23 @@
-# Reallocations In
+# Reallocations
 
 **GET**
 
 ```
 /gambling/reallocations-in/{regime}/{regNumber}?pageNo={pageNo}&pageSize={pageSize}
+/gambling/reallocations-out/{regime}/{regNumber}?pageNo={pageNo}&pageSize={pageSize}
 
 ```
 Full URL:
 
 ```
 http://localhost:10405/rds-datacache-proxy/gambling/reallocations-in/{regime}/{regNumber}
+http://localhost:10405/rds-datacache-proxy/gambling/reallocations-out/{regime}/{regNumber}
 ```
 
 Controller mapping:
 `uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingReallocationsController.getReallocationsIn(regime: String, regNumber: String, pageNo: Int, pageSize: Int)`
+
+`uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingReallocationsController.getReallocationsOut(regime: String, regNumber: String, pageNo: Int, pageSize: Int)`
 
 Query parameters:
 
