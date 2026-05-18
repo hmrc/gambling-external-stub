@@ -23,18 +23,27 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import java.time.LocalDate
 import javax.inject.Inject
+import scala.util.Random
 
 class GamblingReallocationsController @Inject() (
   cc: ControllerComponents
 ) extends BackendController(cc) {
 
-  def getReallocationsIn(
+  def getReallocationsIn(regime: String, regNumber: String, pageNo: Int, pageSize: Int): Action[AnyContent] = {
+    getReallocations(regime, regNumber, pageNo, pageSize, 1)
+  }
+
+  def getReallocationsOut(regime: String, regNumber: String, pageNo: Int, pageSize: Int): Action[AnyContent] = {
+    getReallocations(regime, regNumber, pageNo, pageSize, -1)
+  }
+
+  private def getReallocations(
     regime: String,
     regNumber: String,
     pageNo: Int,
-    pageSize: Int
+    pageSize: Int,
+    amountSign: Int
   ): Action[AnyContent] = Action { _ =>
-
     if (Regime.fromString(regime).isEmpty) {
       BadRequest(
         Json.obj(
@@ -90,10 +99,13 @@ class GamblingReallocationsController @Inject() (
           val allRecords = (1 to recordCount).map { i =>
             val monthOffset = (i - 1) % windowMonths
             val dateProcessed = periodStart.plusMonths(monthOffset)
+            val baseAmount = BigDecimal(i * Random.nextInt(100))
+            val randomPennies = BigDecimal(Random.between(0.00, 0.99))
+            val amountWithPennies = (baseAmount + randomPennies) * amountSign
 
             ReallocationItem(
               dateProcessed = Some(dateProcessed),
-              amount        = Some(BigDecimal(i * 1000))
+              amount        = Some(amountWithPennies)
             )
           }
 
