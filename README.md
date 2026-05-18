@@ -364,6 +364,14 @@ See [docs/returns-submitted.md](docs/returns-submitted.md) for full details incl
 
 ---
 
+### 4. Business Contact Details
+
+`GET /gambling/business-contact-details/mgd/{mgdRegNumber}`
+
+See [docs/business-contact-details.md](docs/business-contact-details.md) for full details including response scenarios and example curl commands.
+
+---
+
 ## License
 
 This project is licensed under the Apache 2.0 License.
