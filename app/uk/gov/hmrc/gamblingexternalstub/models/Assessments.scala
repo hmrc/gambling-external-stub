@@ -22,10 +22,10 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 final case class AssessmentItem(
- dateRaised: Option[LocalDate],
- periodStartDate: Option[LocalDate],
- periodEndDate: Option[LocalDate],
- amount: Option[BigDecimal]
+  dateRaised: Option[LocalDate],
+  periodStartDate: Option[LocalDate],
+  periodEndDate: Option[LocalDate],
+  amount: Option[BigDecimal]
 )
 
 object AssessmentItem {

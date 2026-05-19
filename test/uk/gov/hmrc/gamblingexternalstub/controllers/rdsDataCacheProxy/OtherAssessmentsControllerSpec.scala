@@ -37,7 +37,7 @@ class OtherAssessmentsControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe BAD_REQUEST
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "INVALID_REGIME",
+        "code"    -> "INVALID_REGIME",
         "message" -> "regime must be one of: gbd, pbd, rgd, mgd"
       )
     }
@@ -54,7 +54,7 @@ class OtherAssessmentsControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe BAD_REQUEST
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "INVALID_REQUEST",
+        "code"    -> "INVALID_REQUEST",
         "message" -> "Bad request"
       )
     }
@@ -64,7 +64,7 @@ class OtherAssessmentsControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe UNAUTHORIZED
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "UNAUTHORIZED",
+        "code"    -> "UNAUTHORIZED",
         "message" -> "Unauthorized to access this resource"
       )
     }
@@ -74,7 +74,7 @@ class OtherAssessmentsControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe NOT_FOUND
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "NOT_FOUND",
+        "code"    -> "NOT_FOUND",
         "message" -> "No assessments found for the given registration number"
       )
     }
@@ -84,7 +84,7 @@ class OtherAssessmentsControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "UNEXPECTED_ERROR",
+        "code"    -> "UNEXPECTED_ERROR",
         "message" -> "Unexpected error occurred"
       )
     }
@@ -94,7 +94,7 @@ class OtherAssessmentsControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "totalRecords").as[Int] shouldBe 0
+      (json \ "totalRecords").as[Int]           shouldBe 0
       (json \ "items").as[JsArray].value.length shouldBe 0
     }
 
@@ -103,7 +103,7 @@ class OtherAssessmentsControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "totalRecords").as[Int] shouldBe 3
+      (json \ "totalRecords").as[Int]           shouldBe 3
       (json \ "items").as[JsArray].value.length shouldBe 3
     }
 
@@ -112,7 +112,7 @@ class OtherAssessmentsControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "totalRecords").as[Int] shouldBe 9
+      (json \ "totalRecords").as[Int]           shouldBe 9
       (json \ "items").as[JsArray].value.length shouldBe 5
     }
 
@@ -121,7 +121,7 @@ class OtherAssessmentsControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "totalRecords").as[Int] shouldBe 9
+      (json \ "totalRecords").as[Int]           shouldBe 9
       (json \ "items").as[JsArray].value.length shouldBe 4
     }
 
@@ -130,7 +130,7 @@ class OtherAssessmentsControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "totalRecords").as[Int] shouldBe 50
+      (json \ "totalRecords").as[Int]           shouldBe 50
       (json \ "items").as[JsArray].value.length shouldBe 10
     }
 
@@ -139,7 +139,7 @@ class OtherAssessmentsControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "totalRecords").as[Int] shouldBe 50
+      (json \ "totalRecords").as[Int]           shouldBe 50
       (json \ "items").as[JsArray].value.length shouldBe 10
     }
   }
