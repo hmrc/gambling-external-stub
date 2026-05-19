@@ -364,7 +364,15 @@ See [docs/returns-submitted.md](docs/returns-submitted.md) for full details incl
 
 ---
 
-### 4. Reallocations
+### 4. Business Contact Details
+
+`GET /gambling/business-contact-details/mgd/{mgdRegNumber}`
+
+See [docs/business-contact-details.md](docs/business-contact-details.md) for full details including response scenarios and example curl commands.
+
+---
+
+### 5. Reallocations
 
 `GET /gambling/reallocations-in/{regime}/{regNumber}`
 
@@ -374,7 +382,7 @@ See [docs/reallocations.md](docs/reallocations.md) for full details including re
 
 ---
 
-### 5. Other-assessments
+### 6. Other-assessments
 
 `GET /gambling/other-assessments/{regime}/{regNumber}`
 
