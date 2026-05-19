@@ -364,6 +364,24 @@ See [docs/returns-submitted.md](docs/returns-submitted.md) for full details incl
 
 ---
 
+### 4. Reallocations
+
+`GET /gambling/reallocations-in/{regime}/{regNumber}`
+
+`GET /gambling/reallocations-out/{regime}/{regNumber}`
+
+See [docs/reallocations.md](docs/reallocations.md) for full details including regime validation, reg number encoding convention, all response scenarios, and example curl commands.
+
+---
+
+### 5. Other-assessments
+
+`GET /gambling/other-assessments/{regime}/{regNumber}`
+
+See [docs/other-assessments.md](docs/other-assessments.md) for full details including regime validation, reg number encoding convention, all response scenarios, and example curl commands.
+
+---
+
 ## License
 
 This project is licensed under the Apache 2.0 License.
