@@ -23,7 +23,6 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import java.time.LocalDate
 import javax.inject.Inject
-import scala.util.Random
 
 class GamblingOtherAssessmentsController @Inject() (
   cc: ControllerComponents
@@ -93,15 +92,11 @@ class GamblingOtherAssessmentsController @Inject() (
           val allRecords = (1 to recordCount).map { i =>
             val monthOffset = (i - 1) % windowMonths
             val dateRaised = periodStart.plusMonths(monthOffset)
-            val baseAmount = BigDecimal(i * Random.nextInt(100))
-            val randomPennies = if (i == 1) BigDecimal(0.00) else BigDecimal(Random.between(0.00, 0.99))
-            val amountWithPennies = (baseAmount + randomPennies) * -1
-
             AssessmentItem(
               dateRaised      = Some(dateRaised),
               periodStartDate = Some(periodStartItem),
               periodEndDate   = Some(periodEndItem),
-              amount          = Some(amountWithPennies)
+              amount          = Some(BigDecimal(i * 100) * -1)
             )
           }
 

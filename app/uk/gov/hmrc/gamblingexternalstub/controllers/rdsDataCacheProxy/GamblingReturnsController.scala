@@ -92,7 +92,7 @@ class GamblingReturnsController @Inject() (
               descriptionCode = Some(i),
               periodStartDate = Some(start),
               periodEndDate   = Some(start.withDayOfMonth(start.lengthOfMonth())),
-              amount          = Some(BigDecimal(i * 1000))
+              amount          = Some(BigDecimal(i * 100))
             )
           }
           val from = (pageNo - 1) * pageSize

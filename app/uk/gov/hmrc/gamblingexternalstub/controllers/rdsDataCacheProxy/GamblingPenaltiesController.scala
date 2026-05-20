@@ -24,25 +24,17 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import java.time.LocalDate
 import javax.inject.Inject
 
-class GamblingReallocationsController @Inject() (
+class GamblingPenaltiesController @Inject() (
   cc: ControllerComponents
 ) extends BackendController(cc) {
 
-  def getReallocationsIn(regime: String, regNumber: String, pageNo: Int, pageSize: Int): Action[AnyContent] = {
-    getReallocations(regime, regNumber, pageNo, pageSize, 1)
-  }
-
-  def getReallocationsOut(regime: String, regNumber: String, pageNo: Int, pageSize: Int): Action[AnyContent] = {
-    getReallocations(regime, regNumber, pageNo, pageSize, -1)
-  }
-
-  private def getReallocations(
+  def getPenalties(
     regime: String,
     regNumber: String,
     pageNo: Int,
-    pageSize: Int,
-    amountSign: Int
+    pageSize: Int
   ): Action[AnyContent] = Action { _ =>
+
     if (Regime.fromString(regime).isEmpty) {
       BadRequest(
         Json.obj(
@@ -76,7 +68,7 @@ class GamblingReallocationsController @Inject() (
           NotFound(
             Json.obj(
               "code"    -> "NOT_FOUND",
-              "message" -> "No reallocations found for the given registration number"
+              "message" -> "No penalties found for the given registration number"
             )
           )
 
@@ -91,18 +83,23 @@ class GamblingReallocationsController @Inject() (
         case _ =>
           val today = LocalDate.now()
           val periodStart = today.minusMonths(18).withDayOfMonth(1)
-          val periodEnd = today.withDayOfMonth(today.lengthOfMonth())
+          val periodStartItem = today.minusMonths(15).withDayOfMonth(1)
+          val periodEnd = today.plusMonths(3).withDayOfMonth(today.lengthOfMonth())
+          val periodEndItem = today.withDayOfMonth(today.lengthOfMonth())
           val windowMonths = (periodEnd.getYear - periodStart.getYear) * 12 +
             (periodEnd.getMonthValue - periodStart.getMonthValue) + 1
 
           val allRecords = (1 to recordCount).map { i =>
             val monthOffset = (i - 1) % windowMonths
-            val dateProcessed = periodStart.plusMonths(monthOffset)
-            val amount = BigDecimal(i * 100) * amountSign
+            val dateRaised = periodStart.plusMonths(monthOffset)
+            val amount = BigDecimal(i * 100) * -1
 
-            ReallocationItem(
-              dateProcessed = Some(dateProcessed),
-              amount        = Some(amount)
+            PenaltyItem(
+              dateRaised      = dateRaised,
+              descriptionCode = if (i % 2 == 0) 1990 else 1980,
+              amount          = amount,
+              periodStartDate = periodStartItem,
+              periodEndDate   = periodEndItem
             )
           }
 
@@ -111,11 +108,11 @@ class GamblingReallocationsController @Inject() (
 
           Ok(
             Json.toJson(
-              Reallocations(
+              Penalties(
                 periodStartDate = Some(periodStart),
                 periodEndDate   = Some(periodEnd),
-                total           = Some(allRecords.flatMap(_.amount).sum),
-                totalRecords    = Some(recordCount),
+                total           = allRecords.map(_.amount).sum,
+                totalRecords    = recordCount,
                 items           = page
               )
             )
