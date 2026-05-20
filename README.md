@@ -390,6 +390,14 @@ See [docs/other-assessments.md](docs/other-assessments.md) for full details incl
 
 ---
 
+### 7. Penalties
+
+`GET /gambling/penalties/{regime}/{regNumber}`
+
+See [docs/penalties.md](docs/penalties.md) for full details including regime validation, reg number encoding convention, item structure (description codes), all response scenarios, and example curl commands.
+
+---
+
 ## License
 
 This project is licensed under the Apache 2.0 License.
