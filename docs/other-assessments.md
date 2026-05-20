@@ -1,23 +1,20 @@
-# Reallocations
+# Other-assessments
 
 **GET**
 
 ```
-/gambling/reallocations-in/{regime}/{regNumber}?pageNo={pageNo}&pageSize={pageSize}
-/gambling/reallocations-out/{regime}/{regNumber}?pageNo={pageNo}&pageSize={pageSize}
+/gambling/other-assessments/{regime}/{regNumber}?pageNo={pageNo}&pageSize={pageSize}
 ```
 Full URL:
 
 ```
-http://localhost:10405/rds-datacache-proxy/gambling/reallocations-in/{regime}/{regNumber}
-http://localhost:10405/rds-datacache-proxy/gambling/reallocations-out/{regime}/{regNumber}
+http://localhost:10405/rds-datacache-proxy/gambling/other-assessments/{regime}/{regNumber}
 ```
 
 Controller mapping:
 
-`uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingReallocationsController.getReallocationsIn(regime: String, regNumber: String, pageNo: Int, pageSize: Int)`
+`uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingOtherAssessmentsController.getOtherAssessments(regime: String, regNumber: String, pageNo: Int, pageSize: Int)`
 
-`uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingReallocationsController.getReallocationsOut(regime: String, regNumber: String, pageNo: Int, pageSize: Int)`
 
 Query parameters:
 
@@ -96,7 +93,7 @@ The record count defaults to 0 if the reg number is shorter than 5 characters.
 Request:
 
 ```
-GET /gambling/reallocations-in/INVALID/XWM00003103200
+GET /gambling/other-assessments/INVALID/XWM00003103200
 ```
 
 Response:
@@ -119,7 +116,7 @@ Response:
 Request:
 
 ```
-GET /gambling/reallocations-in/MGD/XWM00003100400
+GET /gambling/other-assessments/MGD/XWM00003100400
 ```
 
 Response:
@@ -142,7 +139,7 @@ Response:
 Request:
 
 ```
-GET /gambling/reallocations-in/MGD/XWM00003100401
+GET /gambling/other-assessments/MGD/XWM00003100401
 ```
 
 Response:
@@ -160,12 +157,12 @@ Response:
 
 ---
 
-### 404 - No reallocations found
+### 404 - No assessments found
 
 Request:
 
 ```
-GET /gambling/reallocations-in/MGD/XWM00003100404
+GET /gambling/other-assessments/MGD/XWM00003100404
 ```
 
 Response:
@@ -177,7 +174,7 @@ Response:
 ```json
 {
   "code": "NOT_FOUND",
-  "message": "No reallocations found for the given registration number"
+  "message": "No assessments found for the given registration number"
 }
 ```
 
@@ -188,7 +185,7 @@ Response:
 Request:
 
 ```
-GET /gambling/reallocations-in/MGD/XWM00003100500
+GET /gambling/other-assessments/MGD/XWM00003100500
 ```
 
 Response:
@@ -211,7 +208,7 @@ Response:
 Request:
 
 ```
-GET /gambling/reallocations-in/MGD/XWM00003100200
+GET /gambling/other-assessments/MGD/XWM00003100200
 ```
 
 Response:
@@ -237,7 +234,7 @@ Response:
 Request:
 
 ```
-GET /gambling/reallocations-in/MGD/XWM00003103200
+GET /gambling/other-assessments/MGD/XWM00003103200
 ```
 
 Response:
@@ -253,9 +250,9 @@ Response:
   "total": 6000,
   "totalRecords": 3,
   "items": [
-    { "dateProcessed": "2025-01-01", "amount": 1000 },
-    { "dateProcessed": "2025-02-01", "amount": 2000 },
-    { "dateProcessed": "2025-03-01", "amount": 3000 }
+    { "dateRaised": "2025-01-01", "periodStartDate": "2025-01-10", "periodEndDate": "2025-01-15", "amount": 1000 },
+    { "dateRaised": "2025-02-01", "periodStartDate": "2025-02-10", "periodEndDate": "2025-02-15", "amount": 2000 },
+    { "dateRaised": "2025-03-01", "periodStartDate": "2025-03-10", "periodEndDate": "2025-03-15", "amount": 3000 }
   ]
 }
 ```
@@ -267,7 +264,7 @@ Response:
 Request - page 1 of 5:
 
 ```
-GET /gambling/reallocations-in/MGD/XWM00003150200?pageNo=1&pageSize=10
+GET /gambling/other-assessments/MGD/XWM00003150200?pageNo=1&pageSize=10
 ```
 
 Response:
@@ -283,9 +280,9 @@ Response:
   "total": 1275000,
   "totalRecords": 50,
   "items": [
-    { "dateProcessed": "2025-01-01", "amount": 1000 },
+    { "dateRaised": "2025-01-01", "periodStartDate": "2025-01-10", "periodEndDate": "2025-01-15", "amount": 1000 },
     "...",
-    { "dateProcessed": "2025-10-01", "amount": 10000 }
+    { "dateRaised": "2025-10-01", "periodStartDate": "2025-10-10", "periodEndDate": "2025-10-15", "amount": 3000 }
   ]
 }
 ```
@@ -297,5 +294,5 @@ Response:
 ## Example curl
 
 ```
-curl "http://localhost:10405/rds-datacache-proxy/gambling/reallocations-in/MGD/XWM00003150200?pageNo=1&pageSize=10"
+curl "http://localhost:10405/rds-datacache-proxy/gambling/other-assessments/MGD/XWM00003150200?pageNo=1&pageSize=10"
 ```
