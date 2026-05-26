@@ -29,11 +29,11 @@ class GamblingReallocationsController @Inject() (
 ) extends BackendController(cc) {
 
   def getReallocationsIn(regime: String, regNumber: String, pageNo: Int, pageSize: Int): Action[AnyContent] = {
-    getReallocations(regime, regNumber, pageNo, pageSize, 1)
+    getReallocations(regime, regNumber, pageNo, pageSize, 1, 0)
   }
 
   def getReallocationsOut(regime: String, regNumber: String, pageNo: Int, pageSize: Int): Action[AnyContent] = {
-    getReallocations(regime, regNumber, pageNo, pageSize, -1)
+    getReallocations(regime, regNumber, pageNo, pageSize, -1, 33.33)
   }
 
   private def getReallocations(
@@ -41,7 +41,8 @@ class GamblingReallocationsController @Inject() (
     regNumber: String,
     pageNo: Int,
     pageSize: Int,
-    amountSign: Int
+    amountSign: Int,
+    offset: BigDecimal
   ): Action[AnyContent] = Action { _ =>
     if (Regime.fromString(regime).isEmpty) {
       BadRequest(
@@ -98,7 +99,7 @@ class GamblingReallocationsController @Inject() (
           val allRecords = (1 to recordCount).map { i =>
             val monthOffset = (i - 1) % windowMonths
             val dateProcessed = periodStart.plusMonths(monthOffset)
-            val amount = BigDecimal(i * 100) * amountSign
+            val amount = (BigDecimal(i * 100) + offset) * amountSign
 
             ReallocationItem(
               dateProcessed = Some(dateProcessed),
