@@ -18,6 +18,7 @@ package uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.base.SpecBase
