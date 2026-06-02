@@ -22,6 +22,7 @@ import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.base.SpecBase
+import uk.gov.hmrc.gamblingexternalstub.models.ActualRepaymentItem
 
 class GamblingRepaymentsControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
@@ -95,6 +96,86 @@ class GamblingRepaymentsControllerSpec extends AnyWordSpec with Matchers with Sp
       status(result) shouldBe OK
       val json = contentAsJson(result)
       (json \ "actualRepaymentsAmount").as[BigDecimal] shouldBe BigDecimal(71.84)
+    }
+  }
+
+  "GamblingRepaymentsController#getActualRepayments" should {
+
+    "return BAD_REQUEST for an unrecognised regime" in {
+      val result = controller.getActualRepayments("INVALID", "XWM00003103200", 1, 10)(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "INVALID_REGIME",
+        "message" -> "regime must be one of: gbd, pbd, rgd, mgd"
+      )
+    }
+
+    "accept all valid regimes (case-insensitive)" in {
+      Seq("MGD", "mgd", "GBD", "gbd", "PBD", "pbd", "RGD", "rgd").foreach { regime =>
+        val result = controller.getActualRepayments(regime, "XWM00003100200", 1, 10)(FakeRequest())
+        status(result) shouldBe OK
+      }
+    }
+
+    "return BAD_REQUEST for XWM00003100400 (last 3 digits = 400)" in {
+      val result = controller.getActualRepayments("MGD", "XWM00003100400", 1, 10)(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "INVALID_REQUEST",
+        "message" -> "Bad request"
+      )
+    }
+
+    "return UNAUTHORIZED for XWM00003100401 (last 3 digits = 401)" in {
+      val result = controller.getActualRepayments("MGD", "XWM00003100401", 1, 10)(FakeRequest())
+
+      status(result) shouldBe UNAUTHORIZED
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "UNAUTHORIZED",
+        "message" -> "Unauthorized to access this resource"
+      )
+    }
+
+    "return NOT_FOUND for XWM00003100404 (last 3 digits = 404)" in {
+      val result = controller.getActualRepayments("MGD", "XWM00003100404", 1, 10)(FakeRequest())
+
+      status(result) shouldBe NOT_FOUND
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "NOT_FOUND",
+        "message" -> "No repayments found for the given registration number"
+      )
+    }
+
+    "return INTERNAL_SERVER_ERROR for XWM00003100500 (last 3 digits = 500)" in {
+      val result = controller.getActualRepayments("MGD", "XWM00003100500", 1, 10)(FakeRequest())
+
+      status(result) shouldBe INTERNAL_SERVER_ERROR
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "UNEXPECTED_ERROR",
+        "message" -> "Unexpected error occurred"
+      )
+    }
+
+    "return correct totalRecords for XWM00003103200 (3 records)" in {
+      val result = controller.getActualRepayments("MGD", "XWM00003103200", 1, 10)(FakeRequest())
+
+      status(result) shouldBe OK
+      val json = contentAsJson(result)
+      (json \ "totalRecords").as[Int]                    shouldBe 3
+      (json \ "total").as[BigDecimal]                    shouldBe BigDecimal(600.69)
+      (json \ "items").as[Seq[ActualRepaymentItem]].size shouldBe 3
+    }
+
+    "return correct totalRecords for XWM00003100200 (0 records)" in {
+      val result = controller.getActualRepayments("MGD", "XWM00003100200", 1, 10)(FakeRequest())
+
+      status(result) shouldBe OK
+      val json = contentAsJson(result)
+      (json \ "totalRecords").as[Int]               shouldBe 0
+      (json \ "total").as[BigDecimal]               shouldBe BigDecimal(0)
+      (json \ "items").as[Seq[ActualRepaymentItem]] shouldBe empty
     }
   }
 }
