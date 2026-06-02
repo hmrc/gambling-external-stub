@@ -25,15 +25,15 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 class GamblingPaymentsController @Inject() (
-                                              cc: ControllerComponents
-                                            ) extends BackendController(cc) {
+  cc: ControllerComponents
+) extends BackendController(cc) {
 
   def getPayments(
-                    regime: String,
-                    regNumber: String,
-                    pageNo: Int,
-                    pageSize: Int
-                  ): Action[AnyContent] = Action { _ =>
+    regime: String,
+    regNumber: String,
+    pageNo: Int,
+    pageSize: Int
+  ): Action[AnyContent] = Action { _ =>
 
     if (Regime.fromString(regime).isEmpty) {
       BadRequest(
@@ -93,7 +93,7 @@ class GamblingPaymentsController @Inject() (
             val amount = BigDecimal(i * 100) * -1
 
             PaymentItem(
-              transactionDate      = transactionDate,
+              transactionDate = transactionDate,
               descriptionCode = if (i % 2 == 0) "2680" else "2690",
               amount          = amount
             )

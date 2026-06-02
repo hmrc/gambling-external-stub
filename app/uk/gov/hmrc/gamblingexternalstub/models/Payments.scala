@@ -22,10 +22,10 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 final case class PaymentItem(
-                              transactionDate: LocalDate,
-                              descriptionCode: String,
-                              amount: BigDecimal
-                            )
+  transactionDate: LocalDate,
+  descriptionCode: String,
+  amount: BigDecimal
+)
 
 object PaymentItem {
   private val fmt = DateTimeFormatter.ISO_LOCAL_DATE
@@ -34,12 +34,12 @@ object PaymentItem {
 }
 
 final case class Payments(
-                           periodStartDate: Option[LocalDate],
-                           periodEndDate: Option[LocalDate],
-                           total: BigDecimal,
-                           totalRecords: Int,
-                           items: Seq[PaymentItem]
-                         )
+  periodStartDate: Option[LocalDate],
+  periodEndDate: Option[LocalDate],
+  total: BigDecimal,
+  totalRecords: Int,
+  items: Seq[PaymentItem]
+)
 
 object Payments {
   import PaymentItem.localDateWrites
