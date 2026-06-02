@@ -406,6 +406,13 @@ See [docs/payments.md](docs/payments.md) for full details including regime valid
 
 ---
 
+### 8. Repayments Summary
+
+`GET /gambling/repayment-summary/{regime}/{regNumber}`
+
+See [docs/repayment-summary.md](docs/repayment-summary.md) for full details including regime validation, all response scenarios, and example curl commands.
+
+---
 ## License
 
 This project is licensed under the Apache 2.0 License.
