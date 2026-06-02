@@ -246,7 +246,7 @@ Response:
 Request:
 
 ```
-GET /gambling/penalties/gbd/XWM00003103200
+GET /gambling/payments/gbd/XWM00003103200
 ```
 
 Response:
@@ -276,7 +276,7 @@ Response:
 Request - page 1 of 4:
 
 ```
-GET /gambling/paymentss/gbd/XWM00003350200?pageNo=1&pageSize=10
+GET /gambling/payments/gbd/XWM00003350200?pageNo=1&pageSize=10
 ```
 
 Response:

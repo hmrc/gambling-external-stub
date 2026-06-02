@@ -398,6 +398,14 @@ See [docs/penalties.md](docs/penalties.md) for full details including regime val
 
 ---
 
+### 7. Payments
+
+`GET /gambling/payments/{regime}/{regNumber}`
+
+See [docs/payments.md](docs/payments.md) for full details including regime validation, reg number encoding convention, item structure (description codes), all response scenarios, and example curl commands.
+
+---
+
 ## License
 
 This project is licensed under the Apache 2.0 License.
