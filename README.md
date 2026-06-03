@@ -372,11 +372,6 @@ See [docs/business-contact-details.md](docs/business-contact-details.md) for ful
 
 ---
 
-
-
-
-
-
 ### 5. Reallocations
 
 `GET /gambling/reallocations-in/{regime}/{regNumber}`
@@ -403,6 +398,21 @@ See [docs/penalties.md](docs/penalties.md) for full details including regime val
 
 ---
 
+### 7. Payments
+
+`GET /gambling/payments/{regime}/{regNumber}`
+
+See [docs/payments.md](docs/payments.md) for full details including regime validation, reg number encoding convention, item structure (description codes), all response scenarios, and example curl commands.
+
+---
+
+### 8. Repayments Summary
+
+`GET /gambling/repayment-summary/{regime}/{regNumber}`
+
+See [docs/repayment-summary.md](docs/repayment-summary.md) for full details including regime validation, all response scenarios, and example curl commands.
+
+---
 ### 8. MGD Details
 
 `GET /gambling/mgd-details/mgd/{mgdRegNumber}`
