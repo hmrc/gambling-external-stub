@@ -421,6 +421,74 @@ See [docs/repayment-summary.md](docs/repayment-summary.md) for full details incl
 See [docs/assessments-in-absence-of-returns.md](docs/repayment-summary.md) for full details including regime validation, all response scenarios, and example curl commands.
 
 ---
+### 8. MGD Details
+
+`GET /gambling/mgd-details/mgd/{mgdRegNumber}`
+
+Returns additional MGD metadata including seasonal flags and linked registration numbers.
+
+Controller mapping:
+`uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getMgdDetails(mgdRegNumber: String)`
+
+---
+
+## Behaviour
+
+### Scenario 1 – Full linked history
+
+Request: GET /gambling/mgd-details/mgd/XWM00000001770  
+Response: 200 OK  
+{
+"mgdRegNumber": "XWM00000001770",
+"isBusinessSeasonal": 1,
+"previousMgdrn1": "XWM00000001774",
+"previousMgdrn2": "XDM00000001309",
+"previousMgdrn3": null,
+"associatedMgdrn1": "XXM00000000723",
+"associatedMgdrn2": "XQM00000001196",
+"associatedMgdrn3": null,
+"systemDate": "2026-05-31"
+}
+
+---
+
+### Scenario 2 – Multiple previous & associated registrations
+
+Request: GET /gambling/mgd-details/mgd/XMM00000000992  
+Response: 200 OK  
+{
+"mgdRegNumber": "XMM00000000992",
+"isBusinessSeasonal": 1,
+"previousMgdrn1": "XMM00000000448",
+"previousMgdrn2": "XBM00000000451",
+"previousMgdrn3": "XYM00000000466",
+"associatedMgdrn1": "XZM00000000469",
+"associatedMgdrn2": "XJM00000000472",
+"associatedMgdrn3": "XPM00000000475",
+"systemDate": "2026-06-02"
+}
+
+---
+
+### Default scenario
+
+Request: GET /gambling/mgd-details/mgd/{anyOtherRegNumber}  
+Response: 200 OK  
+{
+"mgdRegNumber": "{anyOtherRegNumber}",
+"isBusinessSeasonal": 0,
+"previousMgdrn1": null,
+"previousMgdrn2": null,
+"previousMgdrn3": null,
+"associatedMgdrn1": null,
+"associatedMgdrn2": null,
+"associatedMgdrn3": null,
+"systemDate": "2026-06-02"
+}
+
+---
+
+
 ## License
 
 This project is licensed under the Apache 2.0 License.

@@ -323,6 +323,92 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
     }
   }
 
+  "GamblingController#getMgdDetails" should {
+
+    "return full linked history for default reg number (XWM00000001770)" in {
+      val result = controller.getMgdDetails("XWM00000001770")(FakeRequest())
+
+      status(result) shouldBe OK
+
+      val json = contentAsJson(result)
+
+      (json \ "mgdRegNumber").as[String]    shouldBe "XWM00000001770"
+      (json \ "isBusinessSeasonal").as[Int] shouldBe 1
+
+      (json \ "previousMgdrn1").as[String]    shouldBe "XWM00000001774"
+      (json \ "previousMgdrn2").as[String]    shouldBe "XDM00000001309"
+      (json \ "previousMgdrn3").asOpt[String] shouldBe None
+
+      (json \ "associatedMgdrn1").as[String]    shouldBe "XXM00000000723"
+      (json \ "associatedMgdrn2").as[String]    shouldBe "XQM00000001196"
+      (json \ "associatedMgdrn3").asOpt[String] shouldBe None
+
+      (json \ "systemDate").as[String] shouldBe "2026-05-31"
+    }
+
+    "return multiple previous and associated registrations for XMM00000000992" in {
+      val result = controller.getMgdDetails("XMM00000000992")(FakeRequest())
+
+      status(result) shouldBe OK
+
+      val json = contentAsJson(result)
+
+      (json \ "mgdRegNumber").as[String]    shouldBe "XMM00000000992"
+      (json \ "isBusinessSeasonal").as[Int] shouldBe 1
+
+      (json \ "previousMgdrn1").as[String] shouldBe "XMM00000000448"
+      (json \ "previousMgdrn2").as[String] shouldBe "XBM00000000451"
+      (json \ "previousMgdrn3").as[String] shouldBe "XYM00000000466"
+
+      (json \ "associatedMgdrn1").as[String] shouldBe "XZM00000000469"
+      (json \ "associatedMgdrn2").as[String] shouldBe "XJM00000000472"
+      (json \ "associatedMgdrn3").as[String] shouldBe "XPM00000000475"
+
+      (json \ "systemDate").as[String] shouldBe "2026-06-02"
+    }
+
+    "return empty data response for XMM00000000993" in {
+      val result = controller.getMgdDetails("XMM00000000993")(FakeRequest())
+
+      status(result) shouldBe OK
+
+      val json = contentAsJson(result)
+
+      (json \ "mgdRegNumber").as[String]       shouldBe ""
+      (json \ "isBusinessSeasonal").asOpt[Int] shouldBe None
+
+      (json \ "previousMgdrn1").asOpt[String] shouldBe None
+      (json \ "previousMgdrn2").asOpt[String] shouldBe None
+      (json \ "previousMgdrn3").asOpt[String] shouldBe None
+
+      (json \ "associatedMgdrn1").asOpt[String] shouldBe None
+      (json \ "associatedMgdrn2").asOpt[String] shouldBe None
+      (json \ "associatedMgdrn3").asOpt[String] shouldBe None
+    }
+
+    "return BAD_REQUEST for invalid mgdRegNumber" in {
+      val result = controller.getMgdDetails("invalid")(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "INVALID_MGD_REG_NUMBER",
+        "message" -> "mgdRegNumber must be provided"
+      )
+    }
+
+    "return INTERNAL_SERVER_ERROR for error" in {
+      val result = controller.getMgdDetails("error")(FakeRequest())
+
+      status(result) shouldBe INTERNAL_SERVER_ERROR
+
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "UNEXPECTED_ERROR",
+        "message" -> "Unexpected error occurred"
+      )
+    }
+  }
+
   "GamblingController#getOperatorDetails" should {
 
     "return corporate operator for XGM00000001761" in {
