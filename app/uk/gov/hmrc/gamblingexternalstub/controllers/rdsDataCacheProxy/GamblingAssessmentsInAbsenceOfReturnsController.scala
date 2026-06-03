@@ -24,7 +24,7 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import java.time.LocalDate
 import javax.inject.Inject
 
-class GamblingAssessmentsInAbsenceOfReturnsController @Inject()(
+class GamblingAssessmentsInAbsenceOfReturnsController @Inject() (
   cc: ControllerComponents
 ) extends BackendController(cc) {
 
