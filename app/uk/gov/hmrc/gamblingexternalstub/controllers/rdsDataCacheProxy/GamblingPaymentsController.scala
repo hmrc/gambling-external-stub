@@ -94,7 +94,7 @@ class GamblingPaymentsController @Inject() (
 
             PaymentItem(
               transactionDate = transactionDate,
-              descriptionCode = if (i % 2 == 0) "2680" else "2690",
+              descriptionCode = if (i % 2 == 0) "P" else "F",
               amount          = amount
             )
           }
