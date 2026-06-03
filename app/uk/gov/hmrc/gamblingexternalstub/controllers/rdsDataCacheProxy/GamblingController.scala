@@ -535,25 +535,6 @@ class GamblingController @Inject() (
             "message" -> "Unexpected error occurred"
           )
         )
-
-      // known good data only
-      case "XWM00000001770" =>
-        Ok(
-          Json.toJson(
-            MgdDetails(
-              mgdRegNumber       = mgdRegNumber,
-              isBusinessSeasonal = Some(1),
-              previousMgdrn1     = Some("XWM00000001774"),
-              previousMgdrn2     = Some("XDM00000001309"),
-              previousMgdrn3     = None,
-              associatedMgdrn1   = Some("XXM00000000723"),
-              associatedMgdrn2   = Some("XQM00000001196"),
-              associatedMgdrn3   = None,
-              systemDate         = Some(LocalDate.parse("2026-05-31"))
-            )
-          )
-        )
-
       case "XMM00000000992" =>
         Ok(
           Json.toJson(
@@ -572,7 +553,7 @@ class GamblingController @Inject() (
         )
 
       // EVERYTHING ELSE = no data
-      case _ =>
+      case "XMM00000000993" =>
         Ok(
           Json.toJson(
             MgdDetails(
@@ -588,6 +569,25 @@ class GamblingController @Inject() (
             )
           )
         )
+
+      // known good data only
+      case _ =>
+        Ok(
+          Json.toJson(
+            MgdDetails(
+              mgdRegNumber       = mgdRegNumber,
+              isBusinessSeasonal = Some(1),
+              previousMgdrn1     = Some("XWM00000001774"),
+              previousMgdrn2     = Some("XDM00000001309"),
+              previousMgdrn3     = None,
+              associatedMgdrn1   = Some("XXM00000000723"),
+              associatedMgdrn2   = Some("XQM00000001196"),
+              associatedMgdrn3   = None,
+              systemDate         = Some(LocalDate.parse("2026-05-31"))
+            )
+          )
+        )
+
     }
   }
 
