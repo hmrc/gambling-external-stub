@@ -521,57 +521,73 @@ class GamblingController @Inject() (
     mgdRegNumber match {
 
       case "invalid" =>
-        BadRequest(Json.obj(
-          "code" -> "INVALID_MGD_REG_NUMBER",
-          "message" -> "mgdRegNumber must be provided"
-        ))
+        BadRequest(
+          Json.obj(
+            "code"    -> "INVALID_MGD_REG_NUMBER",
+            "message" -> "mgdRegNumber must be provided"
+          )
+        )
 
       case "error" =>
-        InternalServerError(Json.obj(
-          "code" -> "UNEXPECTED_ERROR",
-          "message" -> "Unexpected error occurred"
-        ))
+        InternalServerError(
+          Json.obj(
+            "code"    -> "UNEXPECTED_ERROR",
+            "message" -> "Unexpected error occurred"
+          )
+        )
 
       // known good data only
       case "XWM00000001770" =>
-        Ok(Json.toJson(MgdDetails(
-          mgdRegNumber = mgdRegNumber,
-          isBusinessSeasonal = Some(1),
-          previousMgdrn1 = Some("XWM00000001774"),
-          previousMgdrn2 = Some("XDM00000001309"),
-          previousMgdrn3 = None,
-          associatedMgdrn1 = Some("XXM00000000723"),
-          associatedMgdrn2 = Some("XQM00000001196"),
-          associatedMgdrn3 = None,
-          systemDate = Some(LocalDate.parse("2026-05-31"))
-        )))
+        Ok(
+          Json.toJson(
+            MgdDetails(
+              mgdRegNumber       = mgdRegNumber,
+              isBusinessSeasonal = Some(1),
+              previousMgdrn1     = Some("XWM00000001774"),
+              previousMgdrn2     = Some("XDM00000001309"),
+              previousMgdrn3     = None,
+              associatedMgdrn1   = Some("XXM00000000723"),
+              associatedMgdrn2   = Some("XQM00000001196"),
+              associatedMgdrn3   = None,
+              systemDate         = Some(LocalDate.parse("2026-05-31"))
+            )
+          )
+        )
 
       case "XMM00000000992" =>
-        Ok(Json.toJson(MgdDetails(
-          mgdRegNumber = mgdRegNumber,
-          isBusinessSeasonal = Some(1),
-          previousMgdrn1 = Some("XMM00000000448"),
-          previousMgdrn2 = Some("XBM00000000451"),
-          previousMgdrn3 = Some("XYM00000000466"),
-          associatedMgdrn1 = Some("XZM00000000469"),
-          associatedMgdrn2 = Some("XJM00000000472"),
-          associatedMgdrn3 = Some("XPM00000000475"),
-          systemDate = Some(LocalDate.parse("2026-06-02"))
-        )))
+        Ok(
+          Json.toJson(
+            MgdDetails(
+              mgdRegNumber       = mgdRegNumber,
+              isBusinessSeasonal = Some(1),
+              previousMgdrn1     = Some("XMM00000000448"),
+              previousMgdrn2     = Some("XBM00000000451"),
+              previousMgdrn3     = Some("XYM00000000466"),
+              associatedMgdrn1   = Some("XZM00000000469"),
+              associatedMgdrn2   = Some("XJM00000000472"),
+              associatedMgdrn3   = Some("XPM00000000475"),
+              systemDate         = Some(LocalDate.parse("2026-06-02"))
+            )
+          )
+        )
 
       // EVERYTHING ELSE = no data
       case _ =>
-        Ok(Json.toJson(MgdDetails(
-          mgdRegNumber = "",
-          isBusinessSeasonal = None,
-          previousMgdrn1 = None,
-          previousMgdrn2 = None,
-          previousMgdrn3 = None,
-          associatedMgdrn1 = None,
-          associatedMgdrn2 = None,
-          associatedMgdrn3 = None,
-          systemDate = None
-        )))
+        Ok(
+          Json.toJson(
+            MgdDetails(
+              mgdRegNumber       = "",
+              isBusinessSeasonal = None,
+              previousMgdrn1     = None,
+              previousMgdrn2     = None,
+              previousMgdrn3     = None,
+              associatedMgdrn1   = None,
+              associatedMgdrn2   = None,
+              associatedMgdrn3   = None,
+              systemDate         = None
+            )
+          )
+        )
     }
   }
 
