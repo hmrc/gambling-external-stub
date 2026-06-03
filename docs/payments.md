@@ -91,7 +91,7 @@ Each penalty item has the following fields:
 | Field             | Type       | Description                                           |
 |-------------------|------------|-------------------------------------------------------|
 | `transactionDate` | LocalDate  | Date the payment was recorded                         |
-| `descriptionCode` | String     | `2680` = Electronic, `2690` = Cheque                  |
+| `descriptionCode` | String     | `P` or `E` = Electronic, `F` or `C` = Cheque          |
 | `amount`          | BigDecimal | Amount of the Payment (positive for P negative for F) |
 
 Records alternate between "P" and "F" in stub data. Amounts are set according to the stub scenario.
