@@ -22,9 +22,9 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 final case class RepaymentInterestRepaidItem(
-                              transactionDate: LocalDate,
-                              amount: BigDecimal
-                            )
+  transactionDate: LocalDate,
+  amount: BigDecimal
+)
 
 object RepaymentInterestRepaidItem {
   private val fmt = DateTimeFormatter.ISO_LOCAL_DATE
@@ -33,12 +33,12 @@ object RepaymentInterestRepaidItem {
 }
 
 final case class RepaymentInterestRepaid(
-                           periodStartDate: Option[LocalDate],
-                           periodEndDate: Option[LocalDate],
-                           total: BigDecimal,
-                           totalRecords: Int,
-                           items: Seq[RepaymentInterestRepaidItem]
-                         )
+  periodStartDate: Option[LocalDate],
+  periodEndDate: Option[LocalDate],
+  total: BigDecimal,
+  totalRecords: Int,
+  items: Seq[RepaymentInterestRepaidItem]
+)
 
 object RepaymentInterestRepaid {
   import PaymentItem.localDateWrites

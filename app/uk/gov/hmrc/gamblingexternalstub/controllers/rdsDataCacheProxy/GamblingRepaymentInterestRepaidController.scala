@@ -25,15 +25,15 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 class GamblingRepaymentInterestRepaidController @Inject() (
-                                             cc: ControllerComponents
-                                           ) extends BackendController(cc) {
+  cc: ControllerComponents
+) extends BackendController(cc) {
 
   def getRepaymentInterestRepaid(
-                   regime: String,
-                   regNumber: String,
-                   pageNo: Int,
-                   pageSize: Int
-                 ): Action[AnyContent] = Action { _ =>
+    regime: String,
+    regNumber: String,
+    pageNo: Int,
+    pageSize: Int
+  ): Action[AnyContent] = Action { _ =>
 
     if (Regime.fromString(regime).isEmpty) {
       BadRequest(
