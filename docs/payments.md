@@ -91,10 +91,10 @@ Each penalty item has the following fields:
 | Field             | Type       | Description                                           |
 |-------------------|------------|-------------------------------------------------------|
 | `transactionDate` | LocalDate  | Date the payment was recorded                         |
-| `descriptionCode` | String     | `P` or `E` = Electronic, `F` or `C` = Cheque          |
+| `descriptionCode` | String     | `E` = Electronic, `C` = Cheque                        |
 | `amount`          | BigDecimal | Amount of the Payment (positive for P negative for F) |
 
-Records alternate between "P" and "F" in stub data. Amounts are set according to the stub scenario.
+Records alternate between "E" and "C" in stub data. Amounts are set according to the stub scenario.
 
 ---
 
@@ -262,9 +262,9 @@ Response:
   "total": 7500.0,
   "totalRecords": 3,
   "items": [
-    { "transactionDate": "2014-10-01", "descriptionCode": "P", "amount": 3000.0 },
-    { "transactionDate": "2014-07-15", "descriptionCode": "P", "amount": 5000.0 },
-    { "transactionDate": "2013-06-01", "descriptionCode": "F", "amount": -500.0 }
+    { "transactionDate": "2014-10-01", "descriptionCode": "E", "amount": 3000.0 },
+    { "transactionDate": "2014-07-15", "descriptionCode": "E", "amount": 5000.0 },
+    { "transactionDate": "2013-06-01", "descriptionCode": "C", "amount": -500.0 }
   ]
 }
 ```
@@ -292,9 +292,9 @@ Response:
   "total": 45000,
   "totalRecords": 35,
   "items": [
-    { "transactionDate": "2014-10-01", "descriptionCode": "P", "amount": 3000.0 },
-    { "transactionDate": "2014-07-15", "descriptionCode": "P", "amount": 5000.0 },
-    { "transactionDate": "2013-06-01", "descriptionCode": "F", "amount": -500.0 }
+    { "transactionDate": "2014-10-01", "descriptionCode": "E", "amount": 3000.0 },
+    { "transactionDate": "2014-07-15", "descriptionCode": "E", "amount": 5000.0 },
+    { "transactionDate": "2013-06-01", "descriptionCode": "C", "amount": -500.0 }
   ]
 }
 ```
