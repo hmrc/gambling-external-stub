@@ -90,12 +90,14 @@ class GamblingRepaymentsControllerSpec extends AnyWordSpec with Matchers with Sp
       )
     }
 
-    "return valid for XWM00003109200" in {
-      val result = controller.getRepaymentsSummary("MGD", "XWM00003109200")(FakeRequest())
+    "return correct totalRecords for XWM00003103200 (3 records)" in {
+      val result = controller.getRepaymentsSummary("MGD", "XWM00003103200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "actualRepaymentsAmount").as[BigDecimal] shouldBe BigDecimal(71.84)
+      (json \ "actualRepaymentsAmount").as[BigDecimal]         shouldBe BigDecimal(600.69)
+      (json \ "repaymentsInterestRepaidAmount").as[BigDecimal] shouldBe BigDecimal(-600.33)
+      (json \ "total").as[BigDecimal]                          shouldBe BigDecimal(0.36)
     }
   }
 
