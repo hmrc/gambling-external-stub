@@ -90,7 +90,7 @@ class GamblingRepaymentInterestRepaidController @Inject() (
           val allRecords = (1 to recordCount).map { i =>
             val monthOffset = (i - 1) % windowMonths
             val transactionDate = periodStart.plusMonths(monthOffset)
-            val amount = BigDecimal(i * 100) * -1
+            val amount = BigDecimal(i * 100) + BigDecimal(0.23)
 
             RepaymentInterestRepaidItem(
               transactionDate = transactionDate,
