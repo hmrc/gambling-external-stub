@@ -28,6 +28,9 @@ class GamblingRepaymentsController @Inject() (
   cc: ControllerComponents
 ) extends BackendController(cc) {
 
+  private val actualRepaymentsOffset = BigDecimal(0.23)
+  private val interestRepaymentsOffset = BigDecimal(0.11)
+
   def getRepaymentsSummary(
     regime: String,
     regNumber: String
@@ -77,18 +80,19 @@ class GamblingRepaymentsController @Inject() (
           )
 
         case _ =>
-          val today = LocalDate.now()
-          val periodStart = today.minusMonths(18).withDayOfMonth(1)
-          val periodEnd = today.plusMonths(3).withDayOfMonth(today.lengthOfMonth())
+          val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
+
+          val actualRepayments = createRepayments(recordCount, 1, 10, actualRepaymentsOffset)
+          val interestRepayments = createRepayments(recordCount, 1, 10, interestRepaymentsOffset)
 
           Ok(
             Json.toJson(
               RepaymentsSummary(
-                periodStartDate                = Some(periodStart),
-                periodEndDate                  = Some(periodEnd),
-                actualRepaymentsAmount         = BigDecimal(71.84),
-                repaymentsInterestRepaidAmount = BigDecimal(-35.76),
-                total                          = BigDecimal(36.08)
+                periodStartDate                = actualRepayments.periodStartDate,
+                periodEndDate                  = actualRepayments.periodEndDate,
+                actualRepaymentsAmount         = actualRepayments.total,
+                repaymentsInterestRepaidAmount = interestRepayments.total * -1,
+                total                          = actualRepayments.total + (interestRepayments.total * -1)
               )
             )
           )
@@ -148,39 +152,38 @@ class GamblingRepaymentsController @Inject() (
             )
           )
 
-        case _ =>
-          val today = LocalDate.now()
-          val periodStart = today.minusMonths(18).withDayOfMonth(1)
-          val periodEnd = today.plusMonths(3).withDayOfMonth(today.lengthOfMonth())
-          val windowMonths = (periodEnd.getYear - periodStart.getYear) * 12 +
-            (periodEnd.getMonthValue - periodStart.getMonthValue) + 1
-
-          val allRecords = (1 to recordCount).map { i =>
-            val monthOffset = (i - 1) % windowMonths
-            val transactionDate = periodStart.plusMonths(monthOffset)
-            val amount = BigDecimal(i * 100) + BigDecimal(0.23)
-
-            ActualRepaymentItem(
-              transactionDate = transactionDate,
-              amount          = amount
-            )
-          }
-
-          val from = (pageNo - 1) * pageSize
-          val page = allRecords.slice(from, from + pageSize)
-
-          Ok(
-            Json.toJson(
-              ActualRepayments(
-                periodStartDate = Some(periodStart),
-                periodEndDate   = Some(periodEnd),
-                total           = allRecords.map(_.amount).sum,
-                totalRecords    = recordCount,
-                items           = page
-              )
-            )
-          )
+        case _ => Ok(Json.toJson(createRepayments(recordCount, pageNo, pageSize, actualRepaymentsOffset)))
       }
     }
+  }
+
+  private def createRepayments(recordCount: Int, pageNo: Int, pageSize: Int, offset: BigDecimal) = {
+    val today = LocalDate.now()
+    val periodStart = today.minusMonths(18).withDayOfMonth(1)
+    val periodEnd = today.plusMonths(3).withDayOfMonth(today.lengthOfMonth())
+    val windowMonths = (periodEnd.getYear - periodStart.getYear) * 12 +
+      (periodEnd.getMonthValue - periodStart.getMonthValue) + 1
+
+    val allRecords = (1 to recordCount).map { i =>
+      val monthOffset = (i - 1) % windowMonths
+      val transactionDate = periodStart.plusMonths(monthOffset)
+      val amount = BigDecimal(i * 100) + offset
+
+      ActualRepaymentItem(
+        transactionDate = transactionDate,
+        amount          = amount
+      )
+    }
+
+    val from = (pageNo - 1) * pageSize
+    val page = allRecords.slice(from, from + pageSize)
+
+    ActualRepayments(
+      periodStartDate = Some(periodStart),
+      periodEndDate   = Some(periodEnd),
+      total           = allRecords.map(_.amount).sum,
+      totalRecords    = recordCount,
+      items           = page
+    )
   }
 }
