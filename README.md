@@ -421,6 +421,15 @@ See [docs/repayment-summary.md](docs/repayment-summary.md) for full details incl
 See [docs/assessments-in-absence-of-returns.md](docs/repayment-summary.md) for full details including regime validation, all response scenarios, and example curl commands.
 
 ---
+
+### 7. RepaymentInterestRepaid
+
+`GET /gambling/repayment-interest-repaid/{regime}/{regNumber}`
+
+See [docs/repayment-interest-repaid.md](docs/repayment-interest-repaid.md) for full details including regime validation, reg number encoding convention, item structure , all response scenarios, and example curl commands.
+
+---
+
 ### 8. MGD Details
 
 `GET /gambling/mgd-details/mgd/{mgdRegNumber}`
