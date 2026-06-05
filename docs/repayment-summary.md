@@ -63,8 +63,9 @@ Once the regime is valid, the stub derives its behaviour entirely from the reg n
 
 | 6th from last digit | Response                                         |
 |---------------------|--------------------------------------------------|
-| `1`                 | NO actualRepayments                              |
-| `2`                 | NO repaymentsInterestRepaid                      |
+| `0`                 | actualRepayments & repaymentsInterestRepaid      |
+| `1`                 | ONLY actualRepayments                            |
+| `2`                 | ONLY repaymentsInterestRepaid                    |
 | `3`                 | NO actualRepayments, NO repaymentsInterestRepaid |
 | anything else       | actualRepayments & repaymentsInterestRepaid      |
 

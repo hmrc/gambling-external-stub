@@ -84,12 +84,12 @@ class GamblingRepaymentsController @Inject() (
           val customisation = regNumber.takeRight(6).dropRight(5).toIntOption.getOrElse(0)
 
           val actualRepaymentsRecordCount = customisation match {
-            case 1 | 3 => 0
+            case 2 | 3 => 0
             case _     => recordCount
           }
 
           val interestRepaymentsRecordCount = customisation match {
-            case 2 | 3 => 0
+            case 1 | 3 => 0
             case _     => recordCount
           }
 
