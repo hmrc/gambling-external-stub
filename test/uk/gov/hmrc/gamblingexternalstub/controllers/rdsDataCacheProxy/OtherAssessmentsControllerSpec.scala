@@ -18,7 +18,9 @@ package uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import play.api.libs.json.JsArray
+import play.api.libs.json.{JsArray, Json}
+import play.api.test.FakeRequest
+import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.base.SpecBase
 
 class OtherAssessmentsControllerSpec extends AnyWordSpec with Matchers with SpecBase {
@@ -26,50 +28,79 @@ class OtherAssessmentsControllerSpec extends AnyWordSpec with Matchers with Spec
   private val app = applicationBuilder().build()
   private val controller = app.injector.instanceOf[StubController]
 
-  // Reg number convention: last 3 digits = HTTP status, 4th+5th from right = 2-digit record count
-  // e.g. XWM00003100404 (404), XWM00003100500 (500), XWM00003103200 (200, 3 records), XWM00003150200 (200, 50 records)
+  // Reg number convention: 4th+5th from left = RequestType, last 3 digits = HTTP status, 4th+5th from right = 2-digit record count, 6th from right = customisation
+  // e.g. XWM06003100404 (404), XWM06003100500 (500), XWM06003103200 (200, 3 records), XWM06003150200 (200, 50 records)
   "GamblingOtherAssessmentsController#getOtherAssessments" should {
 
-    "return 0 records for XWM00003100200 (last 3 = 200, 4th+5th from right = 00)" in {
-      val result = controller.getOtherAssessments("XWM00003100200", 1, 10, 0)
+    "return INVALID_REQUEST for XWM00003100200 - 4th+5th digits are 00" in {
+      val result = controller.getOtherAssessments("mgd", "XWM00003100200", 1, 10)(FakeRequest())
 
-      (result \ "totalRecords").as[Int]           shouldBe 0
-      (result \ "items").as[JsArray].value.length shouldBe 0
+      status(result) shouldBe BAD_REQUEST
+
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "INVALID_REQUEST",
+        "message" -> "routeURL (other-assessments) does not match requestType (00)(does not exist)"
+      )
     }
 
-    "return 3 records for XWM00003103200 (last 3 = 200, 4th+5th from right = 03)" in {
-      val result = controller.getOtherAssessments("XWM00003103200", 1, 10, 3)
+    "return 0 records for XWM06003100200 (last 3 = 200, 4th+5th from right = 00)" in {
+      val result = controller.getOtherAssessments("MGD", "XWM06003100200", 1, 10)(FakeRequest())
 
-      (result \ "totalRecords").as[Int]           shouldBe 3
-      (result \ "items").as[JsArray].value.length shouldBe 3
+      status(result) shouldBe OK
+      val json = contentAsJson(result)
+
+      (json \ "totalRecords").as[Int]           shouldBe 0
+      (json \ "items").as[JsArray].value.length shouldBe 0
     }
 
-    "return first page for XWM00003109200 (9 records) with pageNo=1 pageSize=5" in {
-      val result = controller.getOtherAssessments("XWM00003109200", 1, 5, 9)
+    "return 3 records for XWM06003103200 (last 3 = 200, 4th+5th from right = 03)" in {
+      val result = controller.getOtherAssessments("MGD", "XWM06003103200", 1, 10)(FakeRequest())
 
-      (result \ "totalRecords").as[Int]           shouldBe 9
-      (result \ "items").as[JsArray].value.length shouldBe 5
+      status(result) shouldBe OK
+      val json = contentAsJson(result)
+
+      (json \ "totalRecords").as[Int]           shouldBe 3
+      (json \ "items").as[JsArray].value.length shouldBe 3
     }
 
-    "return second page for XWM00003109200 (9 records) with pageNo=2 pageSize=5" in {
-      val result = controller.getOtherAssessments("XWM00003109200", 2, 5, 9)
+    "return first page for XWM06003109200 (9 records) with pageNo=1 pageSize=5" in {
+      val result = controller.getOtherAssessments("MGD", "XWM06003109200", 1, 5)(FakeRequest())
 
-      (result \ "totalRecords").as[Int]           shouldBe 9
-      (result \ "items").as[JsArray].value.length shouldBe 4
+      status(result) shouldBe OK
+      val json = contentAsJson(result)
+
+      (json \ "totalRecords").as[Int]           shouldBe 9
+      (json \ "items").as[JsArray].value.length shouldBe 5
     }
 
-    "return 50 total records for XWM00003150200 with pageNo=1 pageSize=10" in {
-      val result = controller.getOtherAssessments("XWM00003150200", 1, 10, 50)
+    "return second page for XWM06003109200 (9 records) with pageNo=2 pageSize=5" in {
+      val result = controller.getOtherAssessments("MGD", "XWM06003109200", 2, 5)(FakeRequest())
 
-      (result \ "totalRecords").as[Int]           shouldBe 50
-      (result \ "items").as[JsArray].value.length shouldBe 10
+      status(result) shouldBe OK
+      val json = contentAsJson(result)
+
+      (json \ "totalRecords").as[Int]           shouldBe 9
+      (json \ "items").as[JsArray].value.length shouldBe 4
     }
 
-    "return last page for XWM00003150200 with pageNo=5 pageSize=10" in {
-      val result = controller.getOtherAssessments("XWM00003150200", 5, 10, 50)
+    "return 50 total records for XWM06003150200 with pageNo=1 pageSize=10" in {
+      val result = controller.getOtherAssessments("MGD", "XWM06003150200", 1, 10)(FakeRequest())
 
-      (result \ "totalRecords").as[Int]           shouldBe 50
-      (result \ "items").as[JsArray].value.length shouldBe 10
+      status(result) shouldBe OK
+      val json = contentAsJson(result)
+
+      (json \ "totalRecords").as[Int]           shouldBe 50
+      (json \ "items").as[JsArray].value.length shouldBe 10
+    }
+
+    "return last page for XWM06003150200 with pageNo=5 pageSize=10" in {
+      val result = controller.getOtherAssessments("MGD", "XWM06003150200", 5, 10)(FakeRequest())
+
+      status(result) shouldBe OK
+      val json = contentAsJson(result)
+
+      (json \ "totalRecords").as[Int]           shouldBe 50
+      (json \ "items").as[JsArray].value.length shouldBe 10
     }
   }
 }
