@@ -13,7 +13,7 @@ http://localhost:10405/rds-datacache-proxy/gambling/other-assessments/{regime}/{
 
 Controller mapping:
 
-`uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingOtherAssessmentsController.getOtherAssessments(regime: String, regNumber: String, pageNo: Int, pageSize: Int)`
+`uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.OtherAssessmentsT.getOtherAssessments(regime: String, regNumber: String, pageNo: Int, pageSize: Int)`
 
 
 Query parameters:

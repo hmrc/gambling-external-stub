@@ -16,158 +16,50 @@
 
 package uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy
 
-import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.gamblingexternalstub.models.*
-import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-import java.time.LocalDate
-import javax.inject.Inject
+trait GamblingReallocationsController extends itemDates {
 
-class GamblingReallocationsController @Inject() (
-  cc: ControllerComponents
-) extends BackendController(cc) {
-
-  def getReallocationsIn(regime: String, regNumber: String, pageNo: Int, pageSize: Int): Action[AnyContent] = {
-    getReallocations(regime, regNumber, pageNo, pageSize, 1, 0)
-  }
-
-  def getReallocationsOut(regime: String, regNumber: String, pageNo: Int, pageSize: Int): Action[AnyContent] = {
-    getReallocations(regime, regNumber, pageNo, pageSize, -1, 33.33)
-  }
-
-  def getReallocationsDetails(regime: String, regNumber: String): Action[AnyContent] = {
-    reallocationsDetails(regime, regNumber)
-  }
-
-  private def getReallocations(
-    regime: String,
+  def getReallocations(
     regNumber: String,
     pageNo: Int,
     pageSize: Int,
-    amountSign: Int,
-    offset: BigDecimal
-  ): Action[AnyContent] = Action { _ =>
-    if (Regime.fromString(regime).isEmpty) {
-      BadRequest(
-        Json.obj(
-          "code"    -> "INVALID_REGIME",
-          "message" -> s"regime must be one of: ${Regime.validCodes}"
-        )
-      )
-    } else {
-      val statusCode = regNumber.takeRight(3).toIntOption.getOrElse(200)
-
-      statusCode match {
-
-        case 400 =>
-          BadRequest(
-            Json.obj(
-              "code"    -> "INVALID_REQUEST",
-              "message" -> "Bad request"
-            )
-          )
-
-        case 401 =>
-          Unauthorized(
-            Json.obj(
-              "code"    -> "UNAUTHORIZED",
-              "message" -> "Unauthorized to access this resource"
-            )
-          )
-
-        case 404 =>
-          NotFound(
-            Json.obj(
-              "code"    -> "NOT_FOUND",
-              "message" -> "No reallocations found for the given registration number"
-            )
-          )
-
-        case 500 =>
-          InternalServerError(
-            Json.obj(
-              "code"    -> "UNEXPECTED_ERROR",
-              "message" -> "Unexpected error occurred"
-            )
-          )
-
-        case _ => Ok(Json.toJson(createReallocations(regNumber, pageNo, pageSize, amountSign, offset)))
-      }
+    recordCount: Int,
+    customisation: Int,
+  ): JsValue = {
+    customisation match {
+      case 0 => getReallocationsDetails(regNumber)
+      case 1 => getReallocationsIn(regNumber, pageNo, pageSize)
+      case 2 => getReallocationsOut(regNumber, pageNo, pageSize)
     }
   }
 
-  private def reallocationsDetails(regime: String, regNumber: String): Action[AnyContent] = Action { _ =>
-    if (Regime.fromString(regime).isEmpty) {
-      BadRequest(
-        Json.obj(
-          "code"    -> "INVALID_REGIME",
-          "message" -> s"regime must be one of: ${Regime.validCodes}"
-        )
+  private def getReallocationsDetails(regNumber: String): JsValue = {
+    val reallocationsIn = createReallocations(regNumber, 1, 10, 1, 0)
+    val reallocationsOut = createReallocations(regNumber, 1, 10, -1, 33.33)
+
+    Json.toJson(
+      ReallocationsDetails(
+        periodStartDate        = reallocationsIn.periodStartDate,
+        periodEndDate          = reallocationsIn.periodEndDate,
+        reallocationsInAmount  = reallocationsIn.total.getOrElse(0),
+        reallocationsOutAmount = reallocationsOut.total.getOrElse(0),
+        total                  = (reallocationsIn.total.getOrElse(BigDecimal(0)) + reallocationsOut.total.getOrElse(BigDecimal(0))).abs * -1
       )
-    } else {
-      val statusCode = regNumber.takeRight(3).toIntOption.getOrElse(200)
+    )
+  }
 
-      statusCode match {
-        case 400 =>
-          BadRequest(
-            Json.obj(
-              "code"    -> "INVALID_REQUEST",
-              "message" -> "Bad request"
-            )
-          )
+  private def getReallocationsIn(regNumber: String, pageNo: Int, pageSize: Int): JsValue = {
+    Json.toJson(createReallocations(regNumber, pageNo, pageSize, 1, 0))
+  }
 
-        case 401 =>
-          Unauthorized(
-            Json.obj(
-              "code"    -> "UNAUTHORIZED",
-              "message" -> "Unauthorized to access this resource"
-            )
-          )
-
-        case 404 =>
-          NotFound(
-            Json.obj(
-              "code"    -> "NOT_FOUND",
-              "message" -> "No reallocations found for the given registration number"
-            )
-          )
-
-        case 500 =>
-          InternalServerError(
-            Json.obj(
-              "code"    -> "UNEXPECTED_ERROR",
-              "message" -> "Unexpected error occurred"
-            )
-          )
-
-        case _ =>
-          val reallocationsIn = createReallocations(regNumber, 1, 10, 1, 0)
-          val reallocationsOut = createReallocations(regNumber, 1, 10, -1, 33.33)
-
-          Ok(
-            Json.toJson(
-              ReallocationsDetails(
-                periodStartDate        = reallocationsIn.periodStartDate,
-                periodEndDate          = reallocationsIn.periodEndDate,
-                reallocationsInAmount  = reallocationsIn.total.getOrElse(0),
-                reallocationsOutAmount = reallocationsOut.total.getOrElse(0),
-                total                  = (reallocationsIn.total.getOrElse(BigDecimal(0)) + reallocationsOut.total.getOrElse(BigDecimal(0))).abs * -1
-              )
-            )
-          )
-      }
-    }
+  private def getReallocationsOut(regNumber: String, pageNo: Int, pageSize: Int): JsValue = {
+    Json.toJson(createReallocations(regNumber, pageNo, pageSize, -1, 33.33))
   }
 
   private def createReallocations(regNumber: String, pageNo: Int, pageSize: Int, amountSign: Int, offset: BigDecimal): Reallocations = {
     val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
-
-    val today = LocalDate.now()
-    val periodStart = today.minusMonths(18).withDayOfMonth(1)
-    val periodEnd = today.withDayOfMonth(today.lengthOfMonth())
-    val windowMonths = (periodEnd.getYear - periodStart.getYear) * 12 +
-      (periodEnd.getMonthValue - periodStart.getMonthValue) + 1
 
     val allRecords = (1 to recordCount).map { i =>
       val monthOffset = (i - 1) % windowMonths

@@ -19,9 +19,9 @@ package uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.gamblingexternalstub.models.*
 
-trait GamblingAssessmentsInAbsenceOfReturnsController extends itemDates {
+trait OtherAssessmentsT extends itemDates {
 
-  def getAssessmentsInAbsenceOfReturns(
+  def getOtherAssessments(
     regNumber: String,
     pageNo: Int,
     pageSize: Int,

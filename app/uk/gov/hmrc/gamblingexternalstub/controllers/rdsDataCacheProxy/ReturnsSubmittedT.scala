@@ -19,37 +19,31 @@ package uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.gamblingexternalstub.models.*
 
-trait GamblingAssessmentsInAbsenceOfReturnsController extends itemDates {
-
-  def getAssessmentsInAbsenceOfReturns(
-    regNumber: String,
-    pageNo: Int,
-    pageSize: Int,
-    recordCount: Int
-  ): JsValue = {
+trait ReturnsSubmittedT extends defaultDates {
+  def getReturnsSubmitted2(regNumber: String, pageNo: Int, pageSize: Int, recordCount: Int): JsValue = {
 
     val allRecords = (1 to recordCount).map { i =>
       val monthOffset = (i - 1) % windowMonths
-      val dateRaised = periodStart.plusMonths(monthOffset)
-      AssessmentItem(
-        dateRaised      = Some(dateRaised),
-        periodStartDate = Some(periodStartItem),
-        periodEndDate   = Some(periodEndItem),
-        amount          = Some(BigDecimal(i * 100) * -1)
+      val start = periodStart.plusMonths(monthOffset)
+      AmountDeclared(
+        descriptionCode = Some(i),
+        periodStartDate = Some(start),
+        periodEndDate   = Some(start.withDayOfMonth(start.lengthOfMonth())),
+        amount          = Some(BigDecimal(i * 100))
       )
     }
-
     val from = (pageNo - 1) * pageSize
     val page = allRecords.slice(from, from + pageSize)
 
     Json.toJson(
-      Assessments(
-        periodStartDate = Some(periodStart),
-        periodEndDate   = Some(periodEnd),
-        total           = Some(allRecords.flatMap(_.amount).sum),
-        totalRecords    = Some(recordCount),
-        items           = page
+      ReturnsSubmitted(
+        periodStartDate    = Some(periodStart),
+        periodEndDate      = Some(periodEnd),
+        total              = Some(allRecords.flatMap(_.amount).sum),
+        totalPeriodRecords = Some(recordCount),
+        amountDeclared     = page
       )
     )
+
   }
 }

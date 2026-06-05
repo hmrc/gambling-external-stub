@@ -13,7 +13,7 @@ http://localhost:10405/rds-datacache-proxy/gambling/returns-submitted/{regime}/{
 ```
 
 Controller mapping:
-`uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingReturnsController.getReturnsSubmitted(regime: String, regNumber: String, pageNo: Int, pageSize: Int)`
+`uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.ReturnsSubmittedT.getReturnsSubmitted(regime: String, regNumber: String, pageNo: Int, pageSize: Int)`
 
 Query parameters:
 

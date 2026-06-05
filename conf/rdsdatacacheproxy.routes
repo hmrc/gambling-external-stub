@@ -1,27 +1,30 @@
 
 #Stubbed rds-cache-proxy
 
-GET     /gambling/return-summary/:mgdRegNumber                  uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getReturnSummary(mgdRegNumber: String)
+GET     /gambling/return-summary/:mgdRegNumber                          uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getReturnSummary(mgdRegNumber: String)
 
-GET     /gambling/business-name/:mgdRegNumber                   uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getBusinessName(mgdRegNumber: String)
+GET     /gambling/business-name/:mgdRegNumber                           uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getBusinessName(mgdRegNumber: String)
 
-GET     /gambling/business-details/:mgdRegNumber                uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getBusinessDetails(mgdRegNumber: String)
+GET     /gambling/business-details/:mgdRegNumber                        uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getBusinessDetails(mgdRegNumber: String)
 
-GET     /gambling/mgd-certificate/:mgdRegNumber                 uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getMgdCertificate(mgdRegNumber: String)
+GET     /gambling/mgd-certificate/:mgdRegNumber                         uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getMgdCertificate(mgdRegNumber: String)
 
-GET     /gambling/operator-details/:mgdRegNumber                uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getOperatorDetails(mgdRegNumber: String)
+GET     /gambling/operator-details/:mgdRegNumber                        uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getOperatorDetails(mgdRegNumber: String)
 
-GET     /gambling/returns-submitted/:regime/:regNumber          uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingReturnsController.getReturnsSubmitted(regime: String, regNumber: String, pageNo: Int ?=1, pageSize: Int ?=10)
+GET     /gambling/returns-submitted/:regime/:regNumber                  uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.StubController.getReturnsSubmitted(regime: String, regNumber: String, pageNo: Int ?=1, pageSize: Int ?=10)
+GET     /gambling/assessments-without-returns/:regime/:regNumber        uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.StubController.getAssessmentsInAbsenceOfReturns(regime: String, regNumber: String, pageNo: Int ?=1, pageSize: Int ?=10)
 
-GET     /gambling/reallocations-in/:regime/:regNumber           uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingReallocationsController.getReallocationsIn(regime: String, regNumber: String, pageNo: Int ?=1, pageSize: Int ?=10)
-GET     /gambling/reallocations-out/:regime/:regNumber          uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingReallocationsController.getReallocationsOut(regime: String, regNumber: String, pageNo: Int ?=1, pageSize: Int ?=10)
-GET     /gambling/reallocations-details/:regime/:regNumber      uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingReallocationsController.getReallocationsDetails(regime: String, regNumber: String)
+GET     /gambling/other-assessments/:regime/:regNumber                  uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.StubController.getOtherAssessments(regime: String, regNumber: String, pageNo: Int ?=1, pageSize: Int ?=10)
+
+GET     /gambling/reallocations-in/:regime/:regNumber           uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.StubController.getReallocationsIn(regime: String, regNumber: String, pageNo: Int ?=1, pageSize: Int ?=10)
+GET     /gambling/reallocations-out/:regime/:regNumber          uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.StubController.getReallocationsOut(regime: String, regNumber: String, pageNo: Int ?=1, pageSize: Int ?=10)
+GET     /gambling/reallocations-details/:regime/:regNumber      uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.StubController.getReallocationsDetails(regime: String, regNumber: String)
 
 GET     /gambling/business-contact-details/mgd/:mgdRegNumber    uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingBusinessContactDetailsController.getBusinessContactDetails(mgdRegNumber: String)
 
 GET  /gambling/mgd-details/mgd/:mgdRegNumber  uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getMgdDetails(mgdRegNumber: String)
 
-GET     /gambling/other-assessments/:regime/:regNumber          uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingOtherAssessmentsController.getOtherAssessments(regime: String, regNumber: String, pageNo: Int ?=1, pageSize: Int ?=10)
+
 
 GET     /gambling/penalties/:regime/:regNumber                  uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingPenaltiesController.getPenalties(regime: String, regNumber: String, pageNo: Int ?=1, pageSize: Int ?=10)
 
@@ -31,4 +34,3 @@ GET     /gambling/repayment-summary/:regime/:regNumber          uk.gov.hmrc.gamb
 
 GET     /gambling/actual-repayments/:regime/:regNumber          uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingRepaymentsController.getActualRepayments(regime: String, regNumber: String, pageNo: Int ?=1, pageSize: Int ?=10)
 
-GET     /gambling/assessments-without-returns/:regime/:regNumber          uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingAssessmentsInAbsenceOfReturnsController.getAssessmentsInAbsenceOfReturns(regime: String, regNumber: String, pageNo: Int ?=1, pageSize: Int ?=10)
