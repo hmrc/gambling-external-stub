@@ -41,19 +41,19 @@ class GamblingReallocationsControllerSpec extends AnyWordSpec with Matchers with
       )
     }
 
-    "return INVALID_REQUEST for XWM05003300200 - 4th+5th digits are 05, 6th from last is 3" in {
-      val result = controller.getReallocationsDetails("mgd", "XWM05003300200")(FakeRequest())
+    "return INVALID_REQUEST for XWM05003400200 - 4th+5th digits are 05, 6th from last is 4" in {
+      val result = controller.getReallocationsDetails("mgd", "XWM05003400200")(FakeRequest())
 
       status(result) shouldBe BAD_REQUEST
 
       contentAsJson(result) shouldBe Json.obj(
         "code"    -> "INVALID_REQUEST",
-        "message" -> "routeURL (reallocations-details) has an invalid customisation (3)"
+        "message" -> "routeURL (reallocations-details) has an invalid customisation (4)"
       )
     }
 
-    "return 0.00  XWM05003100200" in {
-      val result = controller.getReallocationsDetails("MGD", "XWM05003000200")(FakeRequest())
+    "return 0.00 XWM05003399200 for customisation = 3" in {
+      val result = controller.getReallocationsDetails("MGD", "XWM05003399200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
@@ -63,55 +63,39 @@ class GamblingReallocationsControllerSpec extends AnyWordSpec with Matchers with
       (json \ "total").as[BigDecimal]                  shouldBe 0.00
     }
 
-    "return 3 records for XWM05003103200" in {
+    "return 3 records for IN & OUT Amounts for XWM05003003200 for customisation = 0" in {
+      val result = controller.getReallocationsDetails("MGD", "XWM05003003200")(FakeRequest())
+
+      status(result) shouldBe OK
+      val json = contentAsJson(result)
+
+      (json \ "reallocationsInAmount").as[BigDecimal]  shouldBe 600.00
+      (json \ "reallocationsOutAmount").as[BigDecimal] shouldBe -699.99
+      (json \ "total").as[BigDecimal]                  shouldBe -99.99
+    }
+
+    "return 3 records for reallocationsInAmount & 0 records for reallocationsOutAmount for XWM05003103200 for customisation = 1" in {
       val result = controller.getReallocationsDetails("MGD", "XWM05003103200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
 
-      (json \ "totalRecords").as[Int]           shouldBe 3
-      (json \ "items").as[JsArray].value.length shouldBe 3
+      (json \ "reallocationsInAmount").as[BigDecimal] shouldBe 600.00
+      (json \ "reallocationsOutAmount").as[BigDecimal] shouldBe 0.00
+      (json \ "total").as[BigDecimal] shouldBe -600.00
     }
 
-    "return first page for XWM05003109200 with pageNo=1 pageSize=5" in {
-      val result = controller.getReallocationsDetails("MGD", "XWM05003109200")(FakeRequest())
+    "return 0 records for reallocationsInAmount & 3 records for reallocationsOutAmount for XWM05003203200 for customisation = 2" in {
+      val result = controller.getReallocationsDetails("MGD", "XWM05003203200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
 
-      (json \ "totalRecords").as[Int]           shouldBe 9
-      (json \ "items").as[JsArray].value.length shouldBe 5
+      (json \ "reallocationsInAmount").as[BigDecimal] shouldBe 0.00
+      (json \ "reallocationsOutAmount").as[BigDecimal] shouldBe -699.99
+      (json \ "total").as[BigDecimal] shouldBe -699.99
     }
 
-    "return second page for XWM05003109200 with pageNo=2 pageSize=5" in {
-      val result = controller.getReallocationsDetails("MGD", "XWM05003109200")(FakeRequest())
-
-      status(result) shouldBe OK
-      val json = contentAsJson(result)
-
-      (json \ "totalRecords").as[Int]           shouldBe 9
-      (json \ "items").as[JsArray].value.length shouldBe 4
-    }
-
-    "return 50 total records for XWM05003150200 with pageNo=1 pageSize=10" in {
-      val result = controller.getReallocationsDetails("MGD", "XWM05003150200")(FakeRequest())
-
-      status(result) shouldBe OK
-      val json = contentAsJson(result)
-
-      (json \ "totalRecords").as[Int]           shouldBe 50
-      (json \ "items").as[JsArray].value.length shouldBe 10
-    }
-
-    "return last page for XWM05003150200 with pageNo=5 pageSize=10" in {
-      val result = controller.getReallocationsDetails("MGD", "XWM05003150200")(FakeRequest())
-
-      status(result) shouldBe OK
-      val json = contentAsJson(result)
-
-      (json \ "totalRecords").as[Int]           shouldBe 50
-      (json \ "items").as[JsArray].value.length shouldBe 10
-    }
   }
 
 //  "GamblingReallocationsController#getReallocations IN" should {
