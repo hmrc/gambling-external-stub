@@ -516,6 +516,80 @@ class GamblingController @Inject() (
     }
   }
 
+  def getTradeClassDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
+
+    mgdRegNumber match {
+
+      case "invalid" =>
+        BadRequest(
+          Json.obj(
+            "code"    -> "INVALID_MGD_REG_NUMBER",
+            "message" -> "mgdRegNumber must be provided"
+          )
+        )
+
+      case "error" =>
+        InternalServerError(
+          Json.obj(
+            "code"    -> "UNEXPECTED_ERROR",
+            "message" -> "Unexpected error occurred"
+          )
+        )
+
+      // Scenario 1
+      case "XGM00000001761" =>
+        Ok(
+          Json.toJson(
+            TradeClassDetails(
+              mgdRegNumber         = mgdRegNumber,
+              businessTradeClass   = Some(1),
+              businessActivityDesc = "Adult Gaming Centre",
+              systemDate           = Some(LocalDate.parse("2026-06-02"))
+            )
+          )
+        )
+
+      // Scenario 2
+      case "XGM00000001762" =>
+        Ok(
+          Json.toJson(
+            TradeClassDetails(
+              mgdRegNumber         = mgdRegNumber,
+              businessTradeClass   = Some(2),
+              businessActivityDesc = "Bingo",
+              systemDate           = Some(LocalDate.parse("2026-06-02"))
+            )
+          )
+        )
+
+      // Scenario 3 - no data
+      case "XMM00000000993" =>
+        Ok(
+          Json.toJson(
+            TradeClassDetails(
+              mgdRegNumber         = "",
+              businessTradeClass   = None,
+              businessActivityDesc = "",
+              systemDate           = None
+            )
+          )
+        )
+
+      // Default
+      case reg =>
+        Ok(
+          Json.toJson(
+            TradeClassDetails(
+              mgdRegNumber         = reg,
+              businessTradeClass   = Some(3),
+              businessActivityDesc = "Family Entertainment Centre",
+              systemDate           = Some(LocalDate.parse("2026-05-31"))
+            )
+          )
+        )
+    }
+  }
+
   def getMgdDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
 
     mgdRegNumber match {
@@ -535,7 +609,7 @@ class GamblingController @Inject() (
             "message" -> "Unexpected error occurred"
           )
         )
-      case "XMM00000000992" =>
+      case "XGM00000001761" =>
         Ok(
           Json.toJson(
             MgdDetails(
