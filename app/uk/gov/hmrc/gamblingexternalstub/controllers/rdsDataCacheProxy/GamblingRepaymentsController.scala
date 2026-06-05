@@ -81,9 +81,20 @@ class GamblingRepaymentsController @Inject() (
 
         case _ =>
           val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
+          val customisation = regNumber.takeRight(6).dropRight(5).toIntOption.getOrElse(0)
+          
+          val actualRepaymentsRecordCount = customisation match {
+            case 1 | 3 => 0
+            case _ => recordCount
+          }
 
-          val actualRepayments = createRepayments(recordCount, 1, 10, actualRepaymentsOffset)
-          val interestRepayments = createRepayments(recordCount, 1, 10, interestRepaymentsOffset)
+          val interestRepaymentsRecordCount = customisation match {
+            case 2 | 3 => 0
+            case _ => recordCount
+          }
+
+          val actualRepayments = createRepayments(actualRepaymentsRecordCount, 1, 10, actualRepaymentsOffset)
+          val interestRepayments = createRepayments(interestRepaymentsRecordCount, 1, 10, interestRepaymentsOffset)
 
           Ok(
             Json.toJson(
