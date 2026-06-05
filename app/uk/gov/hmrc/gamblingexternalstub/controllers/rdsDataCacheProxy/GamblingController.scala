@@ -523,7 +523,7 @@ class GamblingController @Inject() (
       case "invalid" =>
         BadRequest(
           Json.obj(
-            "code" -> "INVALID_MGD_REG_NUMBER",
+            "code"    -> "INVALID_MGD_REG_NUMBER",
             "message" -> "mgdRegNumber must be provided"
           )
         )
@@ -531,7 +531,7 @@ class GamblingController @Inject() (
       case "error" =>
         InternalServerError(
           Json.obj(
-            "code" -> "UNEXPECTED_ERROR",
+            "code"    -> "UNEXPECTED_ERROR",
             "message" -> "Unexpected error occurred"
           )
         )
@@ -541,10 +541,10 @@ class GamblingController @Inject() (
         Ok(
           Json.toJson(
             TradeClassDetails(
-              mgdRegNumber = mgdRegNumber,
-              businessTradeClass = Some(1),
+              mgdRegNumber         = mgdRegNumber,
+              businessTradeClass   = Some(1),
               businessActivityDesc = "Adult Gaming Centre",
-              systemDate = Some(LocalDate.parse("2026-06-02"))
+              systemDate           = Some(LocalDate.parse("2026-06-02"))
             )
           )
         )
@@ -554,10 +554,10 @@ class GamblingController @Inject() (
         Ok(
           Json.toJson(
             TradeClassDetails(
-              mgdRegNumber = mgdRegNumber,
-              businessTradeClass = Some(2),
+              mgdRegNumber         = mgdRegNumber,
+              businessTradeClass   = Some(2),
               businessActivityDesc = "Bingo",
-              systemDate = Some(LocalDate.parse("2026-06-02"))
+              systemDate           = Some(LocalDate.parse("2026-06-02"))
             )
           )
         )
@@ -567,10 +567,10 @@ class GamblingController @Inject() (
         Ok(
           Json.toJson(
             TradeClassDetails(
-              mgdRegNumber = "",
-              businessTradeClass = None,
+              mgdRegNumber         = "",
+              businessTradeClass   = None,
               businessActivityDesc = "",
-              systemDate = None
+              systemDate           = None
             )
           )
         )
@@ -580,10 +580,10 @@ class GamblingController @Inject() (
         Ok(
           Json.toJson(
             TradeClassDetails(
-              mgdRegNumber = reg,
-              businessTradeClass = Some(3),
+              mgdRegNumber         = reg,
+              businessTradeClass   = Some(3),
               businessActivityDesc = "Family Entertainment Centre",
-              systemDate = Some(LocalDate.parse("2026-05-31"))
+              systemDate           = Some(LocalDate.parse("2026-05-31"))
             )
           )
         )

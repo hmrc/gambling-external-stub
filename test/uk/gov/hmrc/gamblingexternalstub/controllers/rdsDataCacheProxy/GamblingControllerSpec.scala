@@ -101,10 +101,10 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
       contentAsJson(result) shouldBe Json.toJson(
         TradeClassDetails(
-          mgdRegNumber = "XGM00000001761",
-          businessTradeClass = Some(1),
+          mgdRegNumber         = "XGM00000001761",
+          businessTradeClass   = Some(1),
           businessActivityDesc = "Adult Gaming Centre",
-          systemDate = Some(LocalDate.parse("2026-06-02"))
+          systemDate           = Some(LocalDate.parse("2026-06-02"))
         )
       )
     }
@@ -117,10 +117,10 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
       contentAsJson(result) shouldBe Json.toJson(
         TradeClassDetails(
-          mgdRegNumber = "XGM00000001762",
-          businessTradeClass = Some(2),
+          mgdRegNumber         = "XGM00000001762",
+          businessTradeClass   = Some(2),
           businessActivityDesc = "Bingo",
-          systemDate = Some(LocalDate.parse("2026-06-02"))
+          systemDate           = Some(LocalDate.parse("2026-06-02"))
         )
       )
     }
@@ -133,10 +133,10 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
       contentAsJson(result) shouldBe Json.toJson(
         TradeClassDetails(
-          mgdRegNumber = "",
-          businessTradeClass = None,
+          mgdRegNumber         = "",
+          businessTradeClass   = None,
           businessActivityDesc = "",
-          systemDate = None
+          systemDate           = None
         )
       )
     }
@@ -149,10 +149,10 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
       contentAsJson(result) shouldBe Json.toJson(
         TradeClassDetails(
-          mgdRegNumber = "GAM9999999999",
-          businessTradeClass = Some(3),
+          mgdRegNumber         = "GAM9999999999",
+          businessTradeClass   = Some(3),
           businessActivityDesc = "Family Entertainment Centre",
-          systemDate = Some(LocalDate.parse("2026-05-31"))
+          systemDate           = Some(LocalDate.parse("2026-05-31"))
         )
       )
     }
@@ -164,7 +164,7 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       status(result) shouldBe BAD_REQUEST
 
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "INVALID_MGD_REG_NUMBER",
+        "code"    -> "INVALID_MGD_REG_NUMBER",
         "message" -> "mgdRegNumber must be provided"
       )
     }
@@ -176,7 +176,7 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       status(result) shouldBe INTERNAL_SERVER_ERROR
 
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "UNEXPECTED_ERROR",
+        "code"    -> "UNEXPECTED_ERROR",
         "message" -> "Unexpected error occurred"
       )
     }
