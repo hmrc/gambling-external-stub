@@ -90,7 +90,7 @@ class GamblingRepaymentsControllerSpec extends AnyWordSpec with Matchers with Sp
       )
     }
 
-    "return correct totalRecords for XWM00003003200 (actualRepayments = 3 records)  (repaymentsInterestRepaid = 3 records) 6th from last = 0"in {
+    "return correct totalRecords for XWM00003003200 (actualRepayments = 3 records)  (repaymentsInterestRepaid = 3 records) 6th from last = 0" in {
       val result = controller.getRepaymentsSummary("MGD", "XWM00003003200")(FakeRequest())
 
       status(result) shouldBe OK
@@ -105,9 +105,9 @@ class GamblingRepaymentsControllerSpec extends AnyWordSpec with Matchers with Sp
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "actualRepaymentsAmount").as[BigDecimal] shouldBe BigDecimal(0.00)
+      (json \ "actualRepaymentsAmount").as[BigDecimal]         shouldBe BigDecimal(0.00)
       (json \ "repaymentsInterestRepaidAmount").as[BigDecimal] shouldBe BigDecimal(-600.33)
-      (json \ "total").as[BigDecimal] shouldBe BigDecimal(-600.33)
+      (json \ "total").as[BigDecimal]                          shouldBe BigDecimal(-600.33)
     }
 
     "return correct totalRecords for XWM00003203200 (actualRepayments = 3 records)  (repaymentsInterestRepaid = 0 records) 6th from last = 2" in {
@@ -115,9 +115,9 @@ class GamblingRepaymentsControllerSpec extends AnyWordSpec with Matchers with Sp
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "actualRepaymentsAmount").as[BigDecimal] shouldBe BigDecimal(600.69)
+      (json \ "actualRepaymentsAmount").as[BigDecimal]         shouldBe BigDecimal(600.69)
       (json \ "repaymentsInterestRepaidAmount").as[BigDecimal] shouldBe BigDecimal(0.00)
-      (json \ "total").as[BigDecimal] shouldBe BigDecimal(600.69)
+      (json \ "total").as[BigDecimal]                          shouldBe BigDecimal(600.69)
     }
 
     "return correct totalRecords for XWM00003303200 (actualRepayments = 0 records)  (repaymentsInterestRepaid = 0 records) 6th from last = 3" in {
@@ -125,9 +125,9 @@ class GamblingRepaymentsControllerSpec extends AnyWordSpec with Matchers with Sp
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "actualRepaymentsAmount").as[BigDecimal] shouldBe BigDecimal(0.00)
+      (json \ "actualRepaymentsAmount").as[BigDecimal]         shouldBe BigDecimal(0.00)
       (json \ "repaymentsInterestRepaidAmount").as[BigDecimal] shouldBe BigDecimal(0.00)
-      (json \ "total").as[BigDecimal] shouldBe BigDecimal(0.00)
+      (json \ "total").as[BigDecimal]                          shouldBe BigDecimal(0.00)
     }
   }
 
