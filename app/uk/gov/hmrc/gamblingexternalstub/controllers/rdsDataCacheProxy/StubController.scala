@@ -125,7 +125,9 @@ class StubController @Inject() (
           logger.info(
             s"[validateAndExecute] statusCode=$statusCode  recordCount=$recordCount  routeURL=$routeURL  requestType=$requestType($reqTypeString)  customisation=$customisation"
           )
-          System.out.println(s"[validateAndExecute] statusCode=$statusCode  recordCount=$recordCount  routeURL=$routeURL  requestType=$requestType($reqTypeString)  customisation=$customisation")
+          System.out.println(
+            s"[validateAndExecute] statusCode=$statusCode  recordCount=$recordCount  routeURL=$routeURL  requestType=$requestType($reqTypeString)  customisation=$customisation"
+          )
 
           (requestType, routeURL) match {
 
@@ -135,13 +137,13 @@ class StubController @Inject() (
 
             case ("05", "reallocations-in" | "reallocations-out" | "reallocations-details") =>
               (customisation, routeURL) match {
-                case (0, "reallocations-details") | (1, "reallocations-in") | (2, "reallocations-out") =>
+                case (0 | 1 | 2 | 3, "reallocations-details") | (4, "reallocations-in") | (5, "reallocations-out") =>
                   Ok(getReallocations(regNumber, pageNo, pageSize, recordCount, customisation))
                 case _ =>
                   BadRequest(
                     Json.obj(
                       "code"    -> "INVALID_REQUEST",
-                      "message" -> s"routeURL ($routeURL) does not match customisation ($customisation)"
+                      "message" -> s"routeURL ($routeURL) has an invalid customisation ($customisation)"
                     )
                   )
               }

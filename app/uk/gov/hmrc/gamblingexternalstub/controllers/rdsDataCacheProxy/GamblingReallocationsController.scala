@@ -26,18 +26,28 @@ trait GamblingReallocationsController extends itemDates {
     pageNo: Int,
     pageSize: Int,
     recordCount: Int,
-    customisation: Int,
+    customisation: Int
   ): JsValue = {
     customisation match {
-      case 0 => getReallocationsDetails(regNumber)
-      case 1 => getReallocationsIn(regNumber, pageNo, pageSize)
-      case 2 => getReallocationsOut(regNumber, pageNo, pageSize)
+      case 0 | 1 | 2 | 3 => getReallocationsDetails(recordCount, customisation)
+      case 4             => getReallocationsIn(pageNo, pageSize, recordCount)
+      case 5             => getReallocationsOut(pageNo, pageSize, recordCount)
     }
   }
 
-  private def getReallocationsDetails(regNumber: String): JsValue = {
-    val reallocationsIn = createReallocations(regNumber, 1, 10, 1, 0)
-    val reallocationsOut = createReallocations(regNumber, 1, 10, -1, 33.33)
+  private def getReallocationsDetails(recordCount: Int, customisation: Int): JsValue = {
+
+    val actualRepaymentsRecordCount = customisation match {
+      case 2 | 3 => 0
+      case _     => recordCount
+    }
+
+    val interestRepaymentsRecordCount = customisation match {
+      case 1 | 3 => 0
+      case _     => recordCount
+    }
+    val reallocationsIn = createReallocations(1, 10, 1, 0, actualRepaymentsRecordCount)
+    val reallocationsOut = createReallocations(1, 10, -1, 33.33, interestRepaymentsRecordCount)
 
     Json.toJson(
       ReallocationsDetails(
@@ -50,17 +60,15 @@ trait GamblingReallocationsController extends itemDates {
     )
   }
 
-  private def getReallocationsIn(regNumber: String, pageNo: Int, pageSize: Int): JsValue = {
-    Json.toJson(createReallocations(regNumber, pageNo, pageSize, 1, 0))
+  private def getReallocationsIn(pageNo: Int, pageSize: Int, recordCount: Int): JsValue = {
+    Json.toJson(createReallocations(pageNo, pageSize, 1, 0, recordCount))
   }
 
-  private def getReallocationsOut(regNumber: String, pageNo: Int, pageSize: Int): JsValue = {
-    Json.toJson(createReallocations(regNumber, pageNo, pageSize, -1, 33.33))
+  private def getReallocationsOut(pageNo: Int, pageSize: Int, recordCount: Int): JsValue = {
+    Json.toJson(createReallocations(pageNo, pageSize, -1, 33.33, recordCount))
   }
 
-  private def createReallocations(regNumber: String, pageNo: Int, pageSize: Int, amountSign: Int, offset: BigDecimal): Reallocations = {
-    val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
-
+  private def createReallocations(pageNo: Int, pageSize: Int, amountSign: Int, offset: BigDecimal, recordCount: Int): Reallocations = {
     val allRecords = (1 to recordCount).map { i =>
       val monthOffset = (i - 1) % windowMonths
       val dateProcessed = periodStart.plusMonths(monthOffset)

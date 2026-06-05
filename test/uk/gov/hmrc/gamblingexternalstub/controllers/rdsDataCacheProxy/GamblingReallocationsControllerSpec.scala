@@ -36,31 +36,31 @@ class GamblingReallocationsControllerSpec extends AnyWordSpec with Matchers with
       status(result) shouldBe BAD_REQUEST
 
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "INVALID_REQUEST",
+        "code"    -> "INVALID_REQUEST",
         "message" -> "routeURL (reallocations-details) does not match requestType (00)(does not exist)"
       )
     }
 
-    "return INVALID_REQUEST for XWM05003100200 - 4th+5th digits are 05, 6th from last is 3" in {
-      val result = controller.getReallocationsDetails("mgd", "XWM00003100200")(FakeRequest())
+    "return INVALID_REQUEST for XWM05003300200 - 4th+5th digits are 05, 6th from last is 3" in {
+      val result = controller.getReallocationsDetails("mgd", "XWM05003300200")(FakeRequest())
 
       status(result) shouldBe BAD_REQUEST
 
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "INVALID_REQUEST",
-        "message" -> "routeURL (reallocations-details) does not match requestType (00)(does not exist)"
+        "code"    -> "INVALID_REQUEST",
+        "message" -> "routeURL (reallocations-details) has an invalid customisation (3)"
       )
     }
 
-    "return 0 records for XWM05003100200" in {
+    "return 0.00  XWM05003100200" in {
       val result = controller.getReallocationsDetails("MGD", "XWM05003000200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      
-      (json \ "reallocationsInAmount").as[BigDecimal] shouldBe 0.00
+
+      (json \ "reallocationsInAmount").as[BigDecimal]  shouldBe 0.00
       (json \ "reallocationsOutAmount").as[BigDecimal] shouldBe 0.00
-      (json \ "total").as[BigDecimal] shouldBe 0.00
+      (json \ "total").as[BigDecimal]                  shouldBe 0.00
     }
 
     "return 3 records for XWM05003103200" in {
@@ -69,7 +69,7 @@ class GamblingReallocationsControllerSpec extends AnyWordSpec with Matchers with
       status(result) shouldBe OK
       val json = contentAsJson(result)
 
-      (json \ "totalRecords").as[Int] shouldBe 3
+      (json \ "totalRecords").as[Int]           shouldBe 3
       (json \ "items").as[JsArray].value.length shouldBe 3
     }
 
@@ -79,7 +79,7 @@ class GamblingReallocationsControllerSpec extends AnyWordSpec with Matchers with
       status(result) shouldBe OK
       val json = contentAsJson(result)
 
-      (json \ "totalRecords").as[Int] shouldBe 9
+      (json \ "totalRecords").as[Int]           shouldBe 9
       (json \ "items").as[JsArray].value.length shouldBe 5
     }
 
@@ -89,7 +89,7 @@ class GamblingReallocationsControllerSpec extends AnyWordSpec with Matchers with
       status(result) shouldBe OK
       val json = contentAsJson(result)
 
-      (json \ "totalRecords").as[Int] shouldBe 9
+      (json \ "totalRecords").as[Int]           shouldBe 9
       (json \ "items").as[JsArray].value.length shouldBe 4
     }
 
@@ -99,7 +99,7 @@ class GamblingReallocationsControllerSpec extends AnyWordSpec with Matchers with
       status(result) shouldBe OK
       val json = contentAsJson(result)
 
-      (json \ "totalRecords").as[Int] shouldBe 50
+      (json \ "totalRecords").as[Int]           shouldBe 50
       (json \ "items").as[JsArray].value.length shouldBe 10
     }
 
@@ -109,11 +109,11 @@ class GamblingReallocationsControllerSpec extends AnyWordSpec with Matchers with
       status(result) shouldBe OK
       val json = contentAsJson(result)
 
-      (json \ "totalRecords").as[Int] shouldBe 50
+      (json \ "totalRecords").as[Int]           shouldBe 50
       (json \ "items").as[JsArray].value.length shouldBe 10
     }
   }
-  
+
 //  "GamblingReallocationsController#getReallocations IN" should {
 //
 //    "return 0 records for XWM05003100200" in {
