@@ -472,6 +472,156 @@ class GamblingController @Inject() (
     }
   }
 
+  def getTradeClassDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
+
+    mgdRegNumber match {
+
+      case "invalid" =>
+        BadRequest(
+          Json.obj(
+            "code"    -> "INVALID_MGD_REG_NUMBER",
+            "message" -> "mgdRegNumber must be provided"
+          )
+        )
+
+      case "error" =>
+        InternalServerError(
+          Json.obj(
+            "code"    -> "UNEXPECTED_ERROR",
+            "message" -> "Unexpected error occurred"
+          )
+        )
+
+      // Scenario 1
+      case "XGM00000001761" =>
+        Ok(
+          Json.toJson(
+            TradeClassDetails(
+              mgdRegNumber         = mgdRegNumber,
+              businessTradeClass   = Some(1),
+              businessActivityDesc = "Adult Gaming Centre",
+              systemDate           = Some(LocalDate.parse("2026-06-02"))
+            )
+          )
+        )
+
+      // Scenario 2
+      case "XGM00000001762" =>
+        Ok(
+          Json.toJson(
+            TradeClassDetails(
+              mgdRegNumber         = mgdRegNumber,
+              businessTradeClass   = Some(2),
+              businessActivityDesc = "Bingo",
+              systemDate           = Some(LocalDate.parse("2026-06-02"))
+            )
+          )
+        )
+
+      // Scenario 3 - no data
+      case "XMM00000000993" =>
+        Ok(
+          Json.toJson(
+            TradeClassDetails(
+              mgdRegNumber         = "",
+              businessTradeClass   = None,
+              businessActivityDesc = "",
+              systemDate           = None
+            )
+          )
+        )
+
+      // Default
+      case reg =>
+        Ok(
+          Json.toJson(
+            TradeClassDetails(
+              mgdRegNumber         = reg,
+              businessTradeClass   = Some(3),
+              businessActivityDesc = "Family Entertainment Centre",
+              systemDate           = Some(LocalDate.parse("2026-05-31"))
+            )
+          )
+        )
+    }
+  }
+
+  def getMgdDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
+
+    mgdRegNumber match {
+
+      case "invalid" =>
+        BadRequest(
+          Json.obj(
+            "code"    -> "INVALID_MGD_REG_NUMBER",
+            "message" -> "mgdRegNumber must be provided"
+          )
+        )
+
+      case "error" =>
+        InternalServerError(
+          Json.obj(
+            "code"    -> "UNEXPECTED_ERROR",
+            "message" -> "Unexpected error occurred"
+          )
+        )
+      case "XGM00000001761" =>
+        Ok(
+          Json.toJson(
+            MgdDetails(
+              mgdRegNumber       = mgdRegNumber,
+              isBusinessSeasonal = Some(1),
+              previousMgdrn1     = Some("XMM00000000448"),
+              previousMgdrn2     = Some("XBM00000000451"),
+              previousMgdrn3     = Some("XYM00000000466"),
+              associatedMgdrn1   = Some("XZM00000000469"),
+              associatedMgdrn2   = Some("XJM00000000472"),
+              associatedMgdrn3   = Some("XPM00000000475"),
+              systemDate         = Some(LocalDate.parse("2026-06-02"))
+            )
+          )
+        )
+
+      // EVERYTHING ELSE = no data
+      case "XMM00000000993" =>
+        Ok(
+          Json.toJson(
+            MgdDetails(
+              mgdRegNumber       = "",
+              isBusinessSeasonal = None,
+              previousMgdrn1     = None,
+              previousMgdrn2     = None,
+              previousMgdrn3     = None,
+              associatedMgdrn1   = None,
+              associatedMgdrn2   = None,
+              associatedMgdrn3   = None,
+              systemDate         = None
+            )
+          )
+        )
+
+      // known good data only
+      case _ =>
+        Ok(
+          Json.toJson(
+            MgdDetails(
+              mgdRegNumber       = mgdRegNumber,
+              isBusinessSeasonal = Some(1),
+              previousMgdrn1     = Some("XWM00000001774"),
+              previousMgdrn2     = Some("XDM00000001309"),
+              previousMgdrn3     = None,
+              associatedMgdrn1   = Some("XXM00000000723"),
+              associatedMgdrn2   = Some("XQM00000001196"),
+              associatedMgdrn3   = None,
+              systemDate         = Some(LocalDate.parse("2026-05-31"))
+            )
+          )
+        )
+
+    }
+  }
+
+
   def getCorrespondenceDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
 
     mgdRegNumber match {

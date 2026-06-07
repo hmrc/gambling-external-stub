@@ -24,29 +24,16 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import java.time.LocalDate
 import javax.inject.Inject
 
-class GamblingReallocationsController @Inject() (
+class GamblingRepaymentsController @Inject() (
   cc: ControllerComponents
 ) extends BackendController(cc) {
 
-  def getReallocationsIn(regime: String, regNumber: String, pageNo: Int, pageSize: Int): Action[AnyContent] = {
-    getReallocations(regime, regNumber, pageNo, pageSize, 1, 0)
-  }
+  private val actualRepaymentsOffset = BigDecimal(0.23)
+  private val interestRepaymentsOffset = BigDecimal(0.11)
 
-  def getReallocationsOut(regime: String, regNumber: String, pageNo: Int, pageSize: Int): Action[AnyContent] = {
-    getReallocations(regime, regNumber, pageNo, pageSize, -1, 33.33)
-  }
-
-  def getReallocationsDetails(regime: String, regNumber: String): Action[AnyContent] = {
-    reallocationsDetails(regime, regNumber)
-  }
-
-  private def getReallocations(
+  def getRepaymentsSummary(
     regime: String,
-    regNumber: String,
-    pageNo: Int,
-    pageSize: Int,
-    amountSign: Int,
-    offset: BigDecimal
+    regNumber: String
   ): Action[AnyContent] = Action { _ =>
     if (Regime.fromString(regime).isEmpty) {
       BadRequest(
@@ -80,7 +67,7 @@ class GamblingReallocationsController @Inject() (
           NotFound(
             Json.obj(
               "code"    -> "NOT_FOUND",
-              "message" -> "No reallocations found for the given registration number"
+              "message" -> "No repayments found for the given registration number"
             )
           )
 
@@ -92,12 +79,34 @@ class GamblingReallocationsController @Inject() (
             )
           )
 
-        case _ => Ok(Json.toJson(createReallocations(regNumber, pageNo, pageSize, amountSign, offset)))
+        case _ =>
+          val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
+
+          val actualRepayments = createRepayments(recordCount, 1, 10, actualRepaymentsOffset)
+          val interestRepayments = createRepayments(recordCount, 1, 10, interestRepaymentsOffset)
+
+          Ok(
+            Json.toJson(
+              RepaymentsSummary(
+                periodStartDate                = actualRepayments.periodStartDate,
+                periodEndDate                  = actualRepayments.periodEndDate,
+                actualRepaymentsAmount         = actualRepayments.total,
+                repaymentsInterestRepaidAmount = interestRepayments.total * -1,
+                total                          = actualRepayments.total + (interestRepayments.total * -1)
+              )
+            )
+          )
       }
     }
   }
 
-  private def reallocationsDetails(regime: String, regNumber: String): Action[AnyContent] = Action { _ =>
+  def getActualRepayments(
+    regime: String,
+    regNumber: String,
+    pageNo: Int,
+    pageSize: Int
+  ): Action[AnyContent] = Action { _ =>
+
     if (Regime.fromString(regime).isEmpty) {
       BadRequest(
         Json.obj(
@@ -107,8 +116,10 @@ class GamblingReallocationsController @Inject() (
       )
     } else {
       val statusCode = regNumber.takeRight(3).toIntOption.getOrElse(200)
+      val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
 
       statusCode match {
+
         case 400 =>
           BadRequest(
             Json.obj(
@@ -129,7 +140,7 @@ class GamblingReallocationsController @Inject() (
           NotFound(
             Json.obj(
               "code"    -> "NOT_FOUND",
-              "message" -> "No reallocations found for the given registration number"
+              "message" -> "No repayments found for the given registration number"
             )
           )
 
@@ -141,53 +152,37 @@ class GamblingReallocationsController @Inject() (
             )
           )
 
-        case _ =>
-          val reallocationsIn = createReallocations(regNumber, 1, 10, 1, 0)
-          val reallocationsOut = createReallocations(regNumber, 1, 10, -1, 33.33)
-
-          Ok(
-            Json.toJson(
-              ReallocationsDetails(
-                periodStartDate        = reallocationsIn.periodStartDate,
-                periodEndDate          = reallocationsIn.periodEndDate,
-                reallocationsInAmount  = reallocationsIn.total.getOrElse(0),
-                reallocationsOutAmount = reallocationsOut.total.getOrElse(0),
-                total                  = (reallocationsIn.total.getOrElse(BigDecimal(0)) + reallocationsOut.total.getOrElse(BigDecimal(0))).abs * -1
-              )
-            )
-          )
+        case _ => Ok(Json.toJson(createRepayments(recordCount, pageNo, pageSize, actualRepaymentsOffset)))
       }
     }
   }
 
-  private def createReallocations(regNumber: String, pageNo: Int, pageSize: Int, amountSign: Int, offset: BigDecimal): Reallocations = {
-    val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
-
+  private def createRepayments(recordCount: Int, pageNo: Int, pageSize: Int, offset: BigDecimal) = {
     val today = LocalDate.now()
     val periodStart = today.minusMonths(18).withDayOfMonth(1)
-    val periodEnd = today.withDayOfMonth(today.lengthOfMonth())
+    val periodEnd = today.plusMonths(3).withDayOfMonth(today.lengthOfMonth())
     val windowMonths = (periodEnd.getYear - periodStart.getYear) * 12 +
       (periodEnd.getMonthValue - periodStart.getMonthValue) + 1
 
     val allRecords = (1 to recordCount).map { i =>
       val monthOffset = (i - 1) % windowMonths
-      val dateProcessed = periodStart.plusMonths(monthOffset)
-      val amount = (BigDecimal(i * 100) + offset) * amountSign
+      val transactionDate = periodStart.plusMonths(monthOffset)
+      val amount = BigDecimal(i * 100) + offset
 
-      ReallocationItem(
-        dateProcessed = Some(dateProcessed),
-        amount        = Some(amount)
+      ActualRepaymentItem(
+        transactionDate = transactionDate,
+        amount          = amount
       )
     }
 
     val from = (pageNo - 1) * pageSize
     val page = allRecords.slice(from, from + pageSize)
 
-    Reallocations(
+    ActualRepayments(
       periodStartDate = Some(periodStart),
       periodEndDate   = Some(periodEnd),
-      total           = Some(allRecords.flatMap(_.amount).sum),
-      totalRecords    = Some(recordCount),
+      total           = allRecords.map(_.amount).sum,
+      totalRecords    = recordCount,
       items           = page
     )
   }
