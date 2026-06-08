@@ -16,104 +16,40 @@
 
 package uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy
 
-import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.gamblingexternalstub.models.*
-import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-import java.time.LocalDate
-import javax.inject.Inject
-
-class GamblingPaymentsController @Inject() (
-  cc: ControllerComponents
-) extends BackendController(cc) {
+trait GamblingPaymentsController extends itemDates {
 
   def getPayments(
-    regime: String,
     regNumber: String,
     pageNo: Int,
-    pageSize: Int
-  ): Action[AnyContent] = Action { _ =>
+    pageSize: Int,
+    recordCount: Int
+  ): JsValue = {
 
-    if (Regime.fromString(regime).isEmpty) {
-      BadRequest(
-        Json.obj(
-          "code"    -> "INVALID_REGIME",
-          "message" -> s"regime must be one of: ${Regime.validCodes}"
-        )
+    val allRecords = (1 to recordCount).map { i =>
+      val transactionDate = periodStart.plusMonths(monthOffset(i))
+      val amount = BigDecimal(i * 100) * -1
+
+      PaymentItem(
+        transactionDate = transactionDate,
+        descriptionCode = if (i % 2 == 0) "P" else "F",
+        amount          = amount
       )
-    } else {
-      val statusCode = regNumber.takeRight(3).toIntOption.getOrElse(200)
-      val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
-
-      statusCode match {
-
-        case 400 =>
-          BadRequest(
-            Json.obj(
-              "code"    -> "INVALID_REQUEST",
-              "message" -> "Bad request"
-            )
-          )
-
-        case 401 =>
-          Unauthorized(
-            Json.obj(
-              "code"    -> "UNAUTHORIZED",
-              "message" -> "Unauthorized to access this resource"
-            )
-          )
-
-        case 404 =>
-          NotFound(
-            Json.obj(
-              "code"    -> "NOT_FOUND",
-              "message" -> "No payments found for the given registration number"
-            )
-          )
-
-        case 500 =>
-          InternalServerError(
-            Json.obj(
-              "code"    -> "UNEXPECTED_ERROR",
-              "message" -> "Unexpected error occurred"
-            )
-          )
-
-        case _ =>
-          val today = LocalDate.now()
-          val periodStart = today.minusMonths(18).withDayOfMonth(1)
-          val periodEnd = today.plusMonths(3).withDayOfMonth(today.lengthOfMonth())
-          val windowMonths = (periodEnd.getYear - periodStart.getYear) * 12 +
-            (periodEnd.getMonthValue - periodStart.getMonthValue) + 1
-
-          val allRecords = (1 to recordCount).map { i =>
-            val monthOffset = (i - 1) % windowMonths
-            val transactionDate = periodStart.plusMonths(monthOffset)
-            val amount = BigDecimal(i * 100) * -1
-
-            PaymentItem(
-              transactionDate = transactionDate,
-              descriptionCode = if (i % 2 == 0) "P" else "F",
-              amount          = amount
-            )
-          }
-
-          val from = (pageNo - 1) * pageSize
-          val page = allRecords.slice(from, from + pageSize)
-
-          Ok(
-            Json.toJson(
-              Payments(
-                periodStartDate = Some(periodStart),
-                periodEndDate   = Some(periodEnd),
-                total           = allRecords.map(_.amount).sum,
-                totalRecords    = recordCount,
-                items           = page
-              )
-            )
-          )
-      }
     }
+
+    val from = (pageNo - 1) * pageSize
+    val page = allRecords.slice(from, from + pageSize)
+
+    Json.toJson(
+      Payments(
+        periodStartDate = Some(periodStart),
+        periodEndDate   = Some(periodEnd),
+        total           = allRecords.map(_.amount).sum,
+        totalRecords    = recordCount,
+        items           = page
+      )
+    )
   }
 }

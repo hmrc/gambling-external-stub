@@ -20,7 +20,7 @@ import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.gamblingexternalstub.models.*
 
 trait ReturnsSubmittedT extends defaultDates {
-  def getReturnsSubmitted2(regNumber: String, pageNo: Int, pageSize: Int, recordCount: Int): JsValue = {
+  def getReturnsSubmitted(regNumber: String, pageNo: Int, pageSize: Int, recordCount: Int): JsValue = {
 
     val allRecords = (1 to recordCount).map { i =>
       val monthOffset = (i - 1) % windowMonths

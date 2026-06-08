@@ -32,6 +32,17 @@ class ReturnsSubmittedTSpec extends AnyWordSpec with Matchers with SpecBase {
   // e.g. XWM00003100404 (404), XWM00003100500 (500), XWM00003103200 (200, 3 records), XWM00003150200 (200, 50 records)
   "GamblingReturnsController#getReturnsSubmitted" should {
 
+    "getGeneric return INVALID_REQUEST for XWM00003100200 - 4th+5th digits are 00" in {
+      val result = controller.getGeneric("mgd", "XWM00003100200", 1, 10)(FakeRequest("GET","/gambling/returns-submitted/mgd/XM00001123456"))
+
+      status(result) shouldBe BAD_REQUEST
+
+      contentAsJson(result) shouldBe Json.obj(
+        "code" -> "INVALID_REQUEST",
+        "message" -> "routeURL (returns-submitted) does not match requestType (00)(does not exist)"
+      )
+    }
+
     "return INVALID_REQUEST for XWM00003100200 - 4th+5th digits are 00" in {
       val result = controller.getReturnsSubmitted("mgd", "XWM00003100200", 1, 10)(FakeRequest())
 
@@ -43,7 +54,7 @@ class ReturnsSubmittedTSpec extends AnyWordSpec with Matchers with SpecBase {
       )
     }
 
-    "return 0 records for XWM01003100200 - 4th+5th digits are 00" in {
+    "return 0 records for XWM01003100200 - 4th+5th digits are 01" in {
       val result = controller.getReturnsSubmitted("mgd", "XWM01003100200", 1, 10)(FakeRequest())
 
       status(result) shouldBe OK
@@ -53,7 +64,7 @@ class ReturnsSubmittedTSpec extends AnyWordSpec with Matchers with SpecBase {
       (json \ "amountDeclared").as[JsArray].value.length shouldBe 0
     }
 
-    "return 3 records for XWM01003103200 - 4th+5th digits are 03" in {
+    "return 3 records for XWM01003103200 - 4th+5th digits are 01" in {
       val result = controller.getReturnsSubmitted("mgd", "XWM01003103200", 1, 10)(FakeRequest())
 
       status(result) shouldBe OK

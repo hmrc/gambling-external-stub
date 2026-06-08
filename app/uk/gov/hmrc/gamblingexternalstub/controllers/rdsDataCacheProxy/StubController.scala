@@ -31,17 +31,43 @@ class StubController @Inject() (
   cc: ControllerComponents
 ) extends BackendController(cc)
     with ReturnsSubmittedT
-    with OtherAssessmentsT
-    with GamblingReallocationsController
-    with GamblingAssessmentsInAbsenceOfReturnsController
-    with Logging {
+  with GamblingAssessmentsInAbsenceOfReturnsController
+  with GamblingPenaltiesController
+  with GamblingReallocationsController
+  with OtherAssessmentsT
+  with GamblingPaymentsController
+  with Logging {
 
-  def getReturnsSubmitted(regime: String, regNumber: String, pageNo: Int, pageSize: Int): Action[AnyContent] = Action { _ =>
-    validateAndExecute(regime, regNumber, pageNo, pageSize, "returns-submitted")
+  def getGeneric(regime: String, regNumber: String, pageNo: Int, pageSize: Int): Action[AnyContent] = Action { req =>
+
+    // TODO: extract routeURL from req.uri
+    // TODO: for manual testing, the testers need to be able to use 1 regNo that works with all endpoints. The below code needs a different regNo for each endpoint
+
+    System.out.println(s">>>> req.uri=${req.uri}")
+    System.out.println(s">>>> req.toString=${req.toString}")
+    validateAndExecute(regime, regNumber, pageNo, pageSize, req.uri)
+  }
+
+  def getReturnsSubmitted(regime: String, regNumber: String, pageNo: Int, pageSize: Int): Action[AnyContent] = Action { req =>
+//    validateAndExecute(regime, regNumber, pageNo, pageSize, "returns-submitted")
+    BadRequest(
+      Json.obj(
+        "code" -> "INVALID_REQUEST",
+        "message" -> s"!!!!!!!!!!!!!!!!"
+      )
+    )
   }
 
   def getAssessmentsInAbsenceOfReturns(regime: String, regNumber: String, pageNo: Int, pageSize: Int): Action[AnyContent] = Action { _ =>
     validateAndExecute(regime, regNumber, pageNo, pageSize, "assessments-without-returns")
+  }
+
+  def getPenalties(regime: String, regNumber: String, pageNo: Int, pageSize: Int): Action[AnyContent] = Action { _ =>
+    validateAndExecute(regime, regNumber, pageNo, pageSize, "penalties")
+  }
+
+  def getReallocationsDetails(regime: String, regNumber: String): Action[AnyContent] = Action { _ =>
+    validateAndExecute(regime, regNumber, 0, 0, "reallocations-details")
   }
 
   def getReallocationsIn(regime: String, regNumber: String, pageNo: Int, pageSize: Int): Action[AnyContent] = Action { _ =>
@@ -52,12 +78,12 @@ class StubController @Inject() (
     validateAndExecute(regime, regNumber, pageNo, pageSize, "reallocations-out")
   }
 
-  def getReallocationsDetails(regime: String, regNumber: String): Action[AnyContent] = Action { _ =>
-    validateAndExecute(regime, regNumber, 0, 0, "reallocations-details")
-  }
-
   def getOtherAssessments(regime: String, regNumber: String, pageNo: Int, pageSize: Int): Action[AnyContent] = Action { _ =>
     validateAndExecute(regime, regNumber, pageNo, pageSize, "other-assessments")
+  }
+
+  def getPayments(regime: String, regNumber: String, pageNo: Int, pageSize: Int): Action[AnyContent] = Action { _ =>
+    validateAndExecute(regime, regNumber, pageNo, pageSize, "payments")
   }
 
   private def validateAndExecute(regime: String, regNumber: String, pageNo: Int, pageSize: Int, routeURL: String): Result = {
@@ -125,15 +151,15 @@ class StubController @Inject() (
           logger.info(
             s"[validateAndExecute] statusCode=$statusCode  recordCount=$recordCount  routeURL=$routeURL  requestType=$requestType($reqTypeString)  customisation=$customisation"
           )
-          System.out.println(
-            s"[validateAndExecute] statusCode=$statusCode  recordCount=$recordCount  routeURL=$routeURL  requestType=$requestType($reqTypeString)  customisation=$customisation"
-          )
+          System.out.println(s"[validateAndExecute] statusCode=$statusCode  recordCount=$recordCount  routeURL=$routeURL  requestType=$requestType($reqTypeString)  customisation=$customisation")
 
           (requestType, routeURL) match {
 
-            case ("01", "returns-submitted") => Ok(getReturnsSubmitted2(regNumber, pageNo, pageSize, recordCount))
+            case ("01", "returns-submitted") => Ok(getReturnsSubmitted(regNumber, pageNo, pageSize, recordCount))
 
             case ("02", "assessments-without-returns") => Ok(getAssessmentsInAbsenceOfReturns(regNumber, pageNo, pageSize, recordCount))
+
+            case ("03", "penalties") => Ok(getPenalties(regNumber, pageNo, pageSize, recordCount))
 
             case ("05", "reallocations-in" | "reallocations-out" | "reallocations-details") =>
               (customisation, routeURL) match {
@@ -149,6 +175,8 @@ class StubController @Inject() (
               }
 
             case ("06", "other-assessments") => Ok(getOtherAssessments(regNumber, pageNo, pageSize, recordCount))
+
+            case ("08", "payments") => Ok(getPayments(regNumber, pageNo, pageSize, recordCount))
 
             case _ =>
               BadRequest(
@@ -169,6 +197,7 @@ trait defaultDates {
   val periodEnd: LocalDate = today.withDayOfMonth(today.lengthOfMonth())
   val windowMonths: Int = (periodEnd.getYear - periodStart.getYear) * 12 +
     (periodEnd.getMonthValue - periodStart.getMonthValue) + 1
+  def monthOffset(i: Int): Int = (i - 1) % windowMonths
 }
 
 trait itemDates extends defaultDates {

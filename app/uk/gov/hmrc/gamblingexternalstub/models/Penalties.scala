@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.gamblingexternalstub.models
 
-import play.api.libs.json.{Json, OWrites, Writes}
+import play.api.libs.json.{Json, OFormat, OWrites, Writes}
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -33,6 +33,7 @@ object PenaltyItem {
   private val fmt = DateTimeFormatter.ISO_LOCAL_DATE
   implicit val localDateWrites: Writes[LocalDate] = Writes.temporalWrites[LocalDate, DateTimeFormatter](fmt)
   implicit val writes: OWrites[PenaltyItem] = Json.writes[PenaltyItem]
+  implicit val format: OFormat[PenaltyItem] = Json.format[PenaltyItem]
 }
 
 final case class Penalties(
@@ -46,4 +47,5 @@ final case class Penalties(
 object Penalties {
   import PenaltyItem.localDateWrites
   implicit val writes: OWrites[Penalties] = Json.writes[Penalties]
+  implicit val format: OFormat[Penalties] = Json.format[Penalties]
 }

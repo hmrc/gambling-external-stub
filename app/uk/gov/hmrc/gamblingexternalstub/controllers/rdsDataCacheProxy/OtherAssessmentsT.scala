@@ -29,8 +29,7 @@ trait OtherAssessmentsT extends itemDates {
   ): JsValue = {
 
     val allRecords = (1 to recordCount).map { i =>
-      val monthOffset = (i - 1) % windowMonths
-      val dateRaised = periodStart.plusMonths(monthOffset)
+      val dateRaised = periodStart.plusMonths(monthOffset(i))
       AssessmentItem(
         dateRaised      = Some(dateRaised),
         periodStartDate = Some(periodStartItem),

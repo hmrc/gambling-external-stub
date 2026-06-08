@@ -43,7 +43,7 @@ class OtherAssessmentsControllerSpec extends AnyWordSpec with Matchers with Spec
       )
     }
 
-    "return 0 records for XWM06003100200 (last 3 = 200, 4th+5th from right = 00)" in {
+    "return 0 records for XWM06003100200 (last 3 = 200, 4th+5th from right = 06)" in {
       val result = controller.getOtherAssessments("MGD", "XWM06003100200", 1, 10)(FakeRequest())
 
       status(result) shouldBe OK
@@ -53,7 +53,7 @@ class OtherAssessmentsControllerSpec extends AnyWordSpec with Matchers with Spec
       (json \ "items").as[JsArray].value.length shouldBe 0
     }
 
-    "return 3 records for XWM06003103200 (last 3 = 200, 4th+5th from right = 03)" in {
+    "return 3 records for XWM06003103200 (last 3 = 200, 4th+5th from right = 06)" in {
       val result = controller.getOtherAssessments("MGD", "XWM06003103200", 1, 10)(FakeRequest())
 
       status(result) shouldBe OK
