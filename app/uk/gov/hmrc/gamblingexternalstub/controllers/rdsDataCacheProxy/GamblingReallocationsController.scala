@@ -92,7 +92,9 @@ class GamblingReallocationsController @Inject() (
             )
           )
 
-        case _ => Ok(Json.toJson(createReallocations(regNumber, pageNo, pageSize, amountSign, offset)))
+        case _ =>
+          val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
+          Ok(Json.toJson(createReallocations(recordCount, pageNo, pageSize, amountSign, offset)))
       }
     }
   }
@@ -142,8 +144,21 @@ class GamblingReallocationsController @Inject() (
           )
 
         case _ =>
-          val reallocationsIn = createReallocations(regNumber, 1, 10, 1, 0)
-          val reallocationsOut = createReallocations(regNumber, 1, 10, -1, 33.33)
+          val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
+          val customisation = regNumber.takeRight(6).dropRight(5).toIntOption.getOrElse(0)
+
+          val reallocationsInRecordCount = customisation match {
+            case 2 | 3 => 0
+            case _     => recordCount
+          }
+
+          val reallocationsOutRecordCount = customisation match {
+            case 1 | 3 => 0
+            case _     => recordCount
+          }
+
+          val reallocationsIn = createReallocations(reallocationsInRecordCount, 1, 10, 1, 0.23)
+          val reallocationsOut = createReallocations(reallocationsOutRecordCount, 1, 10, -1, 0.11)
 
           Ok(
             Json.toJson(
@@ -160,9 +175,7 @@ class GamblingReallocationsController @Inject() (
     }
   }
 
-  private def createReallocations(regNumber: String, pageNo: Int, pageSize: Int, amountSign: Int, offset: BigDecimal): Reallocations = {
-    val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
-
+  private def createReallocations(recordCount: Int, pageNo: Int, pageSize: Int, amountSign: Int, offset: BigDecimal): Reallocations = {
     val today = LocalDate.now()
     val periodStart = today.minusMonths(18).withDayOfMonth(1)
     val periodEnd = today.withDayOfMonth(today.lengthOfMonth())
