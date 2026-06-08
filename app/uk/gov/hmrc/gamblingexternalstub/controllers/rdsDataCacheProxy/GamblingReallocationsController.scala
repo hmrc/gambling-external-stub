@@ -37,17 +37,17 @@ trait GamblingReallocationsController extends itemDates {
 
   private def getReallocationsDetails(recordCount: Int, customisation: Int): JsValue = {
 
-    val actualRepaymentsRecordCount = customisation match {
+    val reallocationsInRecordCount = customisation match {
       case 2 | 3 => 0
       case _     => recordCount
     }
 
-    val interestRepaymentsRecordCount = customisation match {
+    val reallocationsOutRecordCount = customisation match {
       case 1 | 3 => 0
       case _     => recordCount
     }
-    val reallocationsIn = createReallocations(1, 10, 1, 0, actualRepaymentsRecordCount)
-    val reallocationsOut = createReallocations(1, 10, -1, 33.33, interestRepaymentsRecordCount)
+    val reallocationsIn = createReallocations(1, 10, 1, 0, reallocationsInRecordCount)
+    val reallocationsOut = createReallocations(1, 10, -1, 33.33, reallocationsOutRecordCount)
 
     Json.toJson(
       ReallocationsDetails(
