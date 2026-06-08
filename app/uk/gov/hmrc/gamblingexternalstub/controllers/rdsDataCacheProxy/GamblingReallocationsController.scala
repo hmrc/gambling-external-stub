@@ -145,16 +145,13 @@ class GamblingReallocationsController @Inject() (
 
         case _ =>
           val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
-          val customisation = regNumber.takeRight(6).dropRight(5).toIntOption.getOrElse(0)
+          val sixthDigit = regNumber.takeRight(6).dropRight(5).toIntOption.getOrElse(0)
 
-          val reallocationsInRecordCount = customisation match {
-            case 2 | 3 => 0
-            case _     => recordCount
-          }
-
-          val reallocationsOutRecordCount = customisation match {
-            case 1 | 3 => 0
-            case _     => recordCount
+          val (reallocationsInRecordCount, reallocationsOutRecordCount) = sixthDigit match {
+            case 1 => (recordCount, 0)
+            case 2 => (0, recordCount)
+            case 3 => (0, 0)
+            case _ => (recordCount, recordCount)
           }
 
           val reallocationsIn = createReallocations(reallocationsInRecordCount, 1, 10, 1, 0.23)
