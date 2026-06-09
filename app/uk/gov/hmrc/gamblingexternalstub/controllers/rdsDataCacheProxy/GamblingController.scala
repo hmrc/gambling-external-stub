@@ -634,7 +634,7 @@ class GamblingController @Inject() (
         Ok(
           Json.toJson(
             CorrespondenceDetails(
-              mgdRegNumber = "XGM00000001762",
+              mgdRegNumber = "XGM00000001763",
               nameLine1 = Some("Madrid"),
               nameLine2 = Some("Home"),
               address1= Some("Flat 1"),
@@ -656,7 +656,7 @@ class GamblingController @Inject() (
 
       case reg =>
         Ok(Json.toJson(CorrespondenceDetails(
-          mgdRegNumber = "XGM00000001762",
+          mgdRegNumber = reg,
           nameLine1 = Some("Gateshead"),
           nameLine2 = Some("Home"),
           address1= Some("Flat 1"),
