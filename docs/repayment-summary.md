@@ -58,6 +58,18 @@ Once the regime is valid, the stub derives its behaviour entirely from the reg n
 | `500`         | 500 INTERNAL_SERVER_ERROR |
 | anything else | 200 OK                    |
 
+
+**6th from last** digit of regNo controls the customisation
+
+| 6th from last digit | Response                                         |
+|---------------------|--------------------------------------------------|
+| `0`                 | actualRepayments & repaymentsInterestRepaid      |
+| `1`                 | ONLY actualRepayments                            |
+| `2`                 | ONLY repaymentsInterestRepaid                    |
+| `3`                 | NO actualRepayments, NO repaymentsInterestRepaid |
+| anything else       | actualRepayments & repaymentsInterestRepaid      |
+
+
 ---
 
 ## RepaymentsSummary structure

@@ -28,6 +28,106 @@ class GamblingReallocationsControllerSpec extends AnyWordSpec with Matchers with
   private val app = applicationBuilder().build()
   private val controller = app.injector.instanceOf[GamblingReallocationsController]
 
+  "GamblingReallocationsController#getReallocationsDetails" should {
+
+    "return BAD_REQUEST for an unrecognised regime" in {
+      val result = controller.getReallocationsDetails("INVALID", "XWM00003103200")(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "INVALID_REGIME",
+        "message" -> "regime must be one of: gbd, pbd, rgd, mgd"
+      )
+    }
+
+    "accept all valid regimes (case-insensitive)" in {
+      Seq("MGD", "mgd", "GBD", "gbd", "PBD", "pbd", "RGD", "rgd").foreach { regime =>
+        val result = controller.getReallocationsDetails(regime, "XWM00003100200")(FakeRequest())
+        status(result) shouldBe OK
+      }
+    }
+
+    "return BAD_REQUEST for XWM00003100400 (last 3 digits = 400)" in {
+      val result = controller.getReallocationsDetails("MGD", "XWM00003100400")(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "INVALID_REQUEST",
+        "message" -> "Bad request"
+      )
+    }
+
+    "return UNAUTHORIZED for XWM00003100401 (last 3 digits = 401)" in {
+      val result = controller.getReallocationsDetails("MGD", "XWM00003100401")(FakeRequest())
+
+      status(result) shouldBe UNAUTHORIZED
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "UNAUTHORIZED",
+        "message" -> "Unauthorized to access this resource"
+      )
+    }
+
+    "return NOT_FOUND for XWM00003100404 (last 3 digits = 404)" in {
+      val result = controller.getReallocationsDetails("MGD", "XWM00003100404")(FakeRequest())
+
+      status(result) shouldBe NOT_FOUND
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "NOT_FOUND",
+        "message" -> "No reallocations found for the given registration number"
+      )
+    }
+
+    "return INTERNAL_SERVER_ERROR for XWM00003100500 (last 3 digits = 500)" in {
+      val result = controller.getReallocationsDetails("MGD", "XWM00003100500")(FakeRequest())
+
+      status(result) shouldBe INTERNAL_SERVER_ERROR
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "UNEXPECTED_ERROR",
+        "message" -> "Unexpected error occurred"
+      )
+    }
+
+    "return correct totalRecords for XWM00003003200 (actualRepayments = 3 records)  (repaymentsInterestRepaid = 3 records) 6th from last = 0" in {
+      val result = controller.getReallocationsDetails("MGD", "XWM00003003200")(FakeRequest())
+
+      status(result) shouldBe OK
+      val json = contentAsJson(result)
+      (json \ "reallocationsInAmount").as[BigDecimal]  shouldBe BigDecimal(600.69)
+      (json \ "reallocationsOutAmount").as[BigDecimal] shouldBe BigDecimal(-600.33)
+      (json \ "total").as[BigDecimal]                  shouldBe BigDecimal(-0.36)
+    }
+
+    "return correct totalRecords for XWM00003103200 (actualRepayments = 3 records)  (repaymentsInterestRepaid = 0 records) 6th from last = 1" in {
+      val result = controller.getReallocationsDetails("MGD", "XWM00003103200")(FakeRequest())
+
+      status(result) shouldBe OK
+      val json = contentAsJson(result)
+      (json \ "reallocationsInAmount").as[BigDecimal]  shouldBe BigDecimal(600.69)
+      (json \ "reallocationsOutAmount").as[BigDecimal] shouldBe BigDecimal(0.00)
+      (json \ "total").as[BigDecimal]                  shouldBe BigDecimal(-600.69)
+    }
+
+    "return correct totalRecords for XWM00003203200 (actualRepayments = 0 records)  (repaymentsInterestRepaid = 3 records)6th from last = 2" in {
+      val result = controller.getReallocationsDetails("MGD", "XWM00003203200")(FakeRequest())
+
+      status(result) shouldBe OK
+      val json = contentAsJson(result)
+      (json \ "reallocationsInAmount").as[BigDecimal]  shouldBe BigDecimal(0.00)
+      (json \ "reallocationsOutAmount").as[BigDecimal] shouldBe BigDecimal(-600.33)
+      (json \ "total").as[BigDecimal]                  shouldBe BigDecimal(-600.33)
+    }
+
+    "return correct totalRecords for XWM00003303200 (actualRepayments = 0 records)  (repaymentsInterestRepaid = 0 records) 6th from last = 3" in {
+      val result = controller.getReallocationsDetails("MGD", "XWM00003303200")(FakeRequest())
+
+      status(result) shouldBe OK
+      val json = contentAsJson(result)
+      (json \ "reallocationsInAmount").as[BigDecimal]  shouldBe BigDecimal(0.00)
+      (json \ "reallocationsOutAmount").as[BigDecimal] shouldBe BigDecimal(0.00)
+      (json \ "total").as[BigDecimal]                  shouldBe BigDecimal(0.00)
+    }
+  }
+
   "GamblingReallocationsController#getReallocationsIn" should {
 
     "return BAD_REQUEST for an unrecognised regime" in {

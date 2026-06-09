@@ -81,9 +81,17 @@ class GamblingRepaymentsController @Inject() (
 
         case _ =>
           val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
+          val sixthDigit = regNumber.takeRight(6).dropRight(5).toIntOption.getOrElse(0)
 
-          val actualRepayments = createRepayments(recordCount, 1, 10, actualRepaymentsOffset)
-          val interestRepayments = createRepayments(recordCount, 1, 10, interestRepaymentsOffset)
+          val (actualRepaymentsRecordCount, interestRepaymentsRecordCount) = sixthDigit match {
+            case 1 => (recordCount, 0)
+            case 2 => (0, recordCount)
+            case 3 => (0, 0)
+            case _ => (recordCount, recordCount)
+          }
+
+          val actualRepayments = createRepayments(actualRepaymentsRecordCount, 1, 10, actualRepaymentsOffset)
+          val interestRepayments = createRepayments(interestRepaymentsRecordCount, 1, 10, interestRepaymentsOffset)
 
           Ok(
             Json.toJson(
