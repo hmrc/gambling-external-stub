@@ -408,13 +408,13 @@ class GamblingController @Inject() (
         Ok(
           Json.toJson(
             baseOperator("XGM00000001761").copy(
-              tradingName = Some("Acme Bets"),
+              tradingName  = Some("Acme Bets"),
               businessName = Some("Acme Gaming Ltd"),
-              adi = Some("ADI123"),
-              address1 = Some("1 High Street"),
-              address2 = Some("Newcastle"),
-              postcode = Some("NE1 1AA"),
-              agentOwnRef = Some("AGENT001")
+              adi          = Some("ADI123"),
+              address1     = Some("1 High Street"),
+              address2     = Some("Newcastle"),
+              postcode     = Some("NE1 1AA"),
+              agentOwnRef  = Some("AGENT001")
             )
           )
         )
@@ -423,16 +423,16 @@ class GamblingController @Inject() (
         Ok(
           Json.toJson(
             baseOperator("XGM00000001762").copy(
-              solePropName = Some("Jane Doe"),
-              solePropTitle = Some("Ms"),
+              solePropName      = Some("Jane Doe"),
+              solePropTitle     = Some("Ms"),
               solePropFirstName = Some("Jane"),
-              solePropLastName = Some("Doe"),
-              tradingName = None,
-              businessName = Some("Jane's Bets"),
-              businessType = Some(SoleProprietor),
-              address1 = Some("10 Market Road"),
-              address2 = Some("Gateshead"),
-              postcode = Some("NE8 1ZZ")
+              solePropLastName  = Some("Doe"),
+              tradingName       = None,
+              businessName      = Some("Jane's Bets"),
+              businessType      = Some(SoleProprietor),
+              address1          = Some("10 Market Road"),
+              address2          = Some("Gateshead"),
+              postcode          = Some("NE8 1ZZ")
             )
           )
         )
@@ -440,15 +440,15 @@ class GamblingController @Inject() (
         Ok(
           Json.toJson(
             baseOperator("XGM00000001763").copy(
-              tradingName = Some("Global Bets"),
+              tradingName  = Some("Global Bets"),
               businessName = Some("Global Gaming Inc"),
-              address1 = Some("123 International Way"),
-              address2 = Some("Dublin"),
-              postcode = Some("D01 ABC"),
-              country = Some("Ireland"),
-              abroadSig = Some("Y"),
-              adi = Some("ADI999"),
-              agentOwnRef = Some("AGENT999")
+              address1     = Some("123 International Way"),
+              address2     = Some("Dublin"),
+              postcode     = Some("D01 ABC"),
+              country      = Some("Ireland"),
+              abroadSig    = Some("Y"),
+              adi          = Some("ADI999"),
+              agentOwnRef  = Some("AGENT999")
             )
           )
         )
@@ -458,11 +458,11 @@ class GamblingController @Inject() (
           Json.toJson(
             baseOperator("XGM00000001764").copy(
               businessName = Some("ABC Partnership"),
-              tradingName = Some("Partnership Bets"),
+              tradingName  = Some("Partnership Bets"),
               businessType = Some(Partnership),
-              address1 = Some("50 King Street"),
-              address2 = Some("Leeds"),
-              postcode = Some("LS1 1AA")
+              address1     = Some("50 King Street"),
+              address2     = Some("Leeds"),
+              postcode     = Some("LS1 1AA")
             )
           )
         )
@@ -621,7 +621,6 @@ class GamblingController @Inject() (
     }
   }
 
-
   def getCorrespondenceDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
 
     mgdRegNumber match {
@@ -634,45 +633,49 @@ class GamblingController @Inject() (
         Ok(
           Json.toJson(
             CorrespondenceDetails(
-              mgdRegNumber = "XGM00000001763",
-              nameLine1 = Some("Madrid"),
-              nameLine2 = Some("Home"),
-              address1= Some("Flat 1"),
-              address2= Some("10 Market Calle"),
-              address3 = Some("Madrid"),
-              address4 = None,
-              country = Some("Spain"),
-              postcode = None,
-              phoneNumber = Some("0798765"),
+              mgdRegNumber      = "XGM00000001763",
+              nameLine1         = Some("Madrid"),
+              nameLine2         = Some("Home"),
+              address1          = Some("Flat 1"),
+              address2          = Some("10 Market Calle"),
+              address3          = Some("Madrid"),
+              address4          = None,
+              country           = Some("Spain"),
+              postcode          = None,
+              phoneNumber       = Some("0798765"),
               mobilePhoneNumber = Some("7093434765"),
-              faxNumber = Some("098765678"),
-              emailAddr = Some("a@b.com"),
-              adi = Some("Flat 1"),
-              iomOrCiFlag = Some(false),
+              faxNumber         = Some("098765678"),
+              emailAddr         = Some("a@b.com"),
+              adi               = Some("Flat 1"),
+              iomOrCiFlag       = Some(false),
               Some(fixedDate)
             )
           )
         )
 
       case reg =>
-        Ok(Json.toJson(CorrespondenceDetails(
-          mgdRegNumber = reg,
-          nameLine1 = Some("Gateshead"),
-          nameLine2 = Some("Home"),
-          address1= Some("Flat 1"),
-          address2= Some("10 Market Road"),
-          address3 = Some("Felling"),
-          address4 = Some("Gateshead"),
-          country = Some("UK"),
-          postcode = Some("NE8 1ZZ"),
-          phoneNumber = Some("0798765"),
-          mobilePhoneNumber = Some("7093434765"),
-          faxNumber = Some("098765678"),
-          emailAddr = Some("a@b.com"),
-          adi = Some("Flat 1"),
-          iomOrCiFlag = Some(false),
-          Some(fixedDate)
-        )))
+        Ok(
+          Json.toJson(
+            CorrespondenceDetails(
+              mgdRegNumber      = reg,
+              nameLine1         = Some("Gateshead"),
+              nameLine2         = Some("Home"),
+              address1          = Some("Flat 1"),
+              address2          = Some("10 Market Road"),
+              address3          = Some("Felling"),
+              address4          = Some("Gateshead"),
+              country           = Some("UK"),
+              postcode          = Some("NE8 1ZZ"),
+              phoneNumber       = Some("0798765"),
+              mobilePhoneNumber = Some("7093434765"),
+              faxNumber         = Some("098765678"),
+              emailAddr         = Some("a@b.com"),
+              adi               = Some("Flat 1"),
+              iomOrCiFlag       = Some(false),
+              Some(fixedDate)
+            )
+          )
+        )
     }
   }
 
