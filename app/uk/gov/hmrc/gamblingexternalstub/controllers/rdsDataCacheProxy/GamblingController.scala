@@ -229,6 +229,7 @@ class GamblingController @Inject() (
         )
     }
   }
+
   def getMgdCertificate(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
 
     mgdRegNumber match {
@@ -394,51 +395,6 @@ class GamblingController @Inject() (
         )
     }
   }
-
-  private val fixedDate = LocalDate.parse("2026-01-01")
-
-  private val SoleProprietor = 1
-  private val CorporateBody = 2
-  private val Partnership = 4
-
-  private def baseOperator(reg: String) =
-    OperatorDetails(
-      mgdRegNumber       = reg,
-      solePropName       = None,
-      solePropTitle      = None,
-      solePropFirstName  = None,
-      solePropMiddleName = None,
-      solePropLastName   = None,
-      tradingName        = None,
-      businessName       = Some(s"Business for $reg"),
-      businessType       = Some(CorporateBody),
-      adi                = None,
-      address1           = Some("Unknown Address Line 1"),
-      address2           = Some("Unknown Address Line 2"),
-      address3           = None,
-      address4           = None,
-      postcode           = Some("AA1 1AA"),
-      country            = Some("United Kingdom"),
-      abroadSig          = Some("N"),
-      agentOwnRef        = None,
-      systemDate         = Some(fixedDate)
-    )
-
-  private val invalidResponse =
-    BadRequest(
-      Json.obj(
-        "code"    -> "INVALID_MGD_REG_NUMBER",
-        "message" -> "mgdRegNumber must be provided"
-      )
-    )
-
-  private val errorResponse =
-    InternalServerError(
-      Json.obj(
-        "code"    -> "UNEXPECTED_ERROR",
-        "message" -> "Unexpected error occurred"
-      )
-    )
 
   def getOperatorDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
 
@@ -664,5 +620,108 @@ class GamblingController @Inject() (
 
     }
   }
+
+  def getCorrespondenceDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
+
+    mgdRegNumber match {
+
+      case "invalid" => invalidResponse
+
+      case "error" => errorResponse
+
+      case "XGM00000001763" =>
+        Ok(
+          Json.toJson(
+            CorrespondenceDetails(
+              mgdRegNumber      = "XGM00000001763",
+              nameLine1         = Some("Madrid"),
+              nameLine2         = Some("Home"),
+              address1          = Some("Flat 1"),
+              address2          = Some("10 Market Calle"),
+              address3          = Some("Madrid"),
+              address4          = None,
+              country           = Some("Spain"),
+              postcode          = None,
+              phoneNumber       = Some("0798765"),
+              mobilePhoneNumber = Some("7093434765"),
+              faxNumber         = Some("098765678"),
+              emailAddr         = Some("a@b.com"),
+              adi               = Some("Flat 1"),
+              iomOrCiFlag       = Some(false),
+              Some(fixedDate)
+            )
+          )
+        )
+
+      case reg =>
+        Ok(
+          Json.toJson(
+            CorrespondenceDetails(
+              mgdRegNumber      = reg,
+              nameLine1         = Some("Gateshead"),
+              nameLine2         = Some("Home"),
+              address1          = Some("Flat 1"),
+              address2          = Some("10 Market Road"),
+              address3          = Some("Felling"),
+              address4          = Some("Gateshead"),
+              country           = Some("UK"),
+              postcode          = Some("NE8 1ZZ"),
+              phoneNumber       = Some("0798765"),
+              mobilePhoneNumber = Some("7093434765"),
+              faxNumber         = Some("098765678"),
+              emailAddr         = Some("a@b.com"),
+              adi               = Some("Flat 1"),
+              iomOrCiFlag       = Some(false),
+              Some(fixedDate)
+            )
+          )
+        )
+    }
+  }
+
+  private val fixedDate = LocalDate.parse("2026-01-01")
+
+  private val SoleProprietor = 1
+  private val CorporateBody = 2
+  private val Partnership = 4
+
+  private def baseOperator(reg: String) =
+    OperatorDetails(
+      mgdRegNumber       = reg,
+      solePropName       = None,
+      solePropTitle      = None,
+      solePropFirstName  = None,
+      solePropMiddleName = None,
+      solePropLastName   = None,
+      tradingName        = None,
+      businessName       = Some(s"Business for $reg"),
+      businessType       = Some(CorporateBody),
+      adi                = None,
+      address1           = Some("Unknown Address Line 1"),
+      address2           = Some("Unknown Address Line 2"),
+      address3           = None,
+      address4           = None,
+      postcode           = Some("AA1 1AA"),
+      country            = Some("United Kingdom"),
+      abroadSig          = Some("N"),
+      agentOwnRef        = None,
+      systemDate         = Some(fixedDate)
+    )
+
+  private val invalidResponse =
+    BadRequest(
+      Json.obj(
+        "code"    -> "INVALID_MGD_REG_NUMBER",
+        "message" -> "mgdRegNumber must be provided"
+      )
+    )
+
+  private val errorResponse =
+    InternalServerError(
+      Json.obj(
+        "code"    -> "UNEXPECTED_ERROR",
+        "message" -> "Unexpected error occurred"
+      )
+    )
 
 }

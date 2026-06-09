@@ -555,4 +555,33 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
     }
   }
 
+  "GamblingController#getCorrespondenceDetails" should {
+
+    "return corporate operator for XGM00000001761" in {
+      val result = controller.getCorrespondenceDetails("XGM00000001763")(FakeRequest())
+
+      status(result)                                   shouldBe OK
+      (contentAsJson(result) \ "nameLine1").as[String] shouldBe "Madrid"
+    }
+
+    "return default operator" in {
+      val result = controller.getCorrespondenceDetails("GAM999")(FakeRequest())
+
+      status(result)                                   shouldBe OK
+      (contentAsJson(result) \ "nameLine1").as[String] shouldBe "Gateshead"
+    }
+
+    "return BAD_REQUEST for invalid" in {
+      val result = controller.getCorrespondenceDetails("invalid")(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+    }
+
+    "return INTERNAL_SERVER_ERROR for error" in {
+      val result = controller.getCorrespondenceDetails("error")(FakeRequest())
+
+      status(result) shouldBe INTERNAL_SERVER_ERROR
+    }
+  }
+
 }
