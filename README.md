@@ -398,7 +398,7 @@ See [docs/penalties.md](docs/penalties.md) for full details including regime val
 
 ---
 
-### 7. Payments
+### 8. Payments
 
 `GET /gambling/payments/{regime}/{regNumber}`
 
@@ -406,7 +406,7 @@ See [docs/payments.md](docs/payments.md) for full details including regime valid
 
 ---
 
-### 8. Repayments Summary
+### 9. Repayments Summary
 
 `GET /gambling/repayment-summary/{regime}/{regNumber}`
 
@@ -414,7 +414,7 @@ See [docs/repayment-summary.md](docs/repayment-summary.md) for full details incl
 
 ---
 
-### 9. Assessments In Absence Of Return Summary
+### 10. Assessments In Absence Of Return Summary
 
 `GET /gambling/assessments-without-returns/{regime}/{regNumber}`
 
@@ -422,7 +422,15 @@ See [docs/assessments-in-absence-of-returns.md](docs/repayment-summary.md) for f
 
 ---
 
-### 7. RepaymentInterestRepaid
+### 11. Statement Overview
+
+`GET /gambling/statement-overview/{regime}/{regNumber}`
+
+See [docs/statement-overview.md](docs/statement-overview.md) for full details including regime validation, reg number encoding convention, all response scenarios, and example curl commands.
+
+---
+
+### 12. RepaymentInterestRepaid
 
 `GET /gambling/repayment-interest-repaid/{regime}/{regNumber}`
 
@@ -430,7 +438,7 @@ See [docs/repayment-interest-repaid.md](docs/repayment-interest-repaid.md) for f
 
 ---
 
-### 8. MGD Details
+### 13. MGD Details
 
 `GET /gambling/mgd-details/mgd/{mgdRegNumber}`
 
