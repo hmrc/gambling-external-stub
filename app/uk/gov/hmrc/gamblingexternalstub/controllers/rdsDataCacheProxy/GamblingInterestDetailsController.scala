@@ -25,21 +25,21 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 class GamblingInterestDetailsController @Inject() (
-                                             cc: ControllerComponents
-                                           ) extends BackendController(cc) {
+  cc: ControllerComponents
+) extends BackendController(cc) {
 
   private val descCodes = Seq(2640, 2650, 2655, 2680, 2685, 2690, 2695, 2660, 2670)
 
   def getInterestDetails(
-                          regime: String,
-                          regNumber: String,
-                          pageNo: Int = 1,
-                          pageSize: Int = 10
-                        ): Action[AnyContent] = Action { _ =>
+    regime: String,
+    regNumber: String,
+    pageNo: Int = 1,
+    pageSize: Int = 10
+  ): Action[AnyContent] = Action { _ =>
     if (Regime.fromString(regime).isEmpty) {
       BadRequest(
         Json.obj(
-          "code" -> "INVALID_REGIME",
+          "code"    -> "INVALID_REGIME",
           "message" -> s"regime must be one of: ${Regime.validCodes}"
         )
       )
@@ -58,7 +58,6 @@ class GamblingInterestDetailsController @Inject() (
           val periodEnd = today.withDayOfMonth(today.lengthOfMonth())
           val periodStartItem = today.minusMonths(35).withDayOfMonth(1)
           val periodEndItem = today.withDayOfMonth(today.lengthOfMonth())
-
 
           val allRecords = (1 to recordCount).map { i =>
             val amount = BigDecimal(i * 100) * -1

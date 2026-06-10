@@ -36,12 +36,12 @@ object InterestDetailItem {
 }
 
 final case class InterestDetails(
-                                  periodStartDate: Option[LocalDate],
-                                  periodEndDate: Option[LocalDate],
-                                  total: BigDecimal,
-                                  totalRecords: Int,
-                                  items: Seq[InterestDetailItem]
-                                )
+  periodStartDate: Option[LocalDate],
+  periodEndDate: Option[LocalDate],
+  total: BigDecimal,
+  totalRecords: Int,
+  items: Seq[InterestDetailItem]
+)
 
 object InterestDetails {
   import InterestDetailItem.localDateWrites

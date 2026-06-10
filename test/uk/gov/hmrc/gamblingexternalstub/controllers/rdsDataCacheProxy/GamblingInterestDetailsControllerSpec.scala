@@ -23,7 +23,6 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.base.SpecBase
 
-
 class GamblingInterestDetailsControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
   private val app = applicationBuilder().build()
@@ -35,7 +34,7 @@ class GamblingInterestDetailsControllerSpec extends AnyWordSpec with Matchers wi
       val result = controller.getInterestDetails("INVALID", "XWM00003103200")(FakeRequest())
       status(result) shouldBe BAD_REQUEST
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "INVALID_REGIME",
+        "code"    -> "INVALID_REGIME",
         "message" -> "regime must be one of: gbd, pbd, rgd, mgd"
       )
     }
@@ -51,7 +50,7 @@ class GamblingInterestDetailsControllerSpec extends AnyWordSpec with Matchers wi
       val result = controller.getInterestDetails("MGD", "XWM00003100400")(FakeRequest())
       status(result) shouldBe BAD_REQUEST
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "INVALID_REQUEST",
+        "code"    -> "INVALID_REQUEST",
         "message" -> "Bad request"
       )
     }
@@ -60,7 +59,7 @@ class GamblingInterestDetailsControllerSpec extends AnyWordSpec with Matchers wi
       val result = controller.getInterestDetails("MGD", "XWM00003100401")(FakeRequest())
       status(result) shouldBe UNAUTHORIZED
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "UNAUTHORIZED",
+        "code"    -> "UNAUTHORIZED",
         "message" -> "Unauthorized to access this resource"
       )
     }
@@ -69,7 +68,7 @@ class GamblingInterestDetailsControllerSpec extends AnyWordSpec with Matchers wi
       val result = controller.getInterestDetails("MGD", "XWM00003100404")(FakeRequest())
       status(result) shouldBe NOT_FOUND
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "NOT_FOUND",
+        "code"    -> "NOT_FOUND",
         "message" -> "No interest details found for this registration number"
       )
     }
@@ -78,7 +77,7 @@ class GamblingInterestDetailsControllerSpec extends AnyWordSpec with Matchers wi
       val result = controller.getInterestDetails("MGD", "XWM00003100500")(FakeRequest())
       status(result) shouldBe INTERNAL_SERVER_ERROR
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "UNEXPECTED_ERROR",
+        "code"    -> "UNEXPECTED_ERROR",
         "message" -> "Unexpected error occurred"
       )
     }
@@ -87,7 +86,7 @@ class GamblingInterestDetailsControllerSpec extends AnyWordSpec with Matchers wi
       val result = controller.getInterestDetails("MGD", "XWM00003100200")(FakeRequest())
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "totalRecords").as[Int] shouldBe  0
+      (json \ "totalRecords").as[Int]           shouldBe 0
       (json \ "items").as[JsArray].value.length shouldBe 0
     }
 
@@ -95,7 +94,7 @@ class GamblingInterestDetailsControllerSpec extends AnyWordSpec with Matchers wi
       val result = controller.getInterestDetails("MGD", "XWM00003103200")(FakeRequest())
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "totalRecords").as[Int] shouldBe 3
+      (json \ "totalRecords").as[Int]           shouldBe 3
       (json \ "items").as[JsArray].value.length shouldBe 3
     }
 
@@ -103,7 +102,7 @@ class GamblingInterestDetailsControllerSpec extends AnyWordSpec with Matchers wi
       val result = controller.getInterestDetails("MGD", "XWM00003109200", 1, 5)(FakeRequest())
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "totalRecords").as[Int] shouldBe 9
+      (json \ "totalRecords").as[Int]           shouldBe 9
       (json \ "items").as[JsArray].value.length shouldBe 5
     }
 
@@ -111,7 +110,7 @@ class GamblingInterestDetailsControllerSpec extends AnyWordSpec with Matchers wi
       val result = controller.getInterestDetails("MGD", "XWM00003109200", 2, 5)(FakeRequest())
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "totalRecords").as[Int] shouldBe 9
+      (json \ "totalRecords").as[Int]           shouldBe 9
       (json \ "items").as[JsArray].value.length shouldBe 4
     }
 
@@ -119,7 +118,7 @@ class GamblingInterestDetailsControllerSpec extends AnyWordSpec with Matchers wi
       val result = controller.getInterestDetails("MGD", "XWM00003150200", 1, 10)(FakeRequest())
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "totalRecords").as[Int] shouldBe 50
+      (json \ "totalRecords").as[Int]           shouldBe 50
       (json \ "items").as[JsArray].value.length shouldBe 10
     }
 
@@ -127,7 +126,7 @@ class GamblingInterestDetailsControllerSpec extends AnyWordSpec with Matchers wi
       val result = controller.getInterestDetails("MGD", "XWM00003150200", 5, 10)(FakeRequest())
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "totalRecords").as[Int] shouldBe 50
+      (json \ "totalRecords").as[Int]           shouldBe 50
       (json \ "items").as[JsArray].value.length shouldBe 10
     }
   }
