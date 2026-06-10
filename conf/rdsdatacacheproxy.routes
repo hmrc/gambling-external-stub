@@ -31,6 +31,8 @@ GET     /gambling/penalties/:regime/:regNumber                  uk.gov.hmrc.gamb
 
 GET     /gambling/payments/:regime/:regNumber                   uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingPaymentsController.getPayments(regime: String, regNumber: String, pageNo: Int ?=1, pageSize: Int ?=10)
 
+GET     /gambling/statement-overview/:regime/:regNumber         uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingStatementOverviewController.getStatementOverview(regime: String, regNumber: String)
+
 GET     /gambling/repayment-summary/:regime/:regNumber          uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingRepaymentsController.getRepaymentsSummary(regime: String, regNumber: String)
 
 GET     /gambling/actual-repayments/:regime/:regNumber          uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingRepaymentsController.getActualRepayments(regime: String, regNumber: String, pageNo: Int ?=1, pageSize: Int ?=10)
