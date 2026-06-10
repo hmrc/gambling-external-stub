@@ -25,7 +25,7 @@ import uk.gov.hmrc.gamblingexternalstub.base.SpecBase
 
 class GamblingStatementOverviewControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
-  private val app        = applicationBuilder().build()
+  private val app = applicationBuilder().build()
   private val controller = app.injector.instanceOf[GamblingStatementOverviewController]
 
   //  7th from right = overview variant (0 = all zeros, 1 = total > 0, 2 = total < 0)
@@ -157,11 +157,11 @@ class GamblingStatementOverviewControllerSpec extends AnyWordSpec with Matchers 
       status(result) shouldBe OK
       val json = contentAsJson(result)
 
-      (json \ "amountDeclared").as[BigDecimal]   shouldBe BigDecimal(3000)
-      (json \ "assessments").as[BigDecimal]      shouldBe BigDecimal(150)
-      (json \ "penalties").as[BigDecimal]        shouldBe BigDecimal(75)
-      (json \ "payments").as[BigDecimal]         shouldBe BigDecimal(600)
-      (json \ "repayments").as[BigDecimal]       shouldBe BigDecimal(300)
+      (json \ "amountDeclared").as[BigDecimal] shouldBe BigDecimal(3000)
+      (json \ "assessments").as[BigDecimal]    shouldBe BigDecimal(150)
+      (json \ "penalties").as[BigDecimal]      shouldBe BigDecimal(75)
+      (json \ "payments").as[BigDecimal]       shouldBe BigDecimal(600)
+      (json \ "repayments").as[BigDecimal]     shouldBe BigDecimal(300)
     }
   }
 }

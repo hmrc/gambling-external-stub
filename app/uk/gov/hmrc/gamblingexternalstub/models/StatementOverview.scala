@@ -38,5 +38,5 @@ final case class StatementOverview(
 
 object StatementOverview {
   implicit val format: OFormat[StatementOverview] = Json.format[StatementOverview]
-  implicit val writes: OWrites[StatementOverview]  = Json.writes[StatementOverview]
+  implicit val writes: OWrites[StatementOverview] = Json.writes[StatementOverview]
 }

@@ -77,7 +77,7 @@ class GamblingStatementOverviewController @Inject() (
           )
 
         case _ =>
-          val seed            = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(1)
+          val seed = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(1)
           val overviewVariant = regNumber.takeRight(7).dropRight(6).toIntOption.getOrElse(1)
 
           Ok(Json.toJson(buildStatementOverview(seed, overviewVariant)))
@@ -86,9 +86,9 @@ class GamblingStatementOverviewController @Inject() (
   }
 
   private def buildStatementOverview(seed: Int, overviewVariant: Int): StatementOverview = {
-    val today       = LocalDate.now()
+    val today = LocalDate.now()
     val periodStart = today.minusMonths(12).withDayOfMonth(1)
-    val periodEnd   = today.withDayOfMonth(today.lengthOfMonth())
+    val periodEnd = today.withDayOfMonth(today.lengthOfMonth())
 
     overviewVariant match {
       // Variant 0: all fields are zero, total = £0
@@ -111,17 +111,17 @@ class GamblingStatementOverviewController @Inject() (
 
       // Variant 2: non-zero fields with high payments, resulting in total < 0
       case 2 =>
-        val amountDeclared   = BigDecimal(seed * 1000)
-        val assessments      = BigDecimal(seed * 50)
-        val penalties        = BigDecimal(seed * 25)
-        val adjustments      = BigDecimal(seed * 10)
-        val reallocations    = BigDecimal(seed * 5)
+        val amountDeclared = BigDecimal(seed * 1000)
+        val assessments = BigDecimal(seed * 50)
+        val penalties = BigDecimal(seed * 25)
+        val adjustments = BigDecimal(seed * 10)
+        val reallocations = BigDecimal(seed * 5)
         val otherAssessments = BigDecimal(seed * 15)
-        val interest         = BigDecimal(seed * 8)
-        val payments         = BigDecimal(seed * 2000)
-        val repayments       = BigDecimal(seed * 100)
+        val interest = BigDecimal(seed * 8)
+        val payments = BigDecimal(seed * 2000)
+        val repayments = BigDecimal(seed * 100)
 
-        val total   = amountDeclared + assessments + penalties + adjustments + reallocations + otherAssessments + interest - payments - repayments
+        val total = amountDeclared + assessments + penalties + adjustments + reallocations + otherAssessments + interest - payments - repayments
         val balance = total - payments
 
         StatementOverview(
@@ -142,17 +142,17 @@ class GamblingStatementOverviewController @Inject() (
 
       // Variant 1 (default): non-zero fields with low payments, resulting in total > 0
       case _ =>
-        val amountDeclared   = BigDecimal(seed * 1000)
-        val assessments      = BigDecimal(seed * 50)
-        val penalties        = BigDecimal(seed * 25)
-        val adjustments      = BigDecimal(seed * 10)
-        val reallocations    = BigDecimal(seed * 5)
+        val amountDeclared = BigDecimal(seed * 1000)
+        val assessments = BigDecimal(seed * 50)
+        val penalties = BigDecimal(seed * 25)
+        val adjustments = BigDecimal(seed * 10)
+        val reallocations = BigDecimal(seed * 5)
         val otherAssessments = BigDecimal(seed * 15)
-        val interest         = BigDecimal(seed * 8)
-        val payments         = BigDecimal(seed * 200)
-        val repayments       = BigDecimal(seed * 100)
+        val interest = BigDecimal(seed * 8)
+        val payments = BigDecimal(seed * 200)
+        val repayments = BigDecimal(seed * 100)
 
-        val total   = amountDeclared + assessments + penalties + adjustments + reallocations + otherAssessments + interest - payments - repayments
+        val total = amountDeclared + assessments + penalties + adjustments + reallocations + otherAssessments + interest - payments - repayments
         val balance = total - payments
 
         StatementOverview(
