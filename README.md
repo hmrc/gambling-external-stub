@@ -449,6 +449,14 @@ Controller mapping:
 
 ---
 
+### 14. InterestDetails
+
+`GET /gambling/interest-details/{regime}/{regNumber}`
+
+See [docs/interest-details.md](docs/interest-details.md) for full details including regime validation, reg number encoding convention, item structure (description codes), all response scenarios, and example curl commands.
+
+---
+
 ## Behaviour
 
 ### Scenario 1 – Full linked history

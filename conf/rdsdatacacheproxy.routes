@@ -39,5 +39,6 @@ GET     /gambling/actual-repayments/:regime/:regNumber          uk.gov.hmrc.gamb
 
 GET     /gambling/assessments-without-returns/:regime/:regNumber          uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingAssessmentsInAbsenceOfReturnsController.getAssessmentsInAbsenceOfReturns(regime: String, regNumber: String, pageNo: Int ?=1, pageSize: Int ?=10)
 
-GET     /gambling/repayment-interest-repaid/:regime/:regNumber                   uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingRepaymentInterestRepaidController.getRepaymentInterestRepaid(regime: String, regNumber: String, pageNo: Int ?=1, pageSize: Int ?=10)
+GET     /gambling/repayment-interest-repaid/:regime/:regNumber            uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingRepaymentInterestRepaidController.getRepaymentInterestRepaid(regime: String, regNumber: String, pageNo: Int ?=1, pageSize: Int ?=10)
 
+GET     /gambling/interest-details/:regime/:regNumber           uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingInterestDetailsController.getInterestDetails(regime: String, regNumber: String, pageNo: Int ?=1, pageSize: Int ?=10)
