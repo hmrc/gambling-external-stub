@@ -70,7 +70,7 @@ class GamblingInterestController @Inject() (
                 periodStartDate         = interestDetails.periodStartDate,
                 periodEndDate           = interestDetails.periodEndDate,
                 interestAmount          = interestDetails.total,
-                interestAccruingAmount  = 200.22 * interestAccruingRecordCount ,
+                interestAccruingAmount  = 200.22 * interestAccruingRecordCount,
                 repaymentInterestAmount = 200.33 * repaymentInterestRecordCount,
                 total                   = interestDetails.total + (200.22 * interestAccruingRecordCount) + (200.33 * repaymentInterestRecordCount)
               )
