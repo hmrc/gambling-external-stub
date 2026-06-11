@@ -14,7 +14,7 @@ http://localhost:10405/rds-datacache-proxy/gambling/interest-details/{regime}/{r
 
 Controller mapping:
 
-`uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingInterestDetailsController.getInterestDetails(regime: String, regNumber: String, pageNo: Int, pageSize: Int)`
+`uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingInterestController.getInterestDetails(regime: String, regNumber: String, pageNo: Int, pageSize: Int)`
 
 Query parameters:
 
