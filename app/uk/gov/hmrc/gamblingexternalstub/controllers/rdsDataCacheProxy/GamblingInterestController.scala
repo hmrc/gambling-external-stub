@@ -28,6 +28,9 @@ class GamblingInterestController @Inject() (
   cc: ControllerComponents
 ) extends BackendController(cc) {
 
+  private val interestOffset = BigDecimal(0.55)
+  private val interestAccruingOffset = BigDecimal(0.35)
+
   private val descCodes = Seq(2640, 2650, 2655, 2680, 2685, 2690, 2695, 2660, 2670)
 
   def getInterestOverview(
@@ -155,4 +158,129 @@ class GamblingInterestController @Inject() (
       items           = page
     )
   }
+
+  def getInterestDrilldown(
+    regime: String,
+    regNumber: String,
+    interestId: String,
+    pageNo: Int,
+    pageSize: Int
+  ): Action[AnyContent] = Action { _ =>
+
+    if (Regime.fromString(regime).isEmpty) {
+      BadRequest(
+        Json.obj(
+          "code"    -> "INVALID_REGIME",
+          "message" -> s"regime must be one of: ${Regime.validCodes}"
+        )
+      )
+    } else {
+      val statusCode = regNumber.takeRight(3).toIntOption.getOrElse(200)
+      val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
+
+      statusCode match {
+        case 400 => BadRequest(Json.obj("code" -> "INVALID_REQUEST", "message" -> "Bad request"))
+        case 401 => Unauthorized(Json.obj("code" -> "UNAUTHORIZED", "message" -> "Unauthorized to access this resource"))
+        case 404 => NotFound(Json.obj("code" -> "NOT_FOUND", "message" -> "No interest accruing drilldown found for the given registration number"))
+        case 500 => InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
+        case _   => Ok(Json.toJson(createInterestDrilldown(recordCount, pageNo, pageSize)))
+      }
+    }
+  }
+
+  def getInterestAccruingDrilldown(
+    regime: String,
+    regNumber: String,
+    interestId: String,
+    pageNo: Int,
+    pageSize: Int
+  ): Action[AnyContent] = Action { _ =>
+
+    if (Regime.fromString(regime).isEmpty) {
+      BadRequest(
+        Json.obj(
+          "code"    -> "INVALID_REGIME",
+          "message" -> s"regime must be one of: ${Regime.validCodes}"
+        )
+      )
+    } else {
+      val statusCode = regNumber.takeRight(3).toIntOption.getOrElse(200)
+      val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
+
+      statusCode match {
+        case 400 => BadRequest(Json.obj("code" -> "INVALID_REQUEST", "message" -> "Bad request"))
+        case 401 => Unauthorized(Json.obj("code" -> "UNAUTHORIZED", "message" -> "Unauthorized to access this resource"))
+        case 404 => NotFound(Json.obj("code" -> "NOT_FOUND", "message" -> "No interest accruing drilldown found for the given registration number"))
+        case 500 => InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
+        case _   => Ok(Json.toJson(createInterestAccruingDrilldown(recordCount, pageNo, pageSize)))
+      }
+    }
+  }
+
+  private def createInterestAccruingDrilldown(recordCount: Int, pageNo: Int, pageSize: Int): InterestAccruingDrilldown = {
+    val today = LocalDate.now()
+    val periodStart = today.minusMonths(18).withDayOfMonth(1)
+    val periodEnd = today.plusMonths(3).withDayOfMonth(today.lengthOfMonth())
+
+    val allItems = (1 to recordCount).map { i =>
+      val dateFrom = periodStart.plusMonths((i - 1) % 21)
+      val dateTo = dateFrom.plusDays(30)
+      val amount = BigDecimal(i * 100) + interestAccruingOffset
+
+      InterestAccruingDrilldownItem(
+        interestOn = BigDecimal(i * 1000),
+        dateFrom   = dateFrom,
+        dateTo     = dateTo,
+        noOfDays   = BigDecimal(30),
+        rate       = BigDecimal(2.6),
+        amount     = amount
+      )
+    }
+
+    val from = (pageNo - 1) * pageSize
+    val page = allItems.slice(from, from + pageSize)
+
+    InterestAccruingDrilldown(
+      periodStartDate = Some(periodStart),
+      periodEndDate   = Some(periodEnd),
+      total           = allItems.map(_.amount).sum,
+      totalRecords    = recordCount,
+      descriptionCode = Option(2660),
+      items           = page
+    )
+  }
+
+  private def createInterestDrilldown(recordCount: Int, pageNo: Int, pageSize: Int): InterestDrilldown = {
+    val today = LocalDate.now()
+    val periodStart = today.minusMonths(18).withDayOfMonth(1)
+    val periodEnd = today.plusMonths(3).withDayOfMonth(today.lengthOfMonth())
+
+    val allItems = (1 to recordCount).map { i =>
+      val dateFrom = periodStart.plusMonths((i - 1) % 21)
+      val dateTo = dateFrom.plusDays(30)
+      val amount = BigDecimal(i * 100) + interestOffset
+
+      InterestDrilldownItem(
+        interestOn = BigDecimal(i * 1000),
+        dateFrom   = dateFrom,
+        dateTo     = dateTo,
+        noOfDays   = BigDecimal(30),
+        rate       = BigDecimal(2.6),
+        amount     = amount
+      )
+    }
+
+    val from = (pageNo - 1) * pageSize
+    val page = allItems.slice(from, from + pageSize)
+
+    InterestDrilldown(
+      periodStartDate = Some(periodStart),
+      periodEndDate   = Some(periodEnd),
+      total           = allItems.map(_.amount).sum,
+      totalRecords    = recordCount,
+      descriptionCode = Option(2660),
+      items           = page
+    )
+  }
+
 }
