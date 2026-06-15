@@ -18,7 +18,7 @@ http://localhost:10405/rds-datacache-proxy/gambling/interest-drilldown/{regime}/
 
 Controller mapping:
 
-`uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingInterestAccruingController.getInterestAccruingDrilldown(regime: String, regNumber: String, interestId: String, pageNo: Int, pageSize: Int)`
+`uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingInterestController.getInterestAccruingDrilldown(regime: String, regNumber: String, interestId: String, pageNo: Int, pageSize: Int)`
 
 `uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingInterestController.getInterestDrilldown(regime: String, regNumber: String, interestId: String, pageNo: Int, pageSize: Int)`
 
