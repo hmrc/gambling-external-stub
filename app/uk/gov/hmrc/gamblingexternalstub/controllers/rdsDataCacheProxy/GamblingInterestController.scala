@@ -102,6 +102,28 @@ class GamblingInterestController @Inject() (
     }
   }
 
+  def getRepaymentInterestDetails(
+    regime: String,
+    regNumber: String,
+    pageNo: Int = 1,
+    pageSize: Int = 10
+  ): Action[AnyContent] = Action { _ =>
+    if (Regime.fromString(regime).isEmpty) {
+      BadRequest(Json.obj("code" -> "INVALID_REGIME", "message" -> s"regime must be one of: ${Regime.validCodes}"))
+    } else {
+      val statusCode = regNumber.takeRight(3).toIntOption.getOrElse(200)
+      val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
+
+      statusCode match {
+        case 400 => BadRequest(Json.obj("code" -> "INVALID_REQUEST", "message" -> "Bad request"))
+        case 401 => Unauthorized(Json.obj("code" -> "UNAUTHORIZED", "message" -> "Unauthorized to access this resource"))
+        case 404 => NotFound(Json.obj("code" -> "NOT_FOUND", "message" -> "No repayment interest details found for this registration number"))
+        case 500 => InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
+        case _   => Ok(Json.toJson(createInterestDetails(recordCount, pageNo, pageSize, 0.33)))
+      }
+    }
+  }
+
   private def createInterestDetails(recordCount: Int, pageNo: Int, pageSize: Int, offset: BigDecimal) = {
     val today = LocalDate.now()
     val periodStart = today.minusMonths(36).withDayOfMonth(1)

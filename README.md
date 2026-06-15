@@ -465,6 +465,14 @@ See [docs/interest-details.md](docs/interest-details.md) for full details includ
 
 ---
 
+### 16. RepaymentInterestDetails
+
+`GET /gambling/repayment-interest-details/{regime}/{regNumber}`
+
+See [docs/repayment-interest-details.md](docs/repayment-interest-details.md) for full details including regime validation, reg number encoding convention, item structure (description codes), all response scenarios, and example curl commands.
+
+---
+
 ## Behaviour
 
 ### Scenario 1 – Full linked history
