@@ -95,7 +95,7 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       (json \ "interestAmount").as[BigDecimal]          shouldBe BigDecimal(-600.33)
       (json \ "interestAccruingAmount").as[BigDecimal]  shouldBe BigDecimal(-600.66)
       (json \ "repaymentInterestAmount").as[BigDecimal] shouldBe BigDecimal(600.99)
-      (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(601.32)
+      (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(-600.00)
     }
 
     "return correct totalRecords for XWM00003003200 6th from last = 0 (0,0,0)" in {
@@ -172,7 +172,7 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       (json \ "interestAmount").as[BigDecimal]          shouldBe BigDecimal(-600.33)
       (json \ "interestAccruingAmount").as[BigDecimal]  shouldBe BigDecimal(-600.66)
       (json \ "repaymentInterestAmount").as[BigDecimal] shouldBe BigDecimal(0.00)
-      (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(0.33)
+      (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(-1200.99)
     }
 
     "return correct totalRecords for XWM00003603200 6th from last = 6 (0,3,3)" in {
@@ -183,7 +183,7 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       (json \ "interestAmount").as[BigDecimal]          shouldBe BigDecimal(0.00)
       (json \ "interestAccruingAmount").as[BigDecimal]  shouldBe BigDecimal(-600.66)
       (json \ "repaymentInterestAmount").as[BigDecimal] shouldBe BigDecimal(600.99)
-      (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(1201.65)
+      (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(0.33)
     }
 
     "return correct totalRecords for XWM00003603200 6th from last = 6 (0,0,0)" in {
