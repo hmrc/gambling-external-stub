@@ -754,7 +754,7 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe BAD_REQUEST
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "INVALID_REGIME",
+        "code"    -> "INVALID_REGIME",
         "message" -> "regime must be one of: gbd, pbd, rgd, mgd"
       )
     }
@@ -771,7 +771,7 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe BAD_REQUEST
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "INVALID_REQUEST",
+        "code"    -> "INVALID_REQUEST",
         "message" -> "Bad request"
       )
     }
@@ -781,7 +781,7 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe UNAUTHORIZED
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "UNAUTHORIZED",
+        "code"    -> "UNAUTHORIZED",
         "message" -> "Unauthorized to access this resource"
       )
     }
@@ -791,7 +791,7 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe NOT_FOUND
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "NOT_FOUND",
+        "code"    -> "NOT_FOUND",
         "message" -> "No interest accruing details found for this registration number"
       )
     }
@@ -801,7 +801,7 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "UNEXPECTED_ERROR",
+        "code"    -> "UNEXPECTED_ERROR",
         "message" -> "Unexpected error occurred"
       )
     }
@@ -811,8 +811,8 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "totalRecords").as[Int] shouldBe 0
-      (json \ "total").as[BigDecimal] shouldBe BigDecimal(0)
+      (json \ "totalRecords").as[Int]           shouldBe 0
+      (json \ "total").as[BigDecimal]           shouldBe BigDecimal(0)
       (json \ "items").as[JsArray].value.length shouldBe 0
     }
 
@@ -821,9 +821,9 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "totalRecords").as[Int] shouldBe 3
+      (json \ "totalRecords").as[Int]           shouldBe 3
       (json \ "items").as[JsArray].value.length shouldBe 3
-      (json \ "total").as[BigDecimal] shouldBe BigDecimal(-600.33)
+      (json \ "total").as[BigDecimal]           shouldBe BigDecimal(-600.33)
     }
 
     "return correct item fields for first record" in {
@@ -832,11 +832,11 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       status(result) shouldBe OK
       val json = contentAsJson(result)
       val firstItem = (json \ "items")(0)
-      (firstItem \ "descriptionCode").as[Int] shouldBe 2640
-      (firstItem \ "amount").as[BigDecimal] shouldBe BigDecimal(-100.11)
-      (firstItem \ "interestId").as[String] shouldBe "SAFE-CHG-00003"
+      (firstItem \ "descriptionCode").as[Int]  shouldBe 2640
+      (firstItem \ "amount").as[BigDecimal]    shouldBe BigDecimal(-100.11)
+      (firstItem \ "interestId").as[String]    shouldBe "SAFE-CHG-00003"
       (firstItem \ "periodStartDate").as[String] should not be empty
-      (firstItem \ "periodEndDate").as[String] should not be empty
+      (firstItem \ "periodEndDate").as[String]   should not be empty
 
     }
 
@@ -845,7 +845,7 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "totalRecords").as[Int] shouldBe 9
+      (json \ "totalRecords").as[Int]           shouldBe 9
       (json \ "items").as[JsArray].value.length shouldBe 5
     }
 
@@ -854,7 +854,7 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "totalRecords").as[Int] shouldBe 9
+      (json \ "totalRecords").as[Int]           shouldBe 9
       (json \ "items").as[JsArray].value.length shouldBe 4
     }
 
@@ -863,7 +863,7 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "totalRecords").as[Int] shouldBe 50
+      (json \ "totalRecords").as[Int]           shouldBe 50
       (json \ "items").as[JsArray].value.length shouldBe 10
     }
 
@@ -872,7 +872,7 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
-      (json \ "totalRecords").as[Int] shouldBe 50
+      (json \ "totalRecords").as[Int]           shouldBe 50
       (json \ "items").as[JsArray].value.length shouldBe 10
     }
 
@@ -889,7 +889,7 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       status(result) shouldBe OK
       val json = contentAsJson(result)
       (json \ "periodStartDate").asOpt[String] shouldBe defined
-      (json \ "periodEndDate").asOpt[String] shouldBe defined
+      (json \ "periodEndDate").asOpt[String]   shouldBe defined
     }
   }
 }

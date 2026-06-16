@@ -284,13 +284,12 @@ class GamblingInterestController @Inject() (
     )
   }
 
-
   def getInterestAccruing(
-                          regime: String,
-                          regNumber: String,
-                          pageNo: Int = 1,
-                          pageSize: Int = 10
-                        ): Action[AnyContent] = Action { _ =>
+    regime: String,
+    regNumber: String,
+    pageNo: Int = 1,
+    pageSize: Int = 10
+  ): Action[AnyContent] = Action { _ =>
     if (Regime.fromString(regime).isEmpty) {
       BadRequest(Json.obj("code" -> "INVALID_REGIME", "message" -> s"regime must be one of: ${Regime.validCodes}"))
     } else {
@@ -302,7 +301,7 @@ class GamblingInterestController @Inject() (
         case 401 => Unauthorized(Json.obj("code" -> "UNAUTHORIZED", "message" -> "Unauthorized to access this resource"))
         case 404 => NotFound(Json.obj("code" -> "NOT_FOUND", "message" -> "No interest accruing details found for this registration number"))
         case 500 => InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
-        case _ => Ok(Json.toJson(createInterestAccruing(recordCount, pageNo, pageSize, 0.11)))
+        case _   => Ok(Json.toJson(createInterestAccruing(recordCount, pageNo, pageSize, 0.11)))
       }
     }
   }
@@ -320,10 +319,10 @@ class GamblingInterestController @Inject() (
 
       InterestAccruingItem(
         descriptionCode = code,
-        amount = amount,
-        interestId = f"SAFE-CHG-${i + 2}%05d",
+        amount          = amount,
+        interestId      = f"SAFE-CHG-${i + 2}%05d",
         periodStartDate = periodStartItem,
-        periodEndDate = periodEndItem
+        periodEndDate   = periodEndItem
       )
     }
 
@@ -332,10 +331,10 @@ class GamblingInterestController @Inject() (
 
     InterestAccruing(
       periodStartDate = Some(periodStart),
-      periodEndDate = Some(periodEnd),
-      total = allRecords.map(_.amount).sum,
-      totalRecords = recordCount,
-      items = page
+      periodEndDate   = Some(periodEnd),
+      total           = allRecords.map(_.amount).sum,
+      totalRecords    = recordCount,
+      items           = page
     )
   }
 }
