@@ -32,6 +32,7 @@ class GamblingInterestController @Inject() (
   private val interestAccruingOffset = BigDecimal(0.35)
 
   private val descCodes = Seq(2640, 2650, 2655, 2680, 2685, 2690, 2695, 2660, 2670)
+  private val repaymentInterestDescCodes = Seq(1940, 1950, 1960, 1970, 1980, 1990)
 
   def getInterestOverview(
     regime: String,
@@ -100,7 +101,7 @@ class GamblingInterestController @Inject() (
         case 401 => Unauthorized(Json.obj("code" -> "UNAUTHORIZED", "message" -> "Unauthorized to access this resource"))
         case 404 => NotFound(Json.obj("code" -> "NOT_FOUND", "message" -> "No interest details found for this registration number"))
         case 500 => InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
-        case _   => Ok(Json.toJson(createInterestDetails(recordCount, pageNo, pageSize, 0.11)))
+        case _   => Ok(Json.toJson(createInterestDetails(recordCount, pageNo, pageSize, 0.11, descCodes)))
       }
     }
   }
@@ -122,12 +123,12 @@ class GamblingInterestController @Inject() (
         case 401 => Unauthorized(Json.obj("code" -> "UNAUTHORIZED", "message" -> "Unauthorized to access this resource"))
         case 404 => NotFound(Json.obj("code" -> "NOT_FOUND", "message" -> "No repayment interest details found for this registration number"))
         case 500 => InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
-        case _   => Ok(Json.toJson(createInterestDetails(recordCount, pageNo, pageSize, 0.33)))
+        case _   => Ok(Json.toJson(createInterestDetails(recordCount, pageNo, pageSize, 0.33, repaymentInterestDescCodes)))
       }
     }
   }
 
-  private def createInterestDetails(recordCount: Int, pageNo: Int, pageSize: Int, offset: BigDecimal) = {
+  private def createInterestDetails(recordCount: Int, pageNo: Int, pageSize: Int, offset: BigDecimal, codes: Seq[Int] = descCodes) = {
     val today = LocalDate.now()
     val periodStart = today.minusMonths(36).withDayOfMonth(1)
     val periodEnd = today.withDayOfMonth(today.lengthOfMonth())
@@ -136,7 +137,7 @@ class GamblingInterestController @Inject() (
 
     val allRecords = (1 to recordCount).map { i =>
       val amount = (BigDecimal(i * 100) + offset) * -1
-      val code = descCodes((i - 1) % descCodes.size)
+      val code = codes((i - 1) % codes.size)
 
       InterestDetailItem(
         descriptionCode = code,
