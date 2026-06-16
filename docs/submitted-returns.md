@@ -20,8 +20,8 @@ Query parameters:
 
 | Parameter  | Type        | Default    | Description                                                                                                                                                                            |
 |------------|-------------|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `sortBy`   | Int         | 3          | 1 = period_start_date<br/>2 = submitted_date<br/>else = period_end_date<br/>This value does not affect the output apart from the fact it is output in the `ack_ref` field of the items |
-| `orderBy` | String      | ASC        | ASC or DESC                                                                                                                                                                            |   
+| `sortBy`   | Int         | 3          | 1 = period_start_date<br/>2 = submitted_date<br/>else = period_end_date<br/>This value does NOT affect the output apart from the fact it is output in the `ack_ref` field of the items |
+| `orderBy` | String      | ASC        | ASC or DESC<br/>This value DOES affect the output order of the items returned, they will be sorted on `submitted_date`                                                                 |   
 
 
 ---
