@@ -473,6 +473,14 @@ See [docs/repayment-interest-details.md](docs/repayment-interest-details.md) for
 
 ---
 
+### 17. SubmittedReturns
+
+`GET /gambling/submitted-returns/{regNumber}`
+
+See [docs/submitted-returns.md](docs/submitted-returns.md) for full details including reg number encoding convention, item structure, all response scenarios, and example curl commands.
+
+---
+
 ## Behaviour
 
 ### Scenario 1 – Full linked history
