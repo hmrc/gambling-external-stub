@@ -89,7 +89,7 @@ class GamblingSubmittedReturnsController @Inject() (
             ("ASC", (leftE: SubmittedReturnsItem, rightE: SubmittedReturnsItem) => leftE.submitted_date.toEpochDay < rightE.submitted_date.toEpochDay)
 
         logger.info(
-          s"[getSubmittedReturns] regNumber=$regNumber sortByOption=$sortBy orderByOption=$orderBy sort=$sort order=$order"
+          s"[getSubmittedReturns] regNumber=$regNumber sortBy=$sortBy orderBy=$orderBy sort=$sort order=$order"
         )
 
         val allRecords = (1 to recordCount).map { i =>
