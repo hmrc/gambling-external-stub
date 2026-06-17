@@ -67,7 +67,7 @@ class GamblingInterestController @Inject() (
 
           val interestDetails = createInterestDetails(regime, interestDetailsRecordCount, 1, 10, 0.11)
           val interestAccruing = createInterestAccruingDetails(regime, interestAccruingRecordCount, 1, 10, 0.22)
-//          val repaymentInterest = createRepaymentInterest(repaymentInterestRecordCount, 1, 10, 0.33)   TODO!!!
+          val repaymentInterest = createInterestDetails(regime, repaymentInterestRecordCount, 1, 10, 0.33)
 
           Ok(
             Json.toJson(
@@ -76,8 +76,8 @@ class GamblingInterestController @Inject() (
                 periodEndDate           = interestDetails.periodEndDate,
                 interestAmount          = interestDetails.total,
                 interestAccruingAmount  = interestAccruing.total,
-                repaymentInterestAmount = 200.33 * repaymentInterestRecordCount,
-                total                   = interestDetails.total + interestAccruing.total + (200.33 * repaymentInterestRecordCount)
+                repaymentInterestAmount = repaymentInterest.total,
+                total                   = interestDetails.total + interestAccruing.total + repaymentInterest.total
               )
             )
           )
