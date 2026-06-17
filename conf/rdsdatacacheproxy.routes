@@ -52,3 +52,6 @@ GET     /gambling/interest-accruing-drilldown/:regime/:regNumber/:interestId    
 GET     /gambling/interest-drilldown/:regime/:regNumber/:interestId              uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingInterestController.getInterestDrilldown(regime: String, regNumber: String, interestId: String, pageNo: Int ?=1, pageSize: Int ?=10)
 
 GET     /gambling/interest-accruing-details/:regime/:regNumber          uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingInterestController.getInterestAccruing(regime: String, regNumber: String, pageNo: Int ?=1, pageSize: Int ?=10)
+
+GET     /gambling/submitted-returns/:regNumber          uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingSubmittedReturnsController.getSubmittedReturns(regNumber: String, sortBy: Option[Int] ?= None, orderBy: Option[String] ?= None)
+
