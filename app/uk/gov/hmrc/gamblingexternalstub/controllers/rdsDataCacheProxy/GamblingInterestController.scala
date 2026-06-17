@@ -28,7 +28,12 @@ class GamblingInterestController @Inject() (
   cc: ControllerComponents
 ) extends BackendController(cc) {
 
-  private val descCodes = Seq(2640, 2650, 2655, 2680, 2685, 2690, 2695, 2660, 2670)
+  private val interestOffset = BigDecimal(0.55)
+  private val interestAccruingOffset = BigDecimal(0.35)
+
+  private val gtrDescriptionCodes = Seq(2640, 2650, 2655, 2680, 2685, 2690, 2695, 2660, 2670)
+  private val mgdDescriptionCodes = Seq(1940, 1950, 1960, 1970, 1980, 1990)
+  private val repaymentInterestDescCodes = Seq(1940, 1950, 1960, 1970, 1980, 1990)
 
   def getInterestOverview(
     regime: String,
@@ -60,8 +65,8 @@ class GamblingInterestController @Inject() (
             case _          => (0, 0, 0)
           }
 
-          val interestDetails = createInterestDetails(interestDetailsRecordCount, 1, 10, 0.11)
-//          val interestAccruing = createInterestAccruing(interestAccruingRecordCount, 1, 10, 0.22)      TODO!!!
+          val interestDetails = createInterestDetails(regime, interestDetailsRecordCount, 1, 10, 0.11)
+          val interestAccruing = createInterestAccruingDetails(regime, interestAccruingRecordCount, 1, 10, 0.22)
 //          val repaymentInterest = createRepaymentInterest(repaymentInterestRecordCount, 1, 10, 0.33)   TODO!!!
 
           Ok(
@@ -70,9 +75,9 @@ class GamblingInterestController @Inject() (
                 periodStartDate         = interestDetails.periodStartDate,
                 periodEndDate           = interestDetails.periodEndDate,
                 interestAmount          = interestDetails.total,
-                interestAccruingAmount  = 200.22 * interestAccruingRecordCount,
+                interestAccruingAmount  = interestAccruing.total,
                 repaymentInterestAmount = 200.33 * repaymentInterestRecordCount,
-                total                   = interestDetails.total + (200.22 * interestAccruingRecordCount) + (200.33 * repaymentInterestRecordCount)
+                total                   = interestDetails.total + interestAccruing.total + (200.33 * repaymentInterestRecordCount)
               )
             )
           )
@@ -97,12 +102,34 @@ class GamblingInterestController @Inject() (
         case 401 => Unauthorized(Json.obj("code" -> "UNAUTHORIZED", "message" -> "Unauthorized to access this resource"))
         case 404 => NotFound(Json.obj("code" -> "NOT_FOUND", "message" -> "No interest details found for this registration number"))
         case 500 => InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
-        case _   => Ok(Json.toJson(createInterestDetails(recordCount, pageNo, pageSize, 0.11)))
+        case _   => Ok(Json.toJson(createInterestDetails(regime, recordCount, pageNo, pageSize, 0.11)))
       }
     }
   }
 
-  private def createInterestDetails(recordCount: Int, pageNo: Int, pageSize: Int, offset: BigDecimal) = {
+  def getRepaymentInterestDetails(
+    regime: String,
+    regNumber: String,
+    pageNo: Int = 1,
+    pageSize: Int = 10
+  ): Action[AnyContent] = Action { _ =>
+    if (Regime.fromString(regime).isEmpty) {
+      BadRequest(Json.obj("code" -> "INVALID_REGIME", "message" -> s"regime must be one of: ${Regime.validCodes}"))
+    } else {
+      val statusCode = regNumber.takeRight(3).toIntOption.getOrElse(200)
+      val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
+
+      statusCode match {
+        case 400 => BadRequest(Json.obj("code" -> "INVALID_REQUEST", "message" -> "Bad request"))
+        case 401 => Unauthorized(Json.obj("code" -> "UNAUTHORIZED", "message" -> "Unauthorized to access this resource"))
+        case 404 => NotFound(Json.obj("code" -> "NOT_FOUND", "message" -> "No repayment interest details found for this registration number"))
+        case 500 => InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
+        case _   => Ok(Json.toJson(createInterestDetails(regime, recordCount, pageNo, pageSize, 0.33)))
+      }
+    }
+  }
+
+  private def createInterestDetails(regime: String, recordCount: Int, pageNo: Int, pageSize: Int, offset: BigDecimal) = {
     val today = LocalDate.now()
     val periodStart = today.minusMonths(36).withDayOfMonth(1)
     val periodEnd = today.withDayOfMonth(today.lengthOfMonth())
@@ -111,12 +138,12 @@ class GamblingInterestController @Inject() (
 
     val allRecords = (1 to recordCount).map { i =>
       val amount = (BigDecimal(i * 100) + offset) * -1
-      val code = descCodes((i - 1) % descCodes.size)
+      val code = getDescriptionCode(regime, i)
 
       InterestDetailItem(
         descriptionCode = code,
         amount          = amount,
-        interestId      = f"SAFE-CHG-${i + 2}%05d",
+        interestId      = f"SAFE-CHG-$code",
         periodStartDate = periodStartItem,
         periodEndDate   = periodEndItem
       )
@@ -132,5 +159,228 @@ class GamblingInterestController @Inject() (
       totalRecords    = recordCount,
       items           = page
     )
+  }
+  private def createInterestAccruingDetails(regime: String, recordCount: Int, pageNo: Int, pageSize: Int, offset: BigDecimal) = {
+    val today = LocalDate.now()
+    val periodStart = today.minusMonths(36).withDayOfMonth(1)
+    val periodEnd = today.withDayOfMonth(today.lengthOfMonth())
+    val periodStartItem = today.minusMonths(35).withDayOfMonth(1)
+    val periodEndItem = today.withDayOfMonth(today.lengthOfMonth())
+
+    val allRecords = (1 to recordCount).map { i =>
+      val amount = (BigDecimal(i * 100) + offset) * -1
+      val code = getDescriptionCode(regime, i)
+
+      InterestDetailItem(
+        descriptionCode = code,
+        amount          = amount,
+        interestId      = f"SAFE-CHG-$code",
+        periodStartDate = periodStartItem,
+        periodEndDate   = periodEndItem
+      )
+    }
+
+    val from = (pageNo - 1) * pageSize
+    val page = allRecords.slice(from, from + pageSize)
+
+    InterestDetails(
+      periodStartDate = Some(periodStart),
+      periodEndDate   = Some(periodEnd),
+      total           = allRecords.map(_.amount).sum,
+      totalRecords    = recordCount,
+      items           = page
+    )
+  }
+
+  def getInterestDrilldown(
+    regime: String,
+    regNumber: String,
+    interestId: String,
+    pageNo: Int,
+    pageSize: Int
+  ): Action[AnyContent] = Action { _ =>
+
+    if (Regime.fromString(regime).isEmpty) {
+      BadRequest(
+        Json.obj(
+          "code"    -> "INVALID_REGIME",
+          "message" -> s"regime must be one of: ${Regime.validCodes}"
+        )
+      )
+    } else {
+      val statusCode = regNumber.takeRight(3).toIntOption.getOrElse(200)
+      val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
+
+      statusCode match {
+        case 400 => BadRequest(Json.obj("code" -> "INVALID_REQUEST", "message" -> "Bad request"))
+        case 401 => Unauthorized(Json.obj("code" -> "UNAUTHORIZED", "message" -> "Unauthorized to access this resource"))
+        case 404 => NotFound(Json.obj("code" -> "NOT_FOUND", "message" -> "No interest accruing drilldown found for the given registration number"))
+        case 500 => InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
+        case _ =>
+          val descriptionCode = interestId.stripPrefix("SAFE-CHG-").toIntOption
+          Ok(Json.toJson(createInterestDrilldown(recordCount, pageNo, pageSize, descriptionCode)))
+      }
+    }
+  }
+
+  def getInterestAccruingDrilldown(
+    regime: String,
+    regNumber: String,
+    interestId: String,
+    pageNo: Int,
+    pageSize: Int
+  ): Action[AnyContent] = Action { _ =>
+
+    if (Regime.fromString(regime).isEmpty) {
+      BadRequest(
+        Json.obj(
+          "code"    -> "INVALID_REGIME",
+          "message" -> s"regime must be one of: ${Regime.validCodes}"
+        )
+      )
+    } else {
+      val statusCode = regNumber.takeRight(3).toIntOption.getOrElse(200)
+      val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
+
+      statusCode match {
+        case 400 => BadRequest(Json.obj("code" -> "INVALID_REQUEST", "message" -> "Bad request"))
+        case 401 => Unauthorized(Json.obj("code" -> "UNAUTHORIZED", "message" -> "Unauthorized to access this resource"))
+        case 404 => NotFound(Json.obj("code" -> "NOT_FOUND", "message" -> "No interest accruing drilldown found for the given registration number"))
+        case 500 => InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
+        case _ =>
+          val descriptionCode = interestId.stripPrefix("SAFE-CHG-").toIntOption
+          Ok(Json.toJson(createInterestAccruingDrilldown(recordCount, pageNo, pageSize, descriptionCode)))
+      }
+    }
+  }
+
+  private def createInterestAccruingDrilldown(recordCount: Int,
+                                              pageNo: Int,
+                                              pageSize: Int,
+                                              descriptionCode: Option[Int]
+                                             ): InterestAccruingDrilldown = {
+    val today = LocalDate.now()
+    val periodStart = today.minusMonths(18).withDayOfMonth(1)
+    val periodEnd = today.plusMonths(3).withDayOfMonth(today.lengthOfMonth())
+
+    val allItems = (1 to recordCount).map { i =>
+      val dateFrom = periodStart.plusMonths((i - 1) % 21)
+      val dateTo = dateFrom.plusDays(30)
+      val amount = BigDecimal(i * 100) + interestAccruingOffset
+
+      InterestAccruingDrilldownItem(
+        interestOn = BigDecimal(i * 1000),
+        dateFrom   = dateFrom,
+        dateTo     = dateTo,
+        noOfDays   = BigDecimal(30),
+        rate       = BigDecimal(2.6),
+        amount     = amount
+      )
+    }
+
+    val from = (pageNo - 1) * pageSize
+    val page = allItems.slice(from, from + pageSize)
+
+    InterestAccruingDrilldown(
+      periodStartDate = Some(periodStart),
+      periodEndDate   = Some(periodEnd),
+      total           = allItems.map(_.amount).sum,
+      totalRecords    = recordCount,
+      descriptionCode = descriptionCode,
+      items           = page
+    )
+  }
+
+  private def createInterestDrilldown(recordCount: Int, pageNo: Int, pageSize: Int, descriptionCode: Option[Int]): InterestDrilldown = {
+    val today = LocalDate.now()
+    val periodStart = today.minusMonths(18).withDayOfMonth(1)
+    val periodEnd = today.plusMonths(3).withDayOfMonth(today.lengthOfMonth())
+
+    val allItems = (1 to recordCount).map { i =>
+      val dateFrom = periodStart.plusMonths((i - 1) % 21)
+      val dateTo = dateFrom.plusDays(30)
+      val amount = BigDecimal(i * 100) + interestOffset
+
+      InterestDrilldownItem(
+        interestOn = BigDecimal(i * 1000),
+        dateFrom   = dateFrom,
+        dateTo     = dateTo,
+        noOfDays   = BigDecimal(30),
+        rate       = BigDecimal(2.6),
+        amount     = amount
+      )
+    }
+
+    val from = (pageNo - 1) * pageSize
+    val page = allItems.slice(from, from + pageSize)
+
+    InterestDrilldown(
+      periodStartDate = Some(periodStart),
+      periodEndDate   = Some(periodEnd),
+      total           = allItems.map(_.amount).sum,
+      totalRecords    = recordCount,
+      descriptionCode = descriptionCode,
+      items           = page
+    )
+  }
+
+  def getInterestAccruing(
+    regime: String,
+    regNumber: String,
+    pageNo: Int = 1,
+    pageSize: Int = 10
+  ): Action[AnyContent] = Action { _ =>
+    if (Regime.fromString(regime).isEmpty) {
+      BadRequest(Json.obj("code" -> "INVALID_REGIME", "message" -> s"regime must be one of: ${Regime.validCodes}"))
+    } else {
+      val statusCode = regNumber.takeRight(3).toIntOption.getOrElse(200)
+      val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
+
+      statusCode match {
+        case 400 => BadRequest(Json.obj("code" -> "INVALID_REQUEST", "message" -> "Bad request"))
+        case 401 => Unauthorized(Json.obj("code" -> "UNAUTHORIZED", "message" -> "Unauthorized to access this resource"))
+        case 404 => NotFound(Json.obj("code" -> "NOT_FOUND", "message" -> "No interest accruing details found for this registration number"))
+        case 500 => InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
+        case _   => Ok(Json.toJson(createInterestAccruing(regime, recordCount, pageNo, pageSize, 0.11)))
+      }
+    }
+  }
+
+  private def createInterestAccruing(regime: String, recordCount: Int, pageNo: Int, pageSize: Int, offset: BigDecimal) = {
+    val today = LocalDate.now()
+    val periodStart = today.minusMonths(36).withDayOfMonth(1)
+    val periodEnd = today.withDayOfMonth(today.lengthOfMonth())
+    val periodStartItem = today.minusMonths(35).withDayOfMonth(1)
+    val periodEndItem = today.withDayOfMonth(today.lengthOfMonth())
+
+    val allRecords = (1 to recordCount).map { i =>
+      val amount = (BigDecimal(i * 100) + offset) * -1
+      val code = getDescriptionCode(regime, i)
+
+      InterestAccruingItem(
+        descriptionCode = code,
+        amount          = amount,
+        interestId      = f"SAFE-CHG-$code",
+        periodStartDate = periodStartItem,
+        periodEndDate   = periodEndItem
+      )
+    }
+
+    val from = (pageNo - 1) * pageSize
+    val page = allRecords.slice(from, from + pageSize)
+
+    InterestAccruing(
+      periodStartDate = Some(periodStart),
+      periodEndDate   = Some(periodEnd),
+      total           = allRecords.map(_.amount).sum,
+      totalRecords    = recordCount,
+      items           = page
+    )
+  }
+
+  private def getDescriptionCode(regime: String, index: Int) = {
+    regime.toLowerCase match
+      case "mgd" => mgdDescriptionCodes((index - 1) % mgdDescriptionCodes.size)
+      case _     => gtrDescriptionCodes((index - 1) % gtrDescriptionCodes.size)
   }
 }
