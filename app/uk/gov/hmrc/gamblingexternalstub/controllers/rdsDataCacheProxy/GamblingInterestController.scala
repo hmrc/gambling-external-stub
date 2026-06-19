@@ -143,7 +143,7 @@ class GamblingInterestController @Inject() (
       InterestDetailItem(
         descriptionCode = code,
         amount          = amount,
-        interestId      = f"SAFE-CHG-$code",
+        interestId      = f"XAM00000$code",
         periodStartDate = periodStartItem,
         periodEndDate   = periodEndItem
       )
@@ -174,7 +174,7 @@ class GamblingInterestController @Inject() (
       InterestDetailItem(
         descriptionCode = code,
         amount          = amount,
-        interestId      = f"SAFE-CHG-$code",
+        interestId      = f"XAM00000$code",
         periodStartDate = periodStartItem,
         periodEndDate   = periodEndItem
       )
@@ -217,8 +217,10 @@ class GamblingInterestController @Inject() (
         case 404 => NotFound(Json.obj("code" -> "NOT_FOUND", "message" -> "No interest accruing drilldown found for the given registration number"))
         case 500 => InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
         case _ =>
-          val descriptionCode = interestId.stripPrefix("SAFE-CHG-").toIntOption
-          Ok(Json.toJson(createInterestDrilldown(recordCount, pageNo, pageSize, descriptionCode)))
+          val descriptionCode = interestId.takeRight(4).toIntOption.flatMap(findDescriptionCodeFor(regime, _))
+          descriptionCode.fold(Ok(Json.toJson(InterestDrilldown.empty))) { code =>
+            Ok(Json.toJson(createInterestDrilldown(recordCount, pageNo, pageSize, Option(code))))
+          }
       }
     }
   }
@@ -248,8 +250,10 @@ class GamblingInterestController @Inject() (
         case 404 => NotFound(Json.obj("code" -> "NOT_FOUND", "message" -> "No interest accruing drilldown found for the given registration number"))
         case 500 => InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
         case _ =>
-          val descriptionCode = interestId.stripPrefix("SAFE-CHG-").toIntOption
-          Ok(Json.toJson(createInterestAccruingDrilldown(recordCount, pageNo, pageSize, descriptionCode)))
+          val descriptionCode = interestId.takeRight(4).toIntOption.flatMap(findDescriptionCodeFor(regime, _))
+          descriptionCode.fold(Ok(Json.toJson(InterestAccruingDrilldown.empty))) { code =>
+            Ok(Json.toJson(createInterestAccruingDrilldown(recordCount, pageNo, pageSize, Option(code))))
+          }
       }
     }
   }
@@ -360,7 +364,7 @@ class GamblingInterestController @Inject() (
       InterestAccruingItem(
         descriptionCode = code,
         amount          = amount,
-        interestId      = f"SAFE-CHG-$code",
+        interestId      = f"XAM00000$code",
         periodStartDate = periodStartItem,
         periodEndDate   = periodEndItem
       )
@@ -382,5 +386,11 @@ class GamblingInterestController @Inject() (
     regime.toLowerCase match
       case "mgd" => mgdDescriptionCodes((index - 1) % mgdDescriptionCodes.size)
       case _     => gtrDescriptionCodes((index - 1) % gtrDescriptionCodes.size)
+  }
+
+  private def findDescriptionCodeFor(regime: String, code: Int): Option[Int] = {
+    regime.toLowerCase match
+      case "mgd" => mgdDescriptionCodes.find(_ == code)
+      case _     => gtrDescriptionCodes.find(_ == code)
   }
 }
