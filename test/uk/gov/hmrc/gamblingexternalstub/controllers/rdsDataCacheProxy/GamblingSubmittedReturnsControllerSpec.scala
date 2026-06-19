@@ -93,18 +93,29 @@ class GamblingSubmittedReturnsControllerSpec extends AnyWordSpec with Matchers w
       val json = contentAsJson(result)
       (json \ "items").as[JsArray].value.length shouldBe 1
       val items1 = (json \ "items")(0)
-      (items1 \ "ack_ref").as[String] shouldBe "1100__sortBy=1__orderBy=DESC"
+      (items1 \ "ack_ref").as[String] shouldBe "3KRA KBAF JZDN TKM"
 
     }
 
-    "return 1 records for XWM00003101200 (last 3 = 200, 4th+5th from right = 01) with DEFAULT sortBy & orderBy" in {
-      val result = controller.getSubmittedReturns("XWM00003101200", Some(100), Some("WRONG"))(FakeRequest())
+    "return 1 records for XWM00003901200 (last 3 = 200, 4th+5th from right = 01) with DEFAULT sortBy & orderBy" in {
+      val result = controller.getSubmittedReturns("XWM00003901200", Some(100), Some("WRONG"))(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
       (json \ "items").as[JsArray].value.length shouldBe 1
       val items1 = (json \ "items")(0)
       (items1 \ "ack_ref").as[String] shouldBe "1100__sortBy=3__orderBy=ASC"
+
+    }
+
+    "return 1 records for XWM00003901200 (last 3 = 200, 4th+5th from right = 01) with correct sortBy & orderBy" in {
+      val result = controller.getSubmittedReturns("XWM00003901200", Some(1), Some("DESC"))(FakeRequest())
+
+      status(result) shouldBe OK
+      val json = contentAsJson(result)
+      (json \ "items").as[JsArray].value.length shouldBe 1
+      val items1 = (json \ "items")(0)
+      (items1 \ "ack_ref").as[String] shouldBe "1100__sortBy=1__orderBy=DESC"
 
     }
   }
