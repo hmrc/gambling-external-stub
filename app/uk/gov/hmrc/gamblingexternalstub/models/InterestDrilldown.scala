@@ -44,4 +44,13 @@ final case class InterestDrilldown(
 
 object InterestDrilldown {
   implicit val format: OFormat[InterestDrilldown] = Json.format[InterestDrilldown]
+
+  val empty = InterestDrilldown(
+    periodStartDate = Option(LocalDate.now().minusMonths(18)),
+    periodEndDate   = Option(LocalDate.now()),
+    total           = 0,
+    totalRecords    = 0,
+    descriptionCode = None,
+    items           = Seq.empty[InterestDrilldownItem]
+  )
 }
