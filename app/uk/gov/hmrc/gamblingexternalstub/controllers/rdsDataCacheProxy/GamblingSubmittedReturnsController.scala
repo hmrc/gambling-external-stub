@@ -39,6 +39,7 @@ class GamblingSubmittedReturnsController @Inject() (
 
     val statusCode = regNumber.takeRight(3).toIntOption.getOrElse(200)
     val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
+    val sixthDigit = regNumber.takeRight(6).dropRight(5).toIntOption.getOrElse(0)
 
     statusCode match {
 
@@ -93,15 +94,28 @@ class GamblingSubmittedReturnsController @Inject() (
         )
 
         val allRecords = (1 to recordCount).map { i =>
-          val formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu")
-          val mgd_period_month = LocalDate.now().minusMonths(i)
-          val mgd_period = mgd_period_month.withDayOfMonth(mgd_period_month.lengthOfMonth()).format(formatter)
+          val formatter = DateTimeFormatter.ofPattern("d MMM yyyy")
+          val submitted_date = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).minusMonths(i).minusYears(1)
+          val mgd_period_start = submitted_date.minusMonths(i + 4).withDayOfMonth(1)
+          val mgd_period_end = mgd_period_start.plusMonths(3).withDayOfMonth(mgd_period_start.plusMonths(3).lengthOfMonth())
+          val mgd_period = s"${mgd_period_start.format(formatter)} to ${mgd_period_end.format(formatter)}"
+
+          def rotateChar(c: Char, shift: Int, base: Char): Char = {
+            (base + (c - base + shift) % 26).toChar
+          }
+
+          val ack_ref = sixthDigit match {
+            case 9 => s"${1000 + (i * 100)}__sortBy=${sort}__orderBy=$order"
+            case _ =>
+              val iStr = (i + 2).toString
+              f"${iStr.charAt(iStr.length() - 1)}${rotateChar('J', i, 'A')}${rotateChar('Q', i, 'A')}${rotateChar('Z', i, 'A')} ${rotateChar('J', i, 'A')}${rotateChar('A', i, 'A')}${rotateChar('Z', i, 'A')}${rotateChar('E', i, 'A')} ${rotateChar('I', i, 'A')}${rotateChar('Y', i, 'A')}${rotateChar('C', i, 'A')}${rotateChar('M', i, 'A')} TKM"
+          }
 
           SubmittedReturnsItem(
             consec_no      = 1000 + (i * 100),
             mgd_period     = mgd_period,
-            submitted_date = mgd_period_month.plusMonths(1),
-            ack_ref        = s"${1000 + (i * 100)}__sortBy=${sort}__orderBy=$order"
+            submitted_date = submitted_date,
+            ack_ref        = ack_ref
           )
         }
 
