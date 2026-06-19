@@ -86,7 +86,7 @@ class GamblingSubmittedReturnsControllerSpec extends AnyWordSpec with Matchers w
       (json \ "items").as[JsArray].value.length shouldBe 3
     }
 
-    "return 1 records for XWM00003101200 (last 3 = 200, 4th+5th from right = 01) with correct sortBy & orderBy" in {
+    "return 1 records for XWM00003101200 (last 3 = 200, 4th+5th from right = 01)" in {
       val result = controller.getSubmittedReturns("XWM00003101200", Some(1), Some("DESC"))(FakeRequest())
 
       status(result) shouldBe OK

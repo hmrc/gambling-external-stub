@@ -53,16 +53,16 @@ class GamblingInterestController @Inject() (
           val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
           val sixthDigit = regNumber.takeRight(6).dropRight(5).toIntOption.getOrElse(0)
 
-          val (interestDetailsRecordCount, interestAccruingRecordCount, repaymentInterestRecordCount) = (sixthDigit, regime.toLowerCase) match {
-            case (0, "mgd") => (recordCount, recordCount, recordCount)
-            case (1, _)     => (recordCount, 0, 0)
-            case (2, _)     => (0, recordCount, 0)
-            case (3, "mgd") => (0, 0, recordCount)
-            case (4, _)     => (0, 0, 0)
-            case (5, _)     => (recordCount, recordCount, 0)
-            case (6, "mgd") => (0, recordCount, recordCount)
-            case (7, "mgd") => (recordCount, 0, recordCount)
-            case _          => (0, 0, 0)
+          val (interestDetailsRecordCount, interestAccruingRecordCount, repaymentInterestRecordCount) = sixthDigit match {
+            case 0 => (recordCount, recordCount, recordCount)
+            case 1 => (recordCount, 0, 0)
+            case 2 => (0, recordCount, 0)
+            case 3 => (0, 0, recordCount)
+            case 4 => (0, 0, 0)
+            case 5 => (recordCount, recordCount, 0)
+            case 6 => (0, recordCount, recordCount)
+            case 7 => (recordCount, 0, recordCount)
+            case _ => (0, 0, 0)
           }
 
           val interestDetails = createInterestDetails(regime, interestDetailsRecordCount, 1, 10, 0.11)
