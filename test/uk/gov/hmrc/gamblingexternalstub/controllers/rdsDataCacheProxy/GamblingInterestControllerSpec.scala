@@ -94,8 +94,8 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       val json = contentAsJson(result)
       (json \ "interestAmount").as[BigDecimal]          shouldBe BigDecimal(-600.33)
       (json \ "interestAccruingAmount").as[BigDecimal]  shouldBe BigDecimal(-600.66)
-      (json \ "repaymentInterestAmount").as[BigDecimal] shouldBe BigDecimal(600.99)
-      (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(-600.00)
+      (json \ "repaymentInterestAmount").as[BigDecimal] shouldBe BigDecimal(-600.99)
+      (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(-1801.98)
     }
 
     "return correct totalRecords for XWM00003003200 6th from last = 0 (0,0,0)" in {
@@ -138,8 +138,8 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       val json = contentAsJson(result)
       (json \ "interestAmount").as[BigDecimal]          shouldBe BigDecimal(0.00)
       (json \ "interestAccruingAmount").as[BigDecimal]  shouldBe BigDecimal(0.00)
-      (json \ "repaymentInterestAmount").as[BigDecimal] shouldBe BigDecimal(600.99)
-      (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(600.99)
+      (json \ "repaymentInterestAmount").as[BigDecimal] shouldBe BigDecimal(-600.99)
+      (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(-600.99)
     }
 
     "return correct totalRecords for XWM00003303200 6th from last = 3 (0,0,0)" in {
@@ -182,8 +182,8 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       val json = contentAsJson(result)
       (json \ "interestAmount").as[BigDecimal]          shouldBe BigDecimal(0.00)
       (json \ "interestAccruingAmount").as[BigDecimal]  shouldBe BigDecimal(-600.66)
-      (json \ "repaymentInterestAmount").as[BigDecimal] shouldBe BigDecimal(600.99)
-      (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(0.33)
+      (json \ "repaymentInterestAmount").as[BigDecimal] shouldBe BigDecimal(-600.99)
+      (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(-1201.65)
     }
 
     "return correct totalRecords for XWM00003603200 6th from last = 6 (0,0,0)" in {
@@ -204,8 +204,8 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       val json = contentAsJson(result)
       (json \ "interestAmount").as[BigDecimal]          shouldBe BigDecimal(-600.33)
       (json \ "interestAccruingAmount").as[BigDecimal]  shouldBe BigDecimal(0.00)
-      (json \ "repaymentInterestAmount").as[BigDecimal] shouldBe BigDecimal(600.99)
-      (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(0.66)
+      (json \ "repaymentInterestAmount").as[BigDecimal] shouldBe BigDecimal(-600.99)
+      (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(-1201.32)
     }
 
     "return correct totalRecords for XWM00003703200 6th from last = 7 (0,0,0)" in {
@@ -832,9 +832,9 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       status(result) shouldBe OK
       val json = contentAsJson(result)
       val firstItem = (json \ "items")(0)
-      (firstItem \ "descriptionCode").as[Int]  shouldBe 2640
+      (firstItem \ "descriptionCode").as[Int]  shouldBe 1940
       (firstItem \ "amount").as[BigDecimal]    shouldBe BigDecimal(-100.11)
-      (firstItem \ "interestId").as[String]    shouldBe "SAFE-CHG-00003"
+      (firstItem \ "interestId").as[String]    shouldBe "SAFE-CHG-1940"
       (firstItem \ "periodStartDate").as[String] should not be empty
       (firstItem \ "periodEndDate").as[String]   should not be empty
 

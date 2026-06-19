@@ -31,7 +31,8 @@ class GamblingInterestController @Inject() (
   private val interestOffset = BigDecimal(0.55)
   private val interestAccruingOffset = BigDecimal(0.35)
 
-  private val descCodes = Seq(2640, 2650, 2655, 2680, 2685, 2690, 2695, 2660, 2670)
+  private val gtrDescriptionCodes = Seq(2640, 2650, 2655, 2680, 2685, 2690, 2695, 2660, 2670)
+  private val mgdDescriptionCodes = Seq(1940, 1950, 1960, 1970, 1980, 1990)
   private val repaymentInterestDescCodes = Seq(1940, 1950, 1960, 1970, 1980, 1990)
 
   def getInterestOverview(
@@ -64,9 +65,9 @@ class GamblingInterestController @Inject() (
             case _          => (0, 0, 0)
           }
 
-          val interestDetails = createInterestDetails(interestDetailsRecordCount, 1, 10, 0.11)
-          val interestAccruing = createInterestAccruing(interestAccruingRecordCount, 1, 10, 0.22)
-//          val repaymentInterest = createRepaymentInterest(repaymentInterestRecordCount, 1, 10, 0.33)   TODO!!!
+          val interestDetails = createInterestDetails(regime, interestDetailsRecordCount, 1, 10, 0.11)
+          val interestAccruing = createInterestAccruingDetails(regime, interestAccruingRecordCount, 1, 10, 0.22)
+          val repaymentInterest = createInterestDetails(regime, repaymentInterestRecordCount, 1, 10, 0.33)
 
           Ok(
             Json.toJson(
@@ -75,8 +76,8 @@ class GamblingInterestController @Inject() (
                 periodEndDate           = interestDetails.periodEndDate,
                 interestAmount          = interestDetails.total,
                 interestAccruingAmount  = interestAccruing.total,
-                repaymentInterestAmount = 200.33 * repaymentInterestRecordCount,
-                total                   = interestDetails.total + (interestAccruing.total) + (200.33 * repaymentInterestRecordCount)
+                repaymentInterestAmount = repaymentInterest.total,
+                total                   = interestDetails.total + interestAccruing.total + repaymentInterest.total
               )
             )
           )
@@ -101,7 +102,7 @@ class GamblingInterestController @Inject() (
         case 401 => Unauthorized(Json.obj("code" -> "UNAUTHORIZED", "message" -> "Unauthorized to access this resource"))
         case 404 => NotFound(Json.obj("code" -> "NOT_FOUND", "message" -> "No interest details found for this registration number"))
         case 500 => InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
-        case _   => Ok(Json.toJson(createInterestDetails(recordCount, pageNo, pageSize, 0.11, descCodes)))
+        case _   => Ok(Json.toJson(createInterestDetails(regime, recordCount, pageNo, pageSize, 0.11)))
       }
     }
   }
@@ -123,12 +124,12 @@ class GamblingInterestController @Inject() (
         case 401 => Unauthorized(Json.obj("code" -> "UNAUTHORIZED", "message" -> "Unauthorized to access this resource"))
         case 404 => NotFound(Json.obj("code" -> "NOT_FOUND", "message" -> "No repayment interest details found for this registration number"))
         case 500 => InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
-        case _   => Ok(Json.toJson(createInterestDetails(recordCount, pageNo, pageSize, 0.33, repaymentInterestDescCodes)))
+        case _   => Ok(Json.toJson(createInterestDetails(regime, recordCount, pageNo, pageSize, 0.33)))
       }
     }
   }
 
-  private def createInterestDetails(recordCount: Int, pageNo: Int, pageSize: Int, offset: BigDecimal, codes: Seq[Int] = descCodes) = {
+  private def createInterestDetails(regime: String, recordCount: Int, pageNo: Int, pageSize: Int, offset: BigDecimal) = {
     val today = LocalDate.now()
     val periodStart = today.minusMonths(36).withDayOfMonth(1)
     val periodEnd = today.withDayOfMonth(today.lengthOfMonth())
@@ -137,12 +138,43 @@ class GamblingInterestController @Inject() (
 
     val allRecords = (1 to recordCount).map { i =>
       val amount = (BigDecimal(i * 100) + offset) * -1
-      val code = codes((i - 1) % codes.size)
+      val code = getDescriptionCode(regime, i)
 
       InterestDetailItem(
         descriptionCode = code,
         amount          = amount,
-        interestId      = f"SAFE-CHG-${i + 2}%05d",
+        interestId      = f"SAFE-CHG-$code",
+        periodStartDate = periodStartItem,
+        periodEndDate   = periodEndItem
+      )
+    }
+
+    val from = (pageNo - 1) * pageSize
+    val page = allRecords.slice(from, from + pageSize)
+
+    InterestDetails(
+      periodStartDate = Some(periodStart),
+      periodEndDate   = Some(periodEnd),
+      total           = allRecords.map(_.amount).sum,
+      totalRecords    = recordCount,
+      items           = page
+    )
+  }
+  private def createInterestAccruingDetails(regime: String, recordCount: Int, pageNo: Int, pageSize: Int, offset: BigDecimal) = {
+    val today = LocalDate.now()
+    val periodStart = today.minusMonths(36).withDayOfMonth(1)
+    val periodEnd = today.withDayOfMonth(today.lengthOfMonth())
+    val periodStartItem = today.minusMonths(35).withDayOfMonth(1)
+    val periodEndItem = today.withDayOfMonth(today.lengthOfMonth())
+
+    val allRecords = (1 to recordCount).map { i =>
+      val amount = (BigDecimal(i * 100) + offset) * -1
+      val code = getDescriptionCode(regime, i)
+
+      InterestDetailItem(
+        descriptionCode = code,
+        amount          = amount,
+        interestId      = f"SAFE-CHG-$code",
         periodStartDate = periodStartItem,
         periodEndDate   = periodEndItem
       )
@@ -184,7 +216,9 @@ class GamblingInterestController @Inject() (
         case 401 => Unauthorized(Json.obj("code" -> "UNAUTHORIZED", "message" -> "Unauthorized to access this resource"))
         case 404 => NotFound(Json.obj("code" -> "NOT_FOUND", "message" -> "No interest accruing drilldown found for the given registration number"))
         case 500 => InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
-        case _   => Ok(Json.toJson(createInterestDrilldown(recordCount, pageNo, pageSize)))
+        case _ =>
+          val descriptionCode = interestId.stripPrefix("SAFE-CHG-").toIntOption
+          Ok(Json.toJson(createInterestDrilldown(recordCount, pageNo, pageSize, descriptionCode)))
       }
     }
   }
@@ -213,12 +247,18 @@ class GamblingInterestController @Inject() (
         case 401 => Unauthorized(Json.obj("code" -> "UNAUTHORIZED", "message" -> "Unauthorized to access this resource"))
         case 404 => NotFound(Json.obj("code" -> "NOT_FOUND", "message" -> "No interest accruing drilldown found for the given registration number"))
         case 500 => InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
-        case _   => Ok(Json.toJson(createInterestAccruingDrilldown(recordCount, pageNo, pageSize)))
+        case _ =>
+          val descriptionCode = interestId.stripPrefix("SAFE-CHG-").toIntOption
+          Ok(Json.toJson(createInterestAccruingDrilldown(recordCount, pageNo, pageSize, descriptionCode)))
       }
     }
   }
 
-  private def createInterestAccruingDrilldown(recordCount: Int, pageNo: Int, pageSize: Int): InterestAccruingDrilldown = {
+  private def createInterestAccruingDrilldown(recordCount: Int,
+                                              pageNo: Int,
+                                              pageSize: Int,
+                                              descriptionCode: Option[Int]
+                                             ): InterestAccruingDrilldown = {
     val today = LocalDate.now()
     val periodStart = today.minusMonths(18).withDayOfMonth(1)
     val periodEnd = today.plusMonths(3).withDayOfMonth(today.lengthOfMonth())
@@ -246,12 +286,12 @@ class GamblingInterestController @Inject() (
       periodEndDate   = Some(periodEnd),
       total           = allItems.map(_.amount).sum,
       totalRecords    = recordCount,
-      descriptionCode = Option(2660),
+      descriptionCode = descriptionCode,
       items           = page
     )
   }
 
-  private def createInterestDrilldown(recordCount: Int, pageNo: Int, pageSize: Int): InterestDrilldown = {
+  private def createInterestDrilldown(recordCount: Int, pageNo: Int, pageSize: Int, descriptionCode: Option[Int]): InterestDrilldown = {
     val today = LocalDate.now()
     val periodStart = today.minusMonths(18).withDayOfMonth(1)
     val periodEnd = today.plusMonths(3).withDayOfMonth(today.lengthOfMonth())
@@ -279,7 +319,7 @@ class GamblingInterestController @Inject() (
       periodEndDate   = Some(periodEnd),
       total           = allItems.map(_.amount).sum,
       totalRecords    = recordCount,
-      descriptionCode = Option(2660),
+      descriptionCode = descriptionCode,
       items           = page
     )
   }
@@ -301,12 +341,12 @@ class GamblingInterestController @Inject() (
         case 401 => Unauthorized(Json.obj("code" -> "UNAUTHORIZED", "message" -> "Unauthorized to access this resource"))
         case 404 => NotFound(Json.obj("code" -> "NOT_FOUND", "message" -> "No interest accruing details found for this registration number"))
         case 500 => InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
-        case _   => Ok(Json.toJson(createInterestAccruing(recordCount, pageNo, pageSize, 0.11)))
+        case _   => Ok(Json.toJson(createInterestAccruing(regime, recordCount, pageNo, pageSize, 0.11)))
       }
     }
   }
 
-  private def createInterestAccruing(recordCount: Int, pageNo: Int, pageSize: Int, offset: BigDecimal) = {
+  private def createInterestAccruing(regime: String, recordCount: Int, pageNo: Int, pageSize: Int, offset: BigDecimal) = {
     val today = LocalDate.now()
     val periodStart = today.minusMonths(36).withDayOfMonth(1)
     val periodEnd = today.withDayOfMonth(today.lengthOfMonth())
@@ -315,12 +355,12 @@ class GamblingInterestController @Inject() (
 
     val allRecords = (1 to recordCount).map { i =>
       val amount = (BigDecimal(i * 100) + offset) * -1
-      val code = descCodes((i - 1) % descCodes.size)
+      val code = getDescriptionCode(regime, i)
 
       InterestAccruingItem(
         descriptionCode = code,
         amount          = amount,
-        interestId      = f"SAFE-CHG-${i + 2}%05d",
+        interestId      = f"SAFE-CHG-$code",
         periodStartDate = periodStartItem,
         periodEndDate   = periodEndItem
       )
@@ -336,5 +376,11 @@ class GamblingInterestController @Inject() (
       totalRecords    = recordCount,
       items           = page
     )
+  }
+
+  private def getDescriptionCode(regime: String, index: Int) = {
+    regime.toLowerCase match
+      case "mgd" => mgdDescriptionCodes((index - 1) % mgdDescriptionCodes.size)
+      case _     => gtrDescriptionCodes((index - 1) % gtrDescriptionCodes.size)
   }
 }
