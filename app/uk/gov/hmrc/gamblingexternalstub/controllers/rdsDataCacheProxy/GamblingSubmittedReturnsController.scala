@@ -25,6 +25,7 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
+import scala.math.BigDecimal.RoundingMode
 
 class GamblingSubmittedReturnsController @Inject() (
   cc: ControllerComponents
@@ -39,7 +40,6 @@ class GamblingSubmittedReturnsController @Inject() (
 
     val statusCode = regNumber.takeRight(3).toIntOption.getOrElse(200)
     val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
-    val sixthDigit = regNumber.takeRight(6).dropRight(5).toIntOption.getOrElse(0)
 
     statusCode match {
 
@@ -94,26 +94,11 @@ class GamblingSubmittedReturnsController @Inject() (
         )
 
         val allRecords = (1 to recordCount).map { i =>
-          val formatter = DateTimeFormatter.ofPattern("d MMM yyyy")
-          val submitted_date = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).minusMonths(i).minusYears(1)
-          val mgd_period_start = submitted_date.minusMonths(i + 4).withDayOfMonth(1)
-          val mgd_period_end = mgd_period_start.plusMonths(3).withDayOfMonth(mgd_period_start.plusMonths(3).lengthOfMonth())
-          val mgd_period = s"${mgd_period_start.format(formatter)} to ${mgd_period_end.format(formatter)}"
-
-          def rotateChar(c: Char, shift: Int, base: Char): Char = {
-            (base + (c - base + shift) % 26).toChar
-          }
-
-          val ack_ref = sixthDigit match {
-            case 9 => s"${1000 + (i * 100)}__sortBy=${sort}__orderBy=$order"
-            case _ =>
-              val iStr = (i + 2).toString
-              f"${iStr.charAt(iStr.length() - 1)}${rotateChar('J', i, 'A')}${rotateChar('Q', i, 'A')}${rotateChar('Z', i, 'A')} ${rotateChar('J', i, 'A')}${rotateChar('A', i, 'A')}${rotateChar('Z', i, 'A')}${rotateChar('E', i, 'A')} ${rotateChar('I', i, 'A')}${rotateChar('Y', i, 'A')}${rotateChar('C', i, 'A')}${rotateChar('M', i, 'A')} TKM"
-          }
+          val (mgd_period_start, mgd_period_end, submitted_date, ack_ref) = getSubmittedReturnItem(i)
 
           SubmittedReturnsItem(
-            consec_no      = 1000 + (i * 100),
-            mgd_period     = mgd_period,
+            consec_no      = i,
+            mgd_period     = s"$mgd_period_start - $mgd_period_end",
             submitted_date = submitted_date,
             ack_ref        = ack_ref
           )
@@ -128,4 +113,101 @@ class GamblingSubmittedReturnsController @Inject() (
         )
     }
   }
+
+  def getSubmittedReturnSingle(
+    regNumber: String,
+    consecNo: Option[Int]
+  ): Action[AnyContent] = Action { implicit request =>
+
+    val statusCode = regNumber.takeRight(3).toIntOption.getOrElse(200)
+
+    statusCode match {
+
+      case 400 =>
+        BadRequest(
+          Json.obj(
+            "code"    -> "INVALID_REQUEST",
+            "message" -> "Bad request"
+          )
+        )
+
+      case 401 =>
+        Unauthorized(
+          Json.obj(
+            "code"    -> "UNAUTHORIZED",
+            "message" -> "Unauthorized to access this resource"
+          )
+        )
+
+      case 404 =>
+        NotFound(
+          Json.obj(
+            "code"    -> "NOT_FOUND",
+            "message" -> "No SubmittedReturnSingle found for the given registration number"
+          )
+        )
+
+      case 500 =>
+        InternalServerError(
+          Json.obj(
+            "code"    -> "UNEXPECTED_ERROR",
+            "message" -> "Unexpected error occurred"
+          )
+        )
+
+      case _ =>
+        logger.info(
+          s"[getSubmittedReturnSingle] regNumber=$regNumber consecNo=$consecNo"
+        )
+
+        val consecNoInt = consecNo.getOrElse(0)
+        val (mgd_period_start, mgd_period_end, submitted_date, ack_ref) = getSubmittedReturnItem(consecNoInt)
+
+        Ok(
+          Json.toJson(
+            SubmittedReturnSingle(
+              consecNo                     = consecNoInt,
+              mgdPeriod                    = s"$mgd_period_start - $mgd_period_end",
+              submittedDate                = submitted_date,
+              ackRef                       = ack_ref,
+              noOfMachines                 = 5 + consecNoInt,
+              netTakingsHigherRate         = TwoDecimalPlace(100.10 * consecNoInt),
+              netTakingsStdRate            = TwoDecimalPlace(20.00 * consecNoInt),
+              netTakingsLowerRate          = TwoDecimalPlace(200.20 * consecNoInt),
+              totalDueHigherRate           = TwoDecimalPlace(10.00 * consecNoInt),
+              totalDueStdRate              = TwoDecimalPlace(300.30 * consecNoInt),
+              totalDueLowerRate            = TwoDecimalPlace(5.00 * consecNoInt),
+              dutyPayable                  = TwoDecimalPlace(35.00 * consecNoInt),
+              underDeclaredDuty            = TwoDecimalPlace(40.00 * consecNoInt),
+              previousReturnAmount         = TwoDecimalPlace(100.00 * consecNoInt),
+              negativeAmountCarriedForward = TwoDecimalPlace(99.99 * consecNoInt),
+              totalNetDutyPayable          = TwoDecimalPlace(75.49 * consecNoInt)
+            )
+          )
+        )
+    }
+  }
+
+  private def getSubmittedReturnItem(consecNo: Int) = {
+    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    val submitted_date = LocalDate
+      .now()
+      .minusMonths(consecNo)
+      .minusYears(1)
+      .withDayOfMonth(LocalDate.now().minusMonths(consecNo).minusYears(1).lengthOfMonth())
+    val mgd_period_start = submitted_date.minusMonths(consecNo + 4).withDayOfMonth(1)
+    val mgd_period_end = mgd_period_start.plusMonths(3).withDayOfMonth(mgd_period_start.plusMonths(3).lengthOfMonth())
+
+    def rotateChar(c: Char, shift: Int, base: Char): Char = {
+      (base + (c - base + shift) % 26).toChar
+    }
+
+    val iStr = (consecNo + 2).toString
+    val ack_ref =
+      f"${iStr.charAt(iStr.length() - 1)}${rotateChar('J', consecNo, 'A')}${rotateChar('Q', consecNo, 'A')}${rotateChar('Z', consecNo, 'A')} ${rotateChar('J', consecNo, 'A')}${rotateChar('A', consecNo, 'A')}${rotateChar('Z', consecNo, 'A')}${rotateChar('E', consecNo, 'A')} ${rotateChar('I', consecNo, 'A')}${rotateChar('Y', consecNo, 'A')}${rotateChar('C', consecNo, 'A')}${rotateChar('M', consecNo, 'A')} TKM"
+
+    (mgd_period_start.format(formatter), mgd_period_end.format(formatter), submitted_date, ack_ref)
+  }
+
+  private def TwoDecimalPlace(b: Double) = BigDecimal(b).setScale(2, RoundingMode.HALF_EVEN)
 }

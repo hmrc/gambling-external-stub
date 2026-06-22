@@ -119,4 +119,65 @@ class GamblingSubmittedReturnsControllerSpec extends AnyWordSpec with Matchers w
 
     }
   }
+
+  "GamblingSubmittedReturnsController#getSubmittedReturnSingle" should {
+
+    "return BAD_REQUEST for XWM00003100400 (last 3 digits = 400)" in {
+      val result = controller.getSubmittedReturnSingle("XWM00003100400", Some(23))(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "INVALID_REQUEST",
+        "message" -> "Bad request"
+      )
+    }
+
+    "return UNAUTHORIZED for XWM00003100401 (last 3 digits = 401)" in {
+      val result = controller.getSubmittedReturnSingle("XWM00003100401", Some(23))(FakeRequest())
+
+      status(result) shouldBe UNAUTHORIZED
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "UNAUTHORIZED",
+        "message" -> "Unauthorized to access this resource"
+      )
+    }
+
+    "return NOT_FOUND for XWM00003100404 (last 3 digits = 404)" in {
+      val result = controller.getSubmittedReturnSingle("XWM00003100404", Some(23))(FakeRequest())
+
+      status(result) shouldBe NOT_FOUND
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "NOT_FOUND",
+        "message" -> "No SubmittedReturnSingle found for the given registration number"
+      )
+    }
+
+    "return INTERNAL_SERVER_ERROR for XWM00003100500 (last 3 digits = 500)" in {
+      val result = controller.getSubmittedReturnSingle("XWM00003100500", Some(23))(FakeRequest())
+
+      status(result) shouldBe INTERNAL_SERVER_ERROR
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "UNEXPECTED_ERROR",
+        "message" -> "Unexpected error occurred"
+      )
+    }
+
+    "return 1 records for XWM00003101200 with consecNo=1" in {
+      val result = controller.getSubmittedReturnSingle("XWM00003101200", Some(1))(FakeRequest())
+
+      status(result) shouldBe OK
+      val json = contentAsJson(result)
+
+      (json \ "ackRef").as[String] shouldBe "3KRA KBAF JZDN TKM"
+    }
+
+    "return 1 records for XWM00003101200 with consecNo=11" in {
+      val result = controller.getSubmittedReturnSingle("XWM00003101200", Some(11))(FakeRequest())
+
+      status(result) shouldBe OK
+      val json = contentAsJson(result)
+
+      (json \ "ackRef").as[String] shouldBe "3UBK ULKP TJNX TKM"
+    }
+  }
 }
