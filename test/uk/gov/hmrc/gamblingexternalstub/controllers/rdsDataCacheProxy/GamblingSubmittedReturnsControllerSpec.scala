@@ -104,7 +104,7 @@ class GamblingSubmittedReturnsControllerSpec extends AnyWordSpec with Matchers w
       val json = contentAsJson(result)
       (json \ "items").as[JsArray].value.length shouldBe 1
       val items1 = (json \ "items")(0)
-      (items1 \ "ack_ref").as[String] shouldBe "1100__sortBy=3__orderBy=ASC"
+      (items1 \ "ack_ref").as[String] shouldBe "1__sortBy=3__orderBy=ASC"
 
     }
 
@@ -115,7 +115,7 @@ class GamblingSubmittedReturnsControllerSpec extends AnyWordSpec with Matchers w
       val json = contentAsJson(result)
       (json \ "items").as[JsArray].value.length shouldBe 1
       val items1 = (json \ "items")(0)
-      (items1 \ "ack_ref").as[String] shouldBe "1100__sortBy=1__orderBy=DESC"
+      (items1 \ "ack_ref").as[String] shouldBe "1__sortBy=1__orderBy=DESC"
 
     }
   }
