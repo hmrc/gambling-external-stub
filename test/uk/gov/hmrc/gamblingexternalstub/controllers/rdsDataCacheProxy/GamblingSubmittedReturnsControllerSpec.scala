@@ -123,7 +123,7 @@ class GamblingSubmittedReturnsControllerSpec extends AnyWordSpec with Matchers w
   "GamblingSubmittedReturnsController#getSubmittedReturnSingle" should {
 
     "return BAD_REQUEST for XWM00003100400 (last 3 digits = 400)" in {
-      val result = controller.getSubmittedReturnSingle("XWM00003100400", Some(23))(FakeRequest())
+      val result = controller.getSubmittedReturnSingle("XWM00003100400", 23)(FakeRequest())
 
       status(result) shouldBe BAD_REQUEST
       contentAsJson(result) shouldBe Json.obj(
@@ -133,7 +133,7 @@ class GamblingSubmittedReturnsControllerSpec extends AnyWordSpec with Matchers w
     }
 
     "return UNAUTHORIZED for XWM00003100401 (last 3 digits = 401)" in {
-      val result = controller.getSubmittedReturnSingle("XWM00003100401", Some(23))(FakeRequest())
+      val result = controller.getSubmittedReturnSingle("XWM00003100401", 23)(FakeRequest())
 
       status(result) shouldBe UNAUTHORIZED
       contentAsJson(result) shouldBe Json.obj(
@@ -143,7 +143,7 @@ class GamblingSubmittedReturnsControllerSpec extends AnyWordSpec with Matchers w
     }
 
     "return NOT_FOUND for XWM00003100404 (last 3 digits = 404)" in {
-      val result = controller.getSubmittedReturnSingle("XWM00003100404", Some(23))(FakeRequest())
+      val result = controller.getSubmittedReturnSingle("XWM00003100404", 23)(FakeRequest())
 
       status(result) shouldBe NOT_FOUND
       contentAsJson(result) shouldBe Json.obj(
@@ -153,7 +153,7 @@ class GamblingSubmittedReturnsControllerSpec extends AnyWordSpec with Matchers w
     }
 
     "return INTERNAL_SERVER_ERROR for XWM00003100500 (last 3 digits = 500)" in {
-      val result = controller.getSubmittedReturnSingle("XWM00003100500", Some(23))(FakeRequest())
+      val result = controller.getSubmittedReturnSingle("XWM00003100500", 23)(FakeRequest())
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
       contentAsJson(result) shouldBe Json.obj(
@@ -163,7 +163,7 @@ class GamblingSubmittedReturnsControllerSpec extends AnyWordSpec with Matchers w
     }
 
     "return 1 records for XWM00003101200 with consecNo=1" in {
-      val result = controller.getSubmittedReturnSingle("XWM00003101200", Some(1))(FakeRequest())
+      val result = controller.getSubmittedReturnSingle("XWM00003101200", 1)(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
@@ -172,7 +172,7 @@ class GamblingSubmittedReturnsControllerSpec extends AnyWordSpec with Matchers w
     }
 
     "return 1 records for XWM00003101200 with consecNo=11" in {
-      val result = controller.getSubmittedReturnSingle("XWM00003101200", Some(11))(FakeRequest())
+      val result = controller.getSubmittedReturnSingle("XWM00003101200", 11)(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
