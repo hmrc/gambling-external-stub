@@ -3,24 +3,25 @@
 **GET**
 
 ```
-/gambling/submitted-return-details/{regNumber}?consecNo={consecNo}
+/gambling/submitted-return-details/{regNumber}/{consecNo}
 ```
 
 Full URL:
 
 ```
-http://localhost:10405/rds-datacache-proxy/gambling/submitted-return-details/{regNumber}
+http://localhost:10405/rds-datacache-proxy/gambling/submitted-return-details/{regNumber}/{consecNo}
 ```
 
 Controller mapping:
 
-`uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingSubmittedReturnsController.getSubmittedReturnSingle(regNumber: String, consecNo: Option(Int))`
+`uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingSubmittedReturnsController.getSubmittedReturnSingle(regNumber: String, consecNo: Int)`
 
-Query parameters:
+Path parameters:
 
-| Parameter  | Type | Default | Description                                    |
-|------------|------|---------|------------------------------------------------|
-| `consecNo` | Int  | 0       | id number used to generate different data sets |
+| Parameter  | Type   | Default | Description                                    |
+|------------|--------|---------|------------------------------------------------|
+| `regNumber` | String |        | id number used to generate different data sets |
+| `consecNo` | Int    |        | index number                                   |
 
 ---
 
@@ -81,7 +82,7 @@ Each SubmittedReturnSingle has the following fields:
 Request:
 
 ```
-GET /gambling/submitted-return-details/XWM00003100400
+GET /gambling/submitted-return-details/XWM00003100400/1
 ```
 
 Response:
@@ -104,7 +105,7 @@ Response:
 Request:
 
 ```
-GET /gambling/submitted-return-details/XWM00003100401
+GET /gambling/submitted-return-details/XWM00003100401/1
 ```
 
 Response:
@@ -127,7 +128,7 @@ Response:
 Request:
 
 ```
-GET /gambling/submitted-return-details/XWM00003100404
+GET /gambling/submitted-return-details/XWM00003100404/1
 ```
 
 Response:
@@ -150,7 +151,7 @@ Response:
 Request:
 
 ```
-GET /gambling/submitted-return-details/XWM00003100500
+GET /gambling/submitted-return-details/XWM00003100500/1
 ```
 
 Response:
@@ -173,7 +174,7 @@ Response:
 Request:
 
 ```
-GET /gambling/submitted-return-details/XWM00003100200
+GET /gambling/submitted-return-details/XWM00003100200/1
 ```
 
 Response:
@@ -190,7 +191,7 @@ It will always return 1 record
 Request:
 
 ```
-GET /gambling/submitted-return-details/XWM00003103200?sortBy=2&orderBy=DESC
+GET /gambling/submitted-return-details/XWM00003103200/1
 ```
 
 Response:
@@ -227,6 +228,6 @@ Response:
 ## Example curl
 
 ```
-curl "http://localhost:10405/rds-datacache-proxy/gambling/submitted-return-details/XWM03203122200?consecNo=11"
+curl "http://localhost:10405/rds-datacache-proxy/gambling/submitted-return-details/XWM03203122200/11"
 ```
 

@@ -117,7 +117,7 @@ class GamblingSubmittedReturnsController @Inject() (
 
   def getSubmittedReturnSingle(
     regNumber: String,
-    consecNo: Option[Int]
+    consecNo: Int
   ): Action[AnyContent] = Action { implicit request =>
 
     val statusCode = regNumber.takeRight(3).toIntOption.getOrElse(200)
@@ -161,28 +161,27 @@ class GamblingSubmittedReturnsController @Inject() (
           s"[getSubmittedReturnSingle] regNumber=$regNumber consecNo=$consecNo"
         )
 
-        val consecNoInt = consecNo.getOrElse(0)
-        val (mgd_period_start, mgd_period_end, submitted_date, ack_ref) = getSubmittedReturnItem(consecNoInt, 0, 0, "")
+        val (mgd_period_start, mgd_period_end, submitted_date, ack_ref) = getSubmittedReturnItem(consecNo, 0, 0, "")
 
         Ok(
           Json.toJson(
             SubmittedReturnSingle(
-              consecNo                     = consecNoInt,
+              consecNo                     = consecNo,
               mgdPeriod                    = s"$mgd_period_start - $mgd_period_end",
               submittedDate                = submitted_date,
               ackRef                       = ack_ref,
-              noOfMachines                 = 5 + consecNoInt,
-              netTakingsHigherRate         = TwoDecimalPlace(100.10 * consecNoInt),
-              netTakingsStdRate            = TwoDecimalPlace(20.00 * consecNoInt),
-              netTakingsLowerRate          = TwoDecimalPlace(200.20 * consecNoInt),
-              totalDueHigherRate           = TwoDecimalPlace(10.00 * consecNoInt),
-              totalDueStdRate              = TwoDecimalPlace(300.30 * consecNoInt),
-              totalDueLowerRate            = TwoDecimalPlace(5.00 * consecNoInt),
-              dutyPayable                  = TwoDecimalPlace(35.00 * consecNoInt),
-              underDeclaredDuty            = TwoDecimalPlace(40.00 * consecNoInt),
-              previousReturnAmount         = TwoDecimalPlace(100.00 * consecNoInt),
-              negativeAmountCarriedForward = TwoDecimalPlace(99.99 * consecNoInt),
-              totalNetDutyPayable          = TwoDecimalPlace(75.49 * consecNoInt)
+              noOfMachines                 = 5 + consecNo,
+              netTakingsHigherRate         = TwoDecimalPlace(100.10 * consecNo),
+              netTakingsStdRate            = TwoDecimalPlace(20.00 * consecNo),
+              netTakingsLowerRate          = TwoDecimalPlace(200.20 * consecNo),
+              totalDueHigherRate           = TwoDecimalPlace(10.00 * consecNo),
+              totalDueStdRate              = TwoDecimalPlace(300.30 * consecNo),
+              totalDueLowerRate            = TwoDecimalPlace(5.00 * consecNo),
+              dutyPayable                  = TwoDecimalPlace(35.00 * consecNo),
+              underDeclaredDuty            = TwoDecimalPlace(40.00 * consecNo),
+              previousReturnAmount         = TwoDecimalPlace(100.00 * consecNo),
+              negativeAmountCarriedForward = TwoDecimalPlace(99.99 * consecNo),
+              totalNetDutyPayable          = TwoDecimalPlace(75.49 * consecNo)
             )
           )
         )

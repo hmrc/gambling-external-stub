@@ -48,6 +48,8 @@ The stub derives its behaviour entirely from the reg number. No special test str
 
 **4th and 5th digits from the right** form a 2-digit number (00-99) controlling how many total records the stub holds for that reg number. There is NO pagination. Ignored for error status codes.
 
+**6th digit from right** if this is `9` then the `ack_ref` will contain the sortBy & orderBy params. eg: `"15__sortBy=2__orderBy=DESC"`
+
 Examples:
 
 | Reg number       | Status | Total records |
@@ -69,12 +71,12 @@ The record count defaults to 0 if the reg number is shorter than 5 characters.
 
 Each SubmittedReturnsItem has the following fields:
 
-| Field            | Type             | Description                                                                                                                 |
-|------------------|------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| `consec_no`      | Int              | eg: `1500`                                                                                                                  |
-| `mgd_period`     | String           | eg: `"31/03/2026"`                                                                                                          |
-| `submitted_date` | LocalDate        | eg: `"2026-04-16"`                                                                                                          |
-| `ack_ref`        | String           | eg: `"1500__sortBy=2__orderBy=DESC"` it contains the sortBy & orderBy params that were translated from the URL query params |
+| Field            | Type             | Description                                               |
+|------------------|------------------|-----------------------------------------------------------|
+| `consec_no`      | Int              | eg: `1500`                                                |
+| `mgd_period`     | String           | eg: `"31/03/2026"`                                        |
+| `submitted_date` | LocalDate        | eg: `"2026-04-16"`                                        |
+| `ack_ref`        | String           | eg: `"3UBK ULKP TJNX TKM"`  - see note on 6th digit above |
 
 
 ---
@@ -218,7 +220,7 @@ Response:
       "consec_no": 1100,
       "mgd_period": "31/05/2026",
       "submitted_date": "2026-06-16",
-      "ack_ref": "1100__sortBy=2__orderBy=DESC"
+      "ack_ref": "3UBK ULKP TJNX TKM"
     }
   ]
 }
