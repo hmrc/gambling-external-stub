@@ -488,6 +488,14 @@ See [docs/submitted-returns.md](docs/submitted-returns.md) for full details incl
 See [docs/submitted-return-details.md](docs/submitted-return-details.md) for full details including reg number encoding convention, all response scenarios, and example curl commands.
 
 ---
+
+### 19. OpenReturnPeriods
+
+`GET /gambling/open-periods/{regime}/{regNumber}`
+
+See [docs/open-periods.md](docs/open-periods.md) for full details including regime validation, reg number encoding convention, item structure, all response scenarios, and example curl commands.
+
+---
 ## Behaviour
 
 ### Scenario 1 – Full linked history
