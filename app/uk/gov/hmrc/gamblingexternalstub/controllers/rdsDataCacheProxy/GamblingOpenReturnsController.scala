@@ -25,7 +25,6 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
-import scala.util.Random
 
 class GamblingOpenReturnsController @Inject() (
   cc: ControllerComponents
@@ -37,7 +36,12 @@ class GamblingOpenReturnsController @Inject() (
   // Last 3 digits of regNumber  = HTTP status code  (e.g. ...200, ...401, ...404, ...500)
   // 4th and 5th digits from right = 2-digit record count (00-99, max 50 in practice)
   //   e.g. XWM00003103200 -> 03 records, XWM00003150200 -> 50 records
-  def getOpenPeriods(regime: String, regNumber: String): Action[AnyContent] = Action { implicit request =>
+  def getOpenPeriods(
+    regime: String,
+    regNumber: String,
+    sortBy: Option[Int],
+    orderBy: Option[String]
+  ): Action[AnyContent] = Action { implicit request =>
 
     if (!Regime.fromString(regime).exists(supportedRegimes.contains)) {
       BadRequest(
@@ -85,14 +89,39 @@ class GamblingOpenReturnsController @Inject() (
           )
 
         case _ =>
-          logger.info(s"[getOpenPeriods] regime=$regime regNumber=$regNumber")
+          // 1=PERIOD , 2=DUE_DATE , 3=STATUS , else PERIOD
+          val sort = sortBy.filter(s => s == 1 || s == 2 || s == 3).getOrElse(1)
+
+          val (order, orderFunc) = orderBy.map(_.trim.toUpperCase()) match
+            case Some("DESC") =>
+              ("DESC",
+               (leftE: OpenPeriod, rightE: OpenPeriod) =>
+                 sort match {
+                   case 1 => leftE.period > rightE.period
+                   case 2 => leftE.dueDate.toEpochDay > rightE.dueDate.toEpochDay
+                   case _ => leftE.status > rightE.status
+                 }
+              )
+            case _ =>
+              ("ASC",
+               (leftE: OpenPeriod, rightE: OpenPeriod) =>
+                 sort match {
+                   case 1 => leftE.period < rightE.period
+                   case 2 => leftE.dueDate.toEpochDay < rightE.dueDate.toEpochDay
+                   case _ => leftE.status < rightE.status
+                 }
+              )
+
+          logger.info(
+            s"[getOpenPeriods] regime=$regime regNumber=$regNumber sortBy=$sortBy orderBy=$orderBy sort=$sort order=$order"
+          )
 
           val allRecords = (1 to recordCount).map(getOpenPeriodItem)
 
           Ok(
             Json.toJson(
               OpenReturnPeriods(
-                openPeriods = allRecords
+                openPeriods = allRecords.sortWith(orderFunc)
               )
             )
           )
@@ -110,9 +139,7 @@ class GamblingOpenReturnsController @Inject() (
       consecNo = consecNo,
       period   = s"${periodStart.format(formatter)} - ${periodEnd.format(formatter)}",
       dueDate  = dueDate,
-      status   = validOpenPeriodStatus
+      status   = if (consecNo % 2 == 0) 1 else 2
     )
   }
-
-  private def validOpenPeriodStatus = Random.between(1, 3)
 }

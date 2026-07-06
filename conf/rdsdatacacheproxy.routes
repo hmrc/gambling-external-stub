@@ -56,5 +56,5 @@ GET     /gambling/interest-accruing-details/:regime/:regNumber          uk.gov.h
 GET     /gambling/submitted-returns/:regNumber          uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingSubmittedReturnsController.getSubmittedReturns(regNumber: String, sortBy: Option[Int] ?= None, orderBy: Option[String] ?= None)
 GET     /gambling/submitted-return-details/:regNumber/:consecNo   uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingSubmittedReturnsController.getSubmittedReturnSingle(regNumber: String, consecNo: Int)
 
-GET     /gambling/open-periods/:regime/:regNumber          uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingOpenReturnsController.getOpenPeriods(regime: String, regNumber: String)
+GET     /gambling/open-periods/:regime/:regNumber          uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingOpenReturnsController.getOpenPeriods(regime: String, regNumber: String, sortBy: Option[Int] ?= None, orderBy: Option[String] ?= None)
 

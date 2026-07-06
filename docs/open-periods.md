@@ -3,7 +3,7 @@
 **GET**
 
 ```
-/gambling/open-periods/{regime}/{regNumber}
+/gambling/open-periods/{regime}/{regNumber}?sortBy={sortBy}&orderBy={orderBy}
 ```
 
 Full URL:
@@ -14,7 +14,14 @@ http://localhost:10405/rds-datacache-proxy/gambling/open-periods/{regime}/{regNu
 
 Controller mapping:
 
-`uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingOpenReturnsController.getOpenPeriods(regime: String, regNumber: String)`
+`uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingOpenReturnsController.getOpenPeriods(regime: String, regNumber: String, sortBy: Option[Int], orderBy: Option[String])`
+
+Query parameters:
+
+| Parameter | Type   | Default | Description                                                                                       |
+|-----------|--------|---------|-----------------------------------------------------------------------------------------------------|
+| `sortBy`  | Int    | 1       | 1 = `period`<br/>2 = `dueDate`<br/>3 = `status`<br/>else = `period`<br/>Selects which field the items are sorted on |
+| `orderBy` | String | ASC     | ASC or DESC (case-insensitive)<br/>Any other value defaults to ASC                                  |
 
 ---
 
@@ -83,7 +90,7 @@ Each `OpenReturnPeriod` has the following fields:
 | `consecNo`  | Int       | 1-based sequence number, e.g. `1`, `2`, `3`...                                        |
 | `mgdPeriod` | String    | Quarterly period covered, e.g. `"01/07/2026 - 30/09/2026"`, starting from the current month |
 | `dueDate`   | LocalDate | Due date for the period, one month after the period end                             |
-| `status`    | Int       | Status of the open period                                                            |
+| `status`    | Int       | Status of the open period - `1` for even `consecNo`, `2` for odd `consecNo`          |
 
 The response wraps the items in an `openPeriods` array:
 
@@ -114,7 +121,7 @@ Response:
 ```json
 {
   "code": "INVALID_REGIME",
-  "message": "regime must be one of: gbd, pbd, rgd, mgd"
+  "message": "regime must be one of: mgd"
 }
 ```
 
@@ -125,7 +132,7 @@ Response:
 Request:
 
 ```
-GET /gambling/open-periods/gbd/XWM00003100400
+GET /gambling/open-periods/mgd/XWM00003100400
 ```
 
 Response:
@@ -148,7 +155,7 @@ Response:
 Request:
 
 ```
-GET /gambling/open-periods/gbd/XWM00003100401
+GET /gambling/open-periods/mgd/XWM00003100401
 ```
 
 Response:
@@ -171,7 +178,7 @@ Response:
 Request:
 
 ```
-GET /gambling/open-periods/gbd/XWM00003100404
+GET /gambling/open-periods/mgd/XWM00003100404
 ```
 
 Response:
@@ -194,7 +201,7 @@ Response:
 Request:
 
 ```
-GET /gambling/open-periods/gbd/XWM00003100500
+GET /gambling/open-periods/mgd/XWM00003100500
 ```
 
 Response:
@@ -217,7 +224,7 @@ Response:
 Request:
 
 ```
-GET /gambling/open-periods/gbd/XWM00003100200
+GET /gambling/open-periods/mgd/XWM00003100200
 ```
 
 Response:
@@ -234,12 +241,12 @@ Response:
 
 ---
 
-### 200 - Small result set (3 records)
+### 200 - Small result set (3 records), default sort (sortBy=1/period, orderBy=ASC)
 
 Request:
 
 ```
-GET /gambling/open-periods/gbd/XWM00003103200
+GET /gambling/open-periods/mgd/XWM00003103200
 ```
 
 Response:
@@ -251,9 +258,35 @@ Response:
 ```json
 {
   "openPeriods": [
-    { "consecNo": 1, "period": "01/07/2026 - 30/09/2026", "dueDate": "2026-10-31", "status": 1 },
+    { "consecNo": 1, "period": "01/07/2026 - 30/09/2026", "dueDate": "2026-10-31", "status": 2 },
     { "consecNo": 2, "period": "01/10/2026 - 31/12/2026", "dueDate": "2027-01-31", "status": 1 },
-    { "consecNo": 3, "period": "01/01/2027 - 31/03/2027", "dueDate": "2027-04-30", "status": 1 }
+    { "consecNo": 3, "period": "01/01/2027 - 31/03/2027", "dueDate": "2027-04-30", "status": 2 }
+  ]
+}
+```
+
+---
+
+### 200 - Small result set (3 records), sorted by dueDate DESC
+
+Request:
+
+```
+GET /gambling/open-periods/mgd/XWM00003103200?sortBy=2&orderBy=DESC
+```
+
+Response:
+
+```
+200 OK
+```
+
+```json
+{
+  "openPeriods": [
+    { "consecNo": 3, "period": "01/01/2027 - 31/03/2027", "dueDate": "2027-04-30", "status": 2 },
+    { "consecNo": 2, "period": "01/10/2026 - 31/12/2026", "dueDate": "2027-01-31", "status": 1 },
+    { "consecNo": 1, "period": "01/07/2026 - 30/09/2026", "dueDate": "2026-10-31", "status": 2 }
   ]
 }
 ```
@@ -263,9 +296,13 @@ Response:
 ## Example curl
 
 ```
-curl "http://localhost:10405/rds-datacache-proxy/gambling/open-periods/gbd/XWM00003103200"
+curl "http://localhost:10405/rds-datacache-proxy/gambling/open-periods/mgd/XWM00003103200"
 ```
 
 ```
-curl "http://localhost:10405/rds-datacache-proxy/gambling/open-periods/gbd/XWM00003100200"
+curl "http://localhost:10405/rds-datacache-proxy/gambling/open-periods/mgd/XWM00003100200"
+```
+
+```
+curl "http://localhost:10405/rds-datacache-proxy/gambling/open-periods/mgd/XWM00003103200?sortBy=2&orderBy=DESC"
 ```
