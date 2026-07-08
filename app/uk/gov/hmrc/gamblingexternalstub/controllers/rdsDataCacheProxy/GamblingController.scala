@@ -647,7 +647,7 @@ class GamblingController @Inject() (
               faxNumber         = Some("098765678"),
               emailAddr         = Some("a@b.com"),
               adi               = Some("Flat 1"),
-              iomOrCiFlag       = Some(false),
+              iomOrCiFlag       = Some("false"),
               Some(fixedDate)
             )
           )
@@ -671,7 +671,7 @@ class GamblingController @Inject() (
               faxNumber         = Some("098765678"),
               emailAddr         = Some("a@b.com"),
               adi               = Some("Flat 1"),
-              iomOrCiFlag       = Some(false),
+              iomOrCiFlag       = Some("false"),
               Some(fixedDate)
             )
           )

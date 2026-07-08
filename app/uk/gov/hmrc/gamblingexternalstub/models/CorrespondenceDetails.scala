@@ -35,7 +35,7 @@ case class CorrespondenceDetails(
   address4: Option[String],
   postcode: Option[String],
   country: Option[String],
-  iomOrCiFlag: Option[Boolean],
+  iomOrCiFlag: Option[String],
   systemDate: Option[LocalDate]
 )
 
