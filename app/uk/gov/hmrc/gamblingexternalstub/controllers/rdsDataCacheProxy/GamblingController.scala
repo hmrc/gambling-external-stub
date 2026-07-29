@@ -20,6 +20,7 @@ import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.gamblingexternalstub.models.*
+import uk.gov.hmrc.gamblingexternalstub.models.PartnerFormats.*
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import java.time.LocalDate
@@ -676,6 +677,62 @@ class GamblingController @Inject() (
             )
           )
         )
+    }
+  }
+
+  def getPartnerDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
+
+    def model(mgdRegNumber: String = "XGM00000001763"): PartnerResponse = PartnerResponse(
+      partners = List(
+        Partner(
+          mgdRegNumber           = mgdRegNumber,
+          dateOfJoining          = Some(LocalDate.of(2024, 1, 1)),
+          dateOfLeaving          = None,
+          solePropTitle          = None,
+          solePropFirstName      = None,
+          solePropMiddleName     = None,
+          solePropLastName       = None,
+          businessName           = Some("Partner1"),
+          tradingName            = None,
+          dateOfBirth            = None,
+          nino                   = None,
+          utr                    = Some(BigDecimal(123456789)),
+          vrn                    = None,
+          crn                    = None,
+          dateOfIncorporation    = None,
+          countryOfIncorporation = None,
+          foreignCorporateRef    = None,
+          address1               = None,
+          address2               = None,
+          address3               = None,
+          address4               = None,
+          postcode               = None,
+          country                = None,
+          adi                    = None,
+          iomOrCiFlag            = Some("false"),
+          phoneNumber            = None,
+          mobilePhoneNumber      = None,
+          faxNumber              = None,
+          emailAddr              = None,
+          isFutureLeaveDate      = Some(0),
+          isFutureJoinDate       = Some(0),
+          businessType           = Some(2)
+        )
+      ),
+      systemDate = Some(LocalDate.of(2026, 5, 31))
+    )
+
+    mgdRegNumber match {
+
+      case "invalid" => invalidResponse
+
+      case "error" => errorResponse
+
+      case "XGM00000001763" =>
+        Ok(Json.toJson(model()))
+
+      case reg =>
+        Ok(Json.toJson(model(reg)))
     }
   }
 

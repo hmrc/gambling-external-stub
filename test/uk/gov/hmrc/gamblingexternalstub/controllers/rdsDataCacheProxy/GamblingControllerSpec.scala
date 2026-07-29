@@ -584,4 +584,45 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
     }
   }
 
+  "GamblingController#getPartnerDetails" should {
+
+    "return partner details for XGM00000001761" in {
+      val result = controller.getPartnerDetails("XGM00000001761")(FakeRequest())
+
+      status(result) shouldBe OK
+
+      val json = contentAsJson(result)
+
+      (json \ "partners" \ 0 \ "mgdRegNumber").as[String] shouldBe "XGM00000001761"
+      (json \ "partners" \ 0 \ "businessName").as[String] shouldBe "Partner1"
+
+      (json \ "partners" \ 0 \ "countryOfIncorporation").asOpt[String] shouldBe None
+    }
+
+    "return default partner details" in {
+      val result = controller.getPartnerDetails("GAM999")(FakeRequest())
+
+      status(result) shouldBe OK
+
+      val json = contentAsJson(result)
+
+      (json \ "partners" \ 0 \ "mgdRegNumber").as[String] shouldBe "GAM999"
+      (json \ "partners" \ 0 \ "businessName").as[String] shouldBe "Partner1"
+
+      (json \ "partners" \ 0 \ "countryOfIncorporation").asOpt[String] shouldBe None
+    }
+
+    "return BAD_REQUEST for invalid" in {
+      val result = controller.getPartnerDetails("invalid")(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+    }
+
+    "return INTERNAL_SERVER_ERROR for error" in {
+      val result = controller.getPartnerDetails("error")(FakeRequest())
+
+      status(result) shouldBe INTERNAL_SERVER_ERROR
+    }
+  }
+
 }
