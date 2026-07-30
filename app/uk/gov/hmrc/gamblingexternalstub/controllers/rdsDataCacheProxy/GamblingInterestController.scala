@@ -33,7 +33,6 @@ class GamblingInterestController @Inject() (
 
   private val gtrDescriptionCodes = Seq(2640, 2650, 2655, 2680, 2685, 2690, 2695, 2660, 2670)
   private val mgdDescriptionCodes = Seq(1940, 1950, 1960, 1970, 1980, 1990)
-  private val repaymentInterestDescCodes = Seq(1940, 1950, 1960, 1970, 1980, 1990)
 
   def getInterestOverview(
     regime: String,

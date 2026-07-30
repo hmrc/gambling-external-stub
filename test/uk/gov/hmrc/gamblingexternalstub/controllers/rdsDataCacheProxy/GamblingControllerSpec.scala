@@ -586,8 +586,18 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
   "GamblingController#getPartnerDetails" should {
 
+    "return BAD_REQUEST for an unrecognised/unsupported regime" in {
+      val result = controller.getPartnerDetails("nope", "XWM00003100200")(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "INVALID_REGIME",
+        "message" -> "regime must be one of: gbd, pbd, rgd, mgd"
+      )
+    }
+
     "return partner details for XGM00000001761" in {
-      val result = controller.getPartnerDetails("XGM00000001761")(FakeRequest())
+      val result = controller.getPartnerDetails("MGD", "XGM00000001761")(FakeRequest())
 
       status(result) shouldBe OK
 
@@ -600,7 +610,7 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
     }
 
     "return default partner details" in {
-      val result = controller.getPartnerDetails("GAM999")(FakeRequest())
+      val result = controller.getPartnerDetails("MGD", "GAM999")(FakeRequest())
 
       status(result) shouldBe OK
 
@@ -613,13 +623,13 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
     }
 
     "return BAD_REQUEST for invalid" in {
-      val result = controller.getPartnerDetails("invalid")(FakeRequest())
+      val result = controller.getPartnerDetails("MGD", "invalid")(FakeRequest())
 
       status(result) shouldBe BAD_REQUEST
     }
 
     "return INTERNAL_SERVER_ERROR for error" in {
-      val result = controller.getPartnerDetails("error")(FakeRequest())
+      val result = controller.getPartnerDetails("MGD", "error")(FakeRequest())
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
     }

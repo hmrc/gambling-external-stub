@@ -32,8 +32,8 @@ case class Partner(
   tradingName: Option[String],
   dateOfBirth: Option[LocalDate],
   nino: Option[String],
-  utr: Option[BigDecimal],
-  vrn: Option[BigDecimal],
+  utr: Option[String],
+  vrn: Option[String],
   crn: Option[String],
   dateOfIncorporation: Option[LocalDate],
   countryOfIncorporation: Option[String],
@@ -55,12 +55,9 @@ case class Partner(
   businessType: Option[Int]
 )
 
-case class PartnerResponse(
-  partners: List[Partner],
-  systemDate: Option[LocalDate]
-)
+case class PartnerDetails(partners: List[Partner], systemDate: Option[LocalDate])
 
 object PartnerFormats {
-  implicit val partnerFormat: OFormat[Partner] = Json.format[Partner]
-  implicit val partnerResponseFormat: OFormat[PartnerResponse] = Json.format[PartnerResponse]
+  implicit val partnerDetailsFormat: OFormat[Partner] = Json.format[Partner]
+  implicit val partnerDetailsResponseFormat: OFormat[PartnerDetails] = Json.format[PartnerDetails]
 }

@@ -680,9 +680,9 @@ class GamblingController @Inject() (
     }
   }
 
-  def getPartnerDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
+  def getPartnerDetails(regime: String, mgdRegNumber: String): Action[AnyContent] = Action { _ =>
 
-    def model(mgdRegNumber: String = "XGM00000001763"): PartnerResponse = PartnerResponse(
+    def model(mgdRegNumber: String = "XGM00000001763"): PartnerDetails = PartnerDetails(
       partners = List(
         Partner(
           mgdRegNumber           = mgdRegNumber,
@@ -696,7 +696,7 @@ class GamblingController @Inject() (
           tradingName            = None,
           dateOfBirth            = None,
           nino                   = None,
-          utr                    = Some(BigDecimal(123456789)),
+          utr                    = Some("123456789"),
           vrn                    = None,
           crn                    = None,
           dateOfIncorporation    = None,
@@ -722,17 +722,19 @@ class GamblingController @Inject() (
       systemDate = Some(LocalDate.of(2026, 5, 31))
     )
 
-    mgdRegNumber match {
+    if (Regime.fromString(regime).isEmpty) {
+      BadRequest(Json.obj("code" -> "INVALID_REGIME", "message" -> s"regime must be one of: ${Regime.validCodes}"))
+    } else {
+      mgdRegNumber match {
 
-      case "invalid" => invalidResponse
+        case "invalid" => invalidResponse
 
-      case "error" => errorResponse
+        case "error" => errorResponse
 
-      case "XGM00000001763" =>
-        Ok(Json.toJson(model()))
+        case "XGM00000001763" => Ok(Json.toJson(model()))
 
-      case reg =>
-        Ok(Json.toJson(model(reg)))
+        case reg => Ok(Json.toJson(model(reg)))
+      }
     }
   }
 

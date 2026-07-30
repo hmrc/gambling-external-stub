@@ -23,9 +23,9 @@ import uk.gov.hmrc.gamblingexternalstub.models.PartnerFormats.*
 
 import java.time.LocalDate
 
-class PartnerDetailsSpec extends AnyWordSpec with Matchers {
+class PartnerDetailsDetailsSpec extends AnyWordSpec with Matchers {
 
-  "PartnerResponse parsing" should {
+  "PartnerDetails parsing" should {
 
     "successfully parse a fully populated 200 OK response" in {
       val populatedJson =
@@ -43,8 +43,8 @@ class PartnerDetailsSpec extends AnyWordSpec with Matchers {
           |      "tradingName": "Trading name 1",
           |      "dateOfBirth": "1990-06-24",
           |      "nino": "QQ123456C",
-          |      "utr": 1234567890,
-          |      "vrn": 987654321,
+          |      "utr": "1234567890",
+          |      "vrn": "987654321",
           |      "crn": "12345678",
           |      "dateOfIncorporation": "2023-02-15",
           |      "countryOfIncorporation": "Spain",
@@ -70,7 +70,7 @@ class PartnerDetailsSpec extends AnyWordSpec with Matchers {
           |}""".stripMargin
 
       val json: JsValue = Json.parse(populatedJson)
-      val result = Json.fromJson[PartnerResponse](json)
+      val result = Json.fromJson[PartnerDetails](json)
 
       result.isSuccess shouldBe true
       val response = result.get
@@ -81,13 +81,13 @@ class PartnerDetailsSpec extends AnyWordSpec with Matchers {
       val partner = response.partners.head
       partner.mgdRegNumber  shouldBe "XWM00000001770"
       partner.dateOfJoining shouldBe Some(LocalDate.of(2024, 1, 1))
-      partner.utr           shouldBe Some(BigDecimal(1234567890))
+      partner.utr           shouldBe Some("1234567890")
       partner.iomOrCiFlag   shouldBe Some("false")
       partner.businessType  shouldBe Some(2)
     }
 
     "successfully serialize back to JSON string" in {
-      val model: PartnerResponse = PartnerResponse(
+      val model: PartnerDetails = PartnerDetails(
         partners = List(
           Partner(
             mgdRegNumber           = "XWM00000001770",
@@ -101,7 +101,7 @@ class PartnerDetailsSpec extends AnyWordSpec with Matchers {
             tradingName            = None,
             dateOfBirth            = None,
             nino                   = None,
-            utr                    = Some(BigDecimal(123456789)),
+            utr                    = Some("123456789"),
             vrn                    = None,
             crn                    = None,
             dateOfIncorporation    = None,
