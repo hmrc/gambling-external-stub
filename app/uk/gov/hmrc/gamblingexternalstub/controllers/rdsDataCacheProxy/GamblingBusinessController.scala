@@ -25,11 +25,10 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import java.time.LocalDate
 import javax.inject.Inject
 
-class GamblingBusinessController @Inject()(
+class GamblingBusinessController @Inject() (
   cc: ControllerComponents
 ) extends BackendController(cc)
     with Logging {
-
 
   def getBusinessAddressDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
 
@@ -45,38 +44,37 @@ class GamblingBusinessController @Inject()(
           Json.toJson(
             BusinessAddressDetails(
               mgdRegNumber,
-              adi = Some("1st floor"),
-              address1 = Some("address1"),
-              address2 = Some("address2"),
-              address3 =Some("address3"),
-              address4 =Some("address4"),
-              postcode =Some("L1 8YL"),
-              country= Some("England"),
-              iomOrCiFlag= Some(false),
-              systemDate = Some(LocalDate.now())
-
+              adi         = Some("1st floor"),
+              address1    = Some("address1"),
+              address2    = Some("address2"),
+              address3    = Some("address3"),
+              address4    = Some("address4"),
+              postcode    = Some("L1 8YL"),
+              country     = Some("England"),
+              iomOrCiFlag = Some(false),
+              systemDate  = Some(LocalDate.now())
             )
           )
         )
 
       // Scenario 2 → default
-      case reg =>        Ok(
-        Json.toJson(
-          BusinessAddressDetails(
-            mgdRegNumber,
-            adi = Some(""),
-            address1 = Some(""),
-            address2 = Some(""),
-            address3 = Some(""),
-            address4 = Some(""),
-            postcode = Some(""),
-            country= Some(""),
-            iomOrCiFlag= Some(false),
-            systemDate = Some(LocalDate.now())
-
+      case reg =>
+        Ok(
+          Json.toJson(
+            BusinessAddressDetails(
+              mgdRegNumber,
+              adi         = Some(""),
+              address1    = Some(""),
+              address2    = Some(""),
+              address3    = Some(""),
+              address4    = Some(""),
+              postcode    = Some(""),
+              country     = Some(""),
+              iomOrCiFlag = Some(false),
+              systemDate  = Some(LocalDate.now())
+            )
           )
         )
-      )
     }
   }
 

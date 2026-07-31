@@ -21,16 +21,16 @@ import play.api.libs.json.{Json, OFormat}
 import java.time.LocalDate
 
 final case class BusinessAddressDetails(
-                                  mgdRegNumber: String,
-                                  adi: Option[String],
-                                  address1: Option[String],
-                                  address2: Option[String],
-                                  address3: Option[String],
-                                  address4: Option[String],
-                                  postcode: Option[String],
-                                  country: Option[String],
-                                  iomOrCiFlag: Option[Boolean],
-                                  systemDate: Option[LocalDate]
+  mgdRegNumber: String,
+  adi: Option[String],
+  address1: Option[String],
+  address2: Option[String],
+  address3: Option[String],
+  address4: Option[String],
+  postcode: Option[String],
+  country: Option[String],
+  iomOrCiFlag: Option[Boolean],
+  systemDate: Option[LocalDate]
 )
 
 object BusinessAddressDetails {
