@@ -695,7 +695,7 @@ class GamblingController @Inject() (
 
         // no data
         case "XGM00000001763" | "GAM0000000012" =>
-          Ok(Json.toJson(notFoundModel(mgdRegNumber)))
+          Ok(Json.toJson(noDataModel()))
 
         case "XGM00000000400" =>
           BadRequest(
@@ -713,14 +713,6 @@ class GamblingController @Inject() (
             )
           )
 
-        case "XGM00000000404" =>
-          NotFound(
-            Json.obj(
-              "code"    -> "NOT_FOUND",
-              "message" -> "No partner details found for the given registration number"
-            )
-          )
-
         case "XGM00000000500" =>
           InternalServerError(
             Json.obj(
@@ -730,7 +722,13 @@ class GamblingController @Inject() (
           )
 
         case reg =>
-          Ok(Json.toJson(partialModel(reg)))
+          NotFound(
+            Json.obj(
+              "code"    -> "NOT_FOUND",
+              "message" -> s"No partner details found for the given registration number: $reg"
+            )
+          )
+
       }
 
     }

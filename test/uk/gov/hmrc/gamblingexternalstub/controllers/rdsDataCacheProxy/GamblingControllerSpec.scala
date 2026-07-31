@@ -617,12 +617,10 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
       val json = contentAsJson(result)
 
-      (json \ "partners" \ 0 \ "mgdRegNumber").as[String]     shouldBe "XGM00000001763"
-      (json \ "partners" \ 0 \ "solePropLastName").as[String] shouldBe ""
-      (json \ "partners" \ 0 \ "address1").as[String]         shouldBe ""
-      (json \ "partners" \ 0 \ "isFutureLeaveDate").toOption  shouldBe None
-      (json \ "partners" \ 0 \ "isFutureJoinDate").toOption   shouldBe None
-      (json \ "partners" \ 0 \ "businessType").toOption       shouldBe None
+      val expected = Json.toJson(List.empty[String])
+
+      (json \ "partners").get shouldBe expected
+
     }
 
     "return BAD_REQUEST for an unrecognised/unsupported regime" in {
@@ -663,7 +661,7 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       status(result) shouldBe NOT_FOUND
       contentAsJson(result) shouldBe Json.obj(
         "code"    -> "NOT_FOUND",
-        "message" -> "No partner details found for the given registration number"
+        "message" -> "No partner details found for the given registration number: XGM00000000404"
       )
 
     }

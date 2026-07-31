@@ -141,44 +141,6 @@ object PartnerFormats {
     systemDate = Some(LocalDate.of(2026, 5, 31))
   )
 
-  def notFoundModel(mgdRegNumber: String): PartnerDetails = PartnerDetails(
-    partners = List(
-      Partner(
-        mgdRegNumber           = mgdRegNumber,
-        dateOfJoining          = Some(LocalDate.of(2024, 1, 1)),
-        dateOfLeaving          = Some(LocalDate.of(2025, 1, 1)),
-        solePropTitle          = Some(""),
-        solePropFirstName      = Some(""),
-        solePropMiddleName     = Some(""),
-        solePropLastName       = Some(""),
-        businessName           = Some(""),
-        tradingName            = Some(""),
-        dateOfBirth            = Some(LocalDate.of(1999, 9, 9)),
-        nino                   = Some(""),
-        utr                    = Some(""),
-        vrn                    = Some(""),
-        crn                    = Some(""),
-        dateOfIncorporation    = Some(LocalDate.of(2024, 1, 1)),
-        countryOfIncorporation = Some(""),
-        foreignCorporateRef    = Some(""),
-        address1               = Some(""),
-        address2               = Some(""),
-        address3               = Some(""),
-        address4               = Some(""),
-        postcode               = Some(""),
-        country                = Some(""),
-        adi                    = Some(""),
-        iomOrCiFlag            = Some(""),
-        phoneNumber            = Some(""),
-        mobilePhoneNumber      = Some(""),
-        faxNumber              = Some(""),
-        emailAddr              = Some(""),
-        isFutureLeaveDate      = None,
-        isFutureJoinDate       = None,
-        businessType           = None
-      )
-    ),
-    systemDate = Some(LocalDate.of(2026, 5, 31))
-  )
+  def noDataModel(): PartnerDetails = PartnerDetails(partners = Nil, systemDate = Some(LocalDate.of(2026, 5, 31)))
 
 }
