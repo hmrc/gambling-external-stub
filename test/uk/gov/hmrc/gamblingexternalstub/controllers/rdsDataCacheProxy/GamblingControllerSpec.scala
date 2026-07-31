@@ -639,24 +639,44 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       val result = controller.getPartnerDetails("MGD", "XGM00000000400")(FakeRequest())
 
       status(result) shouldBe BAD_REQUEST
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "INVALID_REQUEST",
+        "message" -> "Bad request"
+      )
+
     }
 
     "return Unauthorized for XGM00000000401" in {
       val result = controller.getPartnerDetails("MGD", "XGM00000000401")(FakeRequest())
 
       status(result) shouldBe UNAUTHORIZED
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "UNAUTHORIZED",
+        "message" -> "Unauthorized to access this resource"
+      )
+
     }
 
     "return NotFound for XGM00000000404" in {
       val result = controller.getPartnerDetails("MGD", "XGM00000000404")(FakeRequest())
 
       status(result) shouldBe NOT_FOUND
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "NOT_FOUND",
+        "message" -> "No partner details found for the given registration number"
+      )
+
     }
 
     "return InternalServerError for XGM00000000500" in {
       val result = controller.getPartnerDetails("MGD", "XGM00000000500")(FakeRequest())
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "UNEXPECTED_ERROR",
+        "message" -> "Unexpected error occurred"
+      )
+
     }
   }
 

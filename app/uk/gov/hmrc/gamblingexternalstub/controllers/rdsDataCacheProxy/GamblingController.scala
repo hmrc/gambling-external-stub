@@ -717,7 +717,7 @@ class GamblingController @Inject() (
           NotFound(
             Json.obj(
               "code"    -> "NOT_FOUND",
-              "message" -> "No business contact details found for the given registration number"
+              "message" -> "No partner details found for the given registration number"
             )
           )
 
