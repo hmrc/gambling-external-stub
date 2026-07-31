@@ -18,7 +18,7 @@ package uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import play.api.libs.json.Json
+import play.api.libs.json.{JsLookupResult, Json}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.base.SpecBase
@@ -586,6 +586,45 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
   "GamblingController#getPartnerDetails" should {
 
+    "return full partner details for XGM00000001761" in {
+      val result = controller.getPartnerDetails("MGD", "XGM00000001761")(FakeRequest())
+
+      status(result) shouldBe OK
+
+      val json = contentAsJson(result)
+
+      (json \ "partners" \ 0 \ "mgdRegNumber").as[String]              shouldBe "XGM00000001761"
+      (json \ "partners" \ 0 \ "businessName").as[String]              shouldBe "Partner1"
+      (json \ "partners" \ 0 \ "countryOfIncorporation").asOpt[String] shouldBe Some("countryOfIncorporation")
+    }
+
+    "return partial partner details for XGM00000001762" in {
+      val result = controller.getPartnerDetails("MGD", "XGM00000001762")(FakeRequest())
+
+      status(result) shouldBe OK
+
+      val json = contentAsJson(result)
+
+      (json \ "partners" \ 0 \ "mgdRegNumber").as[String]              shouldBe "XGM00000001762"
+      (json \ "partners" \ 0 \ "businessName").as[String]              shouldBe "Partner1"
+      (json \ "partners" \ 0 \ "countryOfIncorporation").asOpt[String] shouldBe Some("countryOfIncorporation")
+    }
+
+    "return no partner details for XGM00000001763" in {
+      val result = controller.getPartnerDetails("MGD", "XGM00000001763")(FakeRequest())
+
+      status(result) shouldBe OK
+
+      val json = contentAsJson(result)
+
+      (json \ "partners" \ 0 \ "mgdRegNumber").as[String]     shouldBe "XGM00000001763"
+      (json \ "partners" \ 0 \ "solePropLastName").as[String] shouldBe ""
+      (json \ "partners" \ 0 \ "address1").as[String]         shouldBe ""
+      (json \ "partners" \ 0 \ "isFutureLeaveDate").toOption  shouldBe None
+      (json \ "partners" \ 0 \ "isFutureJoinDate").toOption   shouldBe None
+      (json \ "partners" \ 0 \ "businessType").toOption       shouldBe None
+    }
+
     "return BAD_REQUEST for an unrecognised/unsupported regime" in {
       val result = controller.getPartnerDetails("nope", "XWM00003100200")(FakeRequest())
 
@@ -596,40 +635,26 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       )
     }
 
-    "return partner details for XGM00000001761" in {
-      val result = controller.getPartnerDetails("MGD", "XGM00000001761")(FakeRequest())
-
-      status(result) shouldBe OK
-
-      val json = contentAsJson(result)
-
-      (json \ "partners" \ 0 \ "mgdRegNumber").as[String] shouldBe "XGM00000001761"
-      (json \ "partners" \ 0 \ "businessName").as[String] shouldBe "Partner1"
-
-      (json \ "partners" \ 0 \ "countryOfIncorporation").asOpt[String] shouldBe None
-    }
-
-    "return default partner details" in {
-      val result = controller.getPartnerDetails("MGD", "GAM999")(FakeRequest())
-
-      status(result) shouldBe OK
-
-      val json = contentAsJson(result)
-
-      (json \ "partners" \ 0 \ "mgdRegNumber").as[String] shouldBe "GAM999"
-      (json \ "partners" \ 0 \ "businessName").as[String] shouldBe "Partner1"
-
-      (json \ "partners" \ 0 \ "countryOfIncorporation").asOpt[String] shouldBe None
-    }
-
-    "return BAD_REQUEST for invalid" in {
-      val result = controller.getPartnerDetails("MGD", "invalid")(FakeRequest())
+    "return BadRequest for XGM00000000400" in {
+      val result = controller.getPartnerDetails("MGD", "XGM00000000400")(FakeRequest())
 
       status(result) shouldBe BAD_REQUEST
     }
 
-    "return INTERNAL_SERVER_ERROR for error" in {
-      val result = controller.getPartnerDetails("MGD", "error")(FakeRequest())
+    "return Unauthorized for XGM00000000401" in {
+      val result = controller.getPartnerDetails("MGD", "XGM00000000401")(FakeRequest())
+
+      status(result) shouldBe UNAUTHORIZED
+    }
+
+    "return NotFound for XGM00000000404" in {
+      val result = controller.getPartnerDetails("MGD", "XGM00000000404")(FakeRequest())
+
+      status(result) shouldBe NOT_FOUND
+    }
+
+    "return InternalServerError for XGM00000000500" in {
+      val result = controller.getPartnerDetails("MGD", "XGM00000000500")(FakeRequest())
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
     }

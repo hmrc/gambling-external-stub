@@ -60,4 +60,125 @@ case class PartnerDetails(partners: List[Partner], systemDate: Option[LocalDate]
 object PartnerFormats {
   implicit val partnerDetailsFormat: OFormat[Partner] = Json.format[Partner]
   implicit val partnerDetailsResponseFormat: OFormat[PartnerDetails] = Json.format[PartnerDetails]
+
+  def fullModel(mgdRegNumber: String): PartnerDetails = PartnerDetails(
+    partners = List(
+      Partner(
+        mgdRegNumber           = mgdRegNumber,
+        dateOfJoining          = Some(LocalDate.of(2024, 1, 1)),
+        dateOfLeaving          = Some(LocalDate.of(2025, 1, 1)),
+        solePropTitle          = Some("Mx"),
+        solePropFirstName      = Some("solePropFirstName"),
+        solePropMiddleName     = Some("solePropMiddleName"),
+        solePropLastName       = Some("solePropLastName"),
+        businessName           = Some("Partner1"),
+        tradingName            = Some("tradingName"),
+        dateOfBirth            = Some(LocalDate.of(1999, 9, 9)),
+        nino                   = Some("ni123456789no"),
+        utr                    = Some("123456789"),
+        vrn                    = Some("123456789"),
+        crn                    = Some("123456789"),
+        dateOfIncorporation    = Some(LocalDate.of(2024, 1, 1)),
+        countryOfIncorporation = Some("countryOfIncorporation"),
+        foreignCorporateRef    = Some("foreignCorporateRef"),
+        address1               = Some("address1"),
+        address2               = Some("address2"),
+        address3               = Some("address3"),
+        address4               = Some("address4"),
+        postcode               = Some("postcode"),
+        country                = Some("country"),
+        adi                    = Some("adi"),
+        iomOrCiFlag            = Some("false"),
+        phoneNumber            = Some("phoneNumber"),
+        mobilePhoneNumber      = Some("mobilePhoneNumber"),
+        faxNumber              = Some("faxNumber"),
+        emailAddr              = Some("emailAddr"),
+        isFutureLeaveDate      = Some(0),
+        isFutureJoinDate       = Some(0),
+        businessType           = Some(2)
+      )
+    ),
+    systemDate = Some(LocalDate.of(2026, 5, 31))
+  )
+
+  def partialModel(mgdRegNumber: String): PartnerDetails = PartnerDetails(
+    partners = List(
+      Partner(
+        mgdRegNumber           = mgdRegNumber,
+        dateOfJoining          = Some(LocalDate.of(2024, 1, 1)),
+        dateOfLeaving          = Some(LocalDate.of(2025, 1, 1)),
+        solePropTitle          = Some("Mx"),
+        solePropFirstName      = Some("solePropFirstName"),
+        solePropMiddleName     = Some(""),
+        solePropLastName       = Some("solePropLastName"),
+        businessName           = Some("Partner1"),
+        tradingName            = Some("tradingName"),
+        dateOfBirth            = Some(LocalDate.of(1999, 9, 9)),
+        nino                   = Some("ni123456789no"),
+        utr                    = Some(""),
+        vrn                    = Some(""),
+        crn                    = Some("123456789"),
+        dateOfIncorporation    = Some(LocalDate.of(2024, 1, 1)),
+        countryOfIncorporation = Some("countryOfIncorporation"),
+        foreignCorporateRef    = Some("foreignCorporateRef"),
+        address1               = Some(""),
+        address2               = Some(""),
+        address3               = Some(""),
+        address4               = Some(""),
+        postcode               = Some(""),
+        country                = Some(""),
+        adi                    = Some("adi"),
+        iomOrCiFlag            = Some("false"),
+        phoneNumber            = Some("phoneNumber"),
+        mobilePhoneNumber      = Some("mobilePhoneNumber"),
+        faxNumber              = Some("faxNumber"),
+        emailAddr              = Some("emailAddr"),
+        isFutureLeaveDate      = Some(0),
+        isFutureJoinDate       = Some(0),
+        businessType           = Some(2)
+      )
+    ),
+    systemDate = Some(LocalDate.of(2026, 5, 31))
+  )
+
+  def notFoundModel(mgdRegNumber: String): PartnerDetails = PartnerDetails(
+    partners = List(
+      Partner(
+        mgdRegNumber           = mgdRegNumber,
+        dateOfJoining          = Some(LocalDate.of(2024, 1, 1)),
+        dateOfLeaving          = Some(LocalDate.of(2025, 1, 1)),
+        solePropTitle          = Some(""),
+        solePropFirstName      = Some(""),
+        solePropMiddleName     = Some(""),
+        solePropLastName       = Some(""),
+        businessName           = Some(""),
+        tradingName            = Some(""),
+        dateOfBirth            = Some(LocalDate.of(1999, 9, 9)),
+        nino                   = Some(""),
+        utr                    = Some(""),
+        vrn                    = Some(""),
+        crn                    = Some(""),
+        dateOfIncorporation    = Some(LocalDate.of(2024, 1, 1)),
+        countryOfIncorporation = Some(""),
+        foreignCorporateRef    = Some(""),
+        address1               = Some(""),
+        address2               = Some(""),
+        address3               = Some(""),
+        address4               = Some(""),
+        postcode               = Some(""),
+        country                = Some(""),
+        adi                    = Some(""),
+        iomOrCiFlag            = Some(""),
+        phoneNumber            = Some(""),
+        mobilePhoneNumber      = Some(""),
+        faxNumber              = Some(""),
+        emailAddr              = Some(""),
+        isFutureLeaveDate      = None,
+        isFutureJoinDate       = None,
+        businessType           = None
+      )
+    ),
+    systemDate = Some(LocalDate.of(2026, 5, 31))
+  )
+
 }

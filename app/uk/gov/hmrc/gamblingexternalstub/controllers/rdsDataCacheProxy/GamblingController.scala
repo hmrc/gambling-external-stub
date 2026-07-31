@@ -681,60 +681,58 @@ class GamblingController @Inject() (
   }
 
   def getPartnerDetails(regime: String, mgdRegNumber: String): Action[AnyContent] = Action { _ =>
-
-    def model(mgdRegNumber: String = "XGM00000001763"): PartnerDetails = PartnerDetails(
-      partners = List(
-        Partner(
-          mgdRegNumber           = mgdRegNumber,
-          dateOfJoining          = Some(LocalDate.of(2024, 1, 1)),
-          dateOfLeaving          = None,
-          solePropTitle          = None,
-          solePropFirstName      = None,
-          solePropMiddleName     = None,
-          solePropLastName       = None,
-          businessName           = Some("Partner1"),
-          tradingName            = None,
-          dateOfBirth            = None,
-          nino                   = None,
-          utr                    = Some("123456789"),
-          vrn                    = None,
-          crn                    = None,
-          dateOfIncorporation    = None,
-          countryOfIncorporation = None,
-          foreignCorporateRef    = None,
-          address1               = None,
-          address2               = None,
-          address3               = None,
-          address4               = None,
-          postcode               = None,
-          country                = None,
-          adi                    = None,
-          iomOrCiFlag            = Some("false"),
-          phoneNumber            = None,
-          mobilePhoneNumber      = None,
-          faxNumber              = None,
-          emailAddr              = None,
-          isFutureLeaveDate      = Some(0),
-          isFutureJoinDate       = Some(0),
-          businessType           = Some(2)
-        )
-      ),
-      systemDate = Some(LocalDate.of(2026, 5, 31))
-    )
-
     if (Regime.fromString(regime).isEmpty) {
       BadRequest(Json.obj("code" -> "INVALID_REGIME", "message" -> s"regime must be one of: ${Regime.validCodes}"))
     } else {
       mgdRegNumber match {
+        // full data
+        case "XGM00000001761" | "GAM0000000001" =>
+          Ok(Json.toJson(fullModel(mgdRegNumber)))
 
-        case "invalid" => invalidResponse
+        // some missing data
+        case "XGM00000001762" | "GAM0000000010" =>
+          Ok(Json.toJson(partialModel(mgdRegNumber)))
 
-        case "error" => errorResponse
+        // no data
+        case "XGM00000001763" | "GAM0000000012" =>
+          Ok(Json.toJson(notFoundModel(mgdRegNumber)))
 
-        case "XGM00000001763" => Ok(Json.toJson(model()))
+        case "XGM00000000400" =>
+          BadRequest(
+            Json.obj(
+              "code"    -> "INVALID_REQUEST",
+              "message" -> "Bad request"
+            )
+          )
 
-        case reg => Ok(Json.toJson(model(reg)))
+        case "XGM00000000401" =>
+          Unauthorized(
+            Json.obj(
+              "code"    -> "UNAUTHORIZED",
+              "message" -> "Unauthorized to access this resource"
+            )
+          )
+
+        case "XGM00000000404" =>
+          NotFound(
+            Json.obj(
+              "code"    -> "NOT_FOUND",
+              "message" -> "No business contact details found for the given registration number"
+            )
+          )
+
+        case "XGM00000000500" =>
+          InternalServerError(
+            Json.obj(
+              "code"    -> "UNEXPECTED_ERROR",
+              "message" -> "Unexpected error occurred"
+            )
+          )
+
+        case reg =>
+          Ok(Json.toJson(partialModel(reg)))
       }
+
     }
   }
 
