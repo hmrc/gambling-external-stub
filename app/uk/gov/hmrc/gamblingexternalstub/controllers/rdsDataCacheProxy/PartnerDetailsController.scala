@@ -34,7 +34,7 @@ class PartnerDetailsController @Inject() (
 
   def getPartnerDetails(regime: String, mgdRegNumber: String): Action[AnyContent] = Action { _ =>
     if (!Regime.fromString(regime.trim.toLowerCase()).exists(supportedRegimes.contains)) {
-      BadRequest(Json.obj("code" -> "INVALID_REGIME", "message" -> s"Regime $regime is not supported for getPartnerDetails"))
+      BadRequest(Json.obj("code" -> "INVALID_REGIME", "message" -> s"Regime $regime is not supported for PartnerDetails"))
     } else {
       val sanitized = mgdRegNumber.trim.toUpperCase()
       sanitized match {

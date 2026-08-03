@@ -74,7 +74,7 @@ class PartnerDetailsControllerSpec extends AnyWordSpec with Matchers with SpecBa
       status(result) shouldBe BAD_REQUEST
       contentAsJson(result) shouldBe Json.obj(
         "code"    -> "INVALID_REGIME",
-        "message" -> s"Regime $regime is not supported for getPartnerDetails"
+        "message" -> s"Regime $regime is not supported for PartnerDetails"
       )
     }
 
@@ -85,7 +85,7 @@ class PartnerDetailsControllerSpec extends AnyWordSpec with Matchers with SpecBa
       status(result) shouldBe BAD_REQUEST
       contentAsJson(result) shouldBe Json.obj(
         "code"    -> "INVALID_REGIME",
-        "message" -> s"Regime $regime is not supported for getPartnerDetails"
+        "message" -> s"Regime $regime is not supported for PartnerDetails"
       )
     }
 
