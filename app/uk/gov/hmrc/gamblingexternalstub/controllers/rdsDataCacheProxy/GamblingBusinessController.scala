@@ -39,7 +39,7 @@ class GamblingBusinessController @Inject() (
       case "error" => errorResponse
 
       // Scenario 1 → Return Business Address Details
-      case "XGM00000001761" | "GAM0000000001" =>
+      case "XGM00000001761" =>
         Ok(
           Json.toJson(
             BusinessAddressDetails(
@@ -51,8 +51,8 @@ class GamblingBusinessController @Inject() (
               address4    = Some("address4"),
               postcode    = Some("L1 8YL"),
               country     = Some("England"),
-              iomOrCiFlag = Some(false),
-              systemDate  = Some(LocalDate.now())
+              iomOrCiFlag = Some("FALSE"),
+              systemDate  = Some(LocalDate.now().toString)
             )
           )
         )
@@ -62,7 +62,7 @@ class GamblingBusinessController @Inject() (
         Ok(
           Json.toJson(
             BusinessAddressDetails(
-              mgdRegNumber,
+              "",
               adi         = Some(""),
               address1    = Some(""),
               address2    = Some(""),
@@ -70,8 +70,8 @@ class GamblingBusinessController @Inject() (
               address4    = Some(""),
               postcode    = Some(""),
               country     = Some(""),
-              iomOrCiFlag = Some(false),
-              systemDate  = Some(LocalDate.now())
+              iomOrCiFlag = Some(""),
+              systemDate  = Some("")
             )
           )
         )

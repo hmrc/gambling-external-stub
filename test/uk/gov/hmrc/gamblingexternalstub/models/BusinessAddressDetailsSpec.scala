@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
+package uk.gov.hmrc.gamblingexternalstub.models
+
 import java.time.LocalDate
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.Json
-import uk.gov.hmrc.gamblingexternalstub.models.BusinessAddressDetails
 
 
 class BusinessAddressDetailsSpec extends AnyWordSpec with Matchers {
@@ -37,8 +38,8 @@ class BusinessAddressDetailsSpec extends AnyWordSpec with Matchers {
         address4 = Some("address4"),
         postcode = Some("L1 8YL"),
         country = Some("England"),
-        iomOrCiFlag = Some(false),
-        systemDate = Some(LocalDate.now())
+        iomOrCiFlag = Some("FALSE"),
+        systemDate = Some(LocalDate.now().toString)
       )
 
       val json = Json.toJson(model)
@@ -52,8 +53,8 @@ class BusinessAddressDetailsSpec extends AnyWordSpec with Matchers {
         "address4"     -> "address4",
         "postcode"     -> "L1 8YL",
         "country"      -> "England",
-        "iomOrCiFlag"  -> false,
-        "systemDate"   -> LocalDate.now()
+        "iomOrCiFlag"  -> "FALSE",
+        "systemDate"   -> LocalDate.now().toString
       )
     }
 
@@ -68,8 +69,8 @@ class BusinessAddressDetailsSpec extends AnyWordSpec with Matchers {
         "address4"     -> "address4",
         "postcode"     -> "L1 8YL",
         "country"      -> "England",
-        "iomOrCiFlag"  -> false,
-        "systemDate"   -> LocalDate.now()
+        "iomOrCiFlag"  -> "FALSE",
+        "systemDate"   -> LocalDate.now().toString
       )
 
       val result = json.as[BusinessAddressDetails]
@@ -83,8 +84,8 @@ class BusinessAddressDetailsSpec extends AnyWordSpec with Matchers {
         address4 = Some("address4"),
         postcode = Some("L1 8YL"),
         country = Some("England"),
-        iomOrCiFlag = Some(false),
-        systemDate = Some(LocalDate.now())
+        iomOrCiFlag = Some("FALSE"),
+        systemDate = Some(LocalDate.now().toString)
       )
     }
 

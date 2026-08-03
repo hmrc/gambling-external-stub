@@ -29,8 +29,8 @@ final case class BusinessAddressDetails(
   address4: Option[String],
   postcode: Option[String],
   country: Option[String],
-  iomOrCiFlag: Option[Boolean],
-  systemDate: Option[LocalDate]
+  iomOrCiFlag: Option[String],
+  systemDate: Option[String]
 )
 
 object BusinessAddressDetails {

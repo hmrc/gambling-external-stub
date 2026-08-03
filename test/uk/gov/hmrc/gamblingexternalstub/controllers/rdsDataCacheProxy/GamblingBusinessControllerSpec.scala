@@ -48,8 +48,8 @@ class GamblingBusinessControllerSpec extends AnyWordSpec with Matchers with Spec
           Some("address4"),
           Some("L1 8YL"),
           Some("England"),
-          Some(false),
-          Some(LocalDate.now()),
+          Some("FALSE"),
+          Some(LocalDate.now().toString),
         )
       )
     }
@@ -80,16 +80,16 @@ class GamblingBusinessControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.obj(
-        "mgdRegNumber" -> Some("GAM999"),
-        "adi"          -> Some(""),
+        "mgdRegNumber" -> "",
+        "adi"          -> "",
         "address1"     -> "",
         "address2"     -> "",
         "address3"     -> "",
         "address4"     -> "",
         "postcode"     -> "",
         "country"      -> "",
-        "iomOrCiFlag"  -> false,
-        "systemDate"   -> LocalDate.now()
+        "iomOrCiFlag"  -> "",
+        "systemDate"   -> ""
       )
     }
 
