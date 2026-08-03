@@ -33,7 +33,6 @@ class GamblingInterestController @Inject() (
 
   private val gtrDescriptionCodes = Seq(2640, 2650, 2655, 2680, 2685, 2690, 2695, 2660, 2670)
   private val mgdDescriptionCodes = Seq(1940, 1950, 1960, 1970, 1980, 1990)
-  private val repaymentInterestDescCodes = Seq(1940, 1950, 1960, 1970, 1980, 1990)
 
   def getInterestOverview(
     regime: String,
@@ -265,7 +264,8 @@ class GamblingInterestController @Inject() (
                                              ): InterestAccruingDrilldown = {
     val today = LocalDate.now()
     val periodStart = today.minusMonths(18).withDayOfMonth(1)
-    val periodEnd = today.plusMonths(3).withDayOfMonth(today.lengthOfMonth())
+    val target = today.plusMonths(3)
+    val periodEnd = target.withDayOfMonth(target.lengthOfMonth())
 
     val allItems = (1 to recordCount).map { i =>
       val dateFrom = periodStart.plusMonths((i - 1) % 21)
@@ -298,7 +298,8 @@ class GamblingInterestController @Inject() (
   private def createInterestDrilldown(recordCount: Int, pageNo: Int, pageSize: Int, descriptionCode: Option[Int]): InterestDrilldown = {
     val today = LocalDate.now()
     val periodStart = today.minusMonths(18).withDayOfMonth(1)
-    val periodEnd = today.plusMonths(3).withDayOfMonth(today.lengthOfMonth())
+    val target = today.plusMonths(3)
+    val periodEnd = target.withDayOfMonth(target.lengthOfMonth())
 
     val allItems = (1 to recordCount).map { i =>
       val dateFrom = periodStart.plusMonths((i - 1) % 21)
