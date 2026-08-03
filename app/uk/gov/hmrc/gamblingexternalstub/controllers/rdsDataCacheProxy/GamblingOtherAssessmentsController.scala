@@ -84,7 +84,8 @@ class GamblingOtherAssessmentsController @Inject() (
           val today = LocalDate.now()
           val periodStart = today.minusMonths(18).withDayOfMonth(1)
           val periodStartItem = today.minusMonths(15).withDayOfMonth(1)
-          val periodEnd = today.plusMonths(3).withDayOfMonth(today.lengthOfMonth())
+          val target = today.plusMonths(3)
+          val periodEnd = target.withDayOfMonth(target.lengthOfMonth())
           val periodEndItem = today.withDayOfMonth(today.lengthOfMonth())
           val windowMonths = (periodEnd.getYear - periodStart.getYear) * 12 +
             (periodEnd.getMonthValue - periodStart.getMonthValue) + 1
