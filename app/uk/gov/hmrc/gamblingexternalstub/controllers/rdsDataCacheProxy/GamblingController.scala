@@ -20,7 +20,6 @@ import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.gamblingexternalstub.models.*
-import uk.gov.hmrc.gamblingexternalstub.models.PartnerFormats.*
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import java.time.LocalDate
@@ -677,60 +676,6 @@ class GamblingController @Inject() (
             )
           )
         )
-    }
-  }
-
-  def getPartnerDetails(regime: String, mgdRegNumber: String): Action[AnyContent] = Action { _ =>
-    if (Regime.fromString(regime).isEmpty) {
-      BadRequest(Json.obj("code" -> "INVALID_REGIME", "message" -> s"regime must be one of: ${Regime.validCodes}"))
-    } else {
-      mgdRegNumber match {
-        // full data
-        case "XGM00000001761" | "GAM0000000001" =>
-          Ok(Json.toJson(fullModel(mgdRegNumber)))
-
-        // some missing data
-        case "XGM00000001762" | "GAM0000000010" =>
-          Ok(Json.toJson(partialModel(mgdRegNumber)))
-
-        // no data
-        case "XGM00000001763" | "GAM0000000012" =>
-          Ok(Json.toJson(noDataModel()))
-
-        case "XGM00000000400" =>
-          BadRequest(
-            Json.obj(
-              "code"    -> "INVALID_REQUEST",
-              "message" -> "Bad request"
-            )
-          )
-
-        case "XGM00000000401" =>
-          Unauthorized(
-            Json.obj(
-              "code"    -> "UNAUTHORIZED",
-              "message" -> "Unauthorized to access this resource"
-            )
-          )
-
-        case "XGM00000000500" =>
-          InternalServerError(
-            Json.obj(
-              "code"    -> "UNEXPECTED_ERROR",
-              "message" -> "Unexpected error occurred"
-            )
-          )
-
-        case reg =>
-          NotFound(
-            Json.obj(
-              "code"    -> "NOT_FOUND",
-              "message" -> s"No partner details found for the given registration number: $reg"
-            )
-          )
-
-      }
-
     }
   }
 
