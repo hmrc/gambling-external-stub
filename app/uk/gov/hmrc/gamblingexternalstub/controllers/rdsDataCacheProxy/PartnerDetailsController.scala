@@ -46,10 +46,6 @@ class PartnerDetailsController @Inject() (
         case "XGM00000001762" | "GAM0000000010" =>
           Ok(Json.toJson(partialModel(sanitized)))
 
-        // no data
-        case "XGM00000001763" | "GAM0000000012" =>
-          Ok(Json.toJson(noDataModel()))
-
         case "XGM00000000400" =>
           BadRequest(
             Json.obj(
@@ -74,13 +70,9 @@ class PartnerDetailsController @Inject() (
             )
           )
 
+        // no data
         case reg =>
-          NotFound(
-            Json.obj(
-              "code"    -> "NOT_FOUND",
-              "message" -> s"No partner details found for the given registration number: $reg"
-            )
-          )
+          Ok(Json.toJson(noDataModel(sanitized)))
 
       }
 

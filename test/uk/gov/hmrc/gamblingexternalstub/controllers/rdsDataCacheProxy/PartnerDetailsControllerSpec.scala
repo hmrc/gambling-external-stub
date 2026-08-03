@@ -18,7 +18,7 @@ package uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import play.api.libs.json.{JsLookupResult, Json}
+import play.api.libs.json.{JsLookupResult, JsValue, Json}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.base.SpecBase
@@ -61,10 +61,8 @@ class PartnerDetailsControllerSpec extends AnyWordSpec with Matchers with SpecBa
 
       val json = contentAsJson(result)
 
-      val expected = Json.toJson(List.empty[String])
-
-      (json \ "partners").get shouldBe expected
-
+      (json \ "partners" \ 0 \ "mgdRegNumber").as[String]    shouldBe "XGM00000001763"
+      (json \ "partners" \ 0 \ "businessName").asOpt[String] shouldBe None
     }
 
     "return BAD_REQUEST for an unrecognised regime" in {
@@ -107,17 +105,6 @@ class PartnerDetailsControllerSpec extends AnyWordSpec with Matchers with SpecBa
       contentAsJson(result) shouldBe Json.obj(
         "code"    -> "UNAUTHORIZED",
         "message" -> "Unauthorized to access this resource"
-      )
-
-    }
-
-    "return NotFound for XGM00000000404" in {
-      val result = controller.getPartnerDetails("MGD", "XGM00000000404")(FakeRequest())
-
-      status(result) shouldBe NOT_FOUND
-      contentAsJson(result) shouldBe Json.obj(
-        "code"    -> "NOT_FOUND",
-        "message" -> "No partner details found for the given registration number: XGM00000000404"
       )
 
     }
