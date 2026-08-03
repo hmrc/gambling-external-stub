@@ -21,25 +21,23 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.Json
 
-
 class BusinessAddressDetailsSpec extends AnyWordSpec with Matchers {
 
   "Business Address Details JSON format" should {
 
     "serialize to JSON when defined" in {
 
-
       val model = BusinessAddressDetails(
         mgdRegNumber = "XRM00000000574",
-        adi = Some("1st floor"),
-        address1 = Some("address1"),
-        address2 = Some("address2"),
-        address3 = Some("address3"),
-        address4 = Some("address4"),
-        postcode = Some("L1 8YL"),
-        country = Some("England"),
-        iomOrCiFlag = Some("FALSE"),
-        systemDate = Some(LocalDate.now().toString)
+        adi          = Some("1st floor"),
+        address1     = Some("address1"),
+        address2     = Some("address2"),
+        address3     = Some("address3"),
+        address4     = Some("address4"),
+        postcode     = Some("L1 8YL"),
+        country      = Some("England"),
+        iomOrCiFlag  = Some("FALSE"),
+        systemDate   = Some(LocalDate.now().toString)
       )
 
       val json = Json.toJson(model)
@@ -77,15 +75,15 @@ class BusinessAddressDetailsSpec extends AnyWordSpec with Matchers {
 
       result shouldBe BusinessAddressDetails(
         mgdRegNumber = "XRM00000000574",
-        adi = Some("1st floor"),
-        address1 = Some("address1"),
-        address2 = Some("address2"),
-        address3 = Some("address3"),
-        address4 = Some("address4"),
-        postcode = Some("L1 8YL"),
-        country = Some("England"),
-        iomOrCiFlag = Some("FALSE"),
-        systemDate = Some(LocalDate.now().toString)
+        adi          = Some("1st floor"),
+        address1     = Some("address1"),
+        address2     = Some("address2"),
+        address3     = Some("address3"),
+        address4     = Some("address4"),
+        postcode     = Some("L1 8YL"),
+        country      = Some("England"),
+        iomOrCiFlag  = Some("FALSE"),
+        systemDate   = Some(LocalDate.now().toString)
       )
     }
 
@@ -99,15 +97,15 @@ class BusinessAddressDetailsSpec extends AnyWordSpec with Matchers {
 
       result shouldBe BusinessAddressDetails(
         mgdRegNumber = "XRM00000000574",
-        adi = None,
-        address1 = None,
-        address2 = None,
-        address3 = None,
-        address4 = None,
-        postcode = None,
-        country = None,
-        iomOrCiFlag = None,
-        systemDate = None
+        adi          = None,
+        address1     = None,
+        address2     = None,
+        address3     = None,
+        address4     = None,
+        postcode     = None,
+        country      = None,
+        iomOrCiFlag  = None,
+        systemDate   = None
       )
     }
   }

@@ -49,18 +49,17 @@ class GamblingBusinessControllerSpec extends AnyWordSpec with Matchers with Spec
           Some("L1 8YL"),
           Some("England"),
           Some("FALSE"),
-          Some(LocalDate.now().toString),
+          Some(LocalDate.now().toString)
         )
       )
     }
-
 
     "return BAD_REQUEST for invalid" in {
       val result = controller.getBusinessAddressDetails("invalid")(FakeRequest())
 
       status(result) shouldBe BAD_REQUEST
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "INVALID_MGD_REG_NUMBER",
+        "code"    -> "INVALID_MGD_REG_NUMBER",
         "message" -> "mgdRegNumber must be provided"
       )
     }
@@ -70,7 +69,7 @@ class GamblingBusinessControllerSpec extends AnyWordSpec with Matchers with Spec
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "UNEXPECTED_ERROR",
+        "code"    -> "UNEXPECTED_ERROR",
         "message" -> "Unexpected error occurred"
       )
     }
