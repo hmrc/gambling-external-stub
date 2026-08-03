@@ -43,7 +43,7 @@ class PartnerDetailsControllerSpec extends AnyWordSpec with Matchers with SpecBa
     }
 
     "return partial partner details for XGM00000001762" in {
-      val result = controller.getPartnerDetails("MGD", "XGM00000001762")(FakeRequest())
+      val result = controller.getPartnerDetails("mGd", " xGM00000001762 ")(FakeRequest())
 
       status(result) shouldBe OK
 
@@ -67,13 +67,25 @@ class PartnerDetailsControllerSpec extends AnyWordSpec with Matchers with SpecBa
 
     }
 
-    "return BAD_REQUEST for an unrecognised/unsupported regime" in {
-      val result = controller.getPartnerDetails("nope", "XWM00003100200")(FakeRequest())
+    "return BAD_REQUEST for an unrecognised regime" in {
+      val regime = "nope"
+      val result = controller.getPartnerDetails(regime, "XWM00003100200")(FakeRequest())
 
       status(result) shouldBe BAD_REQUEST
       contentAsJson(result) shouldBe Json.obj(
         "code"    -> "INVALID_REGIME",
-        "message" -> "regime must be one of: gbd, pbd, rgd, mgd"
+        "message" -> s"Regime $regime is not supported for getPartnerDetails"
+      )
+    }
+
+    "return BAD_REQUEST for an unsupported regime" in {
+      val regime = "PBD"
+      val result = controller.getPartnerDetails(regime, "XWM00003100200")(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "INVALID_REGIME",
+        "message" -> s"Regime $regime is not supported for getPartnerDetails"
       )
     }
 

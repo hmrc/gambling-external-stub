@@ -33,17 +33,18 @@ class PartnerDetailsController @Inject() (
   private val supportedRegimes = List(Regime.MGD)
 
   def getPartnerDetails(regime: String, mgdRegNumber: String): Action[AnyContent] = Action { _ =>
-    if (!Regime.fromString(regime).exists(supportedRegimes.contains)) {
-      BadRequest(Json.obj("code" -> "INVALID_REGIME", "message" -> s"regime must be one of: ${Regime.validCodes}"))
+    if (!Regime.fromString(regime.trim.toLowerCase()).exists(supportedRegimes.contains)) {
+      BadRequest(Json.obj("code" -> "INVALID_REGIME", "message" -> s"Regime $regime is not supported for getPartnerDetails"))
     } else {
-      mgdRegNumber match {
+      val sanitized = mgdRegNumber.trim.toUpperCase()
+      sanitized match {
         // full data
         case "XGM00000001761" | "GAM0000000001" =>
-          Ok(Json.toJson(fullModel(mgdRegNumber)))
+          Ok(Json.toJson(fullModel(sanitized)))
 
         // some missing data
         case "XGM00000001762" | "GAM0000000010" =>
-          Ok(Json.toJson(partialModel(mgdRegNumber)))
+          Ok(Json.toJson(partialModel(sanitized)))
 
         // no data
         case "XGM00000001763" | "GAM0000000012" =>
