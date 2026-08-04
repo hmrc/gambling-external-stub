@@ -18,6 +18,7 @@ GET     /gambling/reallocations-out/:regime/:regNumber          uk.gov.hmrc.gamb
 GET     /gambling/reallocations-details/:regime/:regNumber      uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingReallocationsController.getReallocationsDetails(regime: String, regNumber: String)
 
 GET     /gambling/business-contact-details/mgd/:mgdRegNumber    uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingBusinessContactDetailsController.getBusinessContactDetails(mgdRegNumber: String)
+GET     /gambling/business-address/:regime/:mgdRegNumber        uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingBusinessController.getBusinessAddressDetails(regime : String, mgdRegNumber: String)
 
 GET     /gambling/correspondence-details/mgd/:mgdRegNumber    uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getCorrespondenceDetails(mgdRegNumber: String)
 

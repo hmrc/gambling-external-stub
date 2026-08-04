@@ -496,6 +496,12 @@ See [docs/submitted-return-details.md](docs/submitted-return-details.md) for ful
 See [docs/open-periods.md](docs/open-periods.md) for full details including regime validation, reg number encoding convention, item structure, all response scenarios, and example curl commands.
 
 ---
+
+### 20. Business
+
+See [docs/business.md](docs/business.md) for full details regarding available endpoints, testing values and expected responses.
+
+---
 ## Behaviour
 
 ### Scenario 1 – Full linked history
