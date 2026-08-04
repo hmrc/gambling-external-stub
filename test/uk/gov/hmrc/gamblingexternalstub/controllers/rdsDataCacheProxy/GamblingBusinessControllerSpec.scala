@@ -23,7 +23,6 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.base.SpecBase
 import uk.gov.hmrc.gamblingexternalstub.models.*
-import uk.gov.hmrc.gamblingexternalstub.models.BusinessType.SoleProprietor
 
 import java.time.LocalDate
 
@@ -34,8 +33,8 @@ class GamblingBusinessControllerSpec extends AnyWordSpec with Matchers with Spec
 
   "GamblingController#getBusinessAddressDetails" should {
 
-    "return OK for XGM00000001761" in {
-      val result = controller.getBusinessAddressDetails("XGM00000001761")(FakeRequest())
+    "return OK and full model for XGM00000001761" in {
+      val result = controller.getBusinessAddressDetails("MGD", "XGM00000001761")(FakeRequest())
 
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
@@ -49,49 +48,89 @@ class GamblingBusinessControllerSpec extends AnyWordSpec with Matchers with Spec
           Some("L1 8YL"),
           Some("England"),
           Some("FALSE"),
-          Some(LocalDate.now().toString)
+          Some(LocalDate.now())
         )
       )
     }
 
-    "return BAD_REQUEST for invalid" in {
-      val result = controller.getBusinessAddressDetails("invalid")(FakeRequest())
+    "return OK and partial model for XGM00000001762" in {
+      val result = controller.getBusinessAddressDetails("MGD", "XGM00000001762")(FakeRequest())
 
-      status(result) shouldBe BAD_REQUEST
-      contentAsJson(result) shouldBe Json.obj(
-        "code"    -> "INVALID_MGD_REG_NUMBER",
-        "message" -> "mgdRegNumber must be provided"
+      status(result) shouldBe OK
+      contentAsJson(result) shouldBe Json.toJson(
+        BusinessAddressDetails(
+          mgdRegNumber = "XGM00000001762",
+          adi          = Some("1st floor"),
+          address1     = Some("address1"),
+          postcode     = Some("L1 8YL"),
+          country      = Some("England"),
+          iomOrCiFlag  = Some("FALSE"),
+          systemDate   = Some(LocalDate.now())
+        )
       )
     }
 
-    "return INTERNAL_SERVER_ERROR for error" in {
-      val result = controller.getBusinessAddressDetails("error")(FakeRequest())
+    "return default response" in {
+      val result = controller.getBusinessAddressDetails("MGD", "GAM999")(FakeRequest())
+
+      status(result)        shouldBe OK
+      contentAsJson(result) shouldBe Json.obj()
+    }
+
+    "return BAD_REQUEST for an unrecognised regime" in {
+      val regime = "nope"
+      val result = controller.getBusinessAddressDetails(regime, "XWM00003100200")(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "INVALID_REGIME",
+        "message" -> s"Regime $regime is not supported"
+      )
+    }
+
+    "return BAD_REQUEST for an unsupported regime" in {
+      val regime = "PBD"
+      val result = controller.getBusinessAddressDetails(regime, "XWM00003100200")(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "INVALID_REGIME",
+        "message" -> s"Regime $regime is not supported"
+      )
+    }
+
+    "return BadRequest for XGM00000000400" in {
+      val result = controller.getBusinessAddressDetails("MGD", "XGM00000000400")(FakeRequest())
+
+      status(result) shouldBe BAD_REQUEST
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "INVALID_REQUEST",
+        "message" -> "Bad request"
+      )
+
+    }
+
+    "return Unauthorized for XGM00000000401" in {
+      val result = controller.getBusinessAddressDetails("MGD", "XGM00000000401")(FakeRequest())
+
+      status(result) shouldBe UNAUTHORIZED
+      contentAsJson(result) shouldBe Json.obj(
+        "code"    -> "UNAUTHORIZED",
+        "message" -> "Unauthorized to access this resource"
+      )
+
+    }
+
+    "return InternalServerError for XGM00000000500" in {
+      val result = controller.getBusinessAddressDetails("MGD", "XGM00000000500")(FakeRequest())
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
       contentAsJson(result) shouldBe Json.obj(
         "code"    -> "UNEXPECTED_ERROR",
         "message" -> "Unexpected error occurred"
       )
+
     }
-
-    "return default response" in {
-      val result = controller.getBusinessAddressDetails("GAM999")(FakeRequest())
-
-      status(result) shouldBe OK
-      contentAsJson(result) shouldBe Json.obj(
-        "mgdRegNumber" -> "",
-        "adi"          -> "",
-        "address1"     -> "",
-        "address2"     -> "",
-        "address3"     -> "",
-        "address4"     -> "",
-        "postcode"     -> "",
-        "country"      -> "",
-        "iomOrCiFlag"  -> "",
-        "systemDate"   -> ""
-      )
-    }
-
   }
 
 }

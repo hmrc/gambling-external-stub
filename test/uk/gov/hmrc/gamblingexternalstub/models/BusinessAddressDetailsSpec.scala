@@ -37,7 +37,7 @@ class BusinessAddressDetailsSpec extends AnyWordSpec with Matchers {
         postcode     = Some("L1 8YL"),
         country      = Some("England"),
         iomOrCiFlag  = Some("FALSE"),
-        systemDate   = Some(LocalDate.now().toString)
+        systemDate   = Some(LocalDate.now())
       )
 
       val json = Json.toJson(model)
@@ -52,7 +52,7 @@ class BusinessAddressDetailsSpec extends AnyWordSpec with Matchers {
         "postcode"     -> "L1 8YL",
         "country"      -> "England",
         "iomOrCiFlag"  -> "FALSE",
-        "systemDate"   -> LocalDate.now().toString
+        "systemDate"   -> LocalDate.now()
       )
     }
 
@@ -68,7 +68,7 @@ class BusinessAddressDetailsSpec extends AnyWordSpec with Matchers {
         "postcode"     -> "L1 8YL",
         "country"      -> "England",
         "iomOrCiFlag"  -> "FALSE",
-        "systemDate"   -> LocalDate.now().toString
+        "systemDate"   -> LocalDate.now()
       )
 
       val result = json.as[BusinessAddressDetails]
@@ -83,7 +83,7 @@ class BusinessAddressDetailsSpec extends AnyWordSpec with Matchers {
         postcode     = Some("L1 8YL"),
         country      = Some("England"),
         iomOrCiFlag  = Some("FALSE"),
-        systemDate   = Some(LocalDate.now().toString)
+        systemDate   = Some(LocalDate.now())
       )
     }
 

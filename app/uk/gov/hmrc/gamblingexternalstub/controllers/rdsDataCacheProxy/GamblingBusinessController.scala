@@ -20,9 +20,9 @@ import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.gamblingexternalstub.models.*
+import uk.gov.hmrc.gamblingexternalstub.models.BusinessAddressDetails.{fullModel, partialModel}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-import java.time.LocalDate
 import javax.inject.Inject
 
 class GamblingBusinessController @Inject() (
@@ -30,68 +30,53 @@ class GamblingBusinessController @Inject() (
 ) extends BackendController(cc)
     with Logging {
 
-  def getBusinessAddressDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
+  private val supportedRegimes = List(Regime.MGD)
 
-    mgdRegNumber match {
+  def getBusinessAddressDetails(regime: String, mgdRegNumber: String): Action[AnyContent] = Action { _ =>
+    if (!Regime.fromString(regime.trim.toLowerCase()).exists(supportedRegimes.contains)) {
+      BadRequest(Json.obj("code" -> "INVALID_REGIME", "message" -> s"Regime $regime is not supported"))
+    } else {
+      val sanitized = mgdRegNumber.trim.toUpperCase()
+      sanitized match {
+        // full data
+        case "XGM00000001761" =>
+          Ok(Json.toJson(fullModel(sanitized)))
 
-      case "invalid" => invalidResponse
+        // some missing data
+        case "XGM00000001762" =>
+          Ok(Json.toJson(partialModel(sanitized)))
 
-      case "error" => errorResponse
-
-      // Scenario 1 → Return Business Address Details
-      case "XGM00000001761" =>
-        Ok(
-          Json.toJson(
-            BusinessAddressDetails(
-              mgdRegNumber,
-              adi         = Some("1st floor"),
-              address1    = Some("address1"),
-              address2    = Some("address2"),
-              address3    = Some("address3"),
-              address4    = Some("address4"),
-              postcode    = Some("L1 8YL"),
-              country     = Some("England"),
-              iomOrCiFlag = Some("FALSE"),
-              systemDate  = Some(LocalDate.now().toString)
+        case "XGM00000000400" =>
+          BadRequest(
+            Json.obj(
+              "code"    -> "INVALID_REQUEST",
+              "message" -> "Bad request"
             )
           )
-        )
 
-      // Scenario 2 → default
-      case reg =>
-        Ok(
-          Json.toJson(
-            BusinessAddressDetails(
-              "",
-              adi         = Some(""),
-              address1    = Some(""),
-              address2    = Some(""),
-              address3    = Some(""),
-              address4    = Some(""),
-              postcode    = Some(""),
-              country     = Some(""),
-              iomOrCiFlag = Some(""),
-              systemDate  = Some("")
+        case "XGM00000000401" =>
+          Unauthorized(
+            Json.obj(
+              "code"    -> "UNAUTHORIZED",
+              "message" -> "Unauthorized to access this resource"
             )
           )
-        )
+
+        case "XGM00000000500" =>
+          InternalServerError(
+            Json.obj(
+              "code"    -> "UNEXPECTED_ERROR",
+              "message" -> "Unexpected error occurred"
+            )
+          )
+
+        // no data
+        case reg =>
+          Ok(Json.obj())
+
+      }
+
     }
   }
-
-  private val invalidResponse =
-    BadRequest(
-      Json.obj(
-        "code"    -> "INVALID_MGD_REG_NUMBER",
-        "message" -> "mgdRegNumber must be provided"
-      )
-    )
-
-  private val errorResponse =
-    InternalServerError(
-      Json.obj(
-        "code"    -> "UNEXPECTED_ERROR",
-        "message" -> "Unexpected error occurred"
-      )
-    )
 
 }

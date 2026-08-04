@@ -22,17 +22,40 @@ import java.time.LocalDate
 
 final case class BusinessAddressDetails(
   mgdRegNumber: String,
-  adi: Option[String],
-  address1: Option[String],
-  address2: Option[String],
-  address3: Option[String],
-  address4: Option[String],
-  postcode: Option[String],
-  country: Option[String],
-  iomOrCiFlag: Option[String],
-  systemDate: Option[String]
+  adi: Option[String] = None,
+  address1: Option[String] = None,
+  address2: Option[String] = None,
+  address3: Option[String] = None,
+  address4: Option[String] = None,
+  postcode: Option[String] = None,
+  country: Option[String] = None,
+  iomOrCiFlag: Option[String] = None,
+  systemDate: Option[LocalDate] = None
 )
 
 object BusinessAddressDetails {
   implicit val format: OFormat[BusinessAddressDetails] = Json.format[BusinessAddressDetails]
+
+  def fullModel(mgdRegNumber: String): BusinessAddressDetails = BusinessAddressDetails(
+    mgdRegNumber,
+    adi         = Some("1st floor"),
+    address1    = Some("address1"),
+    address2    = Some("address2"),
+    address3    = Some("address3"),
+    address4    = Some("address4"),
+    postcode    = Some("L1 8YL"),
+    country     = Some("England"),
+    iomOrCiFlag = Some("FALSE"),
+    systemDate  = Some(LocalDate.now())
+  )
+
+  def partialModel(mgdRegNumber: String): BusinessAddressDetails = BusinessAddressDetails(
+    mgdRegNumber,
+    adi         = Some("1st floor"),
+    address1    = Some("address1"),
+    postcode    = Some("L1 8YL"),
+    country     = Some("England"),
+    iomOrCiFlag = Some("FALSE"),
+    systemDate  = Some(LocalDate.now())
+  )
 }
