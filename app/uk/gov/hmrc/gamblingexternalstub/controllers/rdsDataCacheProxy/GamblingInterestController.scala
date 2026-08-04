@@ -265,7 +265,7 @@ class GamblingInterestController @Inject() (
                                              ): InterestAccruingDrilldown = {
     val today = LocalDate.now()
     val periodStart = today.minusMonths(18).withDayOfMonth(1)
-    val periodEnd = today.plusMonths(3).withDayOfMonth(today.lengthOfMonth())
+    val periodEnd = today.plusMonths(3).withDayOfMonth(today.plusMonths(3).lengthOfMonth())
 
     val allItems = (1 to recordCount).map { i =>
       val dateFrom = periodStart.plusMonths((i - 1) % 21)
@@ -298,7 +298,7 @@ class GamblingInterestController @Inject() (
   private def createInterestDrilldown(recordCount: Int, pageNo: Int, pageSize: Int, descriptionCode: Option[Int]): InterestDrilldown = {
     val today = LocalDate.now()
     val periodStart = today.minusMonths(18).withDayOfMonth(1)
-    val periodEnd = today.plusMonths(3).withDayOfMonth(today.lengthOfMonth())
+    val periodEnd = today.plusMonths(3).withDayOfMonth(today.plusMonths(3).lengthOfMonth())
 
     val allItems = (1 to recordCount).map { i =>
       val dateFrom = periodStart.plusMonths((i - 1) % 21)

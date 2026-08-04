@@ -84,7 +84,7 @@ class GamblingPenaltiesController @Inject() (
           val today = LocalDate.now()
           val periodStart = today.minusMonths(18).withDayOfMonth(1)
           val periodStartItem = today.minusMonths(15).withDayOfMonth(1)
-          val periodEnd = today.plusMonths(3).withDayOfMonth(today.lengthOfMonth())
+          val periodEnd = today.plusMonths(3).withDayOfMonth(today.plusMonths(3).lengthOfMonth())
           val periodEndItem = today.withDayOfMonth(today.lengthOfMonth())
           val windowMonths = (periodEnd.getYear - periodStart.getYear) * 12 +
             (periodEnd.getMonthValue - periodStart.getMonthValue) + 1
