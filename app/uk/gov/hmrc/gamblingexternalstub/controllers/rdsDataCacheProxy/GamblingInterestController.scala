@@ -50,9 +50,9 @@ class GamblingInterestController @Inject() (
         case 500 => InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
         case _ =>
           val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
-          val sixthDigit = regNumber.takeRight(6).dropRight(5).toIntOption.getOrElse(0)
+          val eighthDigit = regNumber.takeRight(8).dropRight(7).toIntOption.getOrElse(0)
 
-          val (interestDetailsRecordCount, interestAccruingRecordCount, repaymentInterestRecordCount) = sixthDigit match {
+          val (interestDetailsRecordCount, interestAccruingRecordCount, repaymentInterestRecordCount) = eighthDigit match {
             case 0 => (recordCount, recordCount, recordCount)
             case 1 => (recordCount, 0, 0)
             case 2 => (0, recordCount, 0)

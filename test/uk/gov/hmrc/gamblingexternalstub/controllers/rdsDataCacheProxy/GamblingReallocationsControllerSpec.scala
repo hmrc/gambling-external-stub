@@ -87,7 +87,7 @@ class GamblingReallocationsControllerSpec extends AnyWordSpec with Matchers with
       )
     }
 
-    "return correct totalRecords for XWM00003003200 (actualRepayments = 3 records)  (repaymentsInterestRepaid = 3 records) 6th from last = 0" in {
+    "return correct totalRecords for XWM00003003200 (actualRepayments = 3 records)  (repaymentsInterestRepaid = 3 records) 8th from last = 0" in {
       val result = controller.getReallocationsDetails("MGD", "XWM00003003200")(FakeRequest())
 
       status(result) shouldBe OK
@@ -97,8 +97,8 @@ class GamblingReallocationsControllerSpec extends AnyWordSpec with Matchers with
       (json \ "total").as[BigDecimal]                  shouldBe BigDecimal(-0.36)
     }
 
-    "return correct totalRecords for XWM00003103200 (actualRepayments = 3 records)  (repaymentsInterestRepaid = 0 records) 6th from last = 1" in {
-      val result = controller.getReallocationsDetails("MGD", "XWM00003103200")(FakeRequest())
+    "return correct totalRecords for XWM00003103200 (actualRepayments = 3 records)  (repaymentsInterestRepaid = 0 records) 8th from last = 1" in {
+      val result = controller.getReallocationsDetails("MGD", "XWM00013003200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
@@ -107,8 +107,8 @@ class GamblingReallocationsControllerSpec extends AnyWordSpec with Matchers with
       (json \ "total").as[BigDecimal]                  shouldBe BigDecimal(-600.69)
     }
 
-    "return correct totalRecords for XWM00003203200 (actualRepayments = 0 records)  (repaymentsInterestRepaid = 3 records)6th from last = 2" in {
-      val result = controller.getReallocationsDetails("MGD", "XWM00003203200")(FakeRequest())
+    "return correct totalRecords for XWM00003203200 (actualRepayments = 0 records)  (repaymentsInterestRepaid = 3 records)8th from last = 2" in {
+      val result = controller.getReallocationsDetails("MGD", "XWM00023003200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
@@ -117,8 +117,8 @@ class GamblingReallocationsControllerSpec extends AnyWordSpec with Matchers with
       (json \ "total").as[BigDecimal]                  shouldBe BigDecimal(-600.33)
     }
 
-    "return correct totalRecords for XWM00003303200 (actualRepayments = 0 records)  (repaymentsInterestRepaid = 0 records) 6th from last = 3" in {
-      val result = controller.getReallocationsDetails("MGD", "XWM00003303200")(FakeRequest())
+    "return correct totalRecords for XWM00003303200 (actualRepayments = 0 records)  (repaymentsInterestRepaid = 0 records) 8th from last = 3" in {
+      val result = controller.getReallocationsDetails("MGD", "XWM00033003200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)

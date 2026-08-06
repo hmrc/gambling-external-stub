@@ -40,7 +40,7 @@ class GamblingSubmittedReturnsController @Inject() (
 
     val statusCode = regNumber.takeRight(3).toIntOption.getOrElse(200)
     val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
-    val sixthDigit = regNumber.takeRight(6).dropRight(5).toIntOption.getOrElse(0)
+    val eighthDigit = regNumber.takeRight(8).dropRight(7).toIntOption.getOrElse(0)
 
     statusCode match {
 
@@ -95,7 +95,7 @@ class GamblingSubmittedReturnsController @Inject() (
         )
 
         val allRecords = (1 to recordCount).map { i =>
-          val (mgd_period_start, mgd_period_end, submitted_date, ack_ref) = getSubmittedReturnItem(i, sixthDigit, sort, order)
+          val (mgd_period_start, mgd_period_end, submitted_date, ack_ref) = getSubmittedReturnItem(i, eighthDigit, sort, order)
 
           SubmittedReturnsItem(
             consec_no      = i,
@@ -188,7 +188,7 @@ class GamblingSubmittedReturnsController @Inject() (
     }
   }
 
-  private def getSubmittedReturnItem(consecNo: Int, sixthDigit: Int, sort: Int, order: String) = {
+  private def getSubmittedReturnItem(consecNo: Int, eighthDigit: Int, sort: Int, order: String) = {
     val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     val submitted_date = LocalDate
       .now()
@@ -203,7 +203,7 @@ class GamblingSubmittedReturnsController @Inject() (
     }
 
     val iStr = (consecNo + 2).toString
-    val ack_ref = sixthDigit match {
+    val ack_ref = eighthDigit match {
       case 9 => s"${consecNo}__sortBy=${sort}__orderBy=$order"
       case _ =>
         f"${iStr.charAt(iStr.length() - 1)}${rotateChar('J', consecNo, 'A')}${rotateChar('Q', consecNo, 'A')}${rotateChar('Z', consecNo, 'A')} ${rotateChar('J', consecNo, 'A')}${rotateChar('A', consecNo, 'A')}${rotateChar('Z', consecNo, 'A')}${rotateChar('E', consecNo, 'A')} ${rotateChar('I', consecNo, 'A')}${rotateChar('Y', consecNo, 'A')}${rotateChar('C', consecNo, 'A')}${rotateChar('M', consecNo, 'A')} TKM"

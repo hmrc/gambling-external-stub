@@ -97,8 +97,8 @@ class GamblingSubmittedReturnsControllerSpec extends AnyWordSpec with Matchers w
 
     }
 
-    "return 1 records for XWM00003901200 (last 3 = 200, 4th+5th from right = 01) with DEFAULT sortBy & orderBy" in {
-      val result = controller.getSubmittedReturns("XWM00003901200", Some(100), Some("WRONG"))(FakeRequest())
+    "return 1 records for XWM00003901200 (last 3 = 200, 4th+5th from right = 01) with DEFAULT sortBy & orderBy, 8th digit is 9" in {
+      val result = controller.getSubmittedReturns("XWM00093001200", Some(100), Some("WRONG"))(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
@@ -108,8 +108,8 @@ class GamblingSubmittedReturnsControllerSpec extends AnyWordSpec with Matchers w
 
     }
 
-    "return 1 records for XWM00003901200 (last 3 = 200, 4th+5th from right = 01) with correct sortBy & orderBy" in {
-      val result = controller.getSubmittedReturns("XWM00003901200", Some(1), Some("DESC"))(FakeRequest())
+    "return 1 records for XWM00003901200 (last 3 = 200, 4th+5th from right = 01) with correct sortBy & orderBy, 8th digit is 9" in {
+      val result = controller.getSubmittedReturns("XWM00093001200", Some(1), Some("DESC"))(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)

@@ -87,7 +87,7 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       )
     }
 
-    "return correct totalRecords for XWM00003003200 6th from last = 0 (3,3,3)" in {
+    "return correct totalRecords for XWM00003003200 8th from last = 0 (3,3,3)" in {
       val result = controller.getInterestOverview("MGD", "XWM00003003200")(FakeRequest())
 
       status(result) shouldBe OK
@@ -98,7 +98,7 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(-1801.98)
     }
 
-    "return correct totalRecords for XWM00003003200 6th from last = 0 (0,0,0)" in {
+    "return correct totalRecords for XWM00003003200 8th from last = 0 (0,0,0)" in {
       val result = controller.getInterestOverview("GBD", "XWM00003003200")(FakeRequest())
 
       status(result) shouldBe OK
@@ -109,8 +109,8 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(-1801.98)
     }
 
-    "return correct totalRecords for XWM00003103200 6th from last = 1 (3,0,0)" in {
-      val result = controller.getInterestOverview("MGD", "XWM00003103200")(FakeRequest())
+    "return correct totalRecords for XWM00013003200 8th from last = 1 (3,0,0)" in {
+      val result = controller.getInterestOverview("MGD", "XWM00013003200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
@@ -120,8 +120,8 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(-600.33)
     }
 
-    "return correct totalRecords for XWM00003203200 6th from last = 2 (0,3,0)" in {
-      val result = controller.getInterestOverview("MGD", "XWM00003203200")(FakeRequest())
+    "return correct totalRecords for XWM00023003200 8th from last = 2 (0,3,0)" in {
+      val result = controller.getInterestOverview("MGD", "XWM00023003200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
@@ -131,8 +131,8 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(-600.66)
     }
 
-    "return correct totalRecords for XWM00003303200 6th from last = 3 (0,0,3)" in {
-      val result = controller.getInterestOverview("MGD", "XWM00003303200")(FakeRequest())
+    "return correct totalRecords for XWM00033003200 8th from last = 3 (0,0,3)" in {
+      val result = controller.getInterestOverview("MGD", "XWM00033003200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
@@ -142,8 +142,8 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(-600.99)
     }
 
-    "return correct totalRecords for XWM00003303200 6th from last = 3 (0,0,0)" in {
-      val result = controller.getInterestOverview("GBD", "XWM00003303200")(FakeRequest())
+    "return correct totalRecords for XWM00033003200 8th from last = 3 (0,0,0)" in {
+      val result = controller.getInterestOverview("GBD", "XWM00033003200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
@@ -153,8 +153,8 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(-600.99)
     }
 
-    "return correct totalRecords for XWM00003403200 6th from last = 4 (0,0,0)" in {
-      val result = controller.getInterestOverview("MGD", "XWM00003403200")(FakeRequest())
+    "return correct totalRecords for XWM00043003200 8th from last = 4 (0,0,0)" in {
+      val result = controller.getInterestOverview("MGD", "XWM00043003200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
@@ -164,8 +164,8 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(0.00)
     }
 
-    "return correct totalRecords for XWM00003503200 6th from last = 5 (3,3,0)" in {
-      val result = controller.getInterestOverview("MGD", "XWM00003503200")(FakeRequest())
+    "return correct totalRecords for XWM00053003200 8th from last = 5 (3,3,0)" in {
+      val result = controller.getInterestOverview("MGD", "XWM00053003200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
@@ -175,8 +175,8 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(-1200.99)
     }
 
-    "return correct totalRecords for XWM00003603200 6th from last = 6 (0,3,3)" in {
-      val result = controller.getInterestOverview("MGD", "XWM00003603200")(FakeRequest())
+    "return correct totalRecords for XWM00063003200 8th from last = 6 (0,3,3)" in {
+      val result = controller.getInterestOverview("MGD", "XWM00063003200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
@@ -186,8 +186,8 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(-1201.65)
     }
 
-    "return correct totalRecords for XWM00003603200 6th from last = 6 (0,0,0)" in {
-      val result = controller.getInterestOverview("GBD", "XWM00003603200")(FakeRequest())
+    "return correct totalRecords for XWM00063003200 8th from last = 6 (0,0,0)" in {
+      val result = controller.getInterestOverview("GBD", "XWM00063003200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
@@ -197,8 +197,8 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(-1201.65)
     }
 
-    "return correct totalRecords for XWM00003703200 6th from last = 7 (3,0,3)" in {
-      val result = controller.getInterestOverview("MGD", "XWM00003703200")(FakeRequest())
+    "return correct totalRecords for XWM00073003200 8th from last = 7 (3,0,3)" in {
+      val result = controller.getInterestOverview("MGD", "XWM00073003200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
@@ -208,8 +208,8 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(-1201.32)
     }
 
-    "return correct totalRecords for XWM00003703200 6th from last = 7 (0,0,0)" in {
-      val result = controller.getInterestOverview("GBD", "XWM00003703200")(FakeRequest())
+    "return correct totalRecords for XWM00073003200 8th from last = 7 (0,0,0)" in {
+      val result = controller.getInterestOverview("GBD", "XWM00073003200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
@@ -219,8 +219,8 @@ class GamblingInterestControllerSpec extends AnyWordSpec with Matchers with Spec
       (json \ "total").as[BigDecimal]                   shouldBe BigDecimal(-1201.32)
     }
 
-    "return correct totalRecords for XWM00003803200 6th from last = 8 (0,0,0)" in {
-      val result = controller.getInterestOverview("MGD", "XWM00003803200")(FakeRequest())
+    "return correct totalRecords for XWM00083003200 8th from last = 8 (0,0,0)" in {
+      val result = controller.getInterestOverview("MGD", "XWM00083003200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)

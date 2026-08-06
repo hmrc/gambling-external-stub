@@ -81,9 +81,9 @@ class GamblingRepaymentsController @Inject() (
 
         case _ =>
           val recordCount = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(0)
-          val sixthDigit = regNumber.takeRight(6).dropRight(5).toIntOption.getOrElse(0)
+          val eighthDigit = regNumber.takeRight(8).dropRight(7).toIntOption.getOrElse(0)
 
-          val (actualRepaymentsRecordCount, interestRepaymentsRecordCount) = sixthDigit match {
+          val (actualRepaymentsRecordCount, interestRepaymentsRecordCount) = eighthDigit match {
             case 1 => (recordCount, 0)
             case 2 => (0, recordCount)
             case 3 => (0, 0)
