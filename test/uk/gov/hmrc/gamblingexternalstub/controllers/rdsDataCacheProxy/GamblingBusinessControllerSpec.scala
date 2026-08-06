@@ -74,7 +74,9 @@ class GamblingBusinessControllerSpec extends AnyWordSpec with Matchers with Spec
       val result = controller.getBusinessAddressDetails("MGD", "GAM999")(FakeRequest())
 
       status(result)        shouldBe OK
-      contentAsJson(result) shouldBe Json.obj()
+      contentAsJson(result) shouldBe Json.toJson(
+        BusinessAddressDetails(
+          mgdRegNumber = ""))
     }
 
     "return BAD_REQUEST for an unrecognised regime" in {
