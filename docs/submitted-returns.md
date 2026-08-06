@@ -48,7 +48,7 @@ The stub derives its behaviour entirely from the reg number. No special test str
 
 **4th and 5th digits from the right** form a 2-digit number (00-99) controlling how many total records the stub holds for that reg number. There is NO pagination. Ignored for error status codes.
 
-**6th digit from right** if this is `9` then the `ack_ref` will contain the sortBy & orderBy params. eg: `"15__sortBy=2__orderBy=DESC"`
+**8th digit from right** if this is `9` then the `ack_ref` will contain the sortBy & orderBy params. eg: `"15__sortBy=2__orderBy=DESC"`
 
 Examples:
 
@@ -76,7 +76,7 @@ Each SubmittedReturnsItem has the following fields:
 | `consec_no`      | Int              | eg: `1500`                                                |
 | `mgd_period`     | String           | eg: `"31/03/2026"`                                        |
 | `submitted_date` | LocalDate        | eg: `"2026-04-16"`                                        |
-| `ack_ref`        | String           | eg: `"3UBK ULKP TJNX TKM"`  - see note on 6th digit above |
+| `ack_ref`        | String           | eg: `"3UBK ULKP TJNX TKM"`  - see note on 8th digit above |
 
 
 ---

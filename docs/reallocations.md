@@ -87,9 +87,9 @@ Examples:
 
 The record count defaults to 0 if the reg number is shorter than 5 characters.
 
-**6th from last** digit of regNo controls the customisation
+**8th from last** digit of regNo controls the customisation
 
-| 6th from last digit | Response                                  |
+| 8th from last digit | Response                                  |
 |---------------------|-------------------------------------------|
 | `0`                 | reallocationsIn & reallocationsOut        |
 | `1`                 | ONLY reallocationsIn                      |

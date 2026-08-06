@@ -59,9 +59,9 @@ Once the regime is valid, the stub derives its behaviour entirely from the reg n
 | anything else | 200 OK                    |
 
 
-**6th from last** digit of regNo controls the customisation
+**8th from last** digit of regNo controls the customisation
 
-| 6th from last digit | interestAmount | interestAccruingAmount | repaymentInterestAmount | regime |
+| 8th from last digit | interestAmount | interestAccruingAmount | repaymentInterestAmount | regime |
 |---------------------|----------------|------------------------|-------------------------|--------|
 | `0`                 | Y              | Y                      | Y                       | MGD    |
 | `1`                 | Y              | N                      | N                       | ALL    |
