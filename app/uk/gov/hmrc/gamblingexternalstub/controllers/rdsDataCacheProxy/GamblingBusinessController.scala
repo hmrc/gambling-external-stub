@@ -72,7 +72,7 @@ class GamblingBusinessController @Inject() (
 
         // no data
         case reg =>
-          Ok(Json.toJson(noDataModel(sanitized)))
+          Ok(Json.toJson(noDataModel()))
       }
 
     }

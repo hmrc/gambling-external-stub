@@ -59,6 +59,6 @@ object BusinessAddressDetails {
     systemDate  = Some(LocalDate.now())
   )
 
-  def noDataModel(mgdRegNumber: String): BusinessAddressDetails = BusinessAddressDetails(mgdRegNumber = "")
+  def noDataModel(): BusinessAddressDetails = BusinessAddressDetails(mgdRegNumber = "")
 
 }
