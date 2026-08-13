@@ -58,4 +58,7 @@ object BusinessAddressDetails {
     iomOrCiFlag = Some("FALSE"),
     systemDate  = Some(LocalDate.now())
   )
+
+  def noDataModel(): BusinessAddressDetails = BusinessAddressDetails(mgdRegNumber = "")
+
 }
