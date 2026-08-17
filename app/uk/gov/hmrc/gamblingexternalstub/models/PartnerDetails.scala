@@ -22,6 +22,7 @@ import java.time.LocalDate
 
 case class Partner(
   mgdRegNumber: String,
+  businessPartnerNumber: Option[String]=None,
   dateOfJoining: Option[LocalDate] = None,
   dateOfLeaving: Option[LocalDate] = None,
   solePropTitle: Option[String] = None,
@@ -65,6 +66,7 @@ object PartnerFormats {
     partners = List(
       Partner(
         mgdRegNumber           = mgdRegNumber,
+        businessPartnerNumber         = Some("0100049899"),
         dateOfJoining          = Some(LocalDate.of(2024, 1, 1)),
         dateOfLeaving          = Some(LocalDate.of(2025, 1, 1)),
         solePropTitle          = Some("Mx"),
@@ -105,6 +107,7 @@ object PartnerFormats {
     partners = List(
       Partner(
         mgdRegNumber           = mgdRegNumber,
+        businessPartnerNumber         = Some("0100049899"),
         dateOfJoining          = Some(LocalDate.of(2024, 1, 1)),
         dateOfLeaving          = Some(LocalDate.of(2025, 1, 1)),
         solePropTitle          = Some("Mx"),
