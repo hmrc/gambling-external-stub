@@ -559,6 +559,199 @@ Response: 200 OK
 ---
 
 
+### 21. Partner Details
+
+**GET**
+
+```text
+/gambling/partner-details/{regime}/{regNumber}
+```
+
+Controller mapping:
+
+```text
+uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.PartnerDetailsController.getPartnerDetails(regime: String, regNumber: String)
+```
+
+Returns partner details for the supplied gambling regime and registration number.
+
+### Behaviour
+
+#### Scenario 1 – Full partner details
+
+Request:
+
+```text
+GET /gambling/partner-details/{regime}/{regNumber}
+```
+
+The full scenario returns a partner with all available fields populated:
+
+```json
+{
+  "partners": [
+    {
+      "mgdRegNumber": "{regNumber}",
+      "businessPartnerNumber": "0100049899",
+      "dateOfJoining": "2024-01-01",
+      "dateOfLeaving": "2025-01-01",
+      "solePropTitle": "Mx",
+      "solePropFirstName": "solePropFirstName",
+      "solePropMiddleName": "solePropMiddleName",
+      "solePropLastName": "solePropLastName",
+      "businessName": "Partner1",
+      "tradingName": "tradingName",
+      "dateOfBirth": "1999-09-09",
+      "nino": "ni123456789no",
+      "utr": "123456789",
+      "vrn": "123456789",
+      "crn": "123456789",
+      "dateOfIncorporation": "2024-01-01",
+      "countryOfIncorporation": "countryOfIncorporation",
+      "foreignCorporateRef": "foreignCorporateRef",
+      "address1": "address1",
+      "address2": "address2",
+      "address3": "address3",
+      "address4": "address4",
+      "postcode": "postcode",
+      "country": "country",
+      "adi": "adi",
+      "iomOrCiFlag": "false",
+      "phoneNumber": "phoneNumber",
+      "mobilePhoneNumber": "mobilePhoneNumber",
+      "faxNumber": "faxNumber",
+      "emailAddr": "emailAddr",
+      "isFutureLeaveDate": 0,
+      "isFutureJoinDate": 0,
+      "businessType": 2
+    }
+  ],
+  "systemDate": "2026-05-31"
+}
+```
+
+#### Scenario 2 – Partial partner details
+
+Returns a partner with only a subset of the optional fields populated. This scenario can be used to test handling of missing optional partner information.
+
+```json
+{
+  "partners": [
+    {
+      "mgdRegNumber": "{regNumber}",
+      "businessPartnerNumber": "0100049899",
+      "dateOfJoining": "2024-01-01",
+      "dateOfLeaving": "2025-01-01",
+      "solePropTitle": "Mx",
+      "solePropFirstName": "solePropFirstName",
+      "solePropLastName": "solePropLastName",
+      "businessName": "Partner1",
+      "tradingName": "tradingName",
+      "dateOfBirth": "1999-09-09",
+      "nino": "ni123456789no",
+      "crn": "123456789",
+      "dateOfIncorporation": "2024-01-01",
+      "countryOfIncorporation": "countryOfIncorporation",
+      "foreignCorporateRef": "foreignCorporateRef",
+      "adi": "adi",
+      "iomOrCiFlag": "false",
+      "phoneNumber": "phoneNumber",
+      "mobilePhoneNumber": "mobilePhoneNumber",
+      "faxNumber": "faxNumber",
+      "emailAddr": "emailAddr",
+      "isFutureLeaveDate": 0,
+      "isFutureJoinDate": 0,
+      "businessType": 2
+    }
+  ],
+  "systemDate": "2026-05-31"
+}
+```
+
+#### Scenario 3 – No partner data
+
+Returns a partner containing only the registration number.
+
+```json
+{
+  "partners": [
+    {
+      "mgdRegNumber": "{regNumber}"
+    }
+  ],
+  "systemDate": "2026-05-31"
+}
+```
+
+### Regime and registration number
+
+The endpoint accepts:
+
+* `regime` – gambling regime used by the request
+* `regNumber` – gambling registration number
+
+Example:
+
+```text
+GET /gambling/partner-details/mgd/XWM00000001770
+```
+
+### Partner model
+
+The `Partner` model contains:
+
+* `mgdRegNumber: String`
+* `businessPartnerNumber: Option[String]`
+* `dateOfJoining: Option[LocalDate]`
+* `dateOfLeaving: Option[LocalDate]`
+* `solePropTitle: Option[String]`
+* `solePropFirstName: Option[String]`
+* `solePropMiddleName: Option[String]`
+* `solePropLastName: Option[String]`
+* `businessName: Option[String]`
+* `tradingName: Option[String]`
+* `dateOfBirth: Option[LocalDate]`
+* `nino: Option[String]`
+* `utr: Option[String]`
+* `vrn: Option[String]`
+* `crn: Option[String]`
+* `dateOfIncorporation: Option[LocalDate]`
+* `countryOfIncorporation: Option[String]`
+* `foreignCorporateRef: Option[String]`
+* `address1: Option[String]`
+* `address2: Option[String]`
+* `address3: Option[String]`
+* `address4: Option[String]`
+* `postcode: Option[String]`
+* `country: Option[String]`
+* `adi: Option[String]`
+* `iomOrCiFlag: Option[String]`
+* `phoneNumber: Option[String]`
+* `mobilePhoneNumber: Option[String]`
+* `faxNumber: Option[String]`
+* `emailAddr: Option[String]`
+* `isFutureLeaveDate: Option[Int]`
+* `isFutureJoinDate: Option[Int]`
+* `businessType: Option[Int]`
+
+`PartnerDetails` contains:
+
+```text
+partners: List[Partner]
+systemDate: Option[LocalDate]
+```
+
+### Example curl
+
+```bash
+curl http://localhost:10405/rds-datacache-proxy/gambling/partner-details/mgd/XWM00000001770
+```
+
+The stub provides deterministic responses and does not require authentication or a database connection.
+
+
+
+
 ## License
 
 This project is licensed under the Apache 2.0 License.
