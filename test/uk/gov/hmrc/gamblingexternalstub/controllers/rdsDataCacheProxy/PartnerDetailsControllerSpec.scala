@@ -38,7 +38,7 @@ class PartnerDetailsControllerSpec extends AnyWordSpec with Matchers with SpecBa
       val json = contentAsJson(result)
 
       (json \ "partners" \ 0 \ "mgdRegNumber").as[String]              shouldBe "XGM00000001761"
-      (json \ "partners" \ 0 \ "businessPartnerNumber").asOpt[String] shouldBe Some("0100049899")
+      (json \ "partners" \ 0 \ "businessPartnerNumber").asOpt[String]  shouldBe Some("0100049899")
       (json \ "partners" \ 0 \ "businessName").as[String]              shouldBe "Partner1"
       (json \ "partners" \ 0 \ "countryOfIncorporation").asOpt[String] shouldBe Some("countryOfIncorporation")
     }
@@ -51,7 +51,7 @@ class PartnerDetailsControllerSpec extends AnyWordSpec with Matchers with SpecBa
       val json = contentAsJson(result)
 
       (json \ "partners" \ 0 \ "mgdRegNumber").as[String]              shouldBe "XGM00000001762"
-      (json \ "partners" \ 0 \ "businessPartnerNumber").asOpt[String] shouldBe Some("0100049899")
+      (json \ "partners" \ 0 \ "businessPartnerNumber").asOpt[String]  shouldBe Some("0100049899")
       (json \ "partners" \ 0 \ "businessName").as[String]              shouldBe "Partner1"
       (json \ "partners" \ 0 \ "countryOfIncorporation").asOpt[String] shouldBe Some("countryOfIncorporation")
     }
