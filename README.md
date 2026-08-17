@@ -744,7 +744,7 @@ systemDate: Option[LocalDate]
 ### Example curl
 
 ```bash
-curl http://localhost:10405/rds-datacache-proxy/gambling/partner-details/mgd/XWM00000001770
+curl http://localhost:10405/rds-datacache-proxy/gambling/partner-details/mgd/XGM00000001761
 ```
 
 The stub provides deterministic responses and does not require authentication or a database connection.
