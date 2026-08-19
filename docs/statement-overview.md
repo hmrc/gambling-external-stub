@@ -60,12 +60,12 @@ Once the regime is valid, the stub derives its behaviour entirely from the reg n
 
 **4th and 5th digits from the right** form a 2-digit seed (00-99) used to scale the monetary amounts in the response. Ignored for error status codes.
 
-**7th digit from the right** controls the response variant:
+**8th digit from the right** controls the response variant:
 
-| 7th digit | Variant                                                  |
-|-----------|----------------------------------------------------------|
-| `0`       | All monetary fields are zero                             |
-| `2`       | High payments, resulting in negative total               |
+| 8th digit     | Variant                                                  |
+|---------------|----------------------------------------------------------|
+| `0`           | All monetary fields are zero                             |
+| `2`           | High payments, resulting in negative total               |
 | anything else | Default: moderate payments, resulting in positive total |
 
 ---

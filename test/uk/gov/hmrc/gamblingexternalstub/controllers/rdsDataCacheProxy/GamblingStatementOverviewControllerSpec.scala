@@ -28,7 +28,7 @@ class GamblingStatementOverviewControllerSpec extends AnyWordSpec with Matchers 
   private val app = applicationBuilder().build()
   private val controller = app.injector.instanceOf[GamblingStatementOverviewController]
 
-  //  7th from right = overview variant (0 = all zeros, 1 = total > 0, 2 = total < 0)
+  //  8th from right = overview variant (0 = all zeros, 1 = total > 0, 2 = total < 0)
   "GamblingStatementOverviewController#getStatementOverview" should {
 
     "return BAD_REQUEST for an unrecognised regime" in {
@@ -88,7 +88,7 @@ class GamblingStatementOverviewControllerSpec extends AnyWordSpec with Matchers 
       )
     }
 
-    "return 200 with all zero fields when 7th digit from right = 0 (variant=0, seed=1)" in {
+    "return 200 with all zero fields when 8th digit from right = 0 (variant=0, seed=1)" in {
       val result = controller.getStatementOverview("GBD", "XWM000001200")(FakeRequest())
 
       status(result) shouldBe OK
@@ -109,8 +109,8 @@ class GamblingStatementOverviewControllerSpec extends AnyWordSpec with Matchers 
       (json \ "gtrPeriodEndDate").isDefined      shouldBe true
     }
 
-    "return 200 with total > 0 when 7th digit from right = 1 (variant=1, seed=1)" in {
-      val result = controller.getStatementOverview("GBD", "XWM001001200")(FakeRequest())
+    "return 200 with total > 0 when 8th digit from right = 1 (variant=1, seed=1)" in {
+      val result = controller.getStatementOverview("GBD", "XWM0010001200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
@@ -130,8 +130,8 @@ class GamblingStatementOverviewControllerSpec extends AnyWordSpec with Matchers 
       (json \ "gtrPeriodEndDate").isDefined      shouldBe true
     }
 
-    "return 200 with total < 0 when 7th digit from right = 2 (variant=2, seed=1)" in {
-      val result = controller.getStatementOverview("GBD", "XWM002001200")(FakeRequest())
+    "return 200 with total < 0 when 8th digit from right = 2 (variant=2, seed=1)" in {
+      val result = controller.getStatementOverview("GBD", "XWM020001200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)
@@ -152,7 +152,7 @@ class GamblingStatementOverviewControllerSpec extends AnyWordSpec with Matchers 
     }
 
     "return 200 with correct fields for seed=3 variant=1" in {
-      val result = controller.getStatementOverview("MGD", "XWM001003200")(FakeRequest())
+      val result = controller.getStatementOverview("MGD", "XWM010003200")(FakeRequest())
 
       status(result) shouldBe OK
       val json = contentAsJson(result)

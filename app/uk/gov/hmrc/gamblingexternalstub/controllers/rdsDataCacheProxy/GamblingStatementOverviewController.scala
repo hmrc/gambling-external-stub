@@ -78,19 +78,19 @@ class GamblingStatementOverviewController @Inject() (
 
         case _ =>
           val seed = regNumber.takeRight(5).dropRight(3).toIntOption.getOrElse(1)
-          val seventhDigit = regNumber.takeRight(7).dropRight(6).toIntOption.getOrElse(1)
+          val eighthFromLastDigit = regNumber.takeRight(8).dropRight(7).toIntOption.getOrElse(1)
 
-          Ok(Json.toJson(buildStatementOverview(seed, seventhDigit)))
+          Ok(Json.toJson(buildStatementOverview(seed, eighthFromLastDigit)))
       }
     }
   }
 
-  private def buildStatementOverview(seed: Int, seventhDigit: Int): StatementOverview = {
+  private def buildStatementOverview(seed: Int, eighthFromLastDigit: Int): StatementOverview = {
     val today = LocalDate.now()
     val periodStart = today.minusMonths(12).withDayOfMonth(1)
     val periodEnd = today.withDayOfMonth(today.lengthOfMonth())
 
-    seventhDigit match {
+    eighthFromLastDigit match {
       // Variant 0: all fields are zero, total = £0
       case 0 =>
         StatementOverview(
