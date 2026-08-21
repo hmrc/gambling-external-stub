@@ -36,74 +36,74 @@ class GamblingLicensesAndPremisesController @Inject() (
     if (!Regime.fromString(regime.trim.toLowerCase()).exists(supportedRegimes.contains)) {
       BadRequest(Json.obj("code" -> "INVALID_REGIME", "message" -> s"Regime $regime is not supported"))
     } else {
-            mgdRegNumber match {
-      
-              case "invalid" => invalidResponse
-      
-              case "error" => errorResponse
-      
-              case "XGM00000001763" =>
-                Ok(
-                  Json.toJson(
-                    Response(
-                      totalRows = Some(1000),
-                      premises = Seq(
-                        PremisesDetails(
-                          mgdRegNumber = "XGM00000001763",
-                          address1 = Some("Flat 55"),
-                          address2 = Some("10 Random Road"),
-                          address3 = Some("Gateshead"),
-                          address4 = None,
-                          postcode = None,
-                          Some(fixedDate)
-                        )
-                      )
-                    )
+      mgdRegNumber match {
+
+        case "invalid" => invalidResponse
+
+        case "error" => errorResponse
+
+        case "XGM00000001763" =>
+          Ok(
+            Json.toJson(
+              Response(
+                totalRows = Some(1000),
+                premises = Seq(
+                  PremisesDetails(
+                    mgdRegNumber = "XGM00000001763",
+                    address1     = Some("Flat 55"),
+                    address2     = Some("10 Random Road"),
+                    address3     = Some("Gateshead"),
+                    address4     = None,
+                    postcode     = None,
+                    Some(fixedDate)
                   )
                 )
-      
-              case "XGM00000001764" =>
-                Ok(
-                  Json.toJson(
-                    Response(
-                      totalRows = Some(0),
-                      premises = Seq(
-                      )
-                    )
+              )
+            )
+          )
+
+        case "XGM00000001764" =>
+          Ok(
+            Json.toJson(
+              Response(
+                totalRows = Some(0),
+                premises = Seq(
+                )
+              )
+            )
+          )
+
+        case reg =>
+          Ok(
+            Json.toJson(
+              Response(
+                totalRows = Some(1000),
+                premises = Seq(
+                  PremisesDetails(
+                    mgdRegNumber = mgdRegNumber,
+                    address1     = Some("Flat 55"),
+                    address2     = Some("20 Market Calle"),
+                    address3     = Some("Barcelona"),
+                    address4     = None,
+                    postcode     = Some("08001"),
+                    Some(fixedDate)
+                  ),
+                  PremisesDetails(
+                    mgdRegNumber = mgdRegNumber,
+                    address1     = Some("Flat 1"),
+                    address2     = Some("10 Market Calle"),
+                    address3     = Some("Madrid"),
+                    address4     = None,
+                    postcode     = Some("28058"),
+                    Some(fixedDate)
                   )
                 )
-      
-              case reg =>
-                Ok(
-                  Json.toJson(
-                    Response(
-                      totalRows = Some(1000),
-                      premises = Seq(
-                        PremisesDetails(
-                          mgdRegNumber = mgdRegNumber,
-                          address1 = Some("Flat 55"),
-                          address2 = Some("20 Market Calle"),
-                          address3 = Some("Barcelona"),
-                          address4 = None,
-                          postcode = Some("08001"),
-                          Some(fixedDate)
-                        ),
-                        PremisesDetails(
-                          mgdRegNumber = mgdRegNumber,
-                          address1 = Some("Flat 1"),
-                          address2 = Some("10 Market Calle"),
-                          address3 = Some("Madrid"),
-                          address4 = None,
-                          postcode = Some("28058"),
-                          Some(fixedDate)
-                        )
-                      )
-                    )
-                  )
-                )
-            }
+              )
+            )
+          )
+      }
     }
-  }    
+  }
 
   private val fixedDate = LocalDate.parse("2026-01-01")
 
