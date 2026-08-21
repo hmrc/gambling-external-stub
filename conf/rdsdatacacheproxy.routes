@@ -22,7 +22,7 @@ GET     /gambling/business-address/:regime/:mgdRegNumber        uk.gov.hmrc.gamb
 
 GET     /gambling/correspondence-details/mgd/:mgdRegNumber    uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getCorrespondenceDetails(mgdRegNumber: String)
 
-GET     /gambling/premises-details/mgd/:mgdRegNumber    uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingLicensesAndPremisesController.getPremisesDetails(regime: String, mgdRegNumber: String)
+GET     /gambling/premises-details/:regime/:mgdRegNumber    uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingLicensesAndPremisesController.getPremisesDetails(regime: String, mgdRegNumber: String)
 
 GET     /gambling/mgd-details/mgd/:mgdRegNumber  uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingController.getMgdDetails(mgdRegNumber: String)
 
