@@ -115,22 +115,22 @@ class GamblingLicensesAndPremisesControllerSpec extends AnyWordSpec with Matcher
         LicenseDetails(
           "XGM00000001761",
           haveGamblingLicenceNo = Some("1"),
-          gamblingLicenceNo = Some("123-456789-A-123456-789"),
-          heldByLandlord = Some("1"),
-          localAuthority = Some("1"),
-          familyEntertainment = Some("0"),
-          clubGaming = Some("0"),
-          clubLicence = Some("1"),
-          prizeGaming = Some("0"),
-          onPremises = Some("1"),
-          clubPremises = Some("0"),
-          regCert = Some("0"),
-          bookmaking = Some("0"),
-          bingo = Some("0"),
-          amusement = Some("0"),
-          serveAlcohol = Some("0"),
-          premisesNotCovered = Some("0"),
-          systemDate  = Some(LocalDate.now())
+          gamblingLicenceNo     = Some("123-456789-A-123456-789"),
+          heldByLandlord        = Some("1"),
+          localAuthority        = Some("1"),
+          familyEntertainment   = Some("0"),
+          clubGaming            = Some("0"),
+          clubLicence           = Some("1"),
+          prizeGaming           = Some("0"),
+          onPremises            = Some("1"),
+          clubPremises          = Some("0"),
+          regCert               = Some("0"),
+          bookmaking            = Some("0"),
+          bingo                 = Some("0"),
+          amusement             = Some("0"),
+          serveAlcohol          = Some("0"),
+          premisesNotCovered    = Some("0"),
+          systemDate            = Some(LocalDate.now())
         )
       )
     }
@@ -141,12 +141,12 @@ class GamblingLicensesAndPremisesControllerSpec extends AnyWordSpec with Matcher
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
         LicenseDetails(
-          mgdRegNumber = "XGM00000001762",
+          mgdRegNumber          = "XGM00000001762",
           haveGamblingLicenceNo = Some("1"),
-          gamblingLicenceNo = Some("123-456789-A-123456-789"),
-          heldByLandlord = Some("1"),
-          localAuthority = Some("1"),
-          systemDate  = Some(LocalDate.now())
+          gamblingLicenceNo     = Some("123-456789-A-123456-789"),
+          heldByLandlord        = Some("1"),
+          localAuthority        = Some("1"),
+          systemDate            = Some(LocalDate.now())
         )
       )
     }
@@ -154,7 +154,7 @@ class GamblingLicensesAndPremisesControllerSpec extends AnyWordSpec with Matcher
     "return default response" in {
       val result = controller.getLicenseDetails("MGD", "GAM999")(FakeRequest())
 
-      status(result) shouldBe OK
+      status(result)        shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(LicenseDetails(mgdRegNumber = ""))
     }
 
@@ -164,7 +164,7 @@ class GamblingLicensesAndPremisesControllerSpec extends AnyWordSpec with Matcher
 
       status(result) shouldBe BAD_REQUEST
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "INVALID_REGIME",
+        "code"    -> "INVALID_REGIME",
         "message" -> s"Regime $regime is not supported"
       )
     }
@@ -175,7 +175,7 @@ class GamblingLicensesAndPremisesControllerSpec extends AnyWordSpec with Matcher
 
       status(result) shouldBe BAD_REQUEST
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "INVALID_REGIME",
+        "code"    -> "INVALID_REGIME",
         "message" -> s"Regime $regime is not supported"
       )
     }
@@ -185,7 +185,7 @@ class GamblingLicensesAndPremisesControllerSpec extends AnyWordSpec with Matcher
 
       status(result) shouldBe BAD_REQUEST
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "INVALID_REQUEST",
+        "code"    -> "INVALID_REQUEST",
         "message" -> "Bad request"
       )
 
@@ -196,7 +196,7 @@ class GamblingLicensesAndPremisesControllerSpec extends AnyWordSpec with Matcher
 
       status(result) shouldBe UNAUTHORIZED
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "UNAUTHORIZED",
+        "code"    -> "UNAUTHORIZED",
         "message" -> "Unauthorized to access this resource"
       )
 
@@ -207,7 +207,7 @@ class GamblingLicensesAndPremisesControllerSpec extends AnyWordSpec with Matcher
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
       contentAsJson(result) shouldBe Json.obj(
-        "code" -> "UNEXPECTED_ERROR",
+        "code"    -> "UNEXPECTED_ERROR",
         "message" -> "Unexpected error occurred"
       )
 
