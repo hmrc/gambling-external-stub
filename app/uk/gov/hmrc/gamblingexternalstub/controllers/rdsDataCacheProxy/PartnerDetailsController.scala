@@ -42,6 +42,14 @@ class PartnerDetailsController @Inject() (
         case "XPM00000000600" =>
           Ok(Json.toJson(fullModel(sanitized)))
 
+        // full data - after auth changes
+        case "XMM00000001177" =>
+          Ok(Json.toJson(XMM00000001177(sanitized)))
+
+        // no data - after auth changes
+        case "XPM00000000985" =>
+          Ok(Json.toJson(XPM00000000985(sanitized)))
+
         // some missing data
         case "XJM00000000570" =>
           Ok(Json.toJson(partialModel(sanitized)))
