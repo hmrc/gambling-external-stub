@@ -19,6 +19,7 @@ package uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy
 import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import uk.gov.hmrc.gamblingexternalstub.models.LicenseDetails.{fullModel, noDataModel, partialModel}
 import uk.gov.hmrc.gamblingexternalstub.models.{PremisesDetails, *}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
@@ -102,6 +103,52 @@ class GamblingLicensesAndPremisesController @Inject() (
             )
           )
       }
+    }
+  }
+
+  def getLicenseDetails(regime: String, mgdRegNumber: String): Action[AnyContent] = Action { _ =>
+    if (!Regime.fromString(regime.trim.toLowerCase()).exists(supportedRegimes.contains)) {
+      BadRequest(Json.obj("code" -> "INVALID_REGIME", "message" -> s"Regime $regime is not supported"))
+    } else {
+      val sanitized = mgdRegNumber.trim.toUpperCase()
+      sanitized match {
+        // full data
+        case "XGM00000001761" =>
+          Ok(Json.toJson(fullModel(sanitized)))
+
+        // some missing data
+        case "XGM00000001762" =>
+          Ok(Json.toJson(partialModel(sanitized)))
+
+        case "XGM00000000400" =>
+          BadRequest(
+            Json.obj(
+              "code" -> "INVALID_REQUEST",
+              "message" -> "Bad request"
+            )
+          )
+
+        case "XGM00000000401" =>
+          Unauthorized(
+            Json.obj(
+              "code" -> "UNAUTHORIZED",
+              "message" -> "Unauthorized to access this resource"
+            )
+          )
+
+        case "XGM00000000500" =>
+          InternalServerError(
+            Json.obj(
+              "code" -> "UNEXPECTED_ERROR",
+              "message" -> "Unexpected error occurred"
+            )
+          )
+
+        // no data
+        case reg =>
+          Ok(Json.toJson(noDataModel()))
+      }
+
     }
   }
 
