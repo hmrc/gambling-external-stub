@@ -47,31 +47,31 @@ object LicenseDetails {
   def fullModel(mgdRegNumber: String): LicenseDetails = LicenseDetails(
     mgdRegNumber,
     haveGamblingLicenceNo = Some("1"),
-    gamblingLicenceNo = Some("123-456789-A-123456-789"),
-    heldByLandlord = Some("1"),
-    localAuthority = Some("1"),
-    familyEntertainment = Some("0"),
-    clubGaming = Some("0"),
-    clubLicence = Some("1"),
-    prizeGaming = Some("0"),
-    onPremises = Some("1"),
-    clubPremises = Some("0"),
-    regCert = Some("0"),
-    bookmaking = Some("0"),
-    bingo = Some("0"),
-    amusement = Some("0"),
-    serveAlcohol = Some("0"),
-    premisesNotCovered = Some("0"),
-    systemDate  = Some(LocalDate.now())
+    gamblingLicenceNo     = Some("123-456789-A-123456-789"),
+    heldByLandlord        = Some("1"),
+    localAuthority        = Some("1"),
+    familyEntertainment   = Some("0"),
+    clubGaming            = Some("0"),
+    clubLicence           = Some("1"),
+    prizeGaming           = Some("0"),
+    onPremises            = Some("1"),
+    clubPremises          = Some("0"),
+    regCert               = Some("0"),
+    bookmaking            = Some("0"),
+    bingo                 = Some("0"),
+    amusement             = Some("0"),
+    serveAlcohol          = Some("0"),
+    premisesNotCovered    = Some("0"),
+    systemDate            = Some(LocalDate.now())
   )
 
   def partialModel(mgdRegNumber: String): LicenseDetails = LicenseDetails(
     mgdRegNumber,
     haveGamblingLicenceNo = Some("1"),
-    gamblingLicenceNo = Some("123-456789-A-123456-789"),
-    heldByLandlord = Some("1"),
-    localAuthority = Some("1"),
-    systemDate  = Some(LocalDate.now())
+    gamblingLicenceNo     = Some("123-456789-A-123456-789"),
+    heldByLandlord        = Some("1"),
+    localAuthority        = Some("1"),
+    systemDate            = Some(LocalDate.now())
   )
 
   def noDataModel(): LicenseDetails = LicenseDetails(mgdRegNumber = "")

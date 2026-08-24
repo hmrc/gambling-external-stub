@@ -123,7 +123,7 @@ class GamblingLicensesAndPremisesController @Inject() (
         case "XGM00000000400" =>
           BadRequest(
             Json.obj(
-              "code" -> "INVALID_REQUEST",
+              "code"    -> "INVALID_REQUEST",
               "message" -> "Bad request"
             )
           )
@@ -131,7 +131,7 @@ class GamblingLicensesAndPremisesController @Inject() (
         case "XGM00000000401" =>
           Unauthorized(
             Json.obj(
-              "code" -> "UNAUTHORIZED",
+              "code"    -> "UNAUTHORIZED",
               "message" -> "Unauthorized to access this resource"
             )
           )
@@ -139,7 +139,7 @@ class GamblingLicensesAndPremisesController @Inject() (
         case "XGM00000000500" =>
           InternalServerError(
             Json.obj(
-              "code" -> "UNEXPECTED_ERROR",
+              "code"    -> "UNEXPECTED_ERROR",
               "message" -> "Unexpected error occurred"
             )
           )
