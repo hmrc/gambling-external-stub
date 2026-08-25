@@ -39,14 +39,22 @@ class PartnerDetailsController @Inject() (
       val sanitized = mgdRegNumber.trim.toUpperCase()
       sanitized match {
         // full data
-        case "XGM00000001761" | "GAM0000000001" =>
+        case "XPM00000000600" =>
           Ok(Json.toJson(fullModel(sanitized)))
 
+        // full data - after auth changes
+        case "XMM00000001177" =>
+          Ok(Json.toJson(XMM00000001177(sanitized)))
+
+        // no data - after auth changes
+        case "XPM00000000985" =>
+          Ok(Json.toJson(XPM00000000985(sanitized)))
+
         // some missing data
-        case "XGM00000001762" | "GAM0000000010" =>
+        case "XJM00000000570" =>
           Ok(Json.toJson(partialModel(sanitized)))
 
-        case "XGM00000000400" =>
+        case "XGM00000000560" =>
           BadRequest(
             Json.obj(
               "code"    -> "INVALID_REQUEST",
@@ -54,7 +62,7 @@ class PartnerDetailsController @Inject() (
             )
           )
 
-        case "XGM00000000401" =>
+        case "XMM00000000580" =>
           Unauthorized(
             Json.obj(
               "code"    -> "UNAUTHORIZED",
@@ -62,7 +70,7 @@ class PartnerDetailsController @Inject() (
             )
           )
 
-        case "XGM00000000500" =>
+        case "XAM00000001090" =>
           InternalServerError(
             Json.obj(
               "code"    -> "UNEXPECTED_ERROR",
