@@ -124,6 +124,40 @@ class GamblingController @Inject() (
           )
         )
 
+      case "XGM00000001764" | "GAM0000000004" =>
+        Ok(
+          Json.toJson(
+            BusinessName(
+              mgdRegNumber,
+              solePropTitle     = Some("Mrs"),
+              solePropFirstName = Some("Partnership FN"),
+              solePropMidName   = None,
+              solePropLastName  = Some("Partnership "),
+              businessName      = Some("Partner Business Name"),
+              businessType      = Some(4),
+              tradingName       = Some("Partnership Trading Name"),
+              systemDate        = Some(LocalDate.of(2026, 1, 1))
+            )
+          )
+        )
+
+      case "XGM00000001765" | "GAM0000000005" =>
+        Ok(
+          Json.toJson(
+            BusinessName(
+              mgdRegNumber,
+              solePropTitle     = Some("Mrs"),
+              solePropFirstName = Some("LLP FN"),
+              solePropMidName   = None,
+              solePropLastName  = Some("LLP"),
+              businessName      = Some("LLP Business Name"),
+              businessType      = Some(5),
+              tradingName       = Some("LLP Trading Name"),
+              systemDate        = Some(LocalDate.of(2026, 1, 1))
+            )
+          )
+        )
+
       // ===== DEFAULT =====
       case reg =>
         Ok(
@@ -207,6 +241,38 @@ class GamblingController @Inject() (
               groupReg              = false,
               dateOfRegistration    = Some(LocalDate.parse("2021-06-20")),
               businessPartnerNumber = Some("9876543210"),
+              systemDate            = LocalDate.now()
+            )
+          )
+        )
+
+      // ===== SCENARIO 4: Partnership =====
+      case "XGM00000001764" =>
+        Ok(
+          Json.toJson(
+            BusinessDetails(
+              mgdRegNumber          = "XGM00000001764",
+              businessType          = Some(BusinessType.Partnership),
+              currentlyRegistered   = 1,
+              groupReg              = false,
+              dateOfRegistration    = Some(LocalDate.parse("2026-06-21")),
+              businessPartnerNumber = Some("9876543211"),
+              systemDate            = LocalDate.now()
+            )
+          )
+        )
+
+      // ===== SCENARIO 3: LLP =====
+      case "XGM00000001765" =>
+        Ok(
+          Json.toJson(
+            BusinessDetails(
+              mgdRegNumber          = "XGM00000001765",
+              businessType          = Some(BusinessType.LimitedLiabilityPartnership),
+              currentlyRegistered   = 1,
+              groupReg              = false,
+              dateOfRegistration    = Some(LocalDate.parse("2026-06-22")),
+              businessPartnerNumber = Some("9876543212"),
               systemDate            = LocalDate.now()
             )
           )
