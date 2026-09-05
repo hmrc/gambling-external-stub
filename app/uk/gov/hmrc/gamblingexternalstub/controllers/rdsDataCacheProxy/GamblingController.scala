@@ -184,7 +184,6 @@ class GamblingController @Inject() (
           )
         )
 
-
       // =============== DEFAULT ===============
       case reg =>
         Ok(
@@ -204,7 +203,6 @@ class GamblingController @Inject() (
         )
     }
   }
-
 
   def getBusinessDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
 
@@ -301,7 +299,6 @@ class GamblingController @Inject() (
           )
         )
 
-
       // =============== DEFAULT ===============
       case reg =>
         Ok(
@@ -375,7 +372,7 @@ class GamblingController @Inject() (
               partMembers        = Seq.empty,
               groupMembers       = Seq.empty,
               returnPeriodEndDates = Seq(
-                ReturnPeriodEndDate(LocalDate.parse("2026-12-31")),
+                ReturnPeriodEndDate(LocalDate.parse("2026-12-31"))
               )
             )
           )
@@ -414,7 +411,7 @@ class GamblingController @Inject() (
               groupMembers       = Seq.empty,
               returnPeriodEndDates = Seq(
                 ReturnPeriodEndDate(LocalDate.parse("2026-09-30")),
-                ReturnPeriodEndDate(LocalDate.parse("2026-12-31")),
+                ReturnPeriodEndDate(LocalDate.parse("2026-12-31"))
               )
             )
           )
@@ -454,7 +451,7 @@ class GamblingController @Inject() (
               returnPeriodEndDates = Seq(
                 ReturnPeriodEndDate(LocalDate.parse("2026-09-30")),
                 ReturnPeriodEndDate(LocalDate.parse("2026-12-31")),
-                ReturnPeriodEndDate(LocalDate.parse("2027-03-31")),
+                ReturnPeriodEndDate(LocalDate.parse("2027-03-31"))
               )
             )
           )
@@ -514,7 +511,7 @@ class GamblingController @Inject() (
                 ReturnPeriodEndDate(LocalDate.parse("2026-09-30")),
                 ReturnPeriodEndDate(LocalDate.parse("2026-12-31")),
                 ReturnPeriodEndDate(LocalDate.parse("2027-03-31")),
-                ReturnPeriodEndDate(LocalDate.parse("2027-06-30")),
+                ReturnPeriodEndDate(LocalDate.parse("2027-06-30"))
               )
             )
           )
@@ -556,7 +553,7 @@ class GamblingController @Inject() (
                 ReturnPeriodEndDate(LocalDate.parse("2026-12-31")),
                 ReturnPeriodEndDate(LocalDate.parse("2027-03-31")),
                 ReturnPeriodEndDate(LocalDate.parse("2027-06-30")),
-                ReturnPeriodEndDate(LocalDate.parse("2027-09-30")),
+                ReturnPeriodEndDate(LocalDate.parse("2027-09-30"))
               )
             )
           )

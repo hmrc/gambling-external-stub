@@ -51,12 +51,12 @@ object BusinessAddressDetails {
 
   def partialModel(mgdRegNumber: String): BusinessAddressDetails = BusinessAddressDetails(
     mgdRegNumber,
-    adi          = Some("1st floor"),
-    address1     = Some("address1"),
-    postcode     = Some("L1 8YL"),
-    country      = Some("IRELAND"),
-    iomOrCiFlag  = Some("TRUE"),
-    systemDate   = Some(LocalDate.now())
+    adi         = Some("1st floor"),
+    address1    = Some("address1"),
+    postcode    = Some("L1 8YL"),
+    country     = Some("IRELAND"),
+    iomOrCiFlag = Some("TRUE"),
+    systemDate  = Some(LocalDate.now())
   )
 
   def noDataModel(): BusinessAddressDetails = BusinessAddressDetails(mgdRegNumber = "")
