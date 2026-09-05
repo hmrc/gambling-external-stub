@@ -38,25 +38,25 @@ object BusinessAddressDetails {
 
   def fullModel(mgdRegNumber: String): BusinessAddressDetails = BusinessAddressDetails(
     mgdRegNumber,
-    adi         = Some("1st floor"),
-    address1    = Some("address1"),
-    address2    = Some("address2"),
-    address3    = Some("address3"),
-    address4    = Some("address4"),
-    postcode    = Some("L1 8YL"),
-    country     = Some("England"),
+    adi         = Some("Additional information for business address is Building number 123 opposite to Riverside Mills"),
+    address1    = Some("Address's Line 1.1-1,1/1&1"),
+    address2    = Some("Address's Line 2.2-2,2/2&2"),
+    address3    = Some("Address's Line 3.3-3,3/3&3"),
+    address4    = Some("County 4.4-4,4/4&4"),
+    postcode    = Some("ZZ99 9ZZ"),
+    country     = Some("United Kingdom"),
     iomOrCiFlag = Some("FALSE"),
     systemDate  = Some(LocalDate.now())
   )
 
   def partialModel(mgdRegNumber: String): BusinessAddressDetails = BusinessAddressDetails(
     mgdRegNumber,
-    adi         = Some("1st floor"),
-    address1    = Some("address1"),
-    postcode    = Some("L1 8YL"),
-    country     = Some("England"),
-    iomOrCiFlag = Some("FALSE"),
-    systemDate  = Some(LocalDate.now())
+    adi          = Some("1st floor"),
+    address1     = Some("address1"),
+    postcode     = Some("L1 8YL"),
+    country      = Some("IRELAND"),
+    iomOrCiFlag  = Some("TRUE"),
+    systemDate   = Some(LocalDate.now())
   )
 
   def noDataModel(): BusinessAddressDetails = BusinessAddressDetails(mgdRegNumber = "")

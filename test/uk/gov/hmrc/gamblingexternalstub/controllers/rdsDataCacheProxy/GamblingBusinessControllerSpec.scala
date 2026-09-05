@@ -40,13 +40,13 @@ class GamblingBusinessControllerSpec extends AnyWordSpec with Matchers with Spec
       contentAsJson(result) shouldBe Json.toJson(
         BusinessAddressDetails(
           "XGM00000001761",
-          Some("1st floor"),
-          Some("address1"),
-          Some("address2"),
-          Some("address3"),
-          Some("address4"),
-          Some("L1 8YL"),
-          Some("England"),
+          Some("Additional information for business address is Building number 123 opposite to Riverside Mills"),
+          Some("Address's Line 1.1-1,1/1&1"),
+          Some("Address's Line 2.2-2,2/2&2"),
+          Some("Address's Line 3.3-3,3/3&3"),
+          Some("County 4.4-4,4/4&4"),
+          Some("ZZ99 9ZZ"),
+          Some("United Kingdom"),
           Some("FALSE"),
           Some(LocalDate.now())
         )
@@ -63,8 +63,8 @@ class GamblingBusinessControllerSpec extends AnyWordSpec with Matchers with Spec
           adi          = Some("1st floor"),
           address1     = Some("address1"),
           postcode     = Some("L1 8YL"),
-          country      = Some("England"),
-          iomOrCiFlag  = Some("FALSE"),
+          country      = Some("IRELAND"),
+          iomOrCiFlag  = Some("TRUE"),
           systemDate   = Some(LocalDate.now())
         )
       )
