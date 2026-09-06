@@ -749,6 +749,16 @@ curl http://localhost:10405/rds-datacache-proxy/gambling/partner-details/mgd/XGM
 
 The stub provides deterministic responses and does not require authentication or a database connection.
 
+---
+
+### 22. ActiveMQ Proxy — Send Message
+
+`POST /activemq-proxy/queue/send`
+
+Stubs the [`activemq-proxy`](https://github.com/hmrc/activemq-proxy) service so gambling services can publish queue messages without a running ActiveMQ broker. Mirrors the real request/response contract and validation, but does not forward to a broker — it validates, logs, and returns the correlation id.
+
+See [docs/activemq-proxy-queue-send.md](docs/activemq-proxy-queue-send.md) for full details including the request schema, permitted queue identifiers, all response scenarios, and example curl commands.
+
 
 
 
