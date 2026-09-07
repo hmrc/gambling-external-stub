@@ -55,12 +55,20 @@ class GamblingController @Inject() (
         Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 0, returnsOverdue = 1)))
 
       // Scenario 2 → returns due
-      case "XGM00000001762" | "GAM0000000010" =>
-        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 1, returnsOverdue = 0)))
+      case "XGM00000001762" | "GAM0000000002" =>
+        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 1, returnsOverdue = 2)))
 
       // Scenario 3 → both returns due and overdue exists
-      case "XGM00000001763" | "GAM0000000012" =>
-        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 1, returnsOverdue = 2)))
+      case "XGM00000001763" | "GAM0000000003" =>
+        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 0, returnsOverdue = 11)))
+
+      // Scenario 1 → overdue exists
+      case "XGM00000001764" | "GAM0000000004" =>
+        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 11, returnsOverdue = 1)))
+
+      // Scenario 2 → returns due
+      case "XGM00000001765" | "GAM0000000005" =>
+        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 11, returnsOverdue = 11)))
 
       // default fallback
       case reg =>
@@ -88,38 +96,56 @@ class GamblingController @Inject() (
           )
         )
 
-      // Scenario 1 → middle name included
+      // Scenario 1
       case "XGM00000001761" | "GAM0000000001" =>
         Ok(
           Json.toJson(
             BusinessName(
               mgdRegNumber,
               solePropTitle     = Some("Mr"),
-              solePropFirstName = Some("Joe"),
-              solePropMidName   = Some("B"),
-              solePropLastName  = Some("Blogs"),
-              businessName      = Some("Joe Blogs Co."),
+              solePropFirstName = Some("SoleFN"),
+              solePropMidName   = Some("MN"),
+              solePropLastName  = Some("Proprietor LN"),
+              businessName      = Some("SP Business Name"),
               businessType      = Some(1),
-              tradingName       = Some("BlogsBlogs"),
-              systemDate        = Some(LocalDate.of(1991, 1, 1))
+              tradingName       = Some("SP Trading Name"),
+              systemDate        = Some(LocalDate.of(2026, 1, 1))
             )
           )
         )
 
-      // Scenario 2 → no middle name
+      // Scenario 2
       case "XGM00000001762" | "GAM0000000002" =>
         Ok(
           Json.toJson(
             BusinessName(
               mgdRegNumber,
               solePropTitle     = Some("Mrs"),
-              solePropFirstName = Some("Jane"),
+              solePropFirstName = Some("Corporate"),
               solePropMidName   = None,
-              solePropLastName  = Some("Doe"),
-              businessName      = Some("Doe Co."),
-              businessType      = Some(1),
-              tradingName       = Some("DoeDoe"),
-              systemDate        = Some(LocalDate.of(1992, 1, 1))
+              solePropLastName  = Some("Body"),
+              businessName      = Some("CB Business Name"),
+              businessType      = Some(2),
+              tradingName       = Some("CB Trading Name"),
+              systemDate        = Some(LocalDate.of(2026, 1, 1))
+            )
+          )
+        )
+
+      // Scenario 3 →
+      case "XGM00000001763" | "GAM0000000003" =>
+        Ok(
+          Json.toJson(
+            BusinessName(
+              mgdRegNumber,
+              solePropTitle     = Some("Ms"),
+              solePropFirstName = Some("Unincorporated"),
+              solePropMidName   = Some("MN"),
+              solePropLastName  = Some("Body"),
+              businessName      = Some("UCB Business Name"),
+              businessType      = Some(3),
+              tradingName       = Some("UCB Trading Name"),
+              systemDate        = Some(LocalDate.of(2026, 1, 1))
             )
           )
         )
@@ -129,13 +155,13 @@ class GamblingController @Inject() (
           Json.toJson(
             BusinessName(
               mgdRegNumber,
-              solePropTitle     = Some("Mrs"),
+              solePropTitle     = Some("Master"),
               solePropFirstName = Some("Partnership FN"),
-              solePropMidName   = None,
-              solePropLastName  = Some("Partnership "),
-              businessName      = Some("Partner Business Name"),
+              solePropMidName   = Some("MN"),
+              solePropLastName  = Some("Partnership LN"),
+              businessName      = Some("Partner1 Business Name"),
               businessType      = Some(4),
-              tradingName       = Some("Partnership Trading Name"),
+              tradingName       = Some("Partner1 Trading Name"),
               systemDate        = Some(LocalDate.of(2026, 1, 1))
             )
           )
@@ -148,7 +174,7 @@ class GamblingController @Inject() (
               mgdRegNumber,
               solePropTitle     = Some("Mrs"),
               solePropFirstName = Some("LLP FN"),
-              solePropMidName   = None,
+              solePropMidName   = Some("MN"),
               solePropLastName  = Some("LLP"),
               businessName      = Some("LLP Business Name"),
               businessType      = Some(5),
@@ -158,19 +184,19 @@ class GamblingController @Inject() (
           )
         )
 
-      // ===== DEFAULT =====
+      // =============== DEFAULT ===============
       case reg =>
         Ok(
           Json.toJson(
             BusinessName(
               mgdRegNumber,
-              solePropTitle     = Some("Mrs"),
-              solePropFirstName = Some("Jane"),
+              solePropTitle     = Some("Mr"),
+              solePropFirstName = Some("Default FirstName"),
               solePropMidName   = None,
-              solePropLastName  = Some("Doe"),
-              businessName      = Some("Doe Co."),
-              businessType      = Some(2),
-              tradingName       = Some("DoeDoe"),
+              solePropLastName  = Some("Default LastName"),
+              businessName      = Some("Default BusinessName"),
+              businessType      = Some(1),
+              tradingName       = Some("Default TradingName"),
               systemDate        = Some(LocalDate.of(1992, 1, 1))
             )
           )
@@ -198,7 +224,6 @@ class GamblingController @Inject() (
           )
         )
 
-      // Scenario 1 → Registered
       case "XGM00000001761" | "GAM0000000001" =>
         Ok(
           Json.toJson(
@@ -214,13 +239,12 @@ class GamblingController @Inject() (
           )
         )
 
-      // Scenario 2 → Not Registered
       case "XGM00000001762" | "GAM0000000002" =>
         Ok(
           Json.toJson(
             BusinessDetails(
               mgdRegNumber,
-              businessType          = Some(BusinessType.SoleProprietor),
+              businessType          = Some(BusinessType.CorporateBody),
               currentlyRegistered   = 0,
               groupReg              = false,
               dateOfRegistration    = Some(LocalDate.of(1991, 1, 1)),
@@ -230,62 +254,59 @@ class GamblingController @Inject() (
           )
         )
 
-      // ===== SCENARIO 3: Partnership =====
-      case "XGM00000001763" =>
+      case "XGM00000001763" | "GAM0000000003" =>
         Ok(
           Json.toJson(
             BusinessDetails(
-              mgdRegNumber          = "XGM00000001763",
-              businessType          = Some(BusinessType.Partnership),
+              mgdRegNumber,
+              businessType          = Some(BusinessType.UnincorporatedBody),
               currentlyRegistered   = 1,
               groupReg              = false,
               dateOfRegistration    = Some(LocalDate.parse("2021-06-20")),
+              businessPartnerNumber = Some("bar"),
+              systemDate            = LocalDate.now()
+            )
+          )
+        )
+
+      case "XGM00000001764" | "GAM0000000004" =>
+        Ok(
+          Json.toJson(
+            BusinessDetails(
+              mgdRegNumber,
+              businessType          = Some(BusinessType.Partnership),
+              currentlyRegistered   = 1,
+              groupReg              = false,
+              dateOfRegistration    = Some(LocalDate.parse("2026-06-21")),
               businessPartnerNumber = Some("9876543210"),
               systemDate            = LocalDate.now()
             )
           )
         )
 
-      // ===== SCENARIO 4: Partnership =====
-      case "XGM00000001764" =>
+      case "XGM00000001765" | "GAM0000000005" =>
         Ok(
           Json.toJson(
             BusinessDetails(
-              mgdRegNumber          = "XGM00000001764",
-              businessType          = Some(BusinessType.Partnership),
-              currentlyRegistered   = 1,
-              groupReg              = false,
-              dateOfRegistration    = Some(LocalDate.parse("2026-06-21")),
-              businessPartnerNumber = Some("9876543211"),
-              systemDate            = LocalDate.now()
-            )
-          )
-        )
-
-      // ===== SCENARIO 3: LLP =====
-      case "XGM00000001765" =>
-        Ok(
-          Json.toJson(
-            BusinessDetails(
-              mgdRegNumber          = "XGM00000001765",
+              mgdRegNumber,
               businessType          = Some(BusinessType.LimitedLiabilityPartnership),
-              currentlyRegistered   = 1,
+              currentlyRegistered   = 0,
               groupReg              = false,
               dateOfRegistration    = Some(LocalDate.parse("2026-06-22")),
-              businessPartnerNumber = Some("9876543212"),
+              businessPartnerNumber = Some("bar"),
               systemDate            = LocalDate.now()
             )
           )
         )
 
-      // ===== DEFAULT =====
+      // =============== DEFAULT ===============
       case reg =>
         Ok(
           Json.toJson(
             BusinessDetails(
               mgdRegNumber          = reg,
-              businessType          = Some(BusinessType.CorporateBody),
-              currentlyRegistered   = 0,
+              businessType          = Some(BusinessType.SoleProprietor),
+              currentlyRegistered   = 1,
               groupReg              = false,
               dateOfRegistration    = Some(LocalDate.parse("2021-01-01")),
               businessPartnerNumber = None,
@@ -319,84 +340,59 @@ class GamblingController @Inject() (
           )
         )
 
-      // ===== SCENARIO 1 =====
       case "XGM00000001761" =>
         Ok(
           Json.toJson(
             MgdCertificate(
               mgdRegNumber       = "XGM00000001761",
-              registrationDate   = Some(LocalDate.parse("2023-01-15")),
-              individualName     = Some("Mr John A Smith"),
-              businessName       = Some("Acme Gaming Ltd"),
-              tradingName        = Some("Acme Bets"),
-              repMemName         = Some("Acme Rep Member Ltd"),
-              busAddrLine1       = Some("1 High Street"),
-              busAddrLine2       = Some("Newcastle"),
+              registrationDate   = Some(LocalDate.parse("2020-01-01")),
+              individualName     = Some("Mr SoleFN MN ProprietorLN"),
+              businessName       = Some("SP Business Name"),
+              tradingName        = Some("SP Trading Name"),
+              repMemName         = Some("Some Name"),
+              busAddrLine1       = Some("1 Quicksilver Way"),
+              busAddrLine2       = Some("Cobalt Business Park"),
               busAddrLine3       = None,
               busAddrLine4       = None,
-              busPostcode        = Some("NE1 1AA"),
+              busPostcode        = Some("AA1 1AA"),
               busCountry         = Some("United Kingdom"),
-              busAdi             = Some("Some ADI Value"),
-              repMemLine1        = Some("2 Low Street"),
+              busAdi             = Some("Building Cobalt 9C"),
+              repMemLine1        = Some("1 Low Street"),
               repMemLine2        = Some("Newcastle"),
               repMemLine3        = None,
               repMemLine4        = None,
-              repMemPostcode     = Some("NE1 2BB"),
+              repMemPostcode     = Some("AA1 1AA"),
               repMemAdi          = Some("Rep ADI Value"),
-              typeOfBusiness     = Some("Corporate Body"),
-              businessTradeClass = Some(2),
-              noOfPartners       = Some(2),
-              groupReg           = "Y",
-              noOfGroupMems      = Some(1),
-              dateCertIssued     = Some(LocalDate.parse("2024-02-01")),
-              partMembers = Seq(
-                PartnerMember(
-                  namesOfPartMems    = "Partner Member One Ltd",
-                  solePropTitle      = None,
-                  solePropFirstName  = None,
-                  solePropMiddleName = None,
-                  solePropLastName   = None,
-                  typeOfBusiness     = 2
-                ),
-                PartnerMember(
-                  namesOfPartMems    = "Sole Prop Example",
-                  solePropTitle      = Some("Ms"),
-                  solePropFirstName  = Some("Jane"),
-                  solePropMiddleName = None,
-                  solePropLastName   = Some("Doe"),
-                  typeOfBusiness     = 1
-                )
-              ),
-              groupMembers = Seq(
-                GroupMember("Group Member One Ltd")
-              ),
+              typeOfBusiness     = Some("Sole Proprietor"),
+              businessTradeClass = Some(1),
+              noOfPartners       = Some(0),
+              groupReg           = "N",
+              noOfGroupMems      = Some(0),
+              dateCertIssued     = Some(LocalDate.parse("2021-01-01")),
+              partMembers        = Seq.empty,
+              groupMembers       = Seq.empty,
               returnPeriodEndDates = Seq(
-                ReturnPeriodEndDate(LocalDate.parse("2026-03-31")),
-                ReturnPeriodEndDate(LocalDate.parse("2026-06-30")),
-                ReturnPeriodEndDate(LocalDate.parse("2026-09-30")),
-                ReturnPeriodEndDate(LocalDate.parse("2026-12-31")),
-                ReturnPeriodEndDate(LocalDate.parse("2027-03-31"))
+                ReturnPeriodEndDate(LocalDate.parse("2026-12-31"))
               )
             )
           )
         )
 
-      // ===== SCENARIO 2 =====
       case "XGM00000001762" =>
         Ok(
           Json.toJson(
             MgdCertificate(
               mgdRegNumber       = "XGM00000001762",
-              registrationDate   = Some(LocalDate.parse("2022-10-05")),
-              individualName     = None,
-              businessName       = Some("Example Sole Trader"),
-              tradingName        = None,
-              repMemName         = None,
-              busAddrLine1       = Some("10 Market Road"),
-              busAddrLine2       = Some("Gateshead"),
+              registrationDate   = Some(LocalDate.parse("2022-02-02")),
+              individualName     = Some("Mrs Corporate Body"),
+              businessName       = Some("CB Business Name"),
+              tradingName        = Some("CB Trading Name"),
+              repMemName         = Some("Some Name"),
+              busAddrLine1       = Some("2 Quicksilver Way"),
+              busAddrLine2       = Some("Cobalt Business Park"),
               busAddrLine3       = None,
               busAddrLine4       = None,
-              busPostcode        = Some("NE8 1ZZ"),
+              busPostcode        = Some("BB2 2BB"),
               busCountry         = Some("United Kingdom"),
               busAdi             = None,
               repMemLine1        = None,
@@ -405,17 +401,159 @@ class GamblingController @Inject() (
               repMemLine4        = None,
               repMemPostcode     = None,
               repMemAdi          = None,
-              typeOfBusiness     = Some("Sole proprietor"),
-              businessTradeClass = Some(1),
+              typeOfBusiness     = Some("Corporate Body"),
+              businessTradeClass = Some(2),
               noOfPartners       = Some(0),
               groupReg           = "N",
               noOfGroupMems      = Some(0),
-              dateCertIssued     = Some(LocalDate.parse("2024-01-10")),
+              dateCertIssued     = Some(LocalDate.parse("2022-02-02")),
               partMembers        = Seq.empty,
               groupMembers       = Seq.empty,
               returnPeriodEndDates = Seq(
-                ReturnPeriodEndDate(LocalDate.parse("2026-03-31")),
-                ReturnPeriodEndDate(LocalDate.parse("2026-06-30"))
+                ReturnPeriodEndDate(LocalDate.parse("2026-09-30")),
+                ReturnPeriodEndDate(LocalDate.parse("2026-12-31"))
+              )
+            )
+          )
+        )
+
+      case "XGM00000001763" =>
+        Ok(
+          Json.toJson(
+            MgdCertificate(
+              mgdRegNumber       = "XGM00000001763",
+              registrationDate   = Some(LocalDate.parse("2023-03-03")),
+              individualName     = Some("Mrs Unincorporated MN Body"),
+              businessName       = Some("UCB Business Name"),
+              tradingName        = Some("UCB Trading Name"),
+              repMemName         = Some("Some Name"),
+              busAddrLine1       = Some("3 Quicksilver Way"),
+              busAddrLine2       = Some("Cobalt Business Park"),
+              busAddrLine3       = None,
+              busAddrLine4       = None,
+              busPostcode        = Some("CC3 3CC"),
+              busCountry         = Some("United Kingdom"),
+              busAdi             = Some("Building 3C"),
+              repMemLine1        = Some("3 Low Street"),
+              repMemLine2        = Some("Newcastle"),
+              repMemLine3        = None,
+              repMemLine4        = None,
+              repMemPostcode     = Some("CC3 3CC"),
+              repMemAdi          = Some("Rep ADI Value"),
+              typeOfBusiness     = Some("Unincorporated Body"),
+              businessTradeClass = Some(3),
+              noOfPartners       = Some(0),
+              groupReg           = "N",
+              noOfGroupMems      = Some(0),
+              dateCertIssued     = Some(LocalDate.parse("2023-03-03")),
+              partMembers        = Seq.empty,
+              groupMembers       = Seq.empty,
+              returnPeriodEndDates = Seq(
+                ReturnPeriodEndDate(LocalDate.parse("2026-09-30")),
+                ReturnPeriodEndDate(LocalDate.parse("2026-12-31")),
+                ReturnPeriodEndDate(LocalDate.parse("2027-03-31"))
+              )
+            )
+          )
+        )
+
+      case "XGM00000001764" =>
+        Ok(
+          Json.toJson(
+            MgdCertificate(
+              mgdRegNumber       = "XGM00000001764",
+              registrationDate   = Some(LocalDate.parse("2024-04-04")),
+              individualName     = Some("Partner1 Name"),
+              businessName       = Some("Partner1 Business Name"),
+              tradingName        = Some("Partner1 Trading Name"),
+              repMemName         = Some("Some Name"),
+              busAddrLine1       = Some("4 Quicksilver Way"),
+              busAddrLine2       = Some("Cobalt Business Park"),
+              busAddrLine3       = Some("Address Line 3"),
+              busAddrLine4       = Some("Address Line 4"),
+              busPostcode        = Some("DD4 4DD"),
+              busCountry         = Some("United Kingdom"),
+              busAdi             = Some("Building 4D"),
+              repMemLine1        = Some("4 Low Street"),
+              repMemLine2        = Some("Newcastle"),
+              repMemLine3        = None,
+              repMemLine4        = None,
+              repMemPostcode     = Some("DD4 4DD"),
+              repMemAdi          = Some("Rep ADI Value"),
+              typeOfBusiness     = Some("Partnership"),
+              businessTradeClass = Some(4),
+              noOfPartners       = Some(2),
+              groupReg           = "Y",
+              noOfGroupMems      = Some(2),
+              dateCertIssued     = Some(LocalDate.parse("2024-04-04")),
+              partMembers = Seq(
+                PartnerMember(
+                  namesOfPartMems    = "Attached Partner Sole Proprietor",
+                  solePropTitle      = Some("Ms"),
+                  solePropFirstName  = Some("SP1 FN"),
+                  solePropMiddleName = Some("Partner"),
+                  solePropLastName   = Some("SP1 LN"),
+                  typeOfBusiness     = 1
+                ),
+                PartnerMember(
+                  namesOfPartMems    = "Attached Partner Partnership FN LN",
+                  solePropTitle      = None,
+                  solePropFirstName  = None,
+                  solePropMiddleName = None,
+                  solePropLastName   = None,
+                  typeOfBusiness     = 4
+                )
+              ),
+              groupMembers = Seq(
+                GroupMember("Partnership Group Ltd")
+              ),
+              returnPeriodEndDates = Seq(
+                ReturnPeriodEndDate(LocalDate.parse("2026-09-30")),
+                ReturnPeriodEndDate(LocalDate.parse("2026-12-31")),
+                ReturnPeriodEndDate(LocalDate.parse("2027-03-31")),
+                ReturnPeriodEndDate(LocalDate.parse("2027-06-30"))
+              )
+            )
+          )
+        )
+
+      case "XGM00000001765" =>
+        Ok(
+          Json.toJson(
+            MgdCertificate(
+              mgdRegNumber       = "XGM00000001765",
+              registrationDate   = Some(LocalDate.parse("2025-05-05")),
+              individualName     = Some("Mrs LLPFN LLPLN"),
+              businessName       = Some("LLP Business Name"),
+              tradingName        = Some("LLP Trading Name"),
+              repMemName         = Some("Some Name"),
+              busAddrLine1       = Some("5 Quicksilver Way"),
+              busAddrLine2       = Some("Cobalt Business Park"),
+              busAddrLine3       = None,
+              busAddrLine4       = None,
+              busPostcode        = Some("EE5 5EE"),
+              busCountry         = Some("United Kingdom"),
+              busAdi             = Some("Building 5E"),
+              repMemLine1        = Some("5 Low Street"),
+              repMemLine2        = Some("Newcastle"),
+              repMemLine3        = None,
+              repMemLine4        = None,
+              repMemPostcode     = Some("EE5 5EE"),
+              repMemAdi          = None,
+              typeOfBusiness     = Some("Limited Liability Partnership"),
+              businessTradeClass = Some(5),
+              noOfPartners       = Some(0),
+              groupReg           = "N",
+              noOfGroupMems      = Some(0),
+              dateCertIssued     = Some(LocalDate.parse("2025-05-05")),
+              partMembers        = Seq.empty,
+              groupMembers       = Seq.empty,
+              returnPeriodEndDates = Seq(
+                ReturnPeriodEndDate(LocalDate.parse("2026-09-30")),
+                ReturnPeriodEndDate(LocalDate.parse("2026-12-31")),
+                ReturnPeriodEndDate(LocalDate.parse("2027-03-31")),
+                ReturnPeriodEndDate(LocalDate.parse("2027-06-30")),
+                ReturnPeriodEndDate(LocalDate.parse("2027-09-30"))
               )
             )
           )
@@ -429,15 +567,15 @@ class GamblingController @Inject() (
               mgdRegNumber       = reg,
               registrationDate   = Some(LocalDate.parse("2021-01-01")),
               individualName     = None,
-              businessName       = Some(s"Business for $reg"),
+              businessName       = Some(s"Default Business Name for $reg"),
               tradingName        = None,
               repMemName         = None,
-              busAddrLine1       = Some("Unknown Address Line 1"),
-              busAddrLine2       = Some("Unknown Address Line 2"),
+              busAddrLine1       = Some("Default Address Line 1"),
+              busAddrLine2       = Some("Default Address Line 2"),
               busAddrLine3       = None,
               busAddrLine4       = None,
-              busPostcode        = Some("AA1 1AA"),
-              busCountry         = Some("United Kingdom"),
+              busPostcode        = None,
+              busCountry         = Some("Ireland"),
               busAdi             = None,
               repMemLine1        = None,
               repMemLine2        = None,
@@ -445,16 +583,16 @@ class GamblingController @Inject() (
               repMemLine4        = None,
               repMemPostcode     = None,
               repMemAdi          = None,
-              typeOfBusiness     = Some("Corporate Body"),
+              typeOfBusiness     = Some("Default Corporate Body"),
               businessTradeClass = Some(2),
               noOfPartners       = Some(0),
               groupReg           = "N",
               noOfGroupMems      = Some(0),
-              dateCertIssued     = Some(LocalDate.parse("2024-01-01")),
+              dateCertIssued     = Some(LocalDate.parse("2026-12-31")),
               partMembers        = Seq.empty,
               groupMembers       = Seq.empty,
               returnPeriodEndDates = Seq(
-                ReturnPeriodEndDate(LocalDate.parse("2026-03-31"))
+                ReturnPeriodEndDate(LocalDate.parse("2026-12-31"))
               )
             )
           )

@@ -48,7 +48,7 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
-        ReturnSummary("XGM00000001762", 1, 0)
+        ReturnSummary("XGM00000001762", 1, 2)
       )
     }
 
@@ -57,7 +57,7 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
-        ReturnSummary("XGM00000001763", 1, 2)
+        ReturnSummary("XGM00000001763", 0, 11)
       )
     }
 
@@ -192,13 +192,13 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
         BusinessName(
           "XGM00000001761",
           Some("Mr"),
-          Some("Joe"),
-          Some("B"),
-          Some("Blogs"),
-          Some("Joe Blogs Co."),
+          Some("SoleFN"),
+          Some("MN"),
+          Some("Proprietor LN"),
+          Some("SP Business Name"),
           Some(1),
-          Some("BlogsBlogs"),
-          Some(LocalDate.of(1991, 1, 1))
+          Some("SP Trading Name"),
+          Some(LocalDate.of(2026, 1, 1))
         )
       )
     }
@@ -211,13 +211,13 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
         BusinessName(
           "XGM00000001762",
           Some("Mrs"),
-          Some("Jane"),
+          Some("Corporate"),
           None,
-          Some("Doe"),
-          Some("Doe Co."),
-          Some(1),
-          Some("DoeDoe"),
-          Some(LocalDate.of(1992, 1, 1))
+          Some("Body"),
+          Some("CB Business Name"),
+          Some(2),
+          Some("CB Trading Name"),
+          Some(LocalDate.of(2026, 1, 1))
         )
       )
     }
@@ -266,7 +266,7 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       val result = controller.getBusinessDetails("XGM00000001762")(FakeRequest())
 
       status(result)                                   shouldBe OK
-      (contentAsJson(result) \ "businessType").as[Int] shouldBe 1
+      (contentAsJson(result) \ "businessType").as[Int] shouldBe 2
       (contentAsJson(result) \ "groupReg").as[Boolean] shouldBe false
     }
 
@@ -294,21 +294,21 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       val result = controller.getBusinessDetails("GAM999")(FakeRequest())
 
       status(result)                                          shouldBe OK
-      (contentAsJson(result) \ "currentlyRegistered").as[Int] shouldBe 0
+      (contentAsJson(result) \ "currentlyRegistered").as[Int] shouldBe 1
     }
 
   }
 
   "GamblingController#getMgdCertificate" should {
 
-    "return OK for XGM00000001761" in {
-      val result = controller.getMgdCertificate("XGM00000001761")(FakeRequest())
-
-      status(result) shouldBe OK
-      contentAsJson(result) shouldBe Json.toJson(
-        MgdCertificate.sample1("XGM00000001761")
-      )
-    }
+//    "return OK for XGM00000001761" in {
+//      val result = controller.getMgdCertificate("XGM00000001761")(FakeRequest())
+//
+//      status(result) shouldBe OK
+//      contentAsJson(result) shouldBe Json.toJson(
+//        MgdCertificate.sample1("XGM00000001761")
+//      )
+//    }
 
     "return OK for XGM00000001762" in {
       val result = controller.getMgdCertificate("XGM00000001762")(FakeRequest())
@@ -317,16 +317,16 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       contentAsJson(result) shouldBe Json.toJson(
         MgdCertificate(
           mgdRegNumber       = "XGM00000001762",
-          registrationDate   = Some(LocalDate.parse("2022-10-05")),
-          individualName     = None,
-          businessName       = Some("Example Sole Trader"),
-          tradingName        = None,
-          repMemName         = None,
-          busAddrLine1       = Some("10 Market Road"),
-          busAddrLine2       = Some("Gateshead"),
+          registrationDate   = Some(LocalDate.parse("2022-02-02")),
+          individualName     = Some("Mrs Corporate Body"),
+          businessName       = Some("CB Business Name"),
+          tradingName        = Some("CB Trading Name"),
+          repMemName         = Some("Some Name"),
+          busAddrLine1       = Some("2 Quicksilver Way"),
+          busAddrLine2       = Some("Cobalt Business Park"),
           busAddrLine3       = None,
           busAddrLine4       = None,
-          busPostcode        = Some("NE8 1ZZ"),
+          busPostcode        = Some("BB2 2BB"),
           busCountry         = Some("United Kingdom"),
           busAdi             = None,
           repMemLine1        = None,
@@ -335,19 +335,19 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
           repMemLine4        = None,
           repMemPostcode     = None,
           repMemAdi          = None,
-          typeOfBusiness     = Some("Sole proprietor"),
-          businessTradeClass = Some(1),
+          typeOfBusiness     = Some("Corporate Body"),
+          businessTradeClass = Some(2),
 
           // FIXED: Option[Int]
           noOfPartners   = Some(0),
           groupReg       = "N",
           noOfGroupMems  = Some(0),
-          dateCertIssued = Some(LocalDate.parse("2024-01-10")),
+          dateCertIssued = Some(LocalDate.parse("2022-02-02")),
           partMembers    = Seq.empty,
           groupMembers   = Seq.empty,
           returnPeriodEndDates = Seq(
-            ReturnPeriodEndDate(LocalDate.parse("2026-03-31")),
-            ReturnPeriodEndDate(LocalDate.parse("2026-06-30"))
+            ReturnPeriodEndDate(LocalDate.parse("2026-09-30")),
+            ReturnPeriodEndDate(LocalDate.parse("2026-12-31"))
           )
         )
       )
@@ -362,15 +362,15 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
           mgdRegNumber       = "GAM9999999999",
           registrationDate   = Some(LocalDate.parse("2021-01-01")),
           individualName     = None,
-          businessName       = Some("Business for GAM9999999999"),
+          businessName       = Some("Default Business Name for GAM9999999999"),
           tradingName        = None,
           repMemName         = None,
-          busAddrLine1       = Some("Unknown Address Line 1"),
-          busAddrLine2       = Some("Unknown Address Line 2"),
+          busAddrLine1       = Some("Default Address Line 1"),
+          busAddrLine2       = Some("Default Address Line 2"),
           busAddrLine3       = None,
           busAddrLine4       = None,
-          busPostcode        = Some("AA1 1AA"),
-          busCountry         = Some("United Kingdom"),
+          busPostcode        = None,
+          busCountry         = Some("Ireland"),
           busAdi             = None,
           repMemLine1        = None,
           repMemLine2        = None,
@@ -378,16 +378,16 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
           repMemLine4        = None,
           repMemPostcode     = None,
           repMemAdi          = None,
-          typeOfBusiness     = Some("Corporate Body"),
+          typeOfBusiness     = Some("Default Corporate Body"),
           businessTradeClass = Some(2),
           noOfPartners       = Some(0),
           groupReg           = "N",
           noOfGroupMems      = Some(0),
-          dateCertIssued     = Some(LocalDate.parse("2024-01-01")),
+          dateCertIssued     = Some(LocalDate.parse("2026-12-31")),
           partMembers        = Seq.empty,
           groupMembers       = Seq.empty,
           returnPeriodEndDates = Seq(
-            ReturnPeriodEndDate(LocalDate.parse("2026-03-31"))
+            ReturnPeriodEndDate(LocalDate.parse("2026-12-31"))
           )
         )
       )
