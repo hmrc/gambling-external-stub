@@ -100,7 +100,7 @@ object PartnerFormats {
         businessType           = Some(2)
       )
     ),
-    systemDate = Some(LocalDate.of(2026, 5, 31))
+    systemDate = baseDate
   )
 
   def partialModel(mgdRegNumber: String): PartnerDetails = PartnerDetails(
@@ -132,11 +132,11 @@ object PartnerFormats {
         businessType           = Some(2)
       )
     ),
-    systemDate = Some(LocalDate.of(2026, 5, 31))
+    systemDate = baseDate
   )
 
   def noDataModel(mgdRegNumber: String): PartnerDetails =
-    PartnerDetails(partners = List(Partner(mgdRegNumber)), systemDate = Some(LocalDate.of(2026, 5, 31)))
+    PartnerDetails(partners = List(Partner(mgdRegNumber)), systemDate = baseDate)
 
   def `XMM00000001177`(mgdRegNumber: String): PartnerDetails = PartnerDetails(
     partners = List(
@@ -390,5 +390,55 @@ object PartnerFormats {
       )
     ),
     systemDate = Some(LocalDate.parse("2026-08-06"))
+  )
+
+  def `XPM00000000600`: PartnerDetails = mockPartnerDetails
+
+  private val baseDate = Some(LocalDate.now())
+
+  private val hundredPartners: List[Partner] = (1 to 100).map { i =>
+    val indexPad = f"$i%04d"
+    val isCorporate = i % 2 == 0
+
+    Partner(
+      mgdRegNumber           = s"XPM00000000600",
+      businessPartnerNumber  = Some(s"BPN00000$indexPad"),
+      dateOfJoining          = baseDate.map(_.plusDays(i.toLong)),
+      dateOfLeaving          = if (i % 5 == 0) baseDate.map(_.plusYears(1).plusDays(i.toLong)) else None,
+      solePropTitle          = if (!isCorporate) Some(if (i % 2 == 0) "Mr" else "Ms") else None,
+      solePropFirstName      = if (!isCorporate) Some(s"PartnerFirst$i") else None,
+      solePropMiddleName     = if (!isCorporate && i % 3 == 0) Some("Middle") else None,
+      solePropLastName       = if (!isCorporate) Some(s"PartnerLast$i") else None,
+      businessName           = if (isCorporate) Some(s"Partner Company $i Ltd") else None,
+      tradingName            = if (i % 3 == 0) Some(s"Trading Name $i") else None,
+      dateOfBirth            = if (!isCorporate) Some(LocalDate.of(1985, 1, 1).plusDays(i.toLong)) else None,
+      nino                   = if (!isCorporate) Some(f"AA$i%06d A") else None,
+      utr                    = Some("1121766916"),
+      vrn                    = if (i % 2 == 0) Some(f"12345$i%04d") else None,
+      crn                    = if (isCorporate) Some(f"0123$i%04d") else None,
+      dateOfIncorporation    = if (isCorporate) Some(LocalDate.of(2015, 5, 12)) else None,
+      countryOfIncorporation = if (isCorporate) Some("GB") else None,
+      foreignCorporateRef    = None,
+      address1               = Some(s"$i High Street"),
+      address2               = Some("Suite 100"),
+      address3               = Some("Town Centre"),
+      address4               = Some("County"),
+      postcode               = Some("AA1 1AA"),
+      country                = Some("GB"),
+      adi                    = if (i % 4 == 0) Some(s"Additional Info $i") else None,
+      iomOrCiFlag            = Some("false"),
+      phoneNumber            = Some("01234567890"),
+      mobilePhoneNumber      = Some("07123456789"),
+      faxNumber              = if (i % 10 == 0) Some("01234567899") else None,
+      emailAddr              = Some(s"partner$i@example.com"),
+      isFutureLeaveDate      = Some(0),
+      isFutureJoinDate       = Some(0),
+      businessType           = Some(if (isCorporate) 2 else 1) // 1 = Soleproprietor, 2 = Corporatebody
+    )
+  }.toList
+
+  private val mockPartnerDetails: PartnerDetails = PartnerDetails(
+    partners   = hundredPartners,
+    systemDate = Some(LocalDate.of(2026, 9, 7))
   )
 }

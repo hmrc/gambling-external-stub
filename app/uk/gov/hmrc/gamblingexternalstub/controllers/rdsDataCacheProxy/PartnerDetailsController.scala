@@ -40,7 +40,7 @@ class PartnerDetailsController @Inject() (
       sanitized match {
         // full data
         case "XPM00000000600" =>
-          Ok(Json.toJson(fullModel(sanitized)))
+          Ok(Json.toJson(XPM00000000600))
 
         // full data - after auth changes
         case "XMM00000001177" =>
