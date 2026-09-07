@@ -42,10 +42,10 @@ class PartnerDetailsControllerSpec extends AnyWordSpec with Matchers with SpecBa
 
       val json = contentAsJson(result)
 
-      (json \ "partners" \ 0 \ "mgdRegNumber").as[String]              shouldBe "XPM00000000600"
-      (json \ "partners" \ 0 \ "businessPartnerNumber").asOpt[String]  shouldBe Some("0100049899")
-      (json \ "partners" \ 0 \ "businessName").as[String]              shouldBe "Partner1"
-      (json \ "partners" \ 0 \ "countryOfIncorporation").asOpt[String] shouldBe Some("countryOfIncorporation")
+      (json \ "partners" \ 0 \ "mgdRegNumber").as[String] shouldBe "XPM00000000600"
+      (json \ "partners" \ 0 \ "businessPartnerNumber").as[String] shouldBe "BPN000000001"
+      (json \ "partners" \ 0 \ "businessType").as[Int] shouldBe 1
+      (json \ "partners" \ 0 \ "tradingName").asOpt[String] shouldBe None
     }
 
     "return full partner details for XMM00000001177" in new Context {

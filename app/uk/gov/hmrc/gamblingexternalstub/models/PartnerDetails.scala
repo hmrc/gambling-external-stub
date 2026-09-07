@@ -431,14 +431,14 @@ object PartnerFormats {
       mobilePhoneNumber      = Some("07123456789"),
       faxNumber              = if (i % 10 == 0) Some("01234567899") else None,
       emailAddr              = Some(s"partner$i@example.com"),
-      isFutureLeaveDate      = Some(0),
-      isFutureJoinDate       = Some(0),
+      isFutureLeaveDate      = None,
+      isFutureJoinDate       = None,
       businessType           = Some(if (isCorporate) 2 else 1) // 1 = Soleproprietor, 2 = Corporatebody
     )
   }.toList
 
   private val mockPartnerDetails: PartnerDetails = PartnerDetails(
     partners   = hundredPartners,
-    systemDate = Some(LocalDate.of(2026, 9, 7))
+    systemDate = baseDate
   )
 }
