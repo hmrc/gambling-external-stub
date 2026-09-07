@@ -1,5 +1,6 @@
 # Add all the application routes to the app.routes file
 # Add all the rds-cache routes to the rdsdatacacheproxy.routes file
 ->   /rds-datacache-proxy    rdsdatacacheproxy.Routes
+->   /activemq-proxy         activemqproxy.Routes
 ->   /                       app.Routes
 ->   /                       health.Routes

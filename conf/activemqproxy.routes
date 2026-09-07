@@ -1,0 +1,4 @@
+
+# Stubbed activemq-proxy
+
+POST    /queue/send     uk.gov.hmrc.gamblingexternalstub.controllers.activeMqProxy.ActiveMqProxyController.send
