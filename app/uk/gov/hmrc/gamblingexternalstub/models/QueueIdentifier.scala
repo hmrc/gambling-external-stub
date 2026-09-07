@@ -18,9 +18,8 @@ package uk.gov.hmrc.gamblingexternalstub.models
 
 import play.api.libs.json.*
 
-/** The fixed set of queues the real activemq-proxy accepts. Mirrored here so the
-  * stub validates queueIdentifier exactly as the real service does. The case name
-  * is the physical queue name.
+/** The fixed set of queues the real activemq-proxy accepts. Mirrored here so the stub validates queueIdentifier exactly as the real service does. The
+  * case name is the physical queue name.
   */
 enum QueueIdentifier {
   case AGENT_Filing_RCLQ

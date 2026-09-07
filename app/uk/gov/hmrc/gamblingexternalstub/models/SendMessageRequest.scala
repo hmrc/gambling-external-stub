@@ -21,9 +21,9 @@ import play.api.libs.json.{Json, Reads}
 /** The inbound request to the stubbed activemq-proxy `POST /queue/send`. */
 final case class SendMessageRequest(
   queueIdentifier: QueueIdentifier,
-  payload:         String,
-  properties:      Option[List[MessageProperty]],
-  correlationId:   Option[String]
+  payload: String,
+  properties: Option[List[MessageProperty]],
+  correlationId: Option[String]
 ) {
   def propertiesOrEmpty: List[MessageProperty] = properties.getOrElse(Nil)
 }

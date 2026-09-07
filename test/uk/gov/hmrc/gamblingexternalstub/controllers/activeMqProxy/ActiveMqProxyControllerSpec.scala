@@ -33,7 +33,7 @@ class ActiveMqProxyControllerSpec extends AnyWordSpec with Matchers with SpecBas
     "payload"         -> "<?xml version=\"1.0\"?><agentPinRequest/>",
     "properties" -> Json.arr(
       Json.obj("key" -> "MESSAGE_CLASS", "value" -> "HMRC-AGENT-APR"),
-      Json.obj("key" -> "LOB", "value" -> "Agent")
+      Json.obj("key" -> "LOB", "value"           -> "Agent")
     ),
     "correlationId" -> "54947df80e9e4471a2f99af509fb5889"
   )
@@ -46,7 +46,7 @@ class ActiveMqProxyControllerSpec extends AnyWordSpec with Matchers with SpecBas
     "accept a full request and echo the supplied correlationId" in {
       val result = post(fullRequest)
 
-      status(result) shouldBe OK
+      status(result)                                       shouldBe OK
       (contentAsJson(result) \ "correlationId").as[String] shouldBe "54947df80e9e4471a2f99af509fb5889"
     }
 
@@ -56,21 +56,21 @@ class ActiveMqProxyControllerSpec extends AnyWordSpec with Matchers with SpecBas
       status(result) shouldBe OK
       val generated = (contentAsJson(result) \ "correlationId").as[String]
       generated.length shouldBe 32
-      generated        should fullyMatch regex "[0-9a-f]{32}"
+      generated          should fullyMatch regex "[0-9a-f]{32}"
     }
 
     "accept a minimal request with no properties" in {
-      val body   = Json.obj("queueIdentifier" -> "SS_Filing_TrackingQ", "payload" -> "<tracking/>")
+      val body = Json.obj("queueIdentifier" -> "SS_Filing_TrackingQ", "payload" -> "<tracking/>")
       val result = post(body)
 
-      status(result) shouldBe OK
+      status(result)                                              shouldBe OK
       (contentAsJson(result) \ "correlationId").as[String].length shouldBe 32
     }
 
     "reject an unknown queueIdentifier with 400" in {
       val result = post(fullRequest.as[JsObject] ++ Json.obj("queueIdentifier" -> "NOT_A_QUEUE"))
 
-      status(result) shouldBe BAD_REQUEST
+      status(result)                                 shouldBe BAD_REQUEST
       (contentAsJson(result) \ "message").as[String] shouldBe "Invalid request body"
     }
 
@@ -83,7 +83,7 @@ class ActiveMqProxyControllerSpec extends AnyWordSpec with Matchers with SpecBas
     "reject a correlationId that is not exactly 32 characters with 400" in {
       val result = post(fullRequest.as[JsObject] ++ Json.obj("correlationId" -> "too-short"))
 
-      status(result) shouldBe BAD_REQUEST
+      status(result)                               shouldBe BAD_REQUEST
       (contentAsJson(result) \ "message").as[String] should include("32 characters")
     }
   }
