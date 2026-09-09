@@ -910,7 +910,7 @@ class GamblingController @Inject() (
           Json.toJson(
             CorrespondenceDetails(
               mgdRegNumber      = "XGM00000001761",
-              nameLine1         = Some("UK - XGM00000001761"),
+              nameLine1         = Some("UK XGM00000001761"),
               nameLine2         = Some("9C - 1st Floor"),
               address1          = Some("5 Quick Silver Way"),
               address2          = Some("Cobalt Business Park"),
