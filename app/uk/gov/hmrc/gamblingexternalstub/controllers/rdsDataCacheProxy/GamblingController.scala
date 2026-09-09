@@ -352,7 +352,7 @@ class GamblingController @Inject() (
               repMemName         = Some("Some Name"),
               busAddrLine1       = Some("1 Quicksilver Way"),
               busAddrLine2       = Some("Cobalt Business Park"),
-              busAddrLine3       = None,
+              busAddrLine3       = Some("Newcastle"),
               busAddrLine4       = None,
               busPostcode        = Some("AA1 1AA"),
               busCountry         = Some("United Kingdom"),
@@ -696,34 +696,19 @@ class GamblingController @Inject() (
           )
         )
 
-      // Scenario 1
       case "XGM00000001761" =>
         Ok(
           Json.toJson(
             TradeClassDetails(
               mgdRegNumber         = mgdRegNumber,
-              businessTradeClass   = Some(1),
-              businessActivityDesc = "Adult Gaming Centre",
+              businessTradeClass   = Some(9),
+              businessActivityDesc = "Others Business Activity",
               systemDate           = Some(LocalDate.parse("2026-06-02"))
             )
           )
         )
 
-      // Scenario 2
       case "XGM00000001762" =>
-        Ok(
-          Json.toJson(
-            TradeClassDetails(
-              mgdRegNumber         = mgdRegNumber,
-              businessTradeClass   = Some(2),
-              businessActivityDesc = "Bingo",
-              systemDate           = Some(LocalDate.parse("2026-06-02"))
-            )
-          )
-        )
-
-      // Scenario 3 - no data
-      case "XMM00000000993" =>
         Ok(
           Json.toJson(
             TradeClassDetails(
@@ -735,15 +720,51 @@ class GamblingController @Inject() (
           )
         )
 
+      case "XGM00000001763" =>
+        Ok(
+          Json.toJson(
+            TradeClassDetails(
+              mgdRegNumber         = mgdRegNumber,
+              businessTradeClass   = Some(3),
+              businessActivityDesc = "Business Activity Description",
+              systemDate           = Some(LocalDate.parse("2026-05-31"))
+            )
+          )
+        )
+
+      case "XGM00000001764" =>
+        Ok(
+          Json.toJson(
+            TradeClassDetails(
+              mgdRegNumber         = mgdRegNumber,
+              businessTradeClass   = Some(6),
+              businessActivityDesc = "Business Activity Description",
+              systemDate           = Some(LocalDate.parse("2026-05-31"))
+            )
+          )
+        )
+
+      case "XGM00000001765" =>
+        Ok(
+          Json.toJson(
+            TradeClassDetails(
+              mgdRegNumber         = mgdRegNumber,
+              businessTradeClass   = Some(3),
+              businessActivityDesc = "Family Entertainment Centre Business Activity",
+              systemDate           = Some(LocalDate.parse("2026-05-31"))
+            )
+          )
+        )  
+
       // Default
       case reg =>
         Ok(
           Json.toJson(
             TradeClassDetails(
-              mgdRegNumber         = reg,
-              businessTradeClass   = Some(3),
-              businessActivityDesc = "Family Entertainment Centre",
-              systemDate           = Some(LocalDate.parse("2026-05-31"))
+              mgdRegNumber         = "",
+              businessTradeClass   = None,
+              businessActivityDesc = "",
+              systemDate           = None
             )
           )
         )
@@ -769,7 +790,76 @@ class GamblingController @Inject() (
             "message" -> "Unexpected error occurred"
           )
         )
+
       case "XGM00000001761" =>
+        Ok(
+          Json.toJson(
+            MgdDetails(
+              mgdRegNumber       = mgdRegNumber,
+              isBusinessSeasonal = Some(1),
+              previousMgdrn1     = Some("XMM00000000448"),
+              previousMgdrn2     = None,
+              previousMgdrn3     = None,
+              associatedMgdrn1   = Some("XZM00000000469"),
+              associatedMgdrn2   = None,
+              associatedMgdrn3   = None,
+              systemDate         = Some(LocalDate.parse("2026-06-06"))
+            )
+          )
+        )
+
+      case "XGM00000001762" =>
+        Ok(
+          Json.toJson(
+            MgdDetails(
+              mgdRegNumber       = mgdRegNumber,
+              isBusinessSeasonal = None,
+              previousMgdrn1     = Some("XMM00000000448"),
+              previousMgdrn2     = Some("XBM00000000451"),
+              previousMgdrn3     = Some("XYM00000000466"),
+              associatedMgdrn1   = None,
+              associatedMgdrn2   = None,
+              associatedMgdrn3   = None,
+              systemDate         = Some(LocalDate.parse("2026-06-06"))
+            )
+          )
+        )
+
+      case "XGM00000001763" =>
+        Ok(
+          Json.toJson(
+            MgdDetails(
+              mgdRegNumber       = mgdRegNumber,
+              isBusinessSeasonal = Some(0),
+              previousMgdrn1     = Some("XMM00000000448"),
+              previousMgdrn2     = Some("XBM00000000451"),
+              previousMgdrn3     = None,
+              associatedMgdrn1   = Some("XZM00000000469"),
+              associatedMgdrn2   = Some("XJM00000000472"),
+              associatedMgdrn3   = None,
+              systemDate         = Some(LocalDate.parse("2026-06-06"))
+            )
+          )
+        )
+
+      case "XGM00000001764" =>
+        Ok(
+          Json.toJson(
+            MgdDetails(
+              mgdRegNumber       = mgdRegNumber,
+              isBusinessSeasonal = Some(1),
+              previousMgdrn1     = Some("XMM00000000448"),
+              previousMgdrn2     = Some("XBM00000000451"),
+              previousMgdrn3     = None,
+              associatedMgdrn1   = Some("XZM00000000469"),
+              associatedMgdrn2   = Some("XJM00000000472"),
+              associatedMgdrn3   = None,
+              systemDate         = Some(LocalDate.parse("2026-06-06"))
+            )
+          )
+        )
+
+      case "XGM00000001765" =>
         Ok(
           Json.toJson(
             MgdDetails(
@@ -780,26 +870,8 @@ class GamblingController @Inject() (
               previousMgdrn3     = Some("XYM00000000466"),
               associatedMgdrn1   = Some("XZM00000000469"),
               associatedMgdrn2   = Some("XJM00000000472"),
-              associatedMgdrn3   = Some("XPM00000000475"),
-              systemDate         = Some(LocalDate.parse("2026-06-02"))
-            )
-          )
-        )
-
-      // EVERYTHING ELSE = no data
-      case "XMM00000000993" =>
-        Ok(
-          Json.toJson(
-            MgdDetails(
-              mgdRegNumber       = "",
-              isBusinessSeasonal = None,
-              previousMgdrn1     = None,
-              previousMgdrn2     = None,
-              previousMgdrn3     = None,
-              associatedMgdrn1   = None,
-              associatedMgdrn2   = None,
-              associatedMgdrn3   = None,
-              systemDate         = None
+              associatedMgdrn3   = Some("XMM00000000448"),
+              systemDate         = Some(LocalDate.parse("2026-06-06"))
             )
           )
         )
@@ -810,14 +882,14 @@ class GamblingController @Inject() (
           Json.toJson(
             MgdDetails(
               mgdRegNumber       = mgdRegNumber,
-              isBusinessSeasonal = Some(1),
-              previousMgdrn1     = Some("XWM00000001774"),
-              previousMgdrn2     = Some("XDM00000001309"),
+              isBusinessSeasonal = None,
+              previousMgdrn1     = None,
+              previousMgdrn2     = None,
               previousMgdrn3     = None,
-              associatedMgdrn1   = Some("XXM00000000723"),
-              associatedMgdrn2   = Some("XQM00000001196"),
+              associatedMgdrn1   = None,
+              associatedMgdrn2   = None,
               associatedMgdrn3   = None,
-              systemDate         = Some(LocalDate.parse("2026-05-31"))
+              systemDate         = Some(LocalDate.parse("2026-06-06"))
             )
           )
         )
@@ -832,6 +904,54 @@ class GamblingController @Inject() (
       case "invalid" => invalidResponse
 
       case "error" => errorResponse
+
+      case "XGM00000001761" =>
+        Ok(
+          Json.toJson(
+            CorrespondenceDetails(
+              mgdRegNumber      = "XGM00000001761",
+              nameLine1         = Some("Correspondence Address"),
+              nameLine2         = Some("Additional Correspondence Address"),
+              address1          = Some("5 Quick Silver Way"),
+              address2          = Some("Cobalt Business Park"),
+              address3          = Some("Newcastle upon Tyne"),
+              address4          = None,
+              country           = None,
+              postcode          = Some("NE27 0QQ"),
+              phoneNumber       = Some("05555333001"),
+              mobilePhoneNumber = Some("05555333002"),
+              faxNumber         = Some("05555333003"),
+              emailAddr         = Some("email1@example.com"),
+              adi               = Some("Building 9C"),
+              iomOrCiFlag       = Some("false"),
+              Some(fixedDate)
+            )
+          )
+        )
+
+      case "XGM00000001762" =>
+        Ok(
+          Json.toJson(
+            CorrespondenceDetails(
+              mgdRegNumber      = "XGM00000001762",
+              nameLine1         = Some("Madrid"),
+              nameLine2         = Some("Home"),
+              address1          = Some("Flat 1"),
+              address2          = Some("10 Market Calle"),
+              address3          = Some("Madrid"),
+              address4          = None,
+              country           = Some("Spain"),
+              postcode          = None,
+              phoneNumber       = Some("0798765"),
+              mobilePhoneNumber = Some("7093434765"),
+              faxNumber         = Some("098765678"),
+              emailAddr         = Some("a@b.com"),
+              adi               = Some("Flat 1"),
+              iomOrCiFlag       = Some("false"),
+              Some(fixedDate)
+            )
+          )
+        )
 
       case "XGM00000001763" =>
         Ok(

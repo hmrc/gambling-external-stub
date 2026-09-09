@@ -43,21 +43,20 @@ class GamblingBusinessContactDetailsControllerSpec extends AnyWordSpec with Matc
     "return business contact details for the return summary scenario registration numbers" in {
       Seq(
         "XGM00000001761",
-        "GAM0000000001",
         "XGM00000001762",
-        "GAM0000000010",
         "XGM00000001763",
-        "GAM0000000012"
+        "XGM00000001764",
+        "XGM00000001765"
       ).foreach { mgdRegNumber =>
         val result = controller.getBusinessContactDetails(mgdRegNumber)(FakeRequest())
 
         status(result) shouldBe OK
         contentAsJson(result) shouldBe Json.obj(
           "mgdRegNumber"      -> mgdRegNumber,
-          "phoneNumber"       -> "07700900999",
-          "mobilePhoneNumber" -> "07700900999",
-          "faxNumber"         -> "07700900999",
-          "emailAddr"         -> "viv@xyz.com",
+          "phoneNumber"       -> "09876543212345678",
+          "mobilePhoneNumber" -> "09876543212345678",
+          "faxNumber"         -> "09876543212345678",
+          "emailAddr"         -> "test@example.com",
           "systemDate"        -> LocalDate.now().toString
         )
       }

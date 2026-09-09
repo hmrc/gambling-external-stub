@@ -53,10 +53,49 @@ object BusinessAddressDetails {
     mgdRegNumber,
     adi         = Some("1st floor"),
     address1    = Some("address1"),
-    postcode    = Some("L1 8YL"),
-    country     = Some("IRELAND"),
-    iomOrCiFlag = Some("TRUE"),
+    postcode    = Some("EH8 7AU"),
+    country     = Some("Scotland"),
+    iomOrCiFlag = Some("FALSE"),
     systemDate  = Some(LocalDate.now())
+  )
+
+  def nonUKModel(mgdRegNumber: String): BusinessAddressDetails = BusinessAddressDetails(
+    mgdRegNumber,
+    adi         = Some("Additional information for Non UK business address"),
+    address1    = Some("Address Line 1"),
+    address2    = Some("Address Line 2"),
+    address3    = Some("Amsterdam"),
+    address4    = Some("1011 AE"),
+    postcode    = None,
+    country     = Some("Netherlands"),
+    iomOrCiFlag = Some("FALSE"),
+    systemDate  = Some(LocalDate.now())
+  )
+
+  def iomCIUKModel(mgdRegNumber: String): BusinessAddressDetails = BusinessAddressDetails(
+    mgdRegNumber,
+    adi = Some("Additional information for business address is Building number 123 opposite to Riverside Mills"),
+    address1 = Some("Ballaquark"),
+    address2 = Some("Douglas"),
+    address3 = None,
+    address4 = Some("The Isle of Man"),
+    postcode = Some("IM2 2ER"),
+    country = Some("United Kingdom"),
+    iomOrCiFlag = Some("TRUE"),
+    systemDate = Some(LocalDate.now())
+  )
+
+  def nonMandatoryModel(mgdRegNumber: String): BusinessAddressDetails = BusinessAddressDetails(
+    mgdRegNumber,
+    adi = None,
+    address1 = Some("Ballaquark"),
+    address2 = None,
+    address3 = None,
+    address4 = None,
+    postcode = None,
+    country = None,
+    iomOrCiFlag = None,
+    systemDate = Some(LocalDate.now())
   )
 
   def noDataModel(): BusinessAddressDetails = BusinessAddressDetails(mgdRegNumber = "")
