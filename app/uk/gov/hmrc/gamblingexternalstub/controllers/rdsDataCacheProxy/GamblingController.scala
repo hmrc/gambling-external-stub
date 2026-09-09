@@ -910,17 +910,17 @@ class GamblingController @Inject() (
           Json.toJson(
             CorrespondenceDetails(
               mgdRegNumber      = "XGM00000001761",
-              nameLine1         = Some("Correspondence Address"),
-              nameLine2         = Some("Additional Correspondence Address"),
+              nameLine1         = Some("UK - XGM00000001761"),
+              nameLine2         = Some("9C - 1st Floor"),
               address1          = Some("5 Quick Silver Way"),
               address2          = Some("Cobalt Business Park"),
               address3          = Some("Newcastle upon Tyne"),
-              address4          = None,
+              address4          = Some("Newcastle"),
               country           = None,
               postcode          = Some("NE27 0QQ"),
-              phoneNumber       = Some("05555333001"),
-              mobilePhoneNumber = Some("05555333002"),
-              faxNumber         = Some("05555333003"),
+              phoneNumber       = Some("01000001761"),
+              mobilePhoneNumber = Some("01000001761"),
+              faxNumber         = Some("01000001761"),
               emailAddr         = Some("email1@example.com"),
               adi               = Some("Building 9C"),
               iomOrCiFlag       = Some("false"),
@@ -934,19 +934,19 @@ class GamblingController @Inject() (
           Json.toJson(
             CorrespondenceDetails(
               mgdRegNumber      = "XGM00000001762",
-              nameLine1         = Some("Madrid"),
-              nameLine2         = Some("Home"),
-              address1          = Some("Flat 1"),
-              address2          = Some("10 Market Calle"),
-              address3          = Some("Madrid"),
+              nameLine1         = None,
+              nameLine2         = None,
+              address1          = None,
+              address2          = None,
+              address3          = None,
               address4          = None,
-              country           = Some("Spain"),
+              country           = None,
               postcode          = None,
-              phoneNumber       = Some("0798765"),
-              mobilePhoneNumber = Some("7093434765"),
-              faxNumber         = Some("098765678"),
-              emailAddr         = Some("a@b.com"),
-              adi               = Some("Flat 1"),
+              phoneNumber       = None,
+              mobilePhoneNumber = None,
+              faxNumber         = None,
+              emailAddr         = None,
+              adi               = None,
               iomOrCiFlag       = Some("false"),
               Some(fixedDate)
             )
@@ -958,20 +958,68 @@ class GamblingController @Inject() (
           Json.toJson(
             CorrespondenceDetails(
               mgdRegNumber      = "XGM00000001763",
-              nameLine1         = Some("Madrid"),
-              nameLine2         = Some("Home"),
-              address1          = Some("Flat 1"),
-              address2          = Some("10 Market Calle"),
-              address3          = Some("Madrid"),
-              address4          = None,
-              country           = Some("Spain"),
+              nameLine1         = Some("UK Address with mandatory fields - XGM00000001763"),
+              nameLine2         = None,
+              address1          = Some("5 Quick Silver Way"),
+              address2          = Some("Cobalt Business Park"),
+              address3          = Some("Newcastle upon Tyne"),
+              address4          = Some("Newcastle"),
+              country           = None,
+              postcode          = Some("NE27 0QQ"),
+              phoneNumber       = Some("01000001761"),
+              mobilePhoneNumber = None,
+              faxNumber         = None,
+              emailAddr         = None,
+              adi               = None,
+              iomOrCiFlag       = None,
+              Some(fixedDate)
+            )
+          )
+        )
+
+      case "XGM00000001764" =>
+        Ok(
+          Json.toJson(
+            CorrespondenceDetails(
+              mgdRegNumber      = "XGM00000001764",
+              nameLine1         = Some("Non UK address - XGM00000001764"),
+              nameLine2         = Some("9C - 1st Floor"),
+              address1          = Some("5 Quick Silver Way"),
+              address2          = Some("Cobalt Business Park"),
+              address3          = Some("Amsderdam"),
+              address4          = Some("1127 AA"),
+              country           = Some("Netherlands"),
               postcode          = None,
-              phoneNumber       = Some("0798765"),
-              mobilePhoneNumber = Some("7093434765"),
-              faxNumber         = Some("098765678"),
-              emailAddr         = Some("a@b.com"),
-              adi               = Some("Flat 1"),
-              iomOrCiFlag       = Some("false"),
+              phoneNumber       = Some("01000001764"),
+              mobilePhoneNumber = Some("01000001764"),
+              faxNumber         = Some("01000001764"),
+              emailAddr         = Some("email-nonuk-address@example.com"),
+              adi               = Some("Non UK Address"),
+              iomOrCiFlag       = Some("true"),
+              Some(fixedDate)
+            )
+          )
+        )
+
+      case "XGM00000001765" =>
+        Ok(
+          Json.toJson(
+            CorrespondenceDetails(
+              mgdRegNumber      = "XGM00000001765",
+              nameLine1         = None,
+              nameLine2         = None,
+              address1          = None,
+              address2          = None,
+              address3          = None,
+              address4          = None,
+              country           = None,
+              postcode          = None,
+              phoneNumber       = None,
+              mobilePhoneNumber = None,
+              faxNumber         = None,
+              emailAddr         = None,
+              adi               = None,
+              iomOrCiFlag       = None,
               Some(fixedDate)
             )
           )
@@ -982,19 +1030,19 @@ class GamblingController @Inject() (
           Json.toJson(
             CorrespondenceDetails(
               mgdRegNumber      = reg,
-              nameLine1         = Some("Gateshead"),
-              nameLine2         = Some("Home"),
-              address1          = Some("Flat 1"),
-              address2          = Some("10 Market Road"),
-              address3          = Some("Felling"),
-              address4          = Some("Gateshead"),
-              country           = Some("UK"),
-              postcode          = Some("NE8 1ZZ"),
-              phoneNumber       = Some("0798765"),
-              mobilePhoneNumber = Some("7093434765"),
-              faxNumber         = Some("098765678"),
-              emailAddr         = Some("a@b.com"),
-              adi               = Some("Flat 1"),
+              nameLine1         = Some("Default correspondence name"),
+              nameLine2         = Some("Default additional correspondence name"),
+              address1          = Some("Default correspondence address line 1"),
+              address2          = Some("Default correspondence address line 2"),
+              address3          = Some("Default correspondence address town or city"),
+              address4          = Some("Default correspondence address county"),
+              country           = None,
+              postcode          = Some("AA11 1AA"),
+              phoneNumber       = Some("01000000001"),
+              mobilePhoneNumber = Some("01000000002"),
+              faxNumber         = Some("01000000003"),
+              emailAddr         = Some("dafault-email@example.com"),
+              adi               = Some("Default Correspondence address additional information"),
               iomOrCiFlag       = Some("false"),
               Some(fixedDate)
             )
