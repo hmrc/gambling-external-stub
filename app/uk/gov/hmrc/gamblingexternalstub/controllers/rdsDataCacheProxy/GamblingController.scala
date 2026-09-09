@@ -754,7 +754,7 @@ class GamblingController @Inject() (
               systemDate           = Some(LocalDate.parse("2026-05-31"))
             )
           )
-        )  
+        )
 
       // Default
       case reg =>

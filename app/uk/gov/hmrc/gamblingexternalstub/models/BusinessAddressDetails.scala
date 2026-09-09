@@ -74,28 +74,28 @@ object BusinessAddressDetails {
 
   def iomCIUKModel(mgdRegNumber: String): BusinessAddressDetails = BusinessAddressDetails(
     mgdRegNumber,
-    adi = Some("Additional information for business address is Building number 123 opposite to Riverside Mills"),
-    address1 = Some("Ballaquark"),
-    address2 = Some("Douglas"),
-    address3 = None,
-    address4 = Some("The Isle of Man"),
-    postcode = Some("IM2 2ER"),
-    country = Some("United Kingdom"),
+    adi         = Some("Additional information for business address is Building number 123 opposite to Riverside Mills"),
+    address1    = Some("Ballaquark"),
+    address2    = Some("Douglas"),
+    address3    = None,
+    address4    = Some("The Isle of Man"),
+    postcode    = Some("IM2 2ER"),
+    country     = Some("United Kingdom"),
     iomOrCiFlag = Some("TRUE"),
-    systemDate = Some(LocalDate.now())
+    systemDate  = Some(LocalDate.now())
   )
 
   def nonMandatoryModel(mgdRegNumber: String): BusinessAddressDetails = BusinessAddressDetails(
     mgdRegNumber,
-    adi = None,
-    address1 = Some("Ballaquark"),
-    address2 = None,
-    address3 = None,
-    address4 = None,
-    postcode = None,
-    country = None,
+    adi         = None,
+    address1    = Some("Ballaquark"),
+    address2    = None,
+    address3    = None,
+    address4    = None,
+    postcode    = None,
+    country     = None,
     iomOrCiFlag = None,
-    systemDate = Some(LocalDate.now())
+    systemDate  = Some(LocalDate.now())
   )
 
   def noDataModel(): BusinessAddressDetails = BusinessAddressDetails(mgdRegNumber = "")

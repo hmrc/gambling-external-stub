@@ -20,7 +20,7 @@ import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.gamblingexternalstub.models.*
-import uk.gov.hmrc.gamblingexternalstub.models.BusinessAddressDetails.{fullModel, noDataModel, partialModel, nonUKModel, iomCIUKModel, nonMandatoryModel}
+import uk.gov.hmrc.gamblingexternalstub.models.BusinessAddressDetails.{fullModel, iomCIUKModel, noDataModel, nonMandatoryModel, nonUKModel, partialModel}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.Inject
@@ -56,7 +56,7 @@ class GamblingBusinessController @Inject() (
 
         // no data
         case "XGM00000001765" =>
-          Ok(Json.toJson(nonMandatoryModel(sanitized)))  
+          Ok(Json.toJson(nonMandatoryModel(sanitized)))
 
         case "XGM00000000400" =>
           BadRequest(
