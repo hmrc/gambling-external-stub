@@ -32,15 +32,19 @@ class GamblingBusinessContactDetailsController @Inject() (
 
     mgdRegNumber match {
       // Overdue
-      case "XGM00000001761" | "GAM0000000001" =>
+      case "XGM00000001761" =>
         Ok(Json.toJson(businessContactDetails(mgdRegNumber)))
 
-      // Returns Due
-      case "XGM00000001762" | "GAM0000000010" =>
+      case "XGM00000001762" =>
         Ok(Json.toJson(businessContactDetails(mgdRegNumber)))
 
-      // Both returns due and overdue exists
-      case "XGM00000001763" | "GAM0000000012" =>
+      case "XGM00000001763" =>
+        Ok(Json.toJson(businessContactDetails(mgdRegNumber)))
+
+      case "XGM00000001764" =>
+        Ok(Json.toJson(businessContactDetails(mgdRegNumber)))
+
+      case "XGM00000001765" =>
         Ok(Json.toJson(businessContactDetails(mgdRegNumber)))
 
       case "XGM00000000200" =>
@@ -102,10 +106,11 @@ class GamblingBusinessContactDetailsController @Inject() (
   private def businessContactDetails(mgdRegNumber: String): BusinessContactDetails =
     BusinessContactDetails(
       mgdRegNumber      = mgdRegNumber,
-      phoneNumber       = "07700900999",
-      mobilePhoneNumber = "07700900999",
-      faxNumber         = "07700900999",
-      emailAddr         = "viv@xyz.com",
+      phoneNumber       = "09876543212345678",
+      mobilePhoneNumber = "09876543212345678",
+      faxNumber         = "09876543212345678",
+      emailAddr         = "test@example.com",
       systemDate        = LocalDate.now().toString
     )
+
 }

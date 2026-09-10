@@ -62,9 +62,9 @@ class GamblingBusinessControllerSpec extends AnyWordSpec with Matchers with Spec
           mgdRegNumber = "XGM00000001762",
           adi          = Some("1st floor"),
           address1     = Some("address1"),
-          postcode     = Some("L1 8YL"),
-          country      = Some("IRELAND"),
-          iomOrCiFlag  = Some("TRUE"),
+          postcode     = Some("EH8 7AU"),
+          country      = Some("Scotland"),
+          iomOrCiFlag  = Some("FALSE"),
           systemDate   = Some(LocalDate.now())
         )
       )
