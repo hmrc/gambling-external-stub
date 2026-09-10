@@ -267,7 +267,7 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
       status(result)                                   shouldBe OK
       (contentAsJson(result) \ "businessType").as[Int] shouldBe 2
-      (contentAsJson(result) \ "groupReg").as[Boolean] shouldBe false
+      (contentAsJson(result) \ "groupReg").as[Boolean] shouldBe true
     }
 
     "return BAD_REQUEST for invalid" in {
