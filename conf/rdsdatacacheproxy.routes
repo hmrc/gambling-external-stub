@@ -66,3 +66,5 @@ GET     /gambling/licence-details/:regime/:regNumber       uk.gov.hmrc.gamblinge
 
 PUT     /gambling/update-status-period/:regime/:registrationNo/:consecNo  uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingFilingController.updateStatusPeriod(regime: String, registrationNo: String, consecNo: Int)
 
+GET     /gambling/controlling-body-details/:regime/:regNumber       uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingControlBodyController.getControlBodyDetails(regime: String, regNumber: String)
+
