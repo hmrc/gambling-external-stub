@@ -35,6 +35,25 @@ class GamblingLicensesAndPremisesControllerSpec extends AnyWordSpec with Matcher
 
   "GamblingLicensesAndPremisesController#getPremisesDetails" should {
 
+    "return all 100 RDS premises for XGM00000001764" in {
+      val result = controller.getPremisesDetails("MGD", "XGM00000001764")(FakeRequest())
+
+      status(result) shouldBe OK
+      val response = contentAsJson(result).as[Response]
+      response.totalRows                             shouldBe Some(100)
+      response.premises.size                         shouldBe 100
+      response.premises.map(_.mgdRegNumber).distinct shouldBe Seq("XGM00000001764")
+      response.premises.map(_.systemDate).distinct   shouldBe Seq(Some(LocalDate.parse("2026-09-01")))
+      response.premises.filter(_.postcode.contains("TF3 2BP")).map(_.address1).toSet shouldBe
+        (1 to 90).map(n => Some(s"$n Dalford Court")).toSet
+      response.premises.filter(_.postcode.contains("TF1 5LU")).map(_.address1).toSet shouldBe
+        (1 to 10).map(n => Some(s"$n Bricklin Mews")).toSet
+      response.premises.count(_.address4.contains("Shropshire")) shouldBe 10
+      response.premises.count(_.address4.isEmpty)                shouldBe 90
+      response.premises.head.address1                            shouldBe Some("14 Dalford Court")
+      response.premises.last.address1                            shouldBe Some("15 Dalford Court")
+    }
+
     "return total rows for XGM00000001763" in {
       val result = controller.getPremisesDetails("MGD", "XGM00000001763")(FakeRequest())
 
@@ -73,8 +92,8 @@ class GamblingLicensesAndPremisesControllerSpec extends AnyWordSpec with Matcher
       )
     }
 
-    "return nothing for XGM00000001764" in {
-      val result = controller.getPremisesDetails("MGD", "XGM00000001764")(FakeRequest())
+    "return nothing for XYM00000000699" in {
+      val result = controller.getPremisesDetails("MGD", "XYM00000000699")(FakeRequest())
 
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
@@ -99,7 +118,7 @@ class GamblingLicensesAndPremisesControllerSpec extends AnyWordSpec with Matcher
     }
 
     "return BAD_REQUEST for error" in {
-      val result = controller.getPremisesDetails("GTR", "XGM00000001764")(FakeRequest())
+      val result = controller.getPremisesDetails("GTR", "XYM00000000699")(FakeRequest())
 
       status(result) shouldBe BAD_REQUEST
     }
