@@ -51,23 +51,23 @@ class GamblingController @Inject() (
         )
 
       // Scenario 1 → overdue exists
-      case "XGM00000001761" | "GAM0000000001" =>
+      case "XGM00000001761" =>
         Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 0, returnsOverdue = 1)))
 
       // Scenario 2 → returns due
-      case "XGM00000001762" | "GAM0000000002" =>
+      case "XGM00000001762" =>
         Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 1, returnsOverdue = 2)))
 
       // Scenario 3 → both returns due and overdue exists
-      case "XGM00000001763" | "GAM0000000003" =>
+      case "XGM00000001763" =>
         Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 0, returnsOverdue = 11)))
 
       // Scenario 1 → overdue exists
-      case "XGM00000001764" | "GAM0000000004" =>
+      case "XGM00000001764" =>
         Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 11, returnsOverdue = 1)))
 
       // Scenario 2 → returns due
-      case "XGM00000001765" | "GAM0000000005" =>
+      case "XGM00000001765" =>
         Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 11, returnsOverdue = 11)))
 
       // default fallback
@@ -97,7 +97,7 @@ class GamblingController @Inject() (
         )
 
       // Scenario 1
-      case "XGM00000001761" | "GAM0000000001" =>
+      case "XGM00000001761" =>
         Ok(
           Json.toJson(
             BusinessName(
@@ -115,7 +115,7 @@ class GamblingController @Inject() (
         )
 
       // Scenario 2
-      case "XGM00000001762" | "GAM0000000002" =>
+      case "XGM00000001762" =>
         Ok(
           Json.toJson(
             BusinessName(
@@ -133,7 +133,7 @@ class GamblingController @Inject() (
         )
 
       // Scenario 3 →
-      case "XGM00000001763" | "GAM0000000003" =>
+      case "XGM00000001763" =>
         Ok(
           Json.toJson(
             BusinessName(
@@ -150,7 +150,7 @@ class GamblingController @Inject() (
           )
         )
 
-      case "XGM00000001764" | "GAM0000000004" =>
+      case "XGM00000001764" =>
         Ok(
           Json.toJson(
             BusinessName(
@@ -167,7 +167,7 @@ class GamblingController @Inject() (
           )
         )
 
-      case "XGM00000001765" | "GAM0000000005" =>
+      case "XGM00000001765" =>
         Ok(
           Json.toJson(
             BusinessName(
@@ -224,7 +224,7 @@ class GamblingController @Inject() (
           )
         )
 
-      case "XGM00000001761" | "GAM0000000001" =>
+      case "XGM00000001761" =>
         Ok(
           Json.toJson(
             BusinessDetails(
@@ -239,14 +239,14 @@ class GamblingController @Inject() (
           )
         )
 
-      case "XGM00000001762" | "GAM0000000002" =>
+      case "XGM00000001762" =>
         Ok(
           Json.toJson(
             BusinessDetails(
               mgdRegNumber,
               businessType          = Some(BusinessType.CorporateBody),
               currentlyRegistered   = 0,
-              groupReg              = false,
+              groupReg              = true,
               dateOfRegistration    = Some(LocalDate.of(1991, 1, 1)),
               businessPartnerNumber = Some("bar"),
               systemDate            = LocalDate.of(1991, 1, 1)
@@ -254,7 +254,7 @@ class GamblingController @Inject() (
           )
         )
 
-      case "XGM00000001763" | "GAM0000000003" =>
+      case "XGM00000001763" =>
         Ok(
           Json.toJson(
             BusinessDetails(
@@ -269,7 +269,7 @@ class GamblingController @Inject() (
           )
         )
 
-      case "XGM00000001764" | "GAM0000000004" =>
+      case "XGM00000001764" =>
         Ok(
           Json.toJson(
             BusinessDetails(
@@ -284,7 +284,7 @@ class GamblingController @Inject() (
           )
         )
 
-      case "XGM00000001765" | "GAM0000000005" =>
+      case "XGM00000001765" =>
         Ok(
           Json.toJson(
             BusinessDetails(
