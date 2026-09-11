@@ -25,6 +25,7 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import java.time.LocalDate
 import javax.inject.Inject
+import scala.util.Using
 
 class GamblingLicensesAndPremisesController @Inject() (
   cc: ControllerComponents
@@ -32,6 +33,10 @@ class GamblingLicensesAndPremisesController @Inject() (
     with Logging {
 
   private val supportedRegimes = List(Regime.MGD)
+
+  private lazy val premisesDetails = Using.resource(
+    getClass.getResourceAsStream("/data/premises-details/XGM00000001764.json")
+  )(Json.parse)
 
   def getPremisesDetails(regime: String, mgdRegNumber: String): Action[AnyContent] = Action { _ =>
     if (!Regime.fromString(regime.trim.toLowerCase()).exists(supportedRegimes.contains)) {
@@ -42,6 +47,19 @@ class GamblingLicensesAndPremisesController @Inject() (
         case "invalid" => invalidResponse
 
         case "error" => errorResponse
+
+        case "XGM00000001764" => Ok(premisesDetails)
+
+        case "XYM00000000699" =>
+          Ok(
+            Json.toJson(
+              Response(
+                totalRows = Some(0),
+                premises = Seq(
+                )
+              )
+            )
+          )
 
         case "XGM00000001763" =>
           Ok(
@@ -58,17 +76,6 @@ class GamblingLicensesAndPremisesController @Inject() (
                     postcode     = None,
                     Some(fixedDate)
                   )
-                )
-              )
-            )
-          )
-
-        case "XGM00000001764" =>
-          Ok(
-            Json.toJson(
-              Response(
-                totalRows = Some(0),
-                premises = Seq(
                 )
               )
             )

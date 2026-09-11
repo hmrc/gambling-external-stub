@@ -759,8 +759,35 @@ Stubs the [`activemq-proxy`](https://github.com/hmrc/activemq-proxy) service so 
 
 See [docs/activemq-proxy-queue-send.md](docs/activemq-proxy-queue-send.md) for full details including the request schema, permitted queue identifiers, all response scenarios, and example curl commands.
 
+---
 
+### 23. Premises details RDS data
 
+#### Success response (no data)
+
+```text
+GET http://localhost:10405/rds-datacache-proxy/gambling/premises-details/MGD/XYM00000000699
+```
+
+Returns `200 OK` with an empty premises list:
+
+```json
+{
+  "totalRows": 0,
+  "premises": []
+}
+```
+
+#### Success response (with data)
+
+```text
+GET http://localhost:10405/rds-datacache-proxy/gambling/premises-details/MGD/XGM00000001764
+```
+
+Returns `200 OK` with `totalRows: 100`. The supplied premises have 90 Dalford Court addresses and 10 Bricklin Mews
+addresses. All records have `systemDate: "2026-09-01"`.
+
+The complete response is stored in [the test data file](conf/data/premises-details/XGM00000001764.json).
 
 ## License
 
