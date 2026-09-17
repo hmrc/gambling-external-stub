@@ -16,27 +16,47 @@
 
 package uk.gov.hmrc.gamblingexternalstub.services
 
+import com.google.common.cache.{Cache, CacheBuilder}
 import uk.gov.hmrc.gamblingexternalstub.models.OpenPeriod
 
+import java.util.concurrent.TimeUnit
 import javax.inject.{Inject, Singleton}
-import scala.collection.concurrent.TrieMap
 
 @Singleton
 class OpenPeriodCacheService @Inject() () {
 
-  private val cache = TrieMap.empty[(String, Int), OpenPeriod]
+  private val cache: Cache[String, Map[Int, OpenPeriod]] =
+    CacheBuilder
+      .newBuilder()
+      .maximumSize(1000)
+      .expireAfterWrite(1, TimeUnit.HOURS)
+      .build()
+
+  private[services] def size: Long = {
+    cache.cleanUp()
+    cache.size()
+  }
 
   def getForRegNumber(regNumber: String): Seq[OpenPeriod] =
-    cache.collect { case ((rn, _), period) if rn == regNumber => period }.toSeq
+    Option(cache.getIfPresent(regNumber)).map(_.values.toSeq).getOrElse(Seq.empty)
 
   def putAll(regNumber: String, periods: Seq[OpenPeriod]): Unit =
-    periods.foreach(p => cache.update((regNumber, p.consecNo), p))
+    cache.put(regNumber, periods.map(p => p.consecNo -> p).toMap)
 
-  def updateStatus(regNumber: String, consecNo: Int, status: Int): Boolean =
-    cache.get((regNumber, consecNo)) match {
-      case Some(period) =>
-        cache.update((regNumber, consecNo), period.copy(status = status))
-        true
-      case None => false
-    }
+  def updateStatus(regNumber: String, consecNo: Int, status: Int): Boolean = {
+    var updated = false
+    cache
+      .asMap()
+      .computeIfPresent(
+        regNumber,
+        (_, periods) =>
+          periods.get(consecNo) match {
+            case Some(period) =>
+              updated = true
+              periods.updated(consecNo, period.copy(status = status))
+            case None => periods
+          }
+      )
+    updated
+  }
 }

@@ -118,7 +118,7 @@ class GamblingOpenReturnsController @Inject() (
             s"[getOpenPeriods] regime=$regime regNumber=$regNumber sortBy=$sortBy orderBy=$orderBy sort=$sort order=$order"
           )
 
-          val cached = cache.getForRegNumber(regNumber).filter(_.status != 1)
+          val cached = cache.getForRegNumber(regNumber)
           val allRecords =
             if (cached.nonEmpty) cached
             else {
@@ -130,7 +130,7 @@ class GamblingOpenReturnsController @Inject() (
           Ok(
             Json.toJson(
               OpenReturnPeriods(
-                openPeriods = allRecords.sortWith(orderFunc)
+                openPeriods = allRecords.filter(_.status != 0).sortWith(orderFunc)
               )
             )
           )
@@ -148,7 +148,7 @@ class GamblingOpenReturnsController @Inject() (
       consecNo = consecNo,
       period   = s"${periodStart.format(formatter)} - ${periodEnd.format(formatter)}",
       dueDate  = dueDate,
-      status   = 0
+      status   = if (consecNo % 2 == 0) 1 else 2
     )
   }
 }

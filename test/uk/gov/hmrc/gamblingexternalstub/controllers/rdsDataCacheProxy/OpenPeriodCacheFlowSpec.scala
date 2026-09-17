@@ -43,16 +43,16 @@ class OpenPeriodCacheFlowSpec extends AnyWordSpec with Matchers with SpecBase {
       status(firstResult) shouldBe OK
       val firstItems = (contentAsJson(firstResult) \ "openPeriods").as[JsArray].value
       firstItems.length                                                                 shouldBe 3
-      firstItems.find(item => (item \ "consecNo").as[Int] == 2).get.\("status").as[Int] shouldBe 2 // consecNo=2 -> 2 % 3 = 2 (per stub generation)
+      firstItems.find(item => (item \ "consecNo").as[Int] == 2).get.\("status").as[Int] shouldBe 1
 
-      val closeResult = putStatus("MGD", regNumber, 2, newStatus = 1)
+      val closeResult = putStatus("MGD", regNumber, 2, newStatus = 0)
       status(closeResult) shouldBe NO_CONTENT
 
       val secondResult = openReturnsController.getOpenPeriods("MGD", regNumber, None, None)(FakeRequest())
       status(secondResult) shouldBe OK
       val secondItems = (contentAsJson(secondResult) \ "openPeriods").as[JsArray].value
-      secondItems.length                                                                 shouldBe 3
-      secondItems.find(item => (item \ "consecNo").as[Int] == 2).get.\("status").as[Int] shouldBe 1
+      secondItems.length                                           shouldBe 2
+      secondItems.exists(item => (item \ "consecNo").as[Int] == 2) shouldBe false
     }
 
     "leave a period unaffected if updateStatusPeriod targets a regNumber never seen by getOpenPeriods" in {

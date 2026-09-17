@@ -170,7 +170,7 @@ class GamblingOpenReturnsControllerSpec extends AnyWordSpec with Matchers with S
       statuses shouldBe statuses.sorted.reverse
     }
 
-    "assign status as consecNo modulo 3 (cycling through 0, 1, 2)" in {
+    "assign status as 1 (open) for even consecNo and 2 (overdue) for odd consecNo" in {
       val result = controller.getOpenPeriods("MGD", "XWM00003104200", Some(2), None)(FakeRequest())
 
       status(result) shouldBe OK
@@ -179,7 +179,7 @@ class GamblingOpenReturnsControllerSpec extends AnyWordSpec with Matchers with S
 
       items.foreach { item =>
         val consecNo = (item \ "consecNo").as[Int]
-        (item \ "status").as[Int] shouldBe consecNo % 3
+        (item \ "status").as[Int] shouldBe (if (consecNo % 2 == 0) 1 else 2)
       }
     }
   }
