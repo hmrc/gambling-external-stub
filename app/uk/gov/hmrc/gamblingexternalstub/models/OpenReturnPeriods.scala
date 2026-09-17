@@ -24,7 +24,7 @@ final case class OpenPeriod(
   consecNo: Int,
   period: String,
   dueDate: LocalDate,
-  status: Int
+  status: Int // 0 = open, 1 = closed
 )
 
 object OpenPeriod {

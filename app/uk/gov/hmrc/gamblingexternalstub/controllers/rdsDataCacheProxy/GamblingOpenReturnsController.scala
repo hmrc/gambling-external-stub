@@ -20,6 +20,7 @@ import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.gamblingexternalstub.models.*
+import uk.gov.hmrc.gamblingexternalstub.services.OpenPeriodCacheService
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import java.time.LocalDate
@@ -27,7 +28,8 @@ import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class GamblingOpenReturnsController @Inject() (
-  cc: ControllerComponents
+  cc: ControllerComponents,
+  cache: OpenPeriodCacheService
 ) extends BackendController(cc)
     with Logging {
 
@@ -116,7 +118,14 @@ class GamblingOpenReturnsController @Inject() (
             s"[getOpenPeriods] regime=$regime regNumber=$regNumber sortBy=$sortBy orderBy=$orderBy sort=$sort order=$order"
           )
 
-          val allRecords = (1 to recordCount).map(getOpenPeriodItem)
+          val cached = cache.getForRegNumber(regNumber).filter(_.status != 1)
+          val allRecords =
+            if (cached.nonEmpty) cached
+            else {
+              val generated = (1 to recordCount).map(getOpenPeriodItem)
+              cache.putAll(regNumber, generated)
+              generated
+            }
 
           Ok(
             Json.toJson(
@@ -139,7 +148,7 @@ class GamblingOpenReturnsController @Inject() (
       consecNo = consecNo,
       period   = s"${periodStart.format(formatter)} - ${periodEnd.format(formatter)}",
       dueDate  = dueDate,
-      status   = if (consecNo % 2 == 0) 1 else 2
+      status   = 0
     )
   }
 }

@@ -19,12 +19,14 @@ package uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy
 import play.api.libs.json.*
 import play.api.mvc.{Action, ControllerComponents}
 import uk.gov.hmrc.gamblingexternalstub.models.*
+import uk.gov.hmrc.gamblingexternalstub.services.OpenPeriodCacheService
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.Inject
 
 class GamblingFilingController @Inject() (
-  cc: ControllerComponents
+  cc: ControllerComponents,
+  cache: OpenPeriodCacheService
 ) extends BackendController(cc) {
 
   def updateStatusPeriod(
@@ -50,7 +52,7 @@ class GamblingFilingController @Inject() (
             )
           )
 
-        case JsSuccess(_, _) =>
+        case JsSuccess(UpdateStatusPeriodRequest(status), _) =>
           registrationNo.takeRight(3).toIntOption.getOrElse(200) match {
 
             case 400 =>
@@ -86,6 +88,7 @@ class GamblingFilingController @Inject() (
               )
 
             case _ =>
+              cache.updateStatus(registrationNo, consecNo, status)
               NoContent
           }
       }
