@@ -62,6 +62,9 @@ GET     /gambling/submitted-return-details/:regNumber/:consecNo   uk.gov.hmrc.ga
 GET     /gambling/open-periods/:regime/:regNumber          uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingOpenReturnsController.getOpenPeriods(regime: String, regNumber: String, sortBy: Option[Int] ?= None, orderBy: Option[String] ?= None)
 
 GET     /gambling/partner-details/:regime/:regNumber       uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.PartnerDetailsController.getPartnerDetails(regime: String, regNumber: String)
+
+GET /gambling/return-periods/:regime/:regNumber             uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingReturnPeriodsController.getReturnPeriods(regime: String, regNumber: String)
+
 GET     /gambling/licence-details/:regime/:regNumber       uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingLicensesAndPremisesController.getLicenseDetails(regime: String, regNumber: String)
 
 PUT     /gambling/update-status-period/:regime/:registrationNo/:consecNo  uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingFilingController.updateStatusPeriod(regime: String, registrationNo: String, consecNo: Int)
