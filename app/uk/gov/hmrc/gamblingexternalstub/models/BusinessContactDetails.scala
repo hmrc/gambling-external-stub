@@ -18,6 +18,8 @@ package uk.gov.hmrc.gamblingexternalstub.models
 
 import play.api.libs.json.{Json, OFormat}
 
+import scala.util.Using
+
 final case class BusinessContactDetails(
   mgdRegNumber: String,
   phoneNumber: String,
@@ -30,13 +32,9 @@ final case class BusinessContactDetails(
 object BusinessContactDetails {
   implicit val format: OFormat[BusinessContactDetails] = Json.format[BusinessContactDetails]
 
-  val noData: BusinessContactDetails =
-    BusinessContactDetails(
-      mgdRegNumber      = "",
-      phoneNumber       = "",
-      mobilePhoneNumber = "",
-      faxNumber         = "",
-      emailAddr         = "",
-      systemDate        = ""
-    )
+  lazy val noData: BusinessContactDetails = Using
+    .resource(
+      getClass.getResourceAsStream("/data/business-contact-details/XGM00000000200.json")
+    )(Json.parse)
+    .as[BusinessContactDetails]
 }

@@ -17,18 +17,46 @@
 package uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy
 
 import play.api.Logging
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.gamblingexternalstub.models.*
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import java.time.LocalDate
 import javax.inject.Inject
+import scala.util.Using
 
 class GamblingController @Inject() (
   cc: ControllerComponents
 ) extends BackendController(cc)
     with Logging {
+
+  private lazy val businessNames =
+    Seq("XGM00000001761", "XGM00000001762", "XGM00000001763", "XGM00000001764", "XGM00000001765", "business-name").map { registration =>
+      registration -> Using
+        .resource(
+          getClass.getResourceAsStream(s"/data/business-name/$registration.json")
+        )(Json.parse)
+        .as[JsObject]
+    }.toMap
+
+  private lazy val tradeClassDetails =
+    Seq("XGM00000001761", "XGM00000001762", "XGM00000001763", "XGM00000001764", "XGM00000001765", "trade-class").map { registration =>
+      registration -> Using
+        .resource(
+          getClass.getResourceAsStream(s"/data/trade-class/$registration.json")
+        )(Json.parse)
+        .as[JsObject]
+    }.toMap
+
+  private lazy val mgdDetails = Seq("XGM00000001761", "XGM00000001762", "XGM00000001763", "XGM00000001764", "XGM00000001765", "mgd-details").map {
+    registration =>
+      registration -> Using
+        .resource(
+          getClass.getResourceAsStream(s"/data/mgd-details/$registration.json")
+        )(Json.parse)
+        .as[JsObject]
+  }.toMap
 
   def getReturnSummary(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
 
@@ -98,109 +126,25 @@ class GamblingController @Inject() (
 
       // Scenario 1
       case "XGM00000001761" =>
-        Ok(
-          Json.toJson(
-            BusinessName(
-              mgdRegNumber,
-              solePropTitle     = Some("Mr"),
-              solePropFirstName = Some("SoleFN"),
-              solePropMidName   = Some("MN"),
-              solePropLastName  = Some("Proprietor LN"),
-              businessName      = Some("SP Business Name"),
-              businessType      = Some(1),
-              tradingName       = Some("SP Trading Name"),
-              systemDate        = Some(LocalDate.of(2026, 1, 1))
-            )
-          )
-        )
+        Ok(businessNames("XGM00000001761"))
 
       // Scenario 2
       case "XGM00000001762" =>
-        Ok(
-          Json.toJson(
-            BusinessName(
-              mgdRegNumber,
-              solePropTitle     = Some("Mrs"),
-              solePropFirstName = Some("Corporate"),
-              solePropMidName   = None,
-              solePropLastName  = Some("Body"),
-              businessName      = Some("CB Business Name"),
-              businessType      = Some(2),
-              tradingName       = Some("CB Trading Name"),
-              systemDate        = Some(LocalDate.of(2026, 1, 1))
-            )
-          )
-        )
+        Ok(businessNames("XGM00000001762"))
 
       // Scenario 3 →
       case "XGM00000001763" =>
-        Ok(
-          Json.toJson(
-            BusinessName(
-              mgdRegNumber,
-              solePropTitle     = Some("Ms"),
-              solePropFirstName = Some("Unincorporated"),
-              solePropMidName   = Some("MN"),
-              solePropLastName  = Some("Body"),
-              businessName      = Some("UCB Business Name"),
-              businessType      = Some(3),
-              tradingName       = Some("UCB Trading Name"),
-              systemDate        = Some(LocalDate.of(2026, 1, 1))
-            )
-          )
-        )
+        Ok(businessNames("XGM00000001763"))
 
       case "XGM00000001764" =>
-        Ok(
-          Json.toJson(
-            BusinessName(
-              mgdRegNumber,
-              solePropTitle     = Some("Master"),
-              solePropFirstName = Some("Partnership FN"),
-              solePropMidName   = Some("MN"),
-              solePropLastName  = Some("Partnership LN"),
-              businessName      = Some("Partner1 Business Name"),
-              businessType      = Some(4),
-              tradingName       = Some("Partner1 Trading Name"),
-              systemDate        = Some(LocalDate.of(2026, 1, 1))
-            )
-          )
-        )
+        Ok(businessNames("XGM00000001764"))
 
       case "XGM00000001765" =>
-        Ok(
-          Json.toJson(
-            BusinessName(
-              mgdRegNumber,
-              solePropTitle     = Some("Mrs"),
-              solePropFirstName = Some("LLP FN"),
-              solePropMidName   = Some("MN"),
-              solePropLastName  = Some("LLP"),
-              businessName      = Some("LLP Business Name"),
-              businessType      = Some(5),
-              tradingName       = Some("LLP Trading Name"),
-              systemDate        = Some(LocalDate.of(2026, 1, 1))
-            )
-          )
-        )
+        Ok(businessNames("XGM00000001765"))
 
       // =============== DEFAULT ===============
       case reg =>
-        Ok(
-          Json.toJson(
-            BusinessName(
-              mgdRegNumber,
-              solePropTitle     = Some("Mr"),
-              solePropFirstName = Some("Default FirstName"),
-              solePropMidName   = None,
-              solePropLastName  = Some("Default LastName"),
-              businessName      = Some("Default BusinessName"),
-              businessType      = Some(1),
-              tradingName       = Some("Default TradingName"),
-              systemDate        = Some(LocalDate.of(1992, 1, 1))
-            )
-          )
-        )
+        Ok(businessNames("business-name") ++ Json.obj("mgdRegNumber" -> mgdRegNumber))
     }
   }
 
@@ -697,77 +641,23 @@ class GamblingController @Inject() (
         )
 
       case "XGM00000001761" =>
-        Ok(
-          Json.toJson(
-            TradeClassDetails(
-              mgdRegNumber         = mgdRegNumber,
-              businessTradeClass   = Some(9),
-              businessActivityDesc = "Others Business Activity",
-              systemDate           = Some(LocalDate.parse("2026-06-02"))
-            )
-          )
-        )
+        Ok(tradeClassDetails("XGM00000001761"))
 
       case "XGM00000001762" =>
-        Ok(
-          Json.toJson(
-            TradeClassDetails(
-              mgdRegNumber         = "",
-              businessTradeClass   = None,
-              businessActivityDesc = "",
-              systemDate           = None
-            )
-          )
-        )
+        Ok(tradeClassDetails("XGM00000001762"))
 
       case "XGM00000001763" =>
-        Ok(
-          Json.toJson(
-            TradeClassDetails(
-              mgdRegNumber         = mgdRegNumber,
-              businessTradeClass   = Some(3),
-              businessActivityDesc = "Business Activity Description",
-              systemDate           = Some(LocalDate.parse("2026-05-31"))
-            )
-          )
-        )
+        Ok(tradeClassDetails("XGM00000001763"))
 
       case "XGM00000001764" =>
-        Ok(
-          Json.toJson(
-            TradeClassDetails(
-              mgdRegNumber         = mgdRegNumber,
-              businessTradeClass   = Some(6),
-              businessActivityDesc = "Business Activity Description",
-              systemDate           = Some(LocalDate.parse("2026-05-31"))
-            )
-          )
-        )
+        Ok(tradeClassDetails("XGM00000001764"))
 
       case "XGM00000001765" =>
-        Ok(
-          Json.toJson(
-            TradeClassDetails(
-              mgdRegNumber         = mgdRegNumber,
-              businessTradeClass   = Some(3),
-              businessActivityDesc = "Family Entertainment Centre Business Activity",
-              systemDate           = Some(LocalDate.parse("2026-05-31"))
-            )
-          )
-        )
+        Ok(tradeClassDetails("XGM00000001765"))
 
       // Default
       case reg =>
-        Ok(
-          Json.toJson(
-            TradeClassDetails(
-              mgdRegNumber         = "",
-              businessTradeClass   = None,
-              businessActivityDesc = "",
-              systemDate           = None
-            )
-          )
-        )
+        Ok(tradeClassDetails("trade-class"))
     }
   }
 
@@ -792,107 +682,23 @@ class GamblingController @Inject() (
         )
 
       case "XGM00000001761" =>
-        Ok(
-          Json.toJson(
-            MgdDetails(
-              mgdRegNumber       = mgdRegNumber,
-              isBusinessSeasonal = Some(1),
-              previousMgdrn1     = Some("XMM00000000448"),
-              previousMgdrn2     = None,
-              previousMgdrn3     = None,
-              associatedMgdrn1   = Some("XZM00000000469"),
-              associatedMgdrn2   = None,
-              associatedMgdrn3   = None,
-              systemDate         = Some(LocalDate.parse("2026-06-06"))
-            )
-          )
-        )
+        Ok(mgdDetails("XGM00000001761"))
 
       case "XGM00000001762" =>
-        Ok(
-          Json.toJson(
-            MgdDetails(
-              mgdRegNumber       = mgdRegNumber,
-              isBusinessSeasonal = None,
-              previousMgdrn1     = Some("XMM00000000448"),
-              previousMgdrn2     = Some("XBM00000000451"),
-              previousMgdrn3     = Some("XYM00000000466"),
-              associatedMgdrn1   = None,
-              associatedMgdrn2   = None,
-              associatedMgdrn3   = None,
-              systemDate         = Some(LocalDate.parse("2026-06-06"))
-            )
-          )
-        )
+        Ok(mgdDetails("XGM00000001762"))
 
       case "XGM00000001763" =>
-        Ok(
-          Json.toJson(
-            MgdDetails(
-              mgdRegNumber       = mgdRegNumber,
-              isBusinessSeasonal = Some(0),
-              previousMgdrn1     = Some("XMM00000000448"),
-              previousMgdrn2     = Some("XBM00000000451"),
-              previousMgdrn3     = None,
-              associatedMgdrn1   = Some("XZM00000000469"),
-              associatedMgdrn2   = Some("XJM00000000472"),
-              associatedMgdrn3   = None,
-              systemDate         = Some(LocalDate.parse("2026-06-06"))
-            )
-          )
-        )
+        Ok(mgdDetails("XGM00000001763"))
 
       case "XGM00000001764" =>
-        Ok(
-          Json.toJson(
-            MgdDetails(
-              mgdRegNumber       = mgdRegNumber,
-              isBusinessSeasonal = Some(1),
-              previousMgdrn1     = Some("XMM00000000448"),
-              previousMgdrn2     = Some("XBM00000000451"),
-              previousMgdrn3     = None,
-              associatedMgdrn1   = Some("XZM00000000469"),
-              associatedMgdrn2   = Some("XJM00000000472"),
-              associatedMgdrn3   = None,
-              systemDate         = Some(LocalDate.parse("2026-06-06"))
-            )
-          )
-        )
+        Ok(mgdDetails("XGM00000001764"))
 
       case "XGM00000001765" =>
-        Ok(
-          Json.toJson(
-            MgdDetails(
-              mgdRegNumber       = mgdRegNumber,
-              isBusinessSeasonal = Some(1),
-              previousMgdrn1     = Some("XMM00000000448"),
-              previousMgdrn2     = Some("XBM00000000451"),
-              previousMgdrn3     = Some("XYM00000000466"),
-              associatedMgdrn1   = Some("XZM00000000469"),
-              associatedMgdrn2   = Some("XJM00000000472"),
-              associatedMgdrn3   = Some("XMM00000000448"),
-              systemDate         = Some(LocalDate.parse("2026-06-06"))
-            )
-          )
-        )
+        Ok(mgdDetails("XGM00000001765"))
 
       // known good data only
       case _ =>
-        Ok(
-          Json.toJson(
-            MgdDetails(
-              mgdRegNumber       = mgdRegNumber,
-              isBusinessSeasonal = None,
-              previousMgdrn1     = None,
-              previousMgdrn2     = None,
-              previousMgdrn3     = None,
-              associatedMgdrn1   = None,
-              associatedMgdrn2   = None,
-              associatedMgdrn3   = None,
-              systemDate         = Some(LocalDate.parse("2026-06-06"))
-            )
-          )
-        )
+        Ok(mgdDetails("mgd-details") ++ Json.obj("mgdRegNumber" -> mgdRegNumber))
 
     }
   }

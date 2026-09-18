@@ -1,0 +1,31 @@
+{
+  "partners": [
+    {
+      "mgdRegNumber": "XJM00000000570",
+      "businessPartnerNumber": "0100049899",
+      "dateOfJoining": "2024-01-01",
+      "dateOfLeaving": "2025-01-01",
+      "solePropTitle": "Mx",
+      "solePropFirstName": "solePropFirstName",
+      "solePropLastName": "solePropLastName",
+      "businessName": "Partner1",
+      "tradingName": "tradingName",
+      "dateOfBirth": "1999-09-09",
+      "nino": "ni123456789no",
+      "crn": "123456789",
+      "dateOfIncorporation": "2024-01-01",
+      "countryOfIncorporation": "countryOfIncorporation",
+      "foreignCorporateRef": "foreignCorporateRef",
+      "adi": "adi",
+      "iomOrCiFlag": "false",
+      "phoneNumber": "phoneNumber",
+      "mobilePhoneNumber": "mobilePhoneNumber",
+      "faxNumber": "faxNumber",
+      "emailAddr": "emailAddr",
+      "isFutureLeaveDate": 0,
+      "isFutureJoinDate": 0,
+      "businessType": 2
+    }
+  ],
+  "systemDate": "2026-09-18"
+}

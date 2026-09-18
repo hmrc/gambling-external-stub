@@ -19,6 +19,7 @@ package uk.gov.hmrc.gamblingexternalstub.models
 import play.api.libs.json.{Json, OFormat}
 
 import java.time.LocalDate
+import scala.util.Using
 
 final case class LicenseDetails(
   mgdRegNumber: String,
@@ -44,36 +45,30 @@ final case class LicenseDetails(
 object LicenseDetails {
   implicit val format: OFormat[LicenseDetails] = Json.format[LicenseDetails]
 
-  def fullModel(mgdRegNumber: String): LicenseDetails = LicenseDetails(
-    mgdRegNumber,
-    haveGamblingLicenceNo = Some("1"),
-    gamblingLicenceNo     = Some("123-456789-A-123456-789"),
-    heldByLandlord        = Some("1"),
-    localAuthority        = Some("1"),
-    familyEntertainment   = Some("0"),
-    clubGaming            = Some("0"),
-    clubLicence           = Some("1"),
-    prizeGaming           = Some("0"),
-    onPremises            = Some("1"),
-    clubPremises          = Some("0"),
-    regCert               = Some("0"),
-    bookmaking            = Some("0"),
-    bingo                 = Some("0"),
-    amusement             = Some("0"),
-    serveAlcohol          = Some("0"),
-    premisesNotCovered    = Some("0"),
-    systemDate            = Some(LocalDate.now())
-  )
+  private lazy val fullData = Using
+    .resource(
+      getClass.getResourceAsStream("/data/license-details/XGM00000001761.json")
+    )(Json.parse)
+    .as[LicenseDetails]
 
-  def partialModel(mgdRegNumber: String): LicenseDetails = LicenseDetails(
-    mgdRegNumber,
-    haveGamblingLicenceNo = Some("1"),
-    gamblingLicenceNo     = Some("123-456789-A-123456-789"),
-    heldByLandlord        = Some("1"),
-    localAuthority        = Some("1"),
-    systemDate            = Some(LocalDate.now())
-  )
+  private lazy val partialData = Using
+    .resource(
+      getClass.getResourceAsStream("/data/license-details/XGM00000001762.json")
+    )(Json.parse)
+    .as[LicenseDetails]
 
-  def noDataModel(): LicenseDetails = LicenseDetails(mgdRegNumber = "")
+  private lazy val noData = Using
+    .resource(
+      getClass.getResourceAsStream("/data/license-details/license-details.json")
+    )(Json.parse)
+    .as[LicenseDetails]
+
+  def fullModel(mgdRegNumber: String): LicenseDetails =
+    fullData.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.now()))
+
+  def partialModel(mgdRegNumber: String): LicenseDetails =
+    partialData.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.now()))
+
+  def noDataModel(): LicenseDetails = noData
 
 }

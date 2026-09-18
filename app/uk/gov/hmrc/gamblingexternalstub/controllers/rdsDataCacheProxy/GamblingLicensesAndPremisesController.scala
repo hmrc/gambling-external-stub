@@ -20,10 +20,9 @@ import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.gamblingexternalstub.models.LicenseDetails.{fullModel, noDataModel, partialModel}
-import uk.gov.hmrc.gamblingexternalstub.models.{PremisesDetails, *}
+import uk.gov.hmrc.gamblingexternalstub.models.*
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-import java.time.LocalDate
 import javax.inject.Inject
 import scala.util.Using
 
@@ -38,6 +37,24 @@ class GamblingLicensesAndPremisesController @Inject() (
     getClass.getResourceAsStream("/data/premises-details/XGM00000001764.json")
   )(Json.parse)
 
+  private lazy val emptyPremisesDetails = Using
+    .resource(
+      getClass.getResourceAsStream("/data/premises-details/XYM00000000699.json")
+    )(Json.parse)
+    .as[Response]
+
+  private lazy val partialPremisesDetails = Using
+    .resource(
+      getClass.getResourceAsStream("/data/premises-details/XGM00000001763.json")
+    )(Json.parse)
+    .as[Response]
+
+  private lazy val defaultPremisesDetails = Using
+    .resource(
+      getClass.getResourceAsStream("/data/premises-details/premises-details.json")
+    )(Json.parse)
+    .as[Response]
+
   def getPremisesDetails(regime: String, mgdRegNumber: String): Action[AnyContent] = Action { _ =>
     if (!Regime.fromString(regime.trim.toLowerCase()).exists(supportedRegimes.contains)) {
       BadRequest(Json.obj("code" -> "INVALID_REGIME", "message" -> s"Regime $regime is not supported"))
@@ -51,61 +68,16 @@ class GamblingLicensesAndPremisesController @Inject() (
         case "XGM00000001764" => Ok(premisesDetails)
 
         case "XYM00000000699" =>
-          Ok(
-            Json.toJson(
-              Response(
-                totalRows = Some(0),
-                premises = Seq(
-                )
-              )
-            )
-          )
+          Ok(Json.toJson(emptyPremisesDetails))
 
         case "XGM00000001763" =>
-          Ok(
-            Json.toJson(
-              Response(
-                totalRows = Some(1000),
-                premises = Seq(
-                  PremisesDetails(
-                    mgdRegNumber = "XGM00000001763",
-                    address1     = Some("Flat 55"),
-                    address2     = Some("10 Random Road"),
-                    address3     = Some("Gateshead"),
-                    address4     = None,
-                    postcode     = None,
-                    Some(fixedDate)
-                  )
-                )
-              )
-            )
-          )
+          Ok(Json.toJson(partialPremisesDetails))
 
         case reg =>
           Ok(
             Json.toJson(
-              Response(
-                totalRows = Some(1000),
-                premises = Seq(
-                  PremisesDetails(
-                    mgdRegNumber = mgdRegNumber,
-                    address1     = Some("Flat 55"),
-                    address2     = Some("20 Market Calle"),
-                    address3     = Some("Barcelona"),
-                    address4     = None,
-                    postcode     = Some("08001"),
-                    Some(fixedDate)
-                  ),
-                  PremisesDetails(
-                    mgdRegNumber = mgdRegNumber,
-                    address1     = Some("Flat 1"),
-                    address2     = Some("10 Market Calle"),
-                    address3     = Some("Madrid"),
-                    address4     = None,
-                    postcode     = Some("28058"),
-                    Some(fixedDate)
-                  )
-                )
+              defaultPremisesDetails.copy(
+                premises = defaultPremisesDetails.premises.map(_.copy(mgdRegNumber = mgdRegNumber))
               )
             )
           )
@@ -158,8 +130,6 @@ class GamblingLicensesAndPremisesController @Inject() (
 
     }
   }
-
-  private val fixedDate = LocalDate.parse("2026-01-01")
 
   private val invalidResponse =
     BadRequest(
