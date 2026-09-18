@@ -23,10 +23,17 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import java.time.LocalDate
 import javax.inject.Inject
+import scala.util.Using
 
 class GamblingBusinessContactDetailsController @Inject() (
   cc: ControllerComponents
 ) extends BackendController(cc) {
+
+  private lazy val defaultBusinessContactDetails = Using
+    .resource(
+      getClass.getResourceAsStream("/data/business-contact-details/business-contact-details.json")
+    )(Json.parse)
+    .as[BusinessContactDetails]
 
   def getBusinessContactDetails(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
 
@@ -104,13 +111,6 @@ class GamblingBusinessContactDetailsController @Inject() (
   }
 
   private def businessContactDetails(mgdRegNumber: String): BusinessContactDetails =
-    BusinessContactDetails(
-      mgdRegNumber      = mgdRegNumber,
-      phoneNumber       = "09876543212345678",
-      mobilePhoneNumber = "09876543212345678",
-      faxNumber         = "09876543212345678",
-      emailAddr         = "test@example.com",
-      systemDate        = LocalDate.now().toString
-    )
+    defaultBusinessContactDetails.copy(mgdRegNumber = mgdRegNumber, systemDate = LocalDate.now().toString)
 
 }

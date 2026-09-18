@@ -1,0 +1,21 @@
+{
+  "totalRows": 1000,
+  "premises": [
+    {
+      "mgdRegNumber": "",
+      "address1": "Flat 55",
+      "address2": "20 Market Calle",
+      "address3": "Barcelona",
+      "postcode": "08001",
+      "systemDate": "2026-01-01"
+    },
+    {
+      "mgdRegNumber": "",
+      "address1": "Flat 1",
+      "address2": "10 Market Calle",
+      "address3": "Madrid",
+      "postcode": "28058",
+      "systemDate": "2026-01-01"
+    }
+  ]
+}

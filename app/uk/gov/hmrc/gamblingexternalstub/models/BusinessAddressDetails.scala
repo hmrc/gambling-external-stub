@@ -19,6 +19,7 @@ package uk.gov.hmrc.gamblingexternalstub.models
 import play.api.libs.json.{Json, OFormat}
 
 import java.time.LocalDate
+import scala.util.Using
 
 final case class BusinessAddressDetails(
   mgdRegNumber: String,
@@ -36,68 +37,57 @@ final case class BusinessAddressDetails(
 object BusinessAddressDetails {
   implicit val format: OFormat[BusinessAddressDetails] = Json.format[BusinessAddressDetails]
 
-  def fullModel(mgdRegNumber: String): BusinessAddressDetails = BusinessAddressDetails(
-    mgdRegNumber,
-    adi         = Some("Additional information for business address is Building number 123 opposite to Riverside Mills"),
-    address1    = Some("Address's Line 1.1-1,1/1&1"),
-    address2    = Some("Address's Line 2.2-2,2/2&2"),
-    address3    = Some("Address's Line 3.3-3,3/3&3"),
-    address4    = Some("County 4.4-4,4/4&4"),
-    postcode    = Some("ZZ99 9ZZ"),
-    country     = Some("United Kingdom"),
-    iomOrCiFlag = Some("FALSE"),
-    systemDate  = Some(LocalDate.now())
-  )
+  private lazy val fullData = Using
+    .resource(
+      getClass.getResourceAsStream("/data/business-address/XGM00000001761.json")
+    )(Json.parse)
+    .as[BusinessAddressDetails]
 
-  def partialModel(mgdRegNumber: String): BusinessAddressDetails = BusinessAddressDetails(
-    mgdRegNumber,
-    adi         = Some("1st floor"),
-    address1    = Some("address1"),
-    postcode    = Some("EH8 7AU"),
-    country     = Some("Scotland"),
-    iomOrCiFlag = Some("FALSE"),
-    systemDate  = Some(LocalDate.now())
-  )
+  private lazy val partialData = Using
+    .resource(
+      getClass.getResourceAsStream("/data/business-address/XGM00000001762.json")
+    )(Json.parse)
+    .as[BusinessAddressDetails]
 
-  def nonUKModel(mgdRegNumber: String): BusinessAddressDetails = BusinessAddressDetails(
-    mgdRegNumber,
-    adi         = Some("Additional information for Non UK business address"),
-    address1    = Some("Address Line 1"),
-    address2    = Some("Address Line 2"),
-    address3    = Some("Amsterdam"),
-    address4    = Some("1011 AE"),
-    postcode    = None,
-    country     = Some("Netherlands"),
-    iomOrCiFlag = Some("FALSE"),
-    systemDate  = Some(LocalDate.now())
-  )
+  private lazy val nonUKData = Using
+    .resource(
+      getClass.getResourceAsStream("/data/business-address/XGM00000001763.json")
+    )(Json.parse)
+    .as[BusinessAddressDetails]
 
-  def iomCIUKModel(mgdRegNumber: String): BusinessAddressDetails = BusinessAddressDetails(
-    mgdRegNumber,
-    adi         = Some("Additional information for business address is Building number 123 opposite to Riverside Mills"),
-    address1    = Some("Ballaquark"),
-    address2    = Some("Douglas"),
-    address3    = None,
-    address4    = Some("The Isle of Man"),
-    postcode    = Some("IM2 2ER"),
-    country     = Some("United Kingdom"),
-    iomOrCiFlag = Some("TRUE"),
-    systemDate  = Some(LocalDate.now())
-  )
+  private lazy val iomCIUKData = Using
+    .resource(
+      getClass.getResourceAsStream("/data/business-address/XGM00000001764.json")
+    )(Json.parse)
+    .as[BusinessAddressDetails]
 
-  def nonMandatoryModel(mgdRegNumber: String): BusinessAddressDetails = BusinessAddressDetails(
-    mgdRegNumber,
-    adi         = None,
-    address1    = Some("Ballaquark"),
-    address2    = None,
-    address3    = None,
-    address4    = None,
-    postcode    = None,
-    country     = None,
-    iomOrCiFlag = None,
-    systemDate  = Some(LocalDate.now())
-  )
+  private lazy val nonMandatoryData = Using
+    .resource(
+      getClass.getResourceAsStream("/data/business-address/XGM00000001765.json")
+    )(Json.parse)
+    .as[BusinessAddressDetails]
 
-  def noDataModel(): BusinessAddressDetails = BusinessAddressDetails(mgdRegNumber = "")
+  private lazy val noData = Using
+    .resource(
+      getClass.getResourceAsStream("/data/business-address/business-address.json")
+    )(Json.parse)
+    .as[BusinessAddressDetails]
+
+  def fullModel(mgdRegNumber: String): BusinessAddressDetails =
+    fullData.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.now()))
+
+  def partialModel(mgdRegNumber: String): BusinessAddressDetails =
+    partialData.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.now()))
+
+  def nonUKModel(mgdRegNumber: String): BusinessAddressDetails =
+    nonUKData.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.now()))
+
+  def iomCIUKModel(mgdRegNumber: String): BusinessAddressDetails =
+    iomCIUKData.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.now()))
+
+  def nonMandatoryModel(mgdRegNumber: String): BusinessAddressDetails =
+    nonMandatoryData.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.now()))
+
+  def noDataModel(): BusinessAddressDetails = noData
 
 }
