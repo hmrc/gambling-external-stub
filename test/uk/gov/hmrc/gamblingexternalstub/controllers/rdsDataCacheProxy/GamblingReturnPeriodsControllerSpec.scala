@@ -23,10 +23,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.base.SpecBase
 
-class GamblingReturnPeriodsControllerSpec
-  extends AnyWordSpec
-    with Matchers
-    with SpecBase {
+class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
   private val app =
     applicationBuilder().build()

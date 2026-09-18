@@ -26,17 +26,17 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import javax.inject.Inject
 
 class GamblingReturnPeriodsController @Inject() (
-                                                  cc: ControllerComponents
-                                                ) extends BackendController(cc)
-  with Logging {
+  cc: ControllerComponents
+) extends BackendController(cc)
+    with Logging {
 
   private val supportedRegimes =
     List(Regime.MGD)
 
   def getReturnPeriods(
-                        regime: String,
-                        regNumber: String
-                      ): Action[AnyContent] = Action { _ =>
+    regime: String,
+    regNumber: String
+  ): Action[AnyContent] = Action { _ =>
 
     if (
       !Regime
@@ -112,4 +112,3 @@ class GamblingReturnPeriodsController @Inject() (
     }
   }
 }
-

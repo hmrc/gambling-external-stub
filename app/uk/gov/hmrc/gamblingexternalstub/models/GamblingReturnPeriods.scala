@@ -16,24 +16,24 @@
 
 package uk.gov.hmrc.gamblingexternalstub.models
 
-import play.api.libs.json._
+import play.api.libs.json.*
 
 case class GamblingReturnPeriods(
-                                  mgdRegNumber: String,
-                                  returnPeriodsId: String,
-                                  nstpEndDate1: String,
-                                  nstpEndDate2: String,
-                                  nstpEndDate3: String,
-                                  nstpEndDate4: String,
-                                  nstpEndDate5: String,
-                                  nstpEndDate6: String,
-                                  nstpEndDate7: String,
-                                  nstpEndDate8: String,
-                                  isInLastNstp: String,
-                                  finalPeriodWarning: String,
-                                  hasExistingNstpValues: String,
-                                  systemDate: String
-                                )
+  mgdRegNumber: String,
+  returnPeriodsId: String,
+  nstpEndDate1: String,
+  nstpEndDate2: String,
+  nstpEndDate3: String,
+  nstpEndDate4: String,
+  nstpEndDate5: String,
+  nstpEndDate6: String,
+  nstpEndDate7: String,
+  nstpEndDate8: String,
+  isInLastNstp: String,
+  finalPeriodWarning: String,
+  hasExistingNstpValues: String,
+  systemDate: String
+)
 
 object GamblingReturnPeriodsFormats {
 
@@ -41,8 +41,8 @@ object GamblingReturnPeriodsFormats {
     Json.format[GamblingReturnPeriods]
 
   def fullModel(
-                 mgdRegNumber: String
-               ): GamblingReturnPeriods =
+    mgdRegNumber: String
+  ): GamblingReturnPeriods =
     GamblingReturnPeriods(
       mgdRegNumber          = mgdRegNumber,
       returnPeriodsId       = "1",
@@ -61,8 +61,8 @@ object GamblingReturnPeriodsFormats {
     )
 
   def partialModel(
-                    mgdRegNumber: String
-                  ): GamblingReturnPeriods =
+    mgdRegNumber: String
+  ): GamblingReturnPeriods =
     GamblingReturnPeriods(
       mgdRegNumber          = mgdRegNumber,
       returnPeriodsId       = "2",
@@ -81,8 +81,8 @@ object GamblingReturnPeriodsFormats {
     )
 
   def noDataModel(
-                   mgdRegNumber: String
-                 ): GamblingReturnPeriods =
+    mgdRegNumber: String
+  ): GamblingReturnPeriods =
     GamblingReturnPeriods(
       mgdRegNumber          = "",
       returnPeriodsId       = "",
