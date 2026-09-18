@@ -74,6 +74,14 @@ class GamblingReturnPeriodsController @Inject() (
             )
           )
 
+        // Existing operator but no NSTP values configured
+        case "XNM00000000590" =>
+          Ok(
+            Json.toJson(
+              noNstpValuesModel(sanitized)
+            )
+          )
+
         // Invalid request
         case "XGM00000000560" =>
           BadRequest(
@@ -105,7 +113,7 @@ class GamblingReturnPeriodsController @Inject() (
         case _ =>
           Ok(
             Json.toJson(
-              noDataModel(sanitized)
+              noDataModel()
             )
           )
       }

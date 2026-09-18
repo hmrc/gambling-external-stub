@@ -18,10 +18,11 @@ package uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import play.api.libs.json.Json
+import play.api.libs.json.{JsNull, Json}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.base.SpecBase
+import org.scalatest.OptionValues.*
 
 class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
@@ -50,13 +51,13 @@ class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with
         .as[String] shouldBe "XWM00000001770"
 
       (json \ "returnPeriodsId")
-        .as[String] shouldBe "1"
+        .as[Int] shouldBe 1
 
       (json \ "nstpEndDate1")
-        .as[String] shouldBe "14-OCT-24"
+        .as[String] shouldBe "14-Oct-24"
 
       (json \ "nstpEndDate8")
-        .as[String] shouldBe "17-JUL-26"
+        .as[String] shouldBe "17-Jul-26"
 
       (json \ "isInLastNstp")
         .as[String] shouldBe "1"
@@ -88,16 +89,42 @@ class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with
         .as[String] shouldBe "XJM00000000570"
 
       (json \ "returnPeriodsId")
-        .as[String] shouldBe "2"
+        .as[Int] shouldBe 2
 
       (json \ "nstpEndDate1")
-        .as[String] shouldBe "31-MAR-26"
+        .as[String] shouldBe "31-Mar-26"
 
-      (json \ "nstpEndDate2")
-        .as[String] shouldBe ""
+      (json \ "nstpEndDate2").toOption.value shouldBe JsNull
 
       (json \ "hasExistingNstpValues")
         .as[String] shouldBe "1"
+    }
+
+    "return no NSTP values for XNM00000000590" in {
+
+      val result =
+        controller.getReturnPeriods(
+          "MGD",
+          "XNM00000000590"
+        )(FakeRequest())
+
+      status(result) shouldBe OK
+
+      val json =
+        contentAsJson(result)
+
+      (json \ "mgdRegNumber")
+        .as[String] shouldBe "XNM00000000590"
+
+      (json \ "returnPeriodsId")
+        .as[Int] shouldBe 1
+
+      (json \ "hasExistingNstpValues")
+        .as[String] shouldBe "0"
+
+      (json \ "nstpEndDate1").toOption.value shouldBe JsNull
+
+      (json \ "nstpEndDate8").toOption.value shouldBe JsNull
     }
 
     "return no data for unknown registration number" in {
@@ -116,14 +143,11 @@ class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with
       (json \ "mgdRegNumber")
         .as[String] shouldBe ""
 
-      (json \ "returnPeriodsId")
-        .as[String] shouldBe ""
+      (json \ "returnPeriodsId").toOption.value shouldBe JsNull
 
-      (json \ "nstpEndDate1")
-        .as[String] shouldBe ""
+      (json \ "nstpEndDate1").toOption.value shouldBe JsNull
 
-      (json \ "systemDate")
-        .as[String] shouldBe ""
+      (json \ "systemDate").toOption.value shouldBe JsNull
     }
 
     "return BAD_REQUEST for an unrecognised regime" in {
