@@ -30,59 +30,36 @@ class GamblingReturnPeriodsController @Inject() (
 ) extends BackendController(cc)
     with Logging {
 
-  private val supportedRegimes =
-    List(Regime.MGD)
+  private val supportedRegimes = List(Regime.MGD)
 
   def getReturnPeriods(
     regime: String,
     regNumber: String
   ): Action[AnyContent] = Action { _ =>
-
     if (
       !Regime
         .fromString(regime.trim.toLowerCase())
         .exists(supportedRegimes.contains)
     ) {
-
       BadRequest(
         Json.obj(
           "code"    -> "INVALID_REGIME",
           "message" -> s"Regime $regime is not supported for Return Periods"
         )
       )
-
     } else {
-
-      val sanitized =
-        regNumber.trim.toUpperCase()
+      val sanitized = regNumber.trim.toUpperCase()
 
       sanitized match {
-
-        // Full data
         case "XGM00000001761" =>
-          Ok(
-            Json.toJson(
-              `XGM00000001761`
-            )
-          )
+          Ok(Json.toJson(fullModel(sanitized)))
 
-        // Partial data
         case "XGM00000001762" =>
-          Ok(
-            Json.toJson(
-              partialModel(sanitized)
-            )
-          )
+          Ok(Json.toJson(partialModel(sanitized)))
 
-        // Existing operator but no NSTP values configured
         case "XGM00000001763" =>
-          Ok(
-            Json.toJson(
-              noNstpValuesModel(sanitized)
-            )
-          )
+          Ok(Json.toJson(noNstpValuesModel(sanitized)))
 
-        // Invalid request
         case "XGM00000000560" =>
           BadRequest(
             Json.obj(
@@ -91,7 +68,6 @@ class GamblingReturnPeriodsController @Inject() (
             )
           )
 
-        // Unauthorized
         case "XMM00000000580" =>
           Unauthorized(
             Json.obj(
@@ -100,7 +76,6 @@ class GamblingReturnPeriodsController @Inject() (
             )
           )
 
-        // Internal server error
         case "XAM00000001090" =>
           InternalServerError(
             Json.obj(
@@ -109,11 +84,11 @@ class GamblingReturnPeriodsController @Inject() (
             )
           )
 
-        // Default no data response
         case _ =>
-          Ok(
-            Json.toJson(
-              noDataModel()
+          NotFound(
+            Json.obj(
+              "code"    -> "RECORD_NOT_FOUND",
+              "message" -> "Record not found"
             )
           )
       }

@@ -42,115 +42,54 @@ final case class GamblingReturnPeriods(
 object GamblingReturnPeriodsFormats {
 
   private val nstpDateFormatter: DateTimeFormatter =
-    DateTimeFormatter.ofPattern(
-      "dd-MMM-yy",
-      Locale.ENGLISH
-    )
+    DateTimeFormatter.ofPattern("dd-MMM-yy", Locale.ENGLISH)
 
-  private val isoDateFormatter: DateTimeFormatter =
-    DateTimeFormatter.ISO_LOCAL_DATE
 
-  private val nstpDateWrites: Writes[LocalDate] =
-    Writes.temporalWrites[
-      LocalDate,
-      DateTimeFormatter
-    ](nstpDateFormatter)
 
-  private def optionalNstpDateWrites(
-    value: Option[LocalDate]
-  ): JsValue =
+  private def optionalIntWrites(value: Option[Int]): JsValue =
+    value.map(JsNumber(_)).getOrElse(JsNull)
+
+  private def optionalStringWrites(value: Option[String]): JsValue =
+    value.map(JsString.apply).getOrElse(JsNull)
+
+  private def optionalNstpDateWrites(value: Option[LocalDate]): JsValue =
     value
-      .map(date => nstpDateWrites.writes(date))
-      .getOrElse(JsString(""))
+      .map(date => JsString(date.format(nstpDateFormatter).toUpperCase(Locale.ENGLISH)))
+      .getOrElse(JsNull)
 
   private def optionalSystemDateWrites(
-    value: Option[LocalDate]
-  ): JsValue =
+                                        value: Option[LocalDate]): JsValue =
     value
       .map(date =>
         JsString(
-          date.format(isoDateFormatter)
+          date
+            .format(nstpDateFormatter)
+            .toUpperCase(Locale.ENGLISH)
         )
       )
-      .getOrElse(JsString(""))
-
-  private def optionalStringWrites(
-    value: Option[String]
-  ): JsValue =
-    value
-      .map(JsString(_))
-      .getOrElse(JsString(""))
-
-  private def optionalIntWrites(
-    value: Option[Int]
-  ): JsValue =
-    value
-      .map(JsNumber(_))
-      .getOrElse(JsString(""))
+      .getOrElse(JsNull)
 
   implicit val gamblingReturnPeriodsWrites: OWrites[GamblingReturnPeriods] =
     OWrites { returnPeriods =>
       Json.obj(
-        "mgdRegNumber" ->
-          returnPeriods.mgdRegNumber,
-        "returnPeriodsId" ->
-          optionalIntWrites(
-            returnPeriods.returnPeriodsId
-          ),
-        "nstpEndDate1" ->
-          optionalNstpDateWrites(
-            returnPeriods.nstpEndDate1
-          ),
-        "nstpEndDate2" ->
-          optionalNstpDateWrites(
-            returnPeriods.nstpEndDate2
-          ),
-        "nstpEndDate3" ->
-          optionalNstpDateWrites(
-            returnPeriods.nstpEndDate3
-          ),
-        "nstpEndDate4" ->
-          optionalNstpDateWrites(
-            returnPeriods.nstpEndDate4
-          ),
-        "nstpEndDate5" ->
-          optionalNstpDateWrites(
-            returnPeriods.nstpEndDate5
-          ),
-        "nstpEndDate6" ->
-          optionalNstpDateWrites(
-            returnPeriods.nstpEndDate6
-          ),
-        "nstpEndDate7" ->
-          optionalNstpDateWrites(
-            returnPeriods.nstpEndDate7
-          ),
-        "nstpEndDate8" ->
-          optionalNstpDateWrites(
-            returnPeriods.nstpEndDate8
-          ),
-        "isInLastNstp" ->
-          optionalStringWrites(
-            returnPeriods.isInLastNstp
-          ),
-        "finalPeriodWarning" ->
-          optionalStringWrites(
-            returnPeriods.finalPeriodWarning
-          ),
-        "hasExistingNstpValues" ->
-          optionalStringWrites(
-            returnPeriods.hasExistingNstpValues
-          ),
-        "systemDate" ->
-          optionalSystemDateWrites(
-            returnPeriods.systemDate
-          )
+        "mgdRegNumber"          -> returnPeriods.mgdRegNumber,
+        "returnPeriodsId"       -> optionalIntWrites(returnPeriods.returnPeriodsId),
+        "nstpEndDate1"          -> optionalNstpDateWrites(returnPeriods.nstpEndDate1),
+        "nstpEndDate2"          -> optionalNstpDateWrites(returnPeriods.nstpEndDate2),
+        "nstpEndDate3"          -> optionalNstpDateWrites(returnPeriods.nstpEndDate3),
+        "nstpEndDate4"          -> optionalNstpDateWrites(returnPeriods.nstpEndDate4),
+        "nstpEndDate5"          -> optionalNstpDateWrites(returnPeriods.nstpEndDate5),
+        "nstpEndDate6"          -> optionalNstpDateWrites(returnPeriods.nstpEndDate6),
+        "nstpEndDate7"          -> optionalNstpDateWrites(returnPeriods.nstpEndDate7),
+        "nstpEndDate8"          -> optionalNstpDateWrites(returnPeriods.nstpEndDate8),
+        "isInLastNstp"          -> optionalStringWrites(returnPeriods.isInLastNstp),
+        "finalPeriodWarning"    -> optionalStringWrites(returnPeriods.finalPeriodWarning),
+        "hasExistingNstpValues" -> optionalStringWrites(returnPeriods.hasExistingNstpValues),
+        "systemDate"            -> optionalSystemDateWrites(returnPeriods.systemDate)
       )
     }
 
-  def fullModel(
-    mgdRegNumber: String
-  ): GamblingReturnPeriods =
+  def fullModel(mgdRegNumber: String): GamblingReturnPeriods =
     GamblingReturnPeriods(
       mgdRegNumber          = mgdRegNumber,
       returnPeriodsId       = Some(1),
@@ -168,9 +107,7 @@ object GamblingReturnPeriodsFormats {
       systemDate            = Some(LocalDate.of(2026, 5, 31))
     )
 
-  def partialModel(
-    mgdRegNumber: String
-  ): GamblingReturnPeriods =
+  def partialModel(mgdRegNumber: String): GamblingReturnPeriods =
     GamblingReturnPeriods(
       mgdRegNumber          = mgdRegNumber,
       returnPeriodsId       = Some(2),
@@ -181,9 +118,7 @@ object GamblingReturnPeriodsFormats {
       systemDate            = Some(LocalDate.of(2026, 5, 31))
     )
 
-  def noNstpValuesModel(
-    mgdRegNumber: String
-  ): GamblingReturnPeriods =
+  def noNstpValuesModel(mgdRegNumber: String): GamblingReturnPeriods =
     GamblingReturnPeriods(
       mgdRegNumber          = mgdRegNumber,
       returnPeriodsId       = Some(1),
@@ -192,12 +127,4 @@ object GamblingReturnPeriodsFormats {
       hasExistingNstpValues = Some("0"),
       systemDate            = Some(LocalDate.of(2026, 5, 31))
     )
-
-  def noDataModel(): GamblingReturnPeriods =
-    GamblingReturnPeriods(
-      mgdRegNumber = ""
-    )
-
-  def `XGM00000001761`: GamblingReturnPeriods =
-    fullModel("XGM00000001761")
 }
