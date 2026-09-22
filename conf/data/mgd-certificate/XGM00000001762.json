@@ -1,0 +1,28 @@
+{
+  "mgdRegNumber": "XGM00000001762",
+  "registrationDate": "2022-02-02",
+  "individualName": "Mrs Corporate Body",
+  "businessName": "CB Business Name",
+  "tradingName": "CB Trading Name",
+  "repMemName": "Some Name",
+  "busAddrLine1": "2 Quicksilver Way",
+  "busAddrLine2": "Cobalt Business Park",
+  "busPostcode": "BB2 2BB",
+  "busCountry": "United Kingdom",
+  "typeOfBusiness": "Corporate Body",
+  "businessTradeClass": 2,
+  "noOfPartners": 0,
+  "groupReg": "N",
+  "noOfGroupMems": 0,
+  "dateCertIssued": "2022-02-02",
+  "partMembers": [],
+  "groupMembers": [],
+  "returnPeriodEndDates": [
+    {
+      "returnPeriodEndDate": "2026-09-30"
+    },
+    {
+      "returnPeriodEndDate": "2026-12-31"
+    }
+  ]
+}

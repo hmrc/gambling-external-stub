@@ -1,0 +1,38 @@
+{
+  "partners": [
+    {
+      "mgdRegNumber": "XMM00000001177",
+      "dateOfJoining": "2013-02-01",
+      "dateOfLeaving": "1999-12-31",
+      "businessName": "Corporate Body Name",
+      "tradingName": "Trading Name",
+      "utr": "4444444444",
+      "crn": "01234556",
+      "dateOfIncorporation": "2012-10-29",
+      "address1": "1 address",
+      "address2": "2 address",
+      "postcode": "AD34 4FD",
+      "adi": "add",
+      "iomOrCiFlag": "false",
+      "isFutureLeaveDate": 0,
+      "isFutureJoinDate": 0,
+      "businessType": 2
+    },
+    {
+      "mgdRegNumber": "XMM00000001177",
+      "dateOfJoining": "2013-02-01",
+      "dateOfLeaving": "1999-12-31",
+      "businessName": "Unicorporated Body Name",
+      "tradingName": "Trading Name",
+      "utr": "4444444444",
+      "address1": "1 Address Line 1",
+      "address2": "2 Address Line 2",
+      "postcode": "AD23 9JJ",
+      "iomOrCiFlag": "false",
+      "isFutureLeaveDate": 0,
+      "isFutureJoinDate": 0,
+      "businessType": 3
+    }
+  ],
+  "systemDate": "2026-07-31"
+}

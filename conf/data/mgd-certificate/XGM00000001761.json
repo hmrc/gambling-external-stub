@@ -1,0 +1,31 @@
+{
+  "mgdRegNumber": "XGM00000001761",
+  "registrationDate": "2020-01-01",
+  "individualName": "Mr SoleFN MN ProprietorLN",
+  "businessName": "SP Business Name",
+  "tradingName": "SP Trading Name",
+  "repMemName": "Some Name",
+  "busAddrLine1": "1 Quicksilver Way",
+  "busAddrLine2": "Cobalt Business Park",
+  "busAddrLine3": "Newcastle",
+  "busPostcode": "AA1 1AA",
+  "busCountry": "United Kingdom",
+  "busAdi": "Building Cobalt 9C",
+  "repMemLine1": "1 Low Street",
+  "repMemLine2": "Newcastle",
+  "repMemPostcode": "AA1 1AA",
+  "repMemAdi": "Rep ADI Value",
+  "typeOfBusiness": "Sole Proprietor",
+  "businessTradeClass": 1,
+  "noOfPartners": 0,
+  "groupReg": "N",
+  "noOfGroupMems": 0,
+  "dateCertIssued": "2021-01-01",
+  "partMembers": [],
+  "groupMembers": [],
+  "returnPeriodEndDates": [
+    {
+      "returnPeriodEndDate": "2026-12-31"
+    }
+  ]
+}

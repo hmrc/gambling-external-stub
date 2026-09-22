@@ -1,0 +1,36 @@
+{
+  "mgdRegNumber": "XGM00000001763",
+  "registrationDate": "2023-03-03",
+  "individualName": "Mrs Unincorporated MN Body",
+  "businessName": "UCB Business Name",
+  "tradingName": "UCB Trading Name",
+  "repMemName": "Some Name",
+  "busAddrLine1": "3 Quicksilver Way",
+  "busAddrLine2": "Cobalt Business Park",
+  "busPostcode": "CC3 3CC",
+  "busCountry": "United Kingdom",
+  "busAdi": "Building 3C",
+  "repMemLine1": "3 Low Street",
+  "repMemLine2": "Newcastle",
+  "repMemPostcode": "CC3 3CC",
+  "repMemAdi": "Rep ADI Value",
+  "typeOfBusiness": "Unincorporated Body",
+  "businessTradeClass": 3,
+  "noOfPartners": 0,
+  "groupReg": "N",
+  "noOfGroupMems": 0,
+  "dateCertIssued": "2023-03-03",
+  "partMembers": [],
+  "groupMembers": [],
+  "returnPeriodEndDates": [
+    {
+      "returnPeriodEndDate": "2026-09-30"
+    },
+    {
+      "returnPeriodEndDate": "2026-12-31"
+    },
+    {
+      "returnPeriodEndDate": "2027-03-31"
+    }
+  ]
+}
