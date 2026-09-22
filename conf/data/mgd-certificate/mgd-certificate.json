@@ -1,0 +1,21 @@
+{
+  "mgdRegNumber": "",
+  "registrationDate": "2021-01-01",
+  "businessName": "Default Business Name for ",
+  "busAddrLine1": "Default Address Line 1",
+  "busAddrLine2": "Default Address Line 2",
+  "busCountry": "Ireland",
+  "typeOfBusiness": "Default Corporate Body",
+  "businessTradeClass": 2,
+  "noOfPartners": 0,
+  "groupReg": "N",
+  "noOfGroupMems": 0,
+  "dateCertIssued": "2026-12-31",
+  "partMembers": [],
+  "groupMembers": [],
+  "returnPeriodEndDates": [
+    {
+      "returnPeriodEndDate": "2026-12-31"
+    }
+  ]
+}

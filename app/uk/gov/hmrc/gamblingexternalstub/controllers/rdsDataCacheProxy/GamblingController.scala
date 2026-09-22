@@ -58,6 +58,33 @@ class GamblingController @Inject() (
         .as[JsObject]
   }.toMap
 
+  private lazy val returnSummaries =
+    Seq("XGM00000001761", "XGM00000001762", "XGM00000001763", "XGM00000001764", "XGM00000001765", "return-summary").map { registration =>
+      registration -> Using
+        .resource(
+          getClass.getResourceAsStream(s"/data/return-summary/$registration.json")
+        )(Json.parse)
+        .as[JsObject]
+    }.toMap
+
+  private lazy val mgdCertificates =
+    Seq("XGM00000001761", "XGM00000001762", "XGM00000001763", "XGM00000001764", "XGM00000001765", "mgd-certificate").map { registration =>
+      registration -> Using
+        .resource(
+          getClass.getResourceAsStream(s"/data/mgd-certificate/$registration.json")
+        )(Json.parse)
+        .as[JsObject]
+    }.toMap
+
+  private lazy val businessDetails =
+    Seq("XGM00000001761", "XGM00000001762", "XGM00000001763", "XGM00000001764", "XGM00000001765", "business-details").map { registration =>
+      registration -> Using
+        .resource(
+          getClass.getResourceAsStream(s"/data/business-details/$registration.json")
+        )(Json.parse)
+        .as[JsObject]
+    }.toMap
+
   def getReturnSummary(mgdRegNumber: String): Action[AnyContent] = Action { _ =>
 
     mgdRegNumber match {
@@ -80,27 +107,27 @@ class GamblingController @Inject() (
 
       // Scenario 1 → overdue exists
       case "XGM00000001761" =>
-        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 0, returnsOverdue = 1)))
+        Ok(returnSummaries("XGM00000001761"))
 
       // Scenario 2 → returns due
       case "XGM00000001762" =>
-        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 1, returnsOverdue = 2)))
+        Ok(returnSummaries("XGM00000001762"))
 
       // Scenario 3 → both returns due and overdue exists
       case "XGM00000001763" =>
-        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 0, returnsOverdue = 11)))
+        Ok(returnSummaries("XGM00000001763"))
 
       // Scenario 1 → overdue exists
       case "XGM00000001764" =>
-        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 11, returnsOverdue = 1)))
+        Ok(returnSummaries("XGM00000001764"))
 
       // Scenario 2 → returns due
       case "XGM00000001765" =>
-        Ok(Json.toJson(ReturnSummary(mgdRegNumber, returnsDue = 11, returnsOverdue = 11)))
+        Ok(returnSummaries("XGM00000001765"))
 
       // default fallback
       case reg =>
-        Ok(Json.toJson(ReturnSummary(reg, returnsDue = 0, returnsOverdue = 0)))
+        Ok(returnSummaries("return-summary") ++ Json.obj("mgdRegNumber" -> reg))
     }
   }
 
@@ -169,95 +196,23 @@ class GamblingController @Inject() (
         )
 
       case "XGM00000001761" =>
-        Ok(
-          Json.toJson(
-            BusinessDetails(
-              mgdRegNumber,
-              businessType          = Some(BusinessType.SoleProprietor),
-              currentlyRegistered   = 1,
-              groupReg              = false,
-              dateOfRegistration    = Some(LocalDate.of(1991, 1, 1)),
-              businessPartnerNumber = Some("bar"),
-              systemDate            = LocalDate.of(1991, 1, 1)
-            )
-          )
-        )
+        Ok(businessDetails("XGM00000001761"))
 
       case "XGM00000001762" =>
-        Ok(
-          Json.toJson(
-            BusinessDetails(
-              mgdRegNumber,
-              businessType          = Some(BusinessType.CorporateBody),
-              currentlyRegistered   = 0,
-              groupReg              = true,
-              dateOfRegistration    = Some(LocalDate.of(1991, 1, 1)),
-              businessPartnerNumber = Some("bar"),
-              systemDate            = LocalDate.of(1991, 1, 1)
-            )
-          )
-        )
+        Ok(businessDetails("XGM00000001762"))
 
       case "XGM00000001763" =>
-        Ok(
-          Json.toJson(
-            BusinessDetails(
-              mgdRegNumber,
-              businessType          = Some(BusinessType.UnincorporatedBody),
-              currentlyRegistered   = 1,
-              groupReg              = false,
-              dateOfRegistration    = Some(LocalDate.parse("2021-06-20")),
-              businessPartnerNumber = Some("bar"),
-              systemDate            = LocalDate.now()
-            )
-          )
-        )
+        Ok(businessDetails("XGM00000001763") ++ Json.obj("systemDate" -> LocalDate.now()))
 
       case "XGM00000001764" =>
-        Ok(
-          Json.toJson(
-            BusinessDetails(
-              mgdRegNumber,
-              businessType          = Some(BusinessType.Partnership),
-              currentlyRegistered   = 1,
-              groupReg              = false,
-              dateOfRegistration    = Some(LocalDate.parse("2026-06-21")),
-              businessPartnerNumber = Some("9876543210"),
-              systemDate            = LocalDate.now()
-            )
-          )
-        )
+        Ok(businessDetails("XGM00000001764") ++ Json.obj("systemDate" -> LocalDate.now()))
 
       case "XGM00000001765" =>
-        Ok(
-          Json.toJson(
-            BusinessDetails(
-              mgdRegNumber,
-              businessType          = Some(BusinessType.LimitedLiabilityPartnership),
-              currentlyRegistered   = 0,
-              groupReg              = false,
-              dateOfRegistration    = Some(LocalDate.parse("2026-06-22")),
-              businessPartnerNumber = Some("bar"),
-              systemDate            = LocalDate.now()
-            )
-          )
-        )
+        Ok(businessDetails("XGM00000001765") ++ Json.obj("systemDate" -> LocalDate.now()))
 
       // =============== DEFAULT ===============
       case reg =>
-        Ok(
-          Json.toJson(
-            BusinessDetails(
-              mgdRegNumber          = reg,
-              businessType          = Some(BusinessType.SoleProprietor),
-              currentlyRegistered   = 1,
-              groupReg              = false,
-              dateOfRegistration    = Some(LocalDate.parse("2021-01-01")),
-              businessPartnerNumber = None,
-              systemDate            = LocalDate.now()
-            )
-          )
-        )
+        Ok(businessDetails("business-details") ++ Json.obj("mgdRegNumber" -> reg, "systemDate" -> LocalDate.now()))
     }
   }
 
@@ -285,260 +240,27 @@ class GamblingController @Inject() (
         )
 
       case "XGM00000001761" =>
-        Ok(
-          Json.toJson(
-            MgdCertificate(
-              mgdRegNumber       = "XGM00000001761",
-              registrationDate   = Some(LocalDate.parse("2020-01-01")),
-              individualName     = Some("Mr SoleFN MN ProprietorLN"),
-              businessName       = Some("SP Business Name"),
-              tradingName        = Some("SP Trading Name"),
-              repMemName         = Some("Some Name"),
-              busAddrLine1       = Some("1 Quicksilver Way"),
-              busAddrLine2       = Some("Cobalt Business Park"),
-              busAddrLine3       = Some("Newcastle"),
-              busAddrLine4       = None,
-              busPostcode        = Some("AA1 1AA"),
-              busCountry         = Some("United Kingdom"),
-              busAdi             = Some("Building Cobalt 9C"),
-              repMemLine1        = Some("1 Low Street"),
-              repMemLine2        = Some("Newcastle"),
-              repMemLine3        = None,
-              repMemLine4        = None,
-              repMemPostcode     = Some("AA1 1AA"),
-              repMemAdi          = Some("Rep ADI Value"),
-              typeOfBusiness     = Some("Sole Proprietor"),
-              businessTradeClass = Some(1),
-              noOfPartners       = Some(0),
-              groupReg           = "N",
-              noOfGroupMems      = Some(0),
-              dateCertIssued     = Some(LocalDate.parse("2021-01-01")),
-              partMembers        = Seq.empty,
-              groupMembers       = Seq.empty,
-              returnPeriodEndDates = Seq(
-                ReturnPeriodEndDate(LocalDate.parse("2026-12-31"))
-              )
-            )
-          )
-        )
+        Ok(mgdCertificates("XGM00000001761"))
 
       case "XGM00000001762" =>
-        Ok(
-          Json.toJson(
-            MgdCertificate(
-              mgdRegNumber       = "XGM00000001762",
-              registrationDate   = Some(LocalDate.parse("2022-02-02")),
-              individualName     = Some("Mrs Corporate Body"),
-              businessName       = Some("CB Business Name"),
-              tradingName        = Some("CB Trading Name"),
-              repMemName         = Some("Some Name"),
-              busAddrLine1       = Some("2 Quicksilver Way"),
-              busAddrLine2       = Some("Cobalt Business Park"),
-              busAddrLine3       = None,
-              busAddrLine4       = None,
-              busPostcode        = Some("BB2 2BB"),
-              busCountry         = Some("United Kingdom"),
-              busAdi             = None,
-              repMemLine1        = None,
-              repMemLine2        = None,
-              repMemLine3        = None,
-              repMemLine4        = None,
-              repMemPostcode     = None,
-              repMemAdi          = None,
-              typeOfBusiness     = Some("Corporate Body"),
-              businessTradeClass = Some(2),
-              noOfPartners       = Some(0),
-              groupReg           = "N",
-              noOfGroupMems      = Some(0),
-              dateCertIssued     = Some(LocalDate.parse("2022-02-02")),
-              partMembers        = Seq.empty,
-              groupMembers       = Seq.empty,
-              returnPeriodEndDates = Seq(
-                ReturnPeriodEndDate(LocalDate.parse("2026-09-30")),
-                ReturnPeriodEndDate(LocalDate.parse("2026-12-31"))
-              )
-            )
-          )
-        )
+        Ok(mgdCertificates("XGM00000001762"))
 
       case "XGM00000001763" =>
-        Ok(
-          Json.toJson(
-            MgdCertificate(
-              mgdRegNumber       = "XGM00000001763",
-              registrationDate   = Some(LocalDate.parse("2023-03-03")),
-              individualName     = Some("Mrs Unincorporated MN Body"),
-              businessName       = Some("UCB Business Name"),
-              tradingName        = Some("UCB Trading Name"),
-              repMemName         = Some("Some Name"),
-              busAddrLine1       = Some("3 Quicksilver Way"),
-              busAddrLine2       = Some("Cobalt Business Park"),
-              busAddrLine3       = None,
-              busAddrLine4       = None,
-              busPostcode        = Some("CC3 3CC"),
-              busCountry         = Some("United Kingdom"),
-              busAdi             = Some("Building 3C"),
-              repMemLine1        = Some("3 Low Street"),
-              repMemLine2        = Some("Newcastle"),
-              repMemLine3        = None,
-              repMemLine4        = None,
-              repMemPostcode     = Some("CC3 3CC"),
-              repMemAdi          = Some("Rep ADI Value"),
-              typeOfBusiness     = Some("Unincorporated Body"),
-              businessTradeClass = Some(3),
-              noOfPartners       = Some(0),
-              groupReg           = "N",
-              noOfGroupMems      = Some(0),
-              dateCertIssued     = Some(LocalDate.parse("2023-03-03")),
-              partMembers        = Seq.empty,
-              groupMembers       = Seq.empty,
-              returnPeriodEndDates = Seq(
-                ReturnPeriodEndDate(LocalDate.parse("2026-09-30")),
-                ReturnPeriodEndDate(LocalDate.parse("2026-12-31")),
-                ReturnPeriodEndDate(LocalDate.parse("2027-03-31"))
-              )
-            )
-          )
-        )
+        Ok(mgdCertificates("XGM00000001763"))
 
       case "XGM00000001764" =>
-        Ok(
-          Json.toJson(
-            MgdCertificate(
-              mgdRegNumber       = "XGM00000001764",
-              registrationDate   = Some(LocalDate.parse("2024-04-04")),
-              individualName     = Some("Partner1 Name"),
-              businessName       = Some("Partner1 Business Name"),
-              tradingName        = Some("Partner1 Trading Name"),
-              repMemName         = Some("Some Name"),
-              busAddrLine1       = Some("4 Quicksilver Way"),
-              busAddrLine2       = Some("Cobalt Business Park"),
-              busAddrLine3       = Some("Address Line 3"),
-              busAddrLine4       = Some("Address Line 4"),
-              busPostcode        = Some("DD4 4DD"),
-              busCountry         = Some("United Kingdom"),
-              busAdi             = Some("Building 4D"),
-              repMemLine1        = Some("4 Low Street"),
-              repMemLine2        = Some("Newcastle"),
-              repMemLine3        = None,
-              repMemLine4        = None,
-              repMemPostcode     = Some("DD4 4DD"),
-              repMemAdi          = Some("Rep ADI Value"),
-              typeOfBusiness     = Some("Partnership"),
-              businessTradeClass = Some(4),
-              noOfPartners       = Some(2),
-              groupReg           = "Y",
-              noOfGroupMems      = Some(2),
-              dateCertIssued     = Some(LocalDate.parse("2024-04-04")),
-              partMembers = Seq(
-                PartnerMember(
-                  namesOfPartMems    = "Attached Partner Sole Proprietor",
-                  solePropTitle      = Some("Ms"),
-                  solePropFirstName  = Some("SP1 FN"),
-                  solePropMiddleName = Some("Partner"),
-                  solePropLastName   = Some("SP1 LN"),
-                  typeOfBusiness     = 1
-                ),
-                PartnerMember(
-                  namesOfPartMems    = "Attached Partner Partnership FN LN",
-                  solePropTitle      = None,
-                  solePropFirstName  = None,
-                  solePropMiddleName = None,
-                  solePropLastName   = None,
-                  typeOfBusiness     = 4
-                )
-              ),
-              groupMembers = Seq(
-                GroupMember("Partnership Group Ltd")
-              ),
-              returnPeriodEndDates = Seq(
-                ReturnPeriodEndDate(LocalDate.parse("2026-09-30")),
-                ReturnPeriodEndDate(LocalDate.parse("2026-12-31")),
-                ReturnPeriodEndDate(LocalDate.parse("2027-03-31")),
-                ReturnPeriodEndDate(LocalDate.parse("2027-06-30"))
-              )
-            )
-          )
-        )
+        Ok(mgdCertificates("XGM00000001764"))
 
       case "XGM00000001765" =>
-        Ok(
-          Json.toJson(
-            MgdCertificate(
-              mgdRegNumber       = "XGM00000001765",
-              registrationDate   = Some(LocalDate.parse("2025-05-05")),
-              individualName     = Some("Mrs LLPFN LLPLN"),
-              businessName       = Some("LLP Business Name"),
-              tradingName        = Some("LLP Trading Name"),
-              repMemName         = Some("Some Name"),
-              busAddrLine1       = Some("5 Quicksilver Way"),
-              busAddrLine2       = Some("Cobalt Business Park"),
-              busAddrLine3       = None,
-              busAddrLine4       = None,
-              busPostcode        = Some("EE5 5EE"),
-              busCountry         = Some("United Kingdom"),
-              busAdi             = Some("Building 5E"),
-              repMemLine1        = Some("5 Low Street"),
-              repMemLine2        = Some("Newcastle"),
-              repMemLine3        = None,
-              repMemLine4        = None,
-              repMemPostcode     = Some("EE5 5EE"),
-              repMemAdi          = None,
-              typeOfBusiness     = Some("Limited Liability Partnership"),
-              businessTradeClass = Some(5),
-              noOfPartners       = Some(0),
-              groupReg           = "N",
-              noOfGroupMems      = Some(0),
-              dateCertIssued     = Some(LocalDate.parse("2025-05-05")),
-              partMembers        = Seq.empty,
-              groupMembers       = Seq.empty,
-              returnPeriodEndDates = Seq(
-                ReturnPeriodEndDate(LocalDate.parse("2026-09-30")),
-                ReturnPeriodEndDate(LocalDate.parse("2026-12-31")),
-                ReturnPeriodEndDate(LocalDate.parse("2027-03-31")),
-                ReturnPeriodEndDate(LocalDate.parse("2027-06-30")),
-                ReturnPeriodEndDate(LocalDate.parse("2027-09-30"))
-              )
-            )
-          )
-        )
+        Ok(mgdCertificates("XGM00000001765"))
 
       // ===== DEFAULT =====
       case reg =>
+        val certificate = mgdCertificates("mgd-certificate")
         Ok(
-          Json.toJson(
-            MgdCertificate(
-              mgdRegNumber       = reg,
-              registrationDate   = Some(LocalDate.parse("2021-01-01")),
-              individualName     = None,
-              businessName       = Some(s"Default Business Name for $reg"),
-              tradingName        = None,
-              repMemName         = None,
-              busAddrLine1       = Some("Default Address Line 1"),
-              busAddrLine2       = Some("Default Address Line 2"),
-              busAddrLine3       = None,
-              busAddrLine4       = None,
-              busPostcode        = None,
-              busCountry         = Some("Ireland"),
-              busAdi             = None,
-              repMemLine1        = None,
-              repMemLine2        = None,
-              repMemLine3        = None,
-              repMemLine4        = None,
-              repMemPostcode     = None,
-              repMemAdi          = None,
-              typeOfBusiness     = Some("Default Corporate Body"),
-              businessTradeClass = Some(2),
-              noOfPartners       = Some(0),
-              groupReg           = "N",
-              noOfGroupMems      = Some(0),
-              dateCertIssued     = Some(LocalDate.parse("2026-12-31")),
-              partMembers        = Seq.empty,
-              groupMembers       = Seq.empty,
-              returnPeriodEndDates = Seq(
-                ReturnPeriodEndDate(LocalDate.parse("2026-12-31"))
-              )
-            )
+          certificate ++ Json.obj(
+            "mgdRegNumber" -> reg,
+            "businessName" -> ((certificate \ "businessName").as[String] + reg)
           )
         )
     }

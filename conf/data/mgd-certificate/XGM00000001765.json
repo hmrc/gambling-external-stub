@@ -1,0 +1,41 @@
+{
+  "mgdRegNumber": "XGM00000001765",
+  "registrationDate": "2025-05-05",
+  "individualName": "Mrs LLPFN LLPLN",
+  "businessName": "LLP Business Name",
+  "tradingName": "LLP Trading Name",
+  "repMemName": "Some Name",
+  "busAddrLine1": "5 Quicksilver Way",
+  "busAddrLine2": "Cobalt Business Park",
+  "busPostcode": "EE5 5EE",
+  "busCountry": "United Kingdom",
+  "busAdi": "Building 5E",
+  "repMemLine1": "5 Low Street",
+  "repMemLine2": "Newcastle",
+  "repMemPostcode": "EE5 5EE",
+  "typeOfBusiness": "Limited Liability Partnership",
+  "businessTradeClass": 5,
+  "noOfPartners": 0,
+  "groupReg": "N",
+  "noOfGroupMems": 0,
+  "dateCertIssued": "2025-05-05",
+  "partMembers": [],
+  "groupMembers": [],
+  "returnPeriodEndDates": [
+    {
+      "returnPeriodEndDate": "2026-09-30"
+    },
+    {
+      "returnPeriodEndDate": "2026-12-31"
+    },
+    {
+      "returnPeriodEndDate": "2027-03-31"
+    },
+    {
+      "returnPeriodEndDate": "2027-06-30"
+    },
+    {
+      "returnPeriodEndDate": "2027-09-30"
+    }
+  ]
+}

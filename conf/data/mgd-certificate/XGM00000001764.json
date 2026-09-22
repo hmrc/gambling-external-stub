@@ -1,0 +1,58 @@
+{
+  "mgdRegNumber": "XGM00000001764",
+  "registrationDate": "2024-04-04",
+  "individualName": "Partner1 Name",
+  "businessName": "Partner1 Business Name",
+  "tradingName": "Partner1 Trading Name",
+  "repMemName": "Some Name",
+  "busAddrLine1": "4 Quicksilver Way",
+  "busAddrLine2": "Cobalt Business Park",
+  "busAddrLine3": "Address Line 3",
+  "busAddrLine4": "Address Line 4",
+  "busPostcode": "DD4 4DD",
+  "busCountry": "United Kingdom",
+  "busAdi": "Building 4D",
+  "repMemLine1": "4 Low Street",
+  "repMemLine2": "Newcastle",
+  "repMemPostcode": "DD4 4DD",
+  "repMemAdi": "Rep ADI Value",
+  "typeOfBusiness": "Partnership",
+  "businessTradeClass": 4,
+  "noOfPartners": 2,
+  "groupReg": "Y",
+  "noOfGroupMems": 2,
+  "dateCertIssued": "2024-04-04",
+  "partMembers": [
+    {
+      "namesOfPartMems": "Attached Partner Sole Proprietor",
+      "solePropTitle": "Ms",
+      "solePropFirstName": "SP1 FN",
+      "solePropMiddleName": "Partner",
+      "solePropLastName": "SP1 LN",
+      "typeOfBusiness": 1
+    },
+    {
+      "namesOfPartMems": "Attached Partner Partnership FN LN",
+      "typeOfBusiness": 4
+    }
+  ],
+  "groupMembers": [
+    {
+      "namesOfGroupMems": "Partnership Group Ltd"
+    }
+  ],
+  "returnPeriodEndDates": [
+    {
+      "returnPeriodEndDate": "2026-09-30"
+    },
+    {
+      "returnPeriodEndDate": "2026-12-31"
+    },
+    {
+      "returnPeriodEndDate": "2027-03-31"
+    },
+    {
+      "returnPeriodEndDate": "2027-06-30"
+    }
+  ]
+}

@@ -603,7 +603,7 @@ See [docs/activemq-proxy-queue-send.md](docs/activemq-proxy-queue-send.md) for f
 
 ---
 
-q### 23. Premises details RDS data
+### 23. Premises details RDS data
 
 #### Success response (no data)
 
@@ -914,6 +914,112 @@ GET http://localhost:10405/rds-datacache-proxy/gambling/partner-details/MGD/XJM0
 Returns `200 OK` with one partner containing a subset of the optional fields. The system date is captured when the partner data is first initialised.
 
 The response template is stored in [the test data file](conf/data/partner-details/XJM00000000570.json).
+
+---
+
+### 31. Return summary RDS data
+
+#### Success response (no returns due or overdue)
+
+```text
+GET http://localhost:10405/rds-datacache-proxy/gambling/return-summary/GAM999
+```
+
+Returns `200 OK` with the requested registration number, `returnsDue: 0` and `returnsOverdue: 0`.
+
+The response template is stored in [return-summary.json](conf/data/return-summary/return-summary.json).
+
+#### Success response (with data)
+
+```text
+GET http://localhost:10405/rds-datacache-proxy/gambling/return-summary/XGM00000001761
+```
+
+Returns `200 OK` with `returnsDue: 0` and `returnsOverdue: 1`.
+
+The complete response is stored in [the test data file](conf/data/return-summary/XGM00000001761.json).
+The other populated scenarios use the same endpoint with the following registration numbers:
+
+| Registration number | Returns due | Returns overdue | Test data file |
+| --- | --- | --- | --- |
+| `XGM00000001762` | 1 | 2 | [XGM00000001762.json](conf/data/return-summary/XGM00000001762.json) |
+| `XGM00000001763` | 0 | 11 | [XGM00000001763.json](conf/data/return-summary/XGM00000001763.json) |
+| `XGM00000001764` | 11 | 1 | [XGM00000001764.json](conf/data/return-summary/XGM00000001764.json) |
+| `XGM00000001765` | 11 | 11 | [XGM00000001765.json](conf/data/return-summary/XGM00000001765.json) |
+
+---
+
+### 32. MGD certificate RDS data
+
+#### Success response (default data)
+
+```text
+GET http://localhost:10405/rds-datacache-proxy/gambling/mgd-certificate/GAM999
+```
+
+Returns `200 OK` with the requested registration number, business name `Default Business Name for GAM999`,
+a default corporate body certificate and an address in Ireland. The partner and group member lists are empty.
+
+The response template is stored in [mgd-certificate.json](conf/data/mgd-certificate/mgd-certificate.json).
+The requested registration number is appended to the business name from the template at runtime.
+
+#### Success response (with data)
+
+```text
+GET http://localhost:10405/rds-datacache-proxy/gambling/mgd-certificate/XGM00000001761
+```
+
+Returns `200 OK` with the sole proprietor's certificate, business and representative member addresses,
+registration date `2020-01-01`, certificate issue date `2021-01-01` and return period end date `2026-12-31`.
+The partner and group member lists are empty.
+
+The complete response is stored in [the test data file](conf/data/mgd-certificate/XGM00000001761.json).
+The other populated scenarios use the same endpoint with the following registration numbers:
+
+| Registration number | Business type | Return period end dates | Test data file |
+| --- | --- | --- | --- |
+| `XGM00000001762` | Corporate Body | 2 | [XGM00000001762.json](conf/data/mgd-certificate/XGM00000001762.json) |
+| `XGM00000001763` | Unincorporated Body | 3 | [XGM00000001763.json](conf/data/mgd-certificate/XGM00000001763.json) |
+| `XGM00000001764` | Partnership | 4 | [XGM00000001764.json](conf/data/mgd-certificate/XGM00000001764.json) |
+| `XGM00000001765` | Limited Liability Partnership | 5 | [XGM00000001765.json](conf/data/mgd-certificate/XGM00000001765.json) |
+
+---
+
+### 33. Business details RDS data
+
+#### Success response (default data)
+
+```text
+GET http://localhost:10405/rds-datacache-proxy/gambling/business-details/GAM999
+```
+
+Returns `200 OK` with the requested registration number, `businessType: 1`, `currentlyRegistered: 1`,
+`groupReg: false`, registration date `2021-01-01` and `systemDate` set to the current date.
+The business partner number is omitted.
+
+The response template is stored in [business-details.json](conf/data/business-details/business-details.json).
+
+#### Success response (with data)
+
+```text
+GET http://localhost:10405/rds-datacache-proxy/gambling/business-details/XGM00000001761
+```
+
+Returns `200 OK` with `businessType: 1`, `currentlyRegistered: 1`, `groupReg: false`,
+`businessPartnerNumber: "bar"` and both registration and system dates set to `1991-01-01`.
+
+The complete response is stored in [the test data file](conf/data/business-details/XGM00000001761.json).
+The other populated scenarios use the same endpoint with the following registration numbers:
+
+| Registration number | Business type | Currently registered | Group registration | Test data file |
+| --- | --- | --- | --- | --- |
+| `XGM00000001762` | 2 (Corporate Body) | 0 | `true` | [XGM00000001762.json](conf/data/business-details/XGM00000001762.json) |
+| `XGM00000001763` | 3 (Unincorporated Body) | 1 | `false` | [XGM00000001763.json](conf/data/business-details/XGM00000001763.json) |
+| `XGM00000001764` | 4 (Partnership) | 1 | `false` | [XGM00000001764.json](conf/data/business-details/XGM00000001764.json) |
+| `XGM00000001765` | 5 (Limited Liability Partnership) | 0 | `false` | [XGM00000001765.json](conf/data/business-details/XGM00000001765.json) |
+
+For `XGM00000001762`, both registration and system dates are fixed at `1991-01-01`.
+For `XGM00000001763`–`XGM00000001765` and the default response, `systemDate` is calculated at runtime rather than taken from the JSON file.
 
 ## License
 
