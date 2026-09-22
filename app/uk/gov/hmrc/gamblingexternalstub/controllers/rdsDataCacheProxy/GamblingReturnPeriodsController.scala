@@ -59,15 +59,15 @@ class GamblingReturnPeriodsController @Inject() (
       sanitized match {
 
         // Full data
-        case "XWM00000001770" =>
+        case "XGM00000001761" =>
           Ok(
             Json.toJson(
-              `XWM00000001770`
+              `XGM00000001761`
             )
           )
 
         // Partial data
-        case "XJM00000000570" =>
+        case "XGM00000001762" =>
           Ok(
             Json.toJson(
               partialModel(sanitized)
@@ -75,7 +75,7 @@ class GamblingReturnPeriodsController @Inject() (
           )
 
         // Existing operator but no NSTP values configured
-        case "XNM00000000590" =>
+        case "XGM00000001763" =>
           Ok(
             Json.toJson(
               noNstpValuesModel(sanitized)

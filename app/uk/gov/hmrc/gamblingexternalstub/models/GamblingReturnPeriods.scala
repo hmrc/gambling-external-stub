@@ -54,16 +54,14 @@ object GamblingReturnPeriodsFormats {
     Writes.temporalWrites[
       LocalDate,
       DateTimeFormatter
-    ](
-      nstpDateFormatter
-    )
+    ](nstpDateFormatter)
 
   private def optionalNstpDateWrites(
     value: Option[LocalDate]
   ): JsValue =
     value
       .map(date => nstpDateWrites.writes(date))
-      .getOrElse(JsNull)
+      .getOrElse(JsString(""))
 
   private def optionalSystemDateWrites(
     value: Option[LocalDate]
@@ -74,7 +72,21 @@ object GamblingReturnPeriodsFormats {
           date.format(isoDateFormatter)
         )
       )
-      .getOrElse(JsNull)
+      .getOrElse(JsString(""))
+
+  private def optionalStringWrites(
+    value: Option[String]
+  ): JsValue =
+    value
+      .map(JsString(_))
+      .getOrElse(JsString(""))
+
+  private def optionalIntWrites(
+    value: Option[Int]
+  ): JsValue =
+    value
+      .map(JsNumber(_))
+      .getOrElse(JsString(""))
 
   implicit val gamblingReturnPeriodsWrites: OWrites[GamblingReturnPeriods] =
     OWrites { returnPeriods =>
@@ -82,7 +94,9 @@ object GamblingReturnPeriodsFormats {
         "mgdRegNumber" ->
           returnPeriods.mgdRegNumber,
         "returnPeriodsId" ->
-          returnPeriods.returnPeriodsId,
+          optionalIntWrites(
+            returnPeriods.returnPeriodsId
+          ),
         "nstpEndDate1" ->
           optionalNstpDateWrites(
             returnPeriods.nstpEndDate1
@@ -116,11 +130,17 @@ object GamblingReturnPeriodsFormats {
             returnPeriods.nstpEndDate8
           ),
         "isInLastNstp" ->
-          returnPeriods.isInLastNstp,
+          optionalStringWrites(
+            returnPeriods.isInLastNstp
+          ),
         "finalPeriodWarning" ->
-          returnPeriods.finalPeriodWarning,
+          optionalStringWrites(
+            returnPeriods.finalPeriodWarning
+          ),
         "hasExistingNstpValues" ->
-          returnPeriods.hasExistingNstpValues,
+          optionalStringWrites(
+            returnPeriods.hasExistingNstpValues
+          ),
         "systemDate" ->
           optionalSystemDateWrites(
             returnPeriods.systemDate
@@ -132,55 +152,33 @@ object GamblingReturnPeriodsFormats {
     mgdRegNumber: String
   ): GamblingReturnPeriods =
     GamblingReturnPeriods(
-      mgdRegNumber    = mgdRegNumber,
-      returnPeriodsId = Some(1),
-      nstpEndDate1 = Some(
-        LocalDate.of(2024, 10, 14)
-      ),
-      nstpEndDate2 = Some(
-        LocalDate.of(2025, 1, 14)
-      ),
-      nstpEndDate3 = Some(
-        LocalDate.of(2025, 4, 15)
-      ),
-      nstpEndDate4 = Some(
-        LocalDate.of(2025, 7, 15)
-      ),
-      nstpEndDate5 = Some(
-        LocalDate.of(2025, 10, 14)
-      ),
-      nstpEndDate6 = Some(
-        LocalDate.of(2026, 1, 14)
-      ),
-      nstpEndDate7 = Some(
-        LocalDate.of(2026, 4, 15)
-      ),
-      nstpEndDate8 = Some(
-        LocalDate.of(2026, 7, 17)
-      ),
+      mgdRegNumber          = mgdRegNumber,
+      returnPeriodsId       = Some(1),
+      nstpEndDate1          = Some(LocalDate.of(2024, 10, 14)),
+      nstpEndDate2          = Some(LocalDate.of(2025, 1, 14)),
+      nstpEndDate3          = Some(LocalDate.of(2025, 4, 15)),
+      nstpEndDate4          = Some(LocalDate.of(2025, 7, 15)),
+      nstpEndDate5          = Some(LocalDate.of(2025, 10, 14)),
+      nstpEndDate6          = Some(LocalDate.of(2026, 1, 14)),
+      nstpEndDate7          = Some(LocalDate.of(2026, 4, 15)),
+      nstpEndDate8          = Some(LocalDate.of(2026, 7, 17)),
       isInLastNstp          = Some("1"),
       finalPeriodWarning    = Some("0"),
       hasExistingNstpValues = Some("1"),
-      systemDate = Some(
-        LocalDate.of(2026, 5, 31)
-      )
+      systemDate            = Some(LocalDate.of(2026, 5, 31))
     )
 
   def partialModel(
     mgdRegNumber: String
   ): GamblingReturnPeriods =
     GamblingReturnPeriods(
-      mgdRegNumber    = mgdRegNumber,
-      returnPeriodsId = Some(2),
-      nstpEndDate1 = Some(
-        LocalDate.of(2026, 3, 31)
-      ),
+      mgdRegNumber          = mgdRegNumber,
+      returnPeriodsId       = Some(2),
+      nstpEndDate1          = Some(LocalDate.of(2026, 3, 31)),
       isInLastNstp          = Some("0"),
       finalPeriodWarning    = Some("0"),
       hasExistingNstpValues = Some("1"),
-      systemDate = Some(
-        LocalDate.of(2026, 5, 31)
-      )
+      systemDate            = Some(LocalDate.of(2026, 5, 31))
     )
 
   def noNstpValuesModel(
@@ -192,9 +190,7 @@ object GamblingReturnPeriodsFormats {
       isInLastNstp          = Some("0"),
       finalPeriodWarning    = Some("0"),
       hasExistingNstpValues = Some("0"),
-      systemDate = Some(
-        LocalDate.of(2026, 5, 31)
-      )
+      systemDate            = Some(LocalDate.of(2026, 5, 31))
     )
 
   def noDataModel(): GamblingReturnPeriods =
@@ -202,8 +198,6 @@ object GamblingReturnPeriodsFormats {
       mgdRegNumber = ""
     )
 
-  def `XWM00000001770`: GamblingReturnPeriods =
-    fullModel(
-      "XWM00000001770"
-    )
+  def `XGM00000001761`: GamblingReturnPeriods =
+    fullModel("XGM00000001761")
 }

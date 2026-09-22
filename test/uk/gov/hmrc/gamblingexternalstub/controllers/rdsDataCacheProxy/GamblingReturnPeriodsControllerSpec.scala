@@ -18,11 +18,10 @@ package uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import play.api.libs.json.{JsNull, Json}
+import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.base.SpecBase
-import org.scalatest.OptionValues.*
 
 class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
@@ -34,12 +33,12 @@ class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with
 
   "GamblingReturnPeriodsController#getReturnPeriods" should {
 
-    "return full return periods for XWM00000001770" in {
+    "return full return periods for XGM00000001761" in {
 
       val result =
         controller.getReturnPeriods(
           "MGD",
-          "XWM00000001770"
+          "XGM00000001761"
         )(FakeRequest())
 
       status(result) shouldBe OK
@@ -48,7 +47,7 @@ class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with
         contentAsJson(result)
 
       (json \ "mgdRegNumber")
-        .as[String] shouldBe "XWM00000001770"
+        .as[String] shouldBe "XGM00000001761"
 
       (json \ "returnPeriodsId")
         .as[Int] shouldBe 1
@@ -72,12 +71,12 @@ class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with
         .as[String] shouldBe "2026-05-31"
     }
 
-    "return partial return periods for XJM00000000570" in {
+    "return partial return periods for XGM00000001762" in {
 
       val result =
         controller.getReturnPeriods(
           "mGd",
-          " XJM00000000570 "
+          " XGM00000001762 "
         )(FakeRequest())
 
       status(result) shouldBe OK
@@ -86,7 +85,7 @@ class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with
         contentAsJson(result)
 
       (json \ "mgdRegNumber")
-        .as[String] shouldBe "XJM00000000570"
+        .as[String] shouldBe "XGM00000001762"
 
       (json \ "returnPeriodsId")
         .as[Int] shouldBe 2
@@ -94,40 +93,14 @@ class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with
       (json \ "nstpEndDate1")
         .as[String] shouldBe "31-Mar-26"
 
-      (json \ "nstpEndDate2").toOption.value shouldBe JsNull
+      (json \ "nstpEndDate2")
+        .as[String] shouldBe ""
 
       (json \ "hasExistingNstpValues")
         .as[String] shouldBe "1"
     }
 
-    "return no NSTP values for XNM00000000590" in {
-
-      val result =
-        controller.getReturnPeriods(
-          "MGD",
-          "XNM00000000590"
-        )(FakeRequest())
-
-      status(result) shouldBe OK
-
-      val json =
-        contentAsJson(result)
-
-      (json \ "mgdRegNumber")
-        .as[String] shouldBe "XNM00000000590"
-
-      (json \ "returnPeriodsId")
-        .as[Int] shouldBe 1
-
-      (json \ "hasExistingNstpValues")
-        .as[String] shouldBe "0"
-
-      (json \ "nstpEndDate1").toOption.value shouldBe JsNull
-
-      (json \ "nstpEndDate8").toOption.value shouldBe JsNull
-    }
-
-    "return no data for unknown registration number" in {
+    "return no NSTP values for XGM00000001763" in {
 
       val result =
         controller.getReturnPeriods(
@@ -141,13 +114,75 @@ class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with
         contentAsJson(result)
 
       (json \ "mgdRegNumber")
+        .as[String] shouldBe "XGM00000001763"
+
+      (json \ "returnPeriodsId")
+        .as[Int] shouldBe 1
+
+      (json \ "hasExistingNstpValues")
+        .as[String] shouldBe "0"
+
+      (json \ "nstpEndDate1")
         .as[String] shouldBe ""
 
-      (json \ "returnPeriodsId").toOption.value shouldBe JsNull
+      (json \ "nstpEndDate8")
+        .as[String] shouldBe ""
+    }
 
-      (json \ "nstpEndDate1").toOption.value shouldBe JsNull
+    "return no data for unknown registration number" in {
 
-      (json \ "systemDate").toOption.value shouldBe JsNull
+      val result =
+        controller.getReturnPeriods(
+          "MGD",
+          "XGM00000001764"
+        )(FakeRequest())
+
+      status(result) shouldBe OK
+
+      val json =
+        contentAsJson(result)
+
+      (json \ "mgdRegNumber")
+        .as[String] shouldBe ""
+
+      (json \ "returnPeriodsId")
+        .as[String] shouldBe ""
+
+      (json \ "nstpEndDate1")
+        .as[String] shouldBe ""
+
+      (json \ "nstpEndDate2")
+        .as[String] shouldBe ""
+
+      (json \ "nstpEndDate3")
+        .as[String] shouldBe ""
+
+      (json \ "nstpEndDate4")
+        .as[String] shouldBe ""
+
+      (json \ "nstpEndDate5")
+        .as[String] shouldBe ""
+
+      (json \ "nstpEndDate6")
+        .as[String] shouldBe ""
+
+      (json \ "nstpEndDate7")
+        .as[String] shouldBe ""
+
+      (json \ "nstpEndDate8")
+        .as[String] shouldBe ""
+
+      (json \ "isInLastNstp")
+        .as[String] shouldBe ""
+
+      (json \ "finalPeriodWarning")
+        .as[String] shouldBe ""
+
+      (json \ "hasExistingNstpValues")
+        .as[String] shouldBe ""
+
+      (json \ "systemDate")
+        .as[String] shouldBe ""
     }
 
     "return BAD_REQUEST for an unrecognised regime" in {
@@ -157,7 +192,7 @@ class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with
       val result =
         controller.getReturnPeriods(
           regime,
-          "XWM00000001770"
+          "XGM00000001761"
         )(FakeRequest())
 
       status(result) shouldBe BAD_REQUEST
@@ -175,7 +210,7 @@ class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with
       val result =
         controller.getReturnPeriods(
           regime,
-          "XWM00000001770"
+          "XGM00000001761"
         )(FakeRequest())
 
       status(result) shouldBe BAD_REQUEST
