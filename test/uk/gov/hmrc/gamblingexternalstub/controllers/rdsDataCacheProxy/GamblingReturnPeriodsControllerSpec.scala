@@ -23,10 +23,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.base.SpecBase
 
-class GamblingReturnPeriodsControllerSpec
-  extends AnyWordSpec
-    with Matchers
-    with SpecBase {
+class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
   private val app =
     applicationBuilder().build()
@@ -49,14 +46,14 @@ class GamblingReturnPeriodsControllerSpec
       val json =
         contentAsJson(result)
 
-      (json \ "mgdRegNumber").as[String] shouldBe "XGM00000001761"
-      (json \ "returnPeriodsId").as[Int] shouldBe 1
-      (json \ "nstpEndDate1").as[String] shouldBe "14-OCT-24"
-      (json \ "nstpEndDate8").as[String] shouldBe "17-JUL-26"
-      (json \ "isInLastNstp").as[String] shouldBe "1"
-      (json \ "finalPeriodWarning").as[String] shouldBe "0"
+      (json \ "mgdRegNumber").as[String]          shouldBe "XGM00000001761"
+      (json \ "returnPeriodsId").as[Int]          shouldBe 1
+      (json \ "nstpEndDate1").as[String]          shouldBe "14-OCT-24"
+      (json \ "nstpEndDate8").as[String]          shouldBe "17-JUL-26"
+      (json \ "isInLastNstp").as[String]          shouldBe "1"
+      (json \ "finalPeriodWarning").as[String]    shouldBe "0"
       (json \ "hasExistingNstpValues").as[String] shouldBe "1"
-      (json \ "systemDate").as[String] shouldBe "31-MAY-26"
+      (json \ "systemDate").as[String]            shouldBe "31-MAY-26"
     }
 
     "return partial return periods for XGM00000001762" in {
@@ -72,12 +69,12 @@ class GamblingReturnPeriodsControllerSpec
       val json =
         contentAsJson(result)
 
-      (json \ "mgdRegNumber").as[String] shouldBe "XGM00000001762"
-      (json \ "returnPeriodsId").as[Int] shouldBe 2
-      (json \ "nstpEndDate1").as[String] shouldBe "31-MAR-26"
-      (json \ "nstpEndDate2").toOption shouldBe Some(JsNull)
+      (json \ "mgdRegNumber").as[String]          shouldBe "XGM00000001762"
+      (json \ "returnPeriodsId").as[Int]          shouldBe 2
+      (json \ "nstpEndDate1").as[String]          shouldBe "31-MAR-26"
+      (json \ "nstpEndDate2").toOption            shouldBe Some(JsNull)
       (json \ "hasExistingNstpValues").as[String] shouldBe "1"
-      (json \ "systemDate").as[String] shouldBe "31-MAY-26"
+      (json \ "systemDate").as[String]            shouldBe "31-MAY-26"
     }
 
     "return an existing operator with no NSTP values for XGM00000001763" in {
@@ -93,20 +90,20 @@ class GamblingReturnPeriodsControllerSpec
       val json =
         contentAsJson(result)
 
-      (json \ "mgdRegNumber").as[String] shouldBe "XGM00000001763"
-      (json \ "returnPeriodsId").as[Int] shouldBe 1
-      (json \ "nstpEndDate1").toOption shouldBe Some(JsNull)
-      (json \ "nstpEndDate2").toOption shouldBe Some(JsNull)
-      (json \ "nstpEndDate3").toOption shouldBe Some(JsNull)
-      (json \ "nstpEndDate4").toOption shouldBe Some(JsNull)
-      (json \ "nstpEndDate5").toOption shouldBe Some(JsNull)
-      (json \ "nstpEndDate6").toOption shouldBe Some(JsNull)
-      (json \ "nstpEndDate7").toOption shouldBe Some(JsNull)
-      (json \ "nstpEndDate8").toOption shouldBe Some(JsNull)
-      (json \ "isInLastNstp").as[String] shouldBe "0"
-      (json \ "finalPeriodWarning").as[String] shouldBe "0"
+      (json \ "mgdRegNumber").as[String]          shouldBe "XGM00000001763"
+      (json \ "returnPeriodsId").as[Int]          shouldBe 1
+      (json \ "nstpEndDate1").toOption            shouldBe Some(JsNull)
+      (json \ "nstpEndDate2").toOption            shouldBe Some(JsNull)
+      (json \ "nstpEndDate3").toOption            shouldBe Some(JsNull)
+      (json \ "nstpEndDate4").toOption            shouldBe Some(JsNull)
+      (json \ "nstpEndDate5").toOption            shouldBe Some(JsNull)
+      (json \ "nstpEndDate6").toOption            shouldBe Some(JsNull)
+      (json \ "nstpEndDate7").toOption            shouldBe Some(JsNull)
+      (json \ "nstpEndDate8").toOption            shouldBe Some(JsNull)
+      (json \ "isInLastNstp").as[String]          shouldBe "0"
+      (json \ "finalPeriodWarning").as[String]    shouldBe "0"
       (json \ "hasExistingNstpValues").as[String] shouldBe "0"
-      (json \ "systemDate").as[String] shouldBe "31-MAY-26"
+      (json \ "systemDate").as[String]            shouldBe "31-MAY-26"
     }
 
     "return NOT_FOUND for an unknown registration number" in {

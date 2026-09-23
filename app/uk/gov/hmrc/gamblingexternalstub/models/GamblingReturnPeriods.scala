@@ -44,8 +44,6 @@ object GamblingReturnPeriodsFormats {
   private val nstpDateFormatter: DateTimeFormatter =
     DateTimeFormatter.ofPattern("dd-MMM-yy", Locale.ENGLISH)
 
-
-
   private def optionalIntWrites(value: Option[Int]): JsValue =
     value.map(JsNumber(_)).getOrElse(JsNull)
 
@@ -57,8 +55,7 @@ object GamblingReturnPeriodsFormats {
       .map(date => JsString(date.format(nstpDateFormatter).toUpperCase(Locale.ENGLISH)))
       .getOrElse(JsNull)
 
-  private def optionalSystemDateWrites(
-                                        value: Option[LocalDate]): JsValue =
+  private def optionalSystemDateWrites(value: Option[LocalDate]): JsValue =
     value
       .map(date =>
         JsString(
