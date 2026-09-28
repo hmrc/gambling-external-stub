@@ -1,0 +1,17 @@
+{
+  "clients":
+    [
+      {
+        "regNumber": "789",
+        "clientName": "Alternate ABC Ltd",
+        "agentOwnRef": "EF003"
+      },
+      {
+        "regNumber": "900",
+        "clientName": "Alternate XYZ Builders",
+        "agentOwnRef": "GH005"
+      }
+    ],
+  "totalCount": 2,
+  "clientNameStartingCharacters": ["A"]
+}

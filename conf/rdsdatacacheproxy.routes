@@ -71,3 +71,6 @@ PUT     /gambling/update-status-period/:regime/:registrationNo/:consecNo  uk.gov
 
 GET     /gambling/controlling-body-details/:regime/:regNumber       uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.GamblingControlBodyController.getControlBodyDetails(regime: String, regNumber: String)
 
+GET     /gambling/agent/client-list-status                 uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.AgentController.getClientListDownloadStatus(credentialId: String, regime: String, gracePeriod: Int ?= 14400)
+GET     /gambling/agent/client-list                        uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.AgentController.getAllClients(credentialId: String, regime: String, start: Int ?= 0, count: Int ?= -1, sort: Int ?= 0, ascending: Boolean ?= true)
+GET     /gambling/agent/has-client/:regime/:regNumber      uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.AgentController.hasClient(regime: String, regNumber: String, credentialId: String)

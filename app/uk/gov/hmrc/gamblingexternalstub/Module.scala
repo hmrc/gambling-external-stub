@@ -16,8 +16,9 @@
 
 package uk.gov.hmrc.gamblingexternalstub
 
-import play.api.{Configuration, Environment}
 import play.api.inject.{Binding, Module as AppModule}
+import play.api.{Configuration, Environment}
+import uk.gov.hmrc.gamblingexternalstub.actions.{AuthAction, DefaultAuthAction}
 
 import java.time.Clock
 
@@ -28,4 +29,6 @@ class Module extends AppModule:
     configuration: Configuration
   ): Seq[Binding[_]] =
     bind[Clock].toInstance(Clock.systemDefaultZone) :: // inject if current time needs to be controlled in unit tests
-      Nil
+      List(
+        bind[AuthAction].to(classOf[DefaultAuthAction])
+      )
