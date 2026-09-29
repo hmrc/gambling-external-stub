@@ -20,7 +20,7 @@ import uk.gov.hmrc.gamblingexternalstub.actions.AuthenticatedRequest
 
 class EnrolmentsHelper {
 
-  def agentEnrolmentsOpt(request: AuthenticatedRequest[_]): Option[String] =
+  def agentEnrolmentsOpt(request: AuthenticatedRequest[?]): Option[String] =
     for {
       enrol          <- request.enrolments.getEnrolment("HMRC-MGD-AGNT")
       agentReference <- enrol.getIdentifier("HMRCMGDAGENTREF")
