@@ -52,12 +52,12 @@ class AgentController @Inject() (
       identifier match {
         case Some(agentReference) =>
           logger.info(s"getClientListDownloadStatus: agentReference is $agentReference")
-          agentReference match {
-            case "500"    => InternalServerError(Json.obj("error" -> "Could not map client list download status"))
-            case "InDown" => Ok(Json.obj("status" -> InitiateDownload.toString))
-            case "InProg" => Ok(Json.obj("status" -> InProgress.toString))
-            case "Failed" => Ok(Json.obj("status" -> Failed.toString))
-            case _        => Ok(Json.obj("status" -> Succeeded.toString))
+          agentReference.takeRight(3).toIntOption.getOrElse(200) match {
+            case 500 => InternalServerError(Json.obj("error" -> "Could not map client list download status"))
+            case 101 => Ok(Json.obj("status" -> InitiateDownload.toString))
+            case 102 => Ok(Json.obj("status" -> InProgress.toString))
+            case 103 => Ok(Json.obj("status" -> Failed.toString))
+            case _   => Ok(Json.obj("status" -> Succeeded.toString))
           }
         case None => InternalServerError
       }
@@ -80,10 +80,10 @@ class AgentController @Inject() (
       identifier match {
         case Some(agentReference) =>
           logger.info(s"getAllClients: agentReference is $agentReference")
-          agentReference match {
-            case "500"    => InternalServerError(Json.obj("error" -> "Could not get client list"))
-            case "000123" => Ok(resourceHelper.resourceAsString(getAllClients_200_Alt_ResponsePath))
-            case _        => Ok(resourceHelper.resourceAsString(getAllClients_200_ResponsePath))
+          agentReference.takeRight(3).toIntOption.getOrElse(200) match {
+            case 500 => InternalServerError(Json.obj("error" -> "Could not get client list"))
+            case 123 => Ok(resourceHelper.resourceAsString(getAllClients_200_Alt_ResponsePath))
+            case _   => Ok(resourceHelper.resourceAsString(getAllClients_200_ResponsePath))
           }
         case None => InternalServerError
       }
@@ -103,13 +103,13 @@ class AgentController @Inject() (
       identifier match {
         case Some(agentReference) =>
           logger.info(s"hasClient: agentReference is $agentReference")
-          agentReference match {
-            case "400" => BadRequest(Json.obj("error" -> "regime, regNumber and credentialId must be provided"))
-            case "500" => InternalServerError(Json.obj("error" -> "Could not check hasClient"))
-            case "agent-ref-123" if regime.equals("MGD") && List("XWM00000001770", "XMM00000000975").contains(regNumber) =>
-              Ok(Json.obj("hasClient" -> true))
-            case _ if regime != "MGD" => Ok(Json.obj("hasClient" -> true))
-            case _                    => Ok(Json.obj("hasClient" -> false))
+          val regNoDigitIs9 = regNumber.takeRight(1).equals("9")
+          agentReference.takeRight(3).toIntOption.getOrElse(200) match {
+            case 400                => BadRequest(Json.obj("error" -> "regime, regNumber and credentialId must be provided"))
+            case 500                => InternalServerError(Json.obj("error" -> "Could not check hasClient"))
+            case 999                => Ok(Json.obj("hasClient" -> false))
+            case _ if regNoDigitIs9 => Ok(Json.obj("hasClient" -> false))
+            case _                  => Ok(Json.obj("hasClient" -> true))
           }
         case None => InternalServerError
       }

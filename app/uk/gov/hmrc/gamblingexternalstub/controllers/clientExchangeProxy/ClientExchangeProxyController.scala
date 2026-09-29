@@ -43,9 +43,9 @@ class ClientExchangeProxyController @Inject() (
     val identifier = enrolmentHelper.agentEnrolmentsOpt(request)
     identifier match {
       case Some(agentReference) =>
-        agentReference match {
-          case "400" => BadRequest(Json.obj("error" -> "Invalid ServiceId"))
-          case "500" => InternalServerError(Json.obj("error" -> "Server Error"))
+        agentReference.takeRight(3).toIntOption.getOrElse(200) match {
+          case 400 => BadRequest(Json.obj("error" -> "Invalid ServiceId"))
+          case 500 => InternalServerError(Json.obj("error" -> "Server Error"))
           case _     => Ok(responseXML)
         }
       case None => InternalServerError(Json.obj("error" -> "Server Error"))

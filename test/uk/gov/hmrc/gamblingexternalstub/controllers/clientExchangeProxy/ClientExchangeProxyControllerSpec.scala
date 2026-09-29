@@ -32,9 +32,21 @@ class ClientExchangeProxyControllerSpec extends SpecBaseWithAuth with MockitoSug
 
   ".updateClientList" should {
 
-    "returns 200 with  response when agentReference is unknown" in new Setup {
+    "returns 200 with response when agentReference is 200" in new Setup {
 
       when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("200"))
+
+      val req: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, "/serviceId/credentialId/agentId/clientlist")
+      val res: Future[Result] =
+        controller.updateClientList(serviceId = "serviceId", credentialId = "credentialId", agentId = "agentId")(req)
+
+      status(res) mustBe OK
+      contentType(res) mustBe Some("application/xml")
+    }
+
+    "returns 200 with response when agentReference is empty" in new Setup {
+
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some(""))
 
       val req: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, "/serviceId/credentialId/agentId/clientlist")
       val res: Future[Result] =

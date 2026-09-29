@@ -1,537 +1,537 @@
 {
   "clients": [
     {
-      "regNumber": "123",
+      "regNumber": "XVM00000001001",
       "clientName": "ABC Ltd",
       "agentOwnRef": "EZ00100"
     },
     {
-      "regNumber": "456",
+      "regNumber": "XAM00000001002",
       "clientName": "XYZ Builders",
       "agentOwnRef": "CD002"
     },
     {
-      "regNumber": "541",
+      "regNumber": "XCM00000001003",
       "clientName": "Betelgeuse Construction 3",
       "agentOwnRef": "UP374"
     },
     {
-      "regNumber": "821",
+      "regNumber": "XEM00000001004",
       "clientName": "Heritage Contractors 4",
       "agentOwnRef": "WY080"
     },
     {
-      "regNumber": "312",
+      "regNumber": "XGM00000001005",
       "clientName": "Bellatrix Builders 5",
       "agentOwnRef": "VV917"
     },
     {
-      "regNumber": "491",
+      "regNumber": "XXM00000001006",
       "clientName": "Zenith Builders 6",
       "agentOwnRef": "EQ134"
     },
     {
-      "regNumber": "658",
+      "regNumber": "XKM00000001007",
       "clientName": "Castor Contractors 7",
       "agentOwnRef": "SZ551"
     },
     {
-      "regNumber": "844",
+      "regNumber": "XMM00000001008",
       "clientName": "Omicron Builders 8",
       "agentOwnRef": "TB476"
     },
     {
-      "regNumber": "646",
+      "regNumber": "XYM00000001009",
       "clientName": "Wasat Builders 9",
       "agentOwnRef": "AS214"
     },
     {
-      "regNumber": "603",
+      "regNumber": "XWM00000001010",
       "clientName": "Royal Builders 10",
       "agentOwnRef": "AG318"
     },
     {
-      "regNumber": "783",
+      "regNumber": "XBM00000001011",
       "clientName": "Acme Construction 11",
       "agentOwnRef": "BH844"
     },
     {
-      "regNumber": "875",
+      "regNumber": "XDM00000001012",
       "clientName": "Peak Builders 12",
       "agentOwnRef": "UU661"
     },
     {
-      "regNumber": "294",
+      "regNumber": "XFM00000001013",
       "clientName": "Gamma Builders 13",
       "agentOwnRef": "EY777"
     },
     {
-      "regNumber": "751",
+      "regNumber": "XHM00000001014",
       "clientName": "Mebsuta Contractors 14",
       "agentOwnRef": "GE486"
     },
     {
-      "regNumber": "391",
+      "regNumber": "XJM00000001015",
       "clientName": "Adhara Contractors 15",
       "agentOwnRef": "DB310"
     },
     {
-      "regNumber": "907",
+      "regNumber": "XLM00000001016",
       "clientName": "Apex Builders 16",
       "agentOwnRef": "LQ425"
     },
     {
-      "regNumber": "257",
+      "regNumber": "XNM00000001017",
       "clientName": "Pinnacle Construction 17",
       "agentOwnRef": "IY162"
     },
     {
-      "regNumber": "191",
+      "regNumber": "XPM00000001018",
       "clientName": "Rigel Builders 18",
       "agentOwnRef": "DF829"
     },
     {
-      "regNumber": "743",
+      "regNumber": "XRM00000001019",
       "clientName": "Acme Construction 19",
       "agentOwnRef": "DS176"
     },
     {
-      "regNumber": "303",
+      "regNumber": "XCM00000001020",
       "clientName": "Pinnacle Construction 20",
       "agentOwnRef": "KX994"
     },
     {
-      "regNumber": "964",
+      "regNumber": "XEM00000001021",
       "clientName": "Capella Builders 21",
       "agentOwnRef": "RV735"
     },
     {
-      "regNumber": "145",
+      "regNumber": "XGM00000001022",
       "clientName": "Lambda Builders 22",
       "agentOwnRef": "KY919"
     },
     {
-      "regNumber": "594",
+      "regNumber": "XXM00000001023",
       "clientName": "Royal Builders 23",
       "agentOwnRef": "CH356"
     },
     {
-      "regNumber": "171",
+      "regNumber": "XKM00000001024",
       "clientName": "XYZ Builders 24",
       "agentOwnRef": "RC019"
     },
     {
-      "regNumber": "516",
+      "regNumber": "XMM00000001025",
       "clientName": "Regulus Construction 25",
       "agentOwnRef": "EI353"
     },
     {
-      "regNumber": "647",
+      "regNumber": "XYM00000001026",
       "clientName": "Psi Builders 26",
       "agentOwnRef": "AE728"
     },
     {
-      "regNumber": "724",
+      "regNumber": "XQM00000001027",
       "clientName": "Galactic Builders 27",
       "agentOwnRef": "JA187"
     },
     {
-      "regNumber": "952",
+      "regNumber": "XSM00000001028",
       "clientName": "Mintaka Contractors 28",
       "agentOwnRef": "HB606"
     },
     {
-      "regNumber": "184",
+      "regNumber": "XZM00000001029",
       "clientName": "Betelgeuse Construction 29",
       "agentOwnRef": "RA753"
     },
     {
-      "regNumber": "803",
+      "regNumber": "XFM00000001030",
       "clientName": "Altair Construction 30",
       "agentOwnRef": "PD599"
     },
     {
-      "regNumber": "580",
+      "regNumber": "XHM00000001031",
       "clientName": "Vega Construction 31",
       "agentOwnRef": "ZN841"
     },
     {
-      "regNumber": "111",
+      "regNumber": "XJM00000001032",
       "clientName": "Procyon Contractors 32",
       "agentOwnRef": "JR792"
     },
     {
-      "regNumber": "400",
+      "regNumber": "XLM00000001033",
       "clientName": "Rigel Builders 33",
       "agentOwnRef": "XR870"
     },
     {
-      "regNumber": "242",
+      "regNumber": "XNM00000001034",
       "clientName": "ABC Construction 34",
       "agentOwnRef": "GT373"
     },
     {
-      "regNumber": "181",
+      "regNumber": "XPM00000001035",
       "clientName": "XYZ Builders 35",
       "agentOwnRef": "VC625"
     },
     {
-      "regNumber": "632",
+      "regNumber": "XRM00000001036",
       "clientName": "Wasat Builders 36",
       "agentOwnRef": "EH510"
     },
     {
-      "regNumber": "139",
+      "regNumber": "XTM00000001037",
       "clientName": "Omega Construction 37",
       "agentOwnRef": "YT476"
     },
     {
-      "regNumber": "397",
+      "regNumber": "XVM00000001038",
       "clientName": "XYZ Builders 38",
       "agentOwnRef": "PV884"
     },
     {
-      "regNumber": "472",
+      "regNumber": "XAM00000001039",
       "clientName": "Pollux Construction 39",
       "agentOwnRef": "YT224"
     },
     {
-      "regNumber": "518",
+      "regNumber": "XXM00000001040",
       "clientName": "Psi Builders 40",
       "agentOwnRef": "PH640"
     },
     {
-      "regNumber": "173",
+      "regNumber": "XKM00000001041",
       "clientName": "Iota Builders 41",
       "agentOwnRef": "EI853"
     },
     {
-      "regNumber": "802",
+      "regNumber": "XMM00000001042",
       "clientName": "Sirius Builders 42",
       "agentOwnRef": "RW759"
     },
     {
-      "regNumber": "998",
+      "regNumber": "XYM00000001043",
       "clientName": "Phi Builders 43",
       "agentOwnRef": "XL778"
     },
     {
-      "regNumber": "878",
+      "regNumber": "XQM00000001044",
       "clientName": "Legacy Builders 44",
       "agentOwnRef": "TH373"
     },
     {
-      "regNumber": "519",
+      "regNumber": "XSM00000001045",
       "clientName": "Summit Builders 45",
       "agentOwnRef": "FK722"
     },
     {
-      "regNumber": "983",
+      "regNumber": "XZM00000001046",
       "clientName": "Iota Builders 46",
       "agentOwnRef": "WW744"
     },
     {
-      "regNumber": "805",
+      "regNumber": "XWM00000001047",
       "clientName": "Betelgeuse Construction 47",
       "agentOwnRef": "FR180"
     },
     {
-      "regNumber": "365",
+      "regNumber": "XBM00000001048",
       "clientName": "Chi Contractors 48",
       "agentOwnRef": "CI467"
     },
     {
-      "regNumber": "398",
+      "regNumber": "XDM00000001049",
       "clientName": "Aludra Construction 49",
       "agentOwnRef": "MJ341"
     },
     {
-      "regNumber": "452",
+      "regNumber": "XLM00000001050",
       "clientName": "Wezen Builders 50",
       "agentOwnRef": "XD834"
     },
     {
-      "regNumber": "569",
+      "regNumber": "XNM00000001051",
       "clientName": "Chi Contractors 51",
       "agentOwnRef": "MY619"
     },
     {
-      "regNumber": "395",
+      "regNumber": "XPM00000001052",
       "clientName": "Nova Contractors 52",
       "agentOwnRef": "IR691"
     },
     {
-      "regNumber": "627",
+      "regNumber": "XRM00000001053",
       "clientName": "Apex Construction 53",
       "agentOwnRef": "PO664"
     },
     {
-      "regNumber": "684",
+      "regNumber": "XTM00000001054",
       "clientName": "Procyon Contractors 54",
       "agentOwnRef": "BH603"
     },
     {
-      "regNumber": "404",
+      "regNumber": "XVM00000001055",
       "clientName": "Wasat Builders 55",
       "agentOwnRef": "KX546"
     },
     {
-      "regNumber": "220",
+      "regNumber": "XAM00000001056",
       "clientName": "Eta Builders 56",
       "agentOwnRef": "LX602"
     },
     {
-      "regNumber": "960",
+      "regNumber": "XCM00000001057",
       "clientName": "Wezen Builders 57",
       "agentOwnRef": "XO504"
     },
     {
-      "regNumber": "242",
+      "regNumber": "XEM00000001058",
       "clientName": "Eta Builders 58",
       "agentOwnRef": "HA579"
     },
     {
-      "regNumber": "188",
+      "regNumber": "XGM00000001059",
       "clientName": "Spica Builders 59",
       "agentOwnRef": "LJ947"
     },
     {
-      "regNumber": "551",
+      "regNumber": "XYM00000001060",
       "clientName": "Zeta Contractors 60",
       "agentOwnRef": "CH125"
     },
     {
-      "regNumber": "189",
+      "regNumber": "XQM00000001061",
       "clientName": "Imperial Construction 61",
       "agentOwnRef": "IW502"
     },
     {
-      "regNumber": "759",
+      "regNumber": "XSM00000001062",
       "clientName": "Capella Builders 62",
       "agentOwnRef": "MS847"
     },
     {
-      "regNumber": "876",
+      "regNumber": "XZM00000001063",
       "clientName": "Bellatrix Builders 63",
       "agentOwnRef": "GP714"
     },
     {
-      "regNumber": "750",
+      "regNumber": "XWM00000001064",
       "clientName": "Iota Builders 64",
       "agentOwnRef": "CR484"
     },
     {
-      "regNumber": "622",
+      "regNumber": "XBM00000001065",
       "clientName": "Procyon Construction 65",
       "agentOwnRef": "BC860"
     },
     {
-      "regNumber": "400",
+      "regNumber": "XDM00000001066",
       "clientName": "Stellar Construction 66",
       "agentOwnRef": "MD619"
     },
     {
-      "regNumber": "463",
+      "regNumber": "XFM00000001067",
       "clientName": "Pinnacle Construction 67",
       "agentOwnRef": "VE646"
     },
     {
-      "regNumber": "334",
+      "regNumber": "XHM00000001068",
       "clientName": "Antares Construction 68",
       "agentOwnRef": "UC755"
     },
     {
-      "regNumber": "846",
+      "regNumber": "XJM00000001069",
       "clientName": "Zeta Contractors 69",
       "agentOwnRef": "GX612"
     },
     {
-      "regNumber": "735",
+      "regNumber": "XRM00000001070",
       "clientName": "Adhara Contractors 70",
       "agentOwnRef": "GF843"
     },
     {
-      "regNumber": "906",
+      "regNumber": "XTM00000001071",
       "clientName": "Sirius Builders 71",
       "agentOwnRef": "CM748"
     },
     {
-      "regNumber": "823",
+      "regNumber": "XVM00000001072",
       "clientName": "Eta Builders 72",
       "agentOwnRef": "GE330"
     },
     {
-      "regNumber": "467",
+      "regNumber": "XAM00000001073",
       "clientName": "Antares Construction 73",
       "agentOwnRef": "FM670"
     },
     {
-      "regNumber": "672",
+      "regNumber": "XCM00000001074",
       "clientName": "Pi Construction 74",
       "agentOwnRef": "IS417"
     },
     {
-      "regNumber": "340",
+      "regNumber": "XEM00000001075",
       "clientName": "Betelgeuse Construction 75",
       "agentOwnRef": "AV727"
     },
     {
-      "regNumber": "214",
+      "regNumber": "XGM00000001076",
       "clientName": "Polaris Builders 76",
       "agentOwnRef": "MR400"
     },
     {
-      "regNumber": "647",
+      "regNumber": "XXM00000001077",
       "clientName": "Alhena Builders 77",
       "agentOwnRef": "TH983"
     },
     {
-      "regNumber": "171",
+      "regNumber": "XKM00000001078",
       "clientName": "Upsilon Construction 78",
       "agentOwnRef": "JD014"
     },
     {
-      "regNumber": "564",
+      "regNumber": "XMM00000001079",
       "clientName": "Delta Construction 79",
       "agentOwnRef": "MY013"
     },
     {
-      "regNumber": "468",
+      "regNumber": "XZM00000001080",
       "clientName": "Summit Builders 80",
       "agentOwnRef": "YG236"
     },
     {
-      "regNumber": "740",
+      "regNumber": "XWM00000001081",
       "clientName": "Peak Builders 81",
       "agentOwnRef": "XQ104"
     },
     {
-      "regNumber": "243",
+      "regNumber": "XBM00000001082",
       "clientName": "Pi Construction 82",
       "agentOwnRef": "CV004"
     },
     {
-      "regNumber": "167",
+      "regNumber": "XDM00000001083",
       "clientName": "Lunar Builders 83",
       "agentOwnRef": "KB161"
     },
     {
-      "regNumber": "479",
+      "regNumber": "XFM00000001084",
       "clientName": "Cosmic Construction 84",
       "agentOwnRef": "JD177"
     },
     {
-      "regNumber": "281",
+      "regNumber": "XHM00000001085",
       "clientName": "Pollux Construction 85",
       "agentOwnRef": "II711"
     },
     {
-      "regNumber": "613",
+      "regNumber": "XJM00000001086",
       "clientName": "Lambda Builders 86",
       "agentOwnRef": "KQ344"
     },
     {
-      "regNumber": "729",
+      "regNumber": "XLM00000001087",
       "clientName": "Stellar Builders 87",
       "agentOwnRef": "EG983"
     },
     {
-      "regNumber": "408",
+      "regNumber": "XNM00000001088",
       "clientName": "Prime Contractors 88",
       "agentOwnRef": "OL265"
     },
     {
-      "regNumber": "882",
+      "regNumber": "XPM00000001089",
       "clientName": "Stellar Builders 89",
       "agentOwnRef": "HG235"
     },
     {
-      "regNumber": "168",
+      "regNumber": "XAM00000001090",
       "clientName": "Apex Builders 90",
       "agentOwnRef": "EG840"
     },
     {
-      "regNumber": "740",
+      "regNumber": "XCM00000001091",
       "clientName": "Wezen Builders 91",
       "agentOwnRef": "EL267"
     },
     {
-      "regNumber": "179",
+      "regNumber": "XEM00000001092",
       "clientName": "Prime Contractors 92",
       "agentOwnRef": "ZA636"
     },
     {
-      "regNumber": "338",
+      "regNumber": "XGM00000001093",
       "clientName": "Wezen Builders 93",
       "agentOwnRef": "MZ710"
     },
     {
-      "regNumber": "937",
+      "regNumber": "XXM00000001094",
       "clientName": "Alnitak Builders 94",
       "agentOwnRef": "LD424"
     },
     {
-      "regNumber": "217",
+      "regNumber": "XKM00000001095",
       "clientName": "Regulus Construction 95",
       "agentOwnRef": "HB917"
     },
     {
-      "regNumber": "846",
+      "regNumber": "XMM00000001096",
       "clientName": "Orion Contractors 96",
       "agentOwnRef": "IS402"
     },
     {
-      "regNumber": "351",
+      "regNumber": "XYM00000001097",
       "clientName": "Alnilam Builders 97",
       "agentOwnRef": "PJ927"
     },
     {
-      "regNumber": "379",
+      "regNumber": "XQM00000001098",
       "clientName": "Rigel Builders 98",
       "agentOwnRef": "FQ670"
     },
     {
-      "regNumber": "295",
+      "regNumber": "XSM00000001099",
       "clientName": "Phi Builders 99",
       "agentOwnRef": "NB762"
     },
     {
-      "regNumber": "754",
+      "regNumber": "XAM00000001100",
       "clientName": "Lambda Builders 100",
       "agentOwnRef": "EZ10800"
     },
     {
-      "regNumber": "754",
+      "regNumber": "XCM00000001101",
       "clientName": "Delta Tiles Ltd",
       "agentOwnRef": "EZ00125"
     },
     {
-      "regNumber": "754",
+      "regNumber": "XEM00000001102",
       "clientName": "Bravo Builders Ltd",
       "agentOwnRef": "EZ00150"
     },
     {
-      "regNumber": "754",
+      "regNumber": "XGM00000001103",
       "clientName": "Charlie Construction Ltd",
       "agentOwnRef": "EZ00175"
     },
     {
-      "regNumber": "754",
+      "regNumber": "XXM00000001104",
       "clientName": "BROWN Construction Ltd",
       "agentOwnRef": "EZ00200"
     },
     {
-      "regNumber": "754",
+      "regNumber": "XKM00000001105",
       "clientName": "Theta Construction Ltd",
       "agentOwnRef": "EZ00225"
     },
     {
-      "regNumber": "754",
+      "regNumber": "XMM00000001106",
       "clientName": "Vijay Construction Ltd",
       "agentOwnRef": "EZ00275"
     }
   ],
-  "totalCount": 100,
+  "totalCount": 106,
   "clientNameStartingCharacters": [
     "A",
     "B",
