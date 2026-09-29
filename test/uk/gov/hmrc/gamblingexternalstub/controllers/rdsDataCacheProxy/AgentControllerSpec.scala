@@ -268,7 +268,6 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
       (contentAsJson(res) \ "hasClient").as[Boolean] mustBe false
     }
 
-
     "returns 200 with hasClient false when agentReference ends with 999" in new Setup {
 
       when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("555999"))
