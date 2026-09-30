@@ -1,0 +1,2 @@
+# stubbed client-exchange-proxy routes
+GET        /:serviceId/:credentialId/:agentId/clientlist            uk.gov.hmrc.gamblingexternalstub.controllers.clientExchangeProxy.ClientExchangeProxyController.updateClientList(serviceId, credentialId, agentId)

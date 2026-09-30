@@ -1,0 +1,17 @@
+{
+  "clients":
+    [
+      {
+        "regNumber": "XEM00000000640",
+        "clientName": "Alternate ABC Ltd",
+        "agentOwnRef": "EF003"
+      },
+      {
+        "regNumber": "XVM00000000495",
+        "clientName": "Alternate XYZ Builders",
+        "agentOwnRef": "GH005"
+      }
+    ],
+  "totalCount": 2,
+  "clientNameStartingCharacters": ["A"]
+}
