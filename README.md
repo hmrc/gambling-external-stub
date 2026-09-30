@@ -1021,6 +1021,39 @@ The other populated scenarios use the same endpoint with the following registrat
 For `XGM00000001762`, both registration and system dates are fixed at `1991-01-01`.
 For `XGM00000001763`–`XGM00000001765` and the default response, `systemDate` is calculated at runtime rather than taken from the JSON file.
 
+---
+
+### 34. GetClientListDownloadStatus (Agent) (RDS)
+
+`GET /gambling/agent/client-list-status?credentialId=cred-123&regime=MGD&gracePeriod=14400`
+
+See [docs/client-list-status.md](docs/client-list-status.md) for full details including regime validation, all response scenarios, and example curl commands.
+
+---
+
+### 35. GetAllClients (Agent) (RDS)
+
+`GET /gambling/agent/client-list?credentialId=CRED-ABC-123&regime=MGD`
+
+See [docs/client-list.md](docs/client-list.md) for full details including regime validation, all response scenarios, and example curl commands.
+
+---
+
+### 36. HasClient (Agent) (RDS)
+
+`GET /gambling/agent/has-client/:regime/:regNumber?credentialId=CRED-ABC-123`
+
+See [docs/has-client.md](docs/has-client.md) for full details including regime validation, reg number encoding convention, item structure, all response scenarios, and example curl commands.
+
+---
+
+### 37. UpdateClientList (Agent) (ClientExchangeProxy)
+
+`GET /:serviceId/:credentialId/:agentId/clientlist`
+
+See [docs/update-clientlist.md](docs/update-clientlist.md) for full details including all response scenarios, and example curl commands.
+
+
 ## License
 
 This project is licensed under the Apache 2.0 License.

@@ -121,7 +121,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
       status(res) mustBe BAD_REQUEST
       contentType(res) mustBe Some(JSON)
-      (contentAsJson(res) \ "error").as[String] mustBe "credentialId and regime must be provided"
+      (contentAsJson(res) \ "error").as[String] mustBe "credentialId must be provided"
     }
 
     "returns 400 when regime is empty" in new Setup {
@@ -134,7 +134,21 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
       status(res) mustBe BAD_REQUEST
       contentType(res) mustBe Some(JSON)
-      (contentAsJson(res) \ "error").as[String] mustBe "credentialId and regime must be provided"
+      (contentAsJson(res) \ "code").as[String] mustBe "INVALID_REGIME"
+      (contentAsJson(res) \ "message").as[String] mustBe "Invalid Regime Code"
+    }
+
+    "returns 400 with error message when agentReference ends 400" in new Setup {
+
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("555400"))
+
+      val req: FakeRequest[AnyContentAsEmpty.type] =
+        FakeRequest(GET, "/client-list-status?credentialId=cred-123&regime=MGD&gracePeriod=14400")
+      val res: Future[Result] = controller.getClientListDownloadStatus("cred-123", "MGD")(req)
+
+      status(res) mustBe BAD_REQUEST
+      contentType(res) mustBe Some(JSON)
+      (contentAsJson(res) \ "error").as[String] mustBe "Bad request"
     }
   }
 
@@ -204,7 +218,8 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
       val res: Future[Result] = controller.getAllClients(credentialId = "CRED-ABC-123", regime = "")(req)
 
       status(res) mustBe BAD_REQUEST
-      (contentAsJson(res) \ "error").as[String] mustBe "credentialId and regime must be provided"
+      (contentAsJson(res) \ "code").as[String] mustBe "INVALID_REGIME"
+      (contentAsJson(res) \ "message").as[String] mustBe "Invalid Regime Code"
     }
 
     "returns 400 when credentialId is missing" in new Setup {
@@ -214,9 +229,21 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
       val res: Future[Result] = controller.getAllClients(credentialId = "", regime = "MGD")(req)
 
       status(res) mustBe BAD_REQUEST
-      (contentAsJson(res) \ "error").as[String] mustBe "credentialId and regime must be provided"
+      (contentAsJson(res) \ "error").as[String] mustBe "credentialId must be provided"
     }
 
+    "returns 400 with error message when agentReference ends 400" in new Setup {
+
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("555400"))
+
+      val req: FakeRequest[AnyContentAsEmpty.type] =
+        FakeRequest(GET, "/client-list?credentialId=CRED-ABC-123&regime=MGD")
+      val res: Future[Result] = controller.getAllClients(credentialId = "CRED-ABC-123", regime = "MGD")(req)
+
+      status(res) mustBe BAD_REQUEST
+      contentType(res) mustBe Some(JSON)
+      (contentAsJson(res) \ "error").as[String] mustBe "Bad request"
+    }
   }
 
   ".hasClient" should {
@@ -293,7 +320,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
       status(res) mustBe BAD_REQUEST
       contentType(res) mustBe Some(JSON)
-      (contentAsJson(res) \ "error").as[String] mustBe "regime, regNumber and credentialId must be provided"
+      (contentAsJson(res) \ "error").as[String] mustBe "Bad request"
     }
 
     "returns 500 with error message when agentReference ends 500" in new Setup {
@@ -308,6 +335,38 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
       contentType(res) mustBe Some(JSON)
       (contentAsJson(res) \ "error").as[String] mustBe "Could not check hasClient"
     }
+
+    "returns 400 when regime is missing" in new Setup {
+
+      val req: FakeRequest[AnyContentAsEmpty.type] =
+        FakeRequest(GET, "/has-client//XWM00000001770?credentialId=CRED-ABC-123")
+      val res: Future[Result] = controller.hasClient("", "XWM00000001770", "CRED-ABC-123")(req)
+
+      status(res) mustBe BAD_REQUEST
+      (contentAsJson(res) \ "code").as[String] mustBe "INVALID_REGIME"
+      (contentAsJson(res) \ "message").as[String] mustBe "Invalid Regime Code"
+    }
+
+    "returns 400 when regNumber is missing" in new Setup {
+
+      val req: FakeRequest[AnyContentAsEmpty.type] =
+        FakeRequest(GET, "/has-client/MGD/?credentialId=CRED-ABC-123")
+      val res: Future[Result] = controller.hasClient("MGD", "", "CRED-ABC-123")(req)
+
+      status(res) mustBe BAD_REQUEST
+      (contentAsJson(res) \ "error").as[String] mustBe "regNumber must be provided"
+    }
+
+    "returns 400 when credentialId is missing" in new Setup {
+
+      val req: FakeRequest[AnyContentAsEmpty.type] =
+        FakeRequest(GET, "/has-client/MGD/XWM00000001770?credentialId=")
+      val res: Future[Result] = controller.hasClient("MGD", "XWM00000001770", "")(req)
+
+      status(res) mustBe BAD_REQUEST
+      (contentAsJson(res) \ "error").as[String] mustBe "credentialId must be provided"
+    }
+
   }
 
   private trait Setup {

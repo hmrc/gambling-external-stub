@@ -20,6 +20,7 @@ import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.gamblingexternalstub.actions.AuthAction
+import uk.gov.hmrc.gamblingexternalstub.models.Regime
 import uk.gov.hmrc.gamblingexternalstub.models.agent.ClientListDownloadStatus.{Failed, InProgress, InitiateDownload, Succeeded}
 import uk.gov.hmrc.gamblingexternalstub.utils.{EnrolmentsHelper, ResourceHelper}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
@@ -45,23 +46,32 @@ class AgentController @Inject() (
     regime: String,
     gracePeriod: Int = 14400
   ): Action[AnyContent] = authorise.async { implicit request =>
-    val result = if (regime.trim().isEmpty || credentialId.trim().isEmpty) {
-      BadRequest(Json.obj("error" -> "credentialId and regime must be provided"))
-    } else {
-      val identifier = enrolmentHelper.agentEnrolmentsOpt(request)
-      identifier match {
-        case Some(agentReference) =>
-          logger.info(s"getClientListDownloadStatus: agentReference is $agentReference")
-          agentReference.takeRight(3).toIntOption.getOrElse(200) match {
-            case 500 => InternalServerError(Json.obj("error" -> "Could not map client list download status"))
-            case 101 => Ok(Json.obj("status" -> InitiateDownload.toString))
-            case 102 => Ok(Json.obj("status" -> InProgress.toString))
-            case 103 => Ok(Json.obj("status" -> Failed.toString))
-            case _   => Ok(Json.obj("status" -> Succeeded.toString))
-          }
-        case None => InternalServerError
+    val result =
+      if (Regime.fromString(regime).isEmpty) {
+        BadRequest(
+          Json.obj(
+            "code"    -> "INVALID_REGIME",
+            "message" -> "Invalid Regime Code"
+          )
+        )
+      } else if (credentialId.trim().isEmpty) {
+        BadRequest(Json.obj("error" -> "credentialId must be provided"))
+      } else {
+        val identifier = enrolmentHelper.agentEnrolmentsOpt(request)
+        identifier match {
+          case Some(agentReference) =>
+            logger.info(s"getClientListDownloadStatus: agentReference is $agentReference")
+            agentReference.takeRight(3).toIntOption.getOrElse(200) match {
+              case 400 => BadRequest(Json.obj("error" -> "Bad request"))
+              case 500 => InternalServerError(Json.obj("error" -> "Could not map client list download status"))
+              case 101 => Ok(Json.obj("status" -> InitiateDownload.toString))
+              case 102 => Ok(Json.obj("status" -> InProgress.toString))
+              case 103 => Ok(Json.obj("status" -> Failed.toString))
+              case _   => Ok(Json.obj("status" -> Succeeded.toString))
+            }
+          case None => InternalServerError
+        }
       }
-    }
     Future.successful(result)
   }
 
@@ -73,21 +83,30 @@ class AgentController @Inject() (
     sort: Int = 0,
     ascending: Boolean = true
   ): Action[AnyContent] = authorise.async { implicit request =>
-    val result = if (regime.trim().isEmpty || credentialId.trim().isEmpty) {
-      BadRequest(Json.obj("error" -> "credentialId and regime must be provided"))
-    } else {
-      val identifier = enrolmentHelper.agentEnrolmentsOpt(request)
-      identifier match {
-        case Some(agentReference) =>
-          logger.info(s"getAllClients: agentReference is $agentReference")
-          agentReference.takeRight(3).toIntOption.getOrElse(200) match {
-            case 500 => InternalServerError(Json.obj("error" -> "Could not get client list"))
-            case 123 => Ok(resourceHelper.resourceAsString(getAllClients_200_Alt_ResponsePath))
-            case _   => Ok(resourceHelper.resourceAsString(getAllClients_200_ResponsePath))
-          }
-        case None => InternalServerError
+    val result =
+      if (Regime.fromString(regime).isEmpty) {
+        BadRequest(
+          Json.obj(
+            "code"    -> "INVALID_REGIME",
+            "message" -> "Invalid Regime Code"
+          )
+        )
+      } else if (credentialId.trim().isEmpty) {
+        BadRequest(Json.obj("error" -> "credentialId must be provided"))
+      } else {
+        val identifier = enrolmentHelper.agentEnrolmentsOpt(request)
+        identifier match {
+          case Some(agentReference) =>
+            logger.info(s"getAllClients: agentReference is $agentReference")
+            agentReference.takeRight(3).toIntOption.getOrElse(200) match {
+              case 400 => BadRequest(Json.obj("error" -> "Bad request"))
+              case 500 => InternalServerError(Json.obj("error" -> "Could not get client list"))
+              case 123 => Ok(resourceHelper.resourceAsString(getAllClients_200_Alt_ResponsePath))
+              case _   => Ok(resourceHelper.resourceAsString(getAllClients_200_ResponsePath))
+            }
+          case None => InternalServerError
+        }
       }
-    }
     Future.successful(result)
   }
 
@@ -96,24 +115,34 @@ class AgentController @Inject() (
     regNumber: String,
     credentialId: String
   ): Action[AnyContent] = authorise.async { implicit request =>
-    val result = if (regime.trim().isEmpty || regNumber.trim().isEmpty || credentialId.trim().isEmpty) {
-      BadRequest(Json.obj("error" -> "regime, regNumber and credentialId must be provided"))
-    } else {
-      val identifier = enrolmentHelper.agentEnrolmentsOpt(request)
-      identifier match {
-        case Some(agentReference) =>
-          logger.info(s"hasClient: agentReference is $agentReference")
-          val regNoDigitIs9 = regNumber.takeRight(1).equals("9")
-          agentReference.takeRight(3).toIntOption.getOrElse(200) match {
-            case 400                => BadRequest(Json.obj("error" -> "regime, regNumber and credentialId must be provided"))
-            case 500                => InternalServerError(Json.obj("error" -> "Could not check hasClient"))
-            case 999                => Ok(Json.obj("hasClient" -> false))
-            case _ if regNoDigitIs9 => Ok(Json.obj("hasClient" -> false))
-            case _                  => Ok(Json.obj("hasClient" -> true))
-          }
-        case None => InternalServerError
+    val result =
+      if (Regime.fromString(regime).isEmpty) {
+        BadRequest(
+          Json.obj(
+            "code"    -> "INVALID_REGIME",
+            "message" -> "Invalid Regime Code"
+          )
+        )
+      } else if (regNumber.trim().isEmpty) {
+        BadRequest(Json.obj("error" -> "regNumber must be provided"))
+      } else if (credentialId.trim().isEmpty) {
+        BadRequest(Json.obj("error" -> "credentialId must be provided"))
+      } else {
+        val identifier = enrolmentHelper.agentEnrolmentsOpt(request)
+        identifier match {
+          case Some(agentReference) =>
+            logger.info(s"hasClient: agentReference is $agentReference")
+            val regNoDigitIs9 = regNumber.takeRight(1).equals("9")
+            agentReference.takeRight(3).toIntOption.getOrElse(200) match {
+              case 400                => BadRequest(Json.obj("error" -> "Bad request"))
+              case 500                => InternalServerError(Json.obj("error" -> "Could not check hasClient"))
+              case 999                => Ok(Json.obj("hasClient" -> false))
+              case _ if regNoDigitIs9 => Ok(Json.obj("hasClient" -> false))
+              case _                  => Ok(Json.obj("hasClient" -> true))
+            }
+          case None => InternalServerError
+        }
       }
-    }
     Future.successful(result)
   }
 }
