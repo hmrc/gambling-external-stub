@@ -17,13 +17,22 @@
 package uk.gov.hmrc.gamblingexternalstub.utils
 
 import uk.gov.hmrc.gamblingexternalstub.actions.AuthenticatedRequest
+import uk.gov.hmrc.gamblingexternalstub.models.Regime
+import uk.gov.hmrc.gamblingexternalstub.models.Regime.MGD
 
 class EnrolmentsHelper {
 
-  def agentEnrolmentsOpt(request: AuthenticatedRequest[?]): Option[String] =
+  def agentEnrolmentsOpt(request: AuthenticatedRequest[?], regime: Regime): Option[String] = {
+
+    val (enrolKey, idName) = regime match {
+      case MGD => ("HMRC-MGD-AGNT", "HMRCMGDAGENTREF")
+      case _   => ("HMRC-GTS-AGNT", "HMRCGTSAGENTREF")
+    }
+
     for {
-      enrol          <- request.enrolments.getEnrolment("HMRC-MGD-AGNT")
-      agentReference <- enrol.getIdentifier("HMRCMGDAGENTREF")
+      enrol          <- request.enrolments.getEnrolment(enrolKey)
+      agentReference <- enrol.getIdentifier(idName)
     } yield agentReference.value
+  }
 
 }

@@ -34,7 +34,7 @@ class ClientExchangeProxyControllerSpec extends SpecBaseWithAuth with MockitoSug
 
     "returns 200 with response when agentReference is 200" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("200"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("200"))
 
       val req: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, "/serviceId/credentialId/agentId/clientlist")
       val res: Future[Result] =
@@ -46,7 +46,7 @@ class ClientExchangeProxyControllerSpec extends SpecBaseWithAuth with MockitoSug
 
     "returns 200 with response when agentReference is empty" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some(""))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some(""))
 
       val req: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, "/serviceId/credentialId/agentId/clientlist")
       val res: Future[Result] =
@@ -58,7 +58,7 @@ class ClientExchangeProxyControllerSpec extends SpecBaseWithAuth with MockitoSug
 
     "returns 400 when agentReference = 400" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("400"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("400"))
 
       val req: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, "/serviceId/credentialId/agentId/clientlist")
       val res: Future[Result] =
@@ -71,7 +71,7 @@ class ClientExchangeProxyControllerSpec extends SpecBaseWithAuth with MockitoSug
 
     "returns 500 with error message when agentReference = 500" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("500"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("500"))
 
       val req: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, "/serviceId/credentialId/agentId/clientlist")
       val res: Future[Result] =
@@ -84,7 +84,7 @@ class ClientExchangeProxyControllerSpec extends SpecBaseWithAuth with MockitoSug
 
     "returns 500 with error message when no agent enrolment found" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(None)
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(None)
 
       val req: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, "/serviceId/credentialId/agentId/clientlist")
       val res: Future[Result] =

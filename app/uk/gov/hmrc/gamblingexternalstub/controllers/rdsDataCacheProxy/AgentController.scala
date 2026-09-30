@@ -57,7 +57,7 @@ class AgentController @Inject() (
       } else if (credentialId.trim().isEmpty) {
         BadRequest(Json.obj("error" -> "credentialId must be provided"))
       } else {
-        val identifier = enrolmentHelper.agentEnrolmentsOpt(request)
+        val identifier = enrolmentHelper.agentEnrolmentsOpt(request, Regime.fromString(regime).get)
         identifier match {
           case Some(agentReference) =>
             logger.info(s"getClientListDownloadStatus: agentReference is $agentReference")
@@ -94,7 +94,7 @@ class AgentController @Inject() (
       } else if (credentialId.trim().isEmpty) {
         BadRequest(Json.obj("error" -> "credentialId must be provided"))
       } else {
-        val identifier = enrolmentHelper.agentEnrolmentsOpt(request)
+        val identifier = enrolmentHelper.agentEnrolmentsOpt(request, Regime.fromString(regime).get)
         identifier match {
           case Some(agentReference) =>
             logger.info(s"getAllClients: agentReference is $agentReference")
@@ -128,7 +128,7 @@ class AgentController @Inject() (
       } else if (credentialId.trim().isEmpty) {
         BadRequest(Json.obj("error" -> "credentialId must be provided"))
       } else {
-        val identifier = enrolmentHelper.agentEnrolmentsOpt(request)
+        val identifier = enrolmentHelper.agentEnrolmentsOpt(request, Regime.fromString(regime).get)
         identifier match {
           case Some(agentReference) =>
             logger.info(s"hasClient: agentReference is $agentReference")

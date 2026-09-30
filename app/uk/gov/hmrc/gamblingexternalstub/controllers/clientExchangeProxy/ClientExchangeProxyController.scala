@@ -19,6 +19,7 @@ package uk.gov.hmrc.gamblingexternalstub.controllers.clientExchangeProxy
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.gamblingexternalstub.actions.AuthAction
+import uk.gov.hmrc.gamblingexternalstub.models.Regime
 import uk.gov.hmrc.gamblingexternalstub.utils.EnrolmentsHelper
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
@@ -40,7 +41,7 @@ class ClientExchangeProxyController @Inject() (
           <BusinessServiceInterval>2000</BusinessServiceInterval>
         </gwe:AsynchronousProcessWaitTime>
 
-    val identifier = enrolmentHelper.agentEnrolmentsOpt(request)
+    val identifier = enrolmentHelper.agentEnrolmentsOpt(request, Regime.fromString(serviceId.takeRight(3)).get)
     identifier match {
       case Some(agentReference) =>
         agentReference.takeRight(3).toIntOption.getOrElse(200) match {

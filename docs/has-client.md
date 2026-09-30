@@ -16,7 +16,7 @@ Controller mapping:
 
 `uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy.AgentController.hasClient(regime: String, regNumber: String, credentialId: String)`
 
-Query parameters:
+Path & Query parameters:
 
 | Parameter | Type   | Default | Description |
 |-----------|--------|---------|-------------|

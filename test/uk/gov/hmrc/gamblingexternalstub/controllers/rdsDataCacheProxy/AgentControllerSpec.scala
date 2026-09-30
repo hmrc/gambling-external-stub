@@ -36,7 +36,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
   ".getClientListDownloadStatus" should {
 
     "accept all valid regimes (case-insensitive)" in new Setup {
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("555101"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("555101"))
 
       Seq("MGD", "mgd", "GBD", "gbd", "PBD", "pbd", "RGD", "rgd").foreach { regime =>
         val req: FakeRequest[AnyContentAsEmpty.type] =
@@ -51,7 +51,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "returns 200 with status 'InitiateDownload' when agentReference = InitiateDownload" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("555101"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("555101"))
 
       val req: FakeRequest[AnyContentAsEmpty.type] =
         FakeRequest(GET, "/client-list-status?credentialId=cred-123&regime=MGD&gracePeriod=14400")
@@ -64,7 +64,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "returns 200 with status 'InProgress' when agentReference = InProgress" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("555102"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("555102"))
 
       val req: FakeRequest[AnyContentAsEmpty.type] =
         FakeRequest(GET, "/client-list-status?credentialId=cred-123&regime=MGD&gracePeriod=14400")
@@ -76,7 +76,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "returns 200 with status 'Succeeded' when agentReference = Success" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("555000"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("555000"))
 
       val req: FakeRequest[AnyContentAsEmpty.type] =
         FakeRequest(GET, "/client-list-status?credentialId=cred-123&regime=MGD&gracePeriod=14400")
@@ -88,7 +88,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "returns 200 with status 'Failed' when agentReference = Failed" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("555103"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("555103"))
 
       val req: FakeRequest[AnyContentAsEmpty.type] =
         FakeRequest(GET, "/client-list-status?credentialId=cred-123&regime=MGD&gracePeriod=14400")
@@ -100,7 +100,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "returns 500 with error message when agentReference = 500" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("555500"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("555500"))
 
       val req: FakeRequest[AnyContentAsEmpty.type] =
         FakeRequest(GET, "/client-list-status?credentialId=cred-123&regime=MGD&gracePeriod=14400")
@@ -113,7 +113,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "returns 400 when credentialId is empty" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("555000"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("555000"))
 
       val req: FakeRequest[AnyContentAsEmpty.type] =
         FakeRequest(GET, "/client-list-status?credentialId=&regime=MGD&gracePeriod=14400")
@@ -126,7 +126,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "returns 400 when regime is empty" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("555000"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("555000"))
 
       val req: FakeRequest[AnyContentAsEmpty.type] =
         FakeRequest(GET, "/client-list-status?credentialId=cred-123&regime=&gracePeriod=14400")
@@ -140,7 +140,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "returns 400 with error message when agentReference ends 400" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("555400"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("555400"))
 
       val req: FakeRequest[AnyContentAsEmpty.type] =
         FakeRequest(GET, "/client-list-status?credentialId=cred-123&regime=MGD&gracePeriod=14400")
@@ -156,7 +156,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "accept all valid regimes (case-insensitive)" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("200"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("200"))
 
       when(mockResourceHelper.resourceAsString(any())).thenReturn(Json.toJson(clientList).toString)
 
@@ -172,7 +172,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "returns 200 with client list when agentReference is 200" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("200"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("200"))
 
       when(mockResourceHelper.resourceAsString(any())).thenReturn(Json.toJson(clientList).toString)
 
@@ -186,7 +186,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "returns 200 with client list when agentReference is 000123" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("000123"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("000123"))
 
       when(mockResourceHelper.resourceAsString(any())).thenReturn(Json.toJson(clientList).toString)
 
@@ -200,7 +200,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "returns 500 with error message when agentReference = 500" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("555500"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("555500"))
 
       val req: FakeRequest[AnyContentAsEmpty.type] =
         FakeRequest(GET, "/client-list?credentialId=CRED-ABC-123&regime=MGD")
@@ -234,7 +234,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "returns 400 with error message when agentReference ends 400" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("555400"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("555400"))
 
       val req: FakeRequest[AnyContentAsEmpty.type] =
         FakeRequest(GET, "/client-list?credentialId=CRED-ABC-123&regime=MGD")
@@ -250,7 +250,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "returns 200 with hasClient true for all valid regimes (case-insensitive)" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("agent-ref-123"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("agent-ref-123"))
 
       Seq("MGD", "mgd", "GBD", "gbd", "PBD", "pbd", "RGD", "rgd").foreach { regime =>
         val req: FakeRequest[AnyContentAsEmpty.type] =
@@ -267,7 +267,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "returns 200 with hasClient true when regNumber ends with 0 to 8" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("agent-ref-123"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("agent-ref-123"))
 
       val req: FakeRequest[AnyContentAsEmpty.type] =
         FakeRequest(
@@ -282,7 +282,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "returns 200 with hasClient FALSE when regNumber ends with 9" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("agent-ref-123"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("agent-ref-123"))
 
       val req: FakeRequest[AnyContentAsEmpty.type] =
         FakeRequest(
@@ -297,7 +297,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "returns 200 with hasClient false when agentReference ends with 999" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("555999"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("555999"))
 
       val req: FakeRequest[AnyContentAsEmpty.type] =
         FakeRequest(
@@ -312,7 +312,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "returns 400 with error message when agentReference ends 400" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("555400"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("555400"))
 
       val req: FakeRequest[AnyContentAsEmpty.type] =
         FakeRequest(GET, "/has-client/MGD/XWM00000001770?credentialId=CRED-ABC-123")
@@ -325,7 +325,7 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "returns 500 with error message when agentReference ends 500" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any())).thenReturn(Some("555500"))
+      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("555500"))
 
       val req: FakeRequest[AnyContentAsEmpty.type] =
         FakeRequest(GET, "/has-client/MGD/XWM00000001770?credentialId=CRED-ABC-123")
