@@ -36,9 +36,9 @@ class ClientExchangeProxyControllerSpec extends SpecBaseWithAuth with MockitoSug
 
       when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("200"))
 
-      val req: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, "/serviceId/credentialId/agentId/clientlist")
+      val req: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, "/GTR_GBD/credentialId/agentId/clientlist")
       val res: Future[Result] =
-        controller.updateClientList(serviceId = "serviceId", credentialId = "credentialId", agentId = "agentId")(req)
+        controller.updateClientList(serviceId = "GTR_GBD", credentialId = "credentialId", agentId = "agentId")(req)
 
       status(res) mustBe OK
       contentType(res) mustBe Some("application/xml")
@@ -48,9 +48,9 @@ class ClientExchangeProxyControllerSpec extends SpecBaseWithAuth with MockitoSug
 
       when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some(""))
 
-      val req: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, "/serviceId/credentialId/agentId/clientlist")
+      val req: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, "/GTR_GBD/credentialId/agentId/clientlist")
       val res: Future[Result] =
-        controller.updateClientList(serviceId = "serviceId", credentialId = "credentialId", agentId = "agentId")(req)
+        controller.updateClientList(serviceId = "GTR_GBD", credentialId = "credentialId", agentId = "agentId")(req)
 
       status(res) mustBe OK
       contentType(res) mustBe Some("application/xml")
@@ -60,9 +60,9 @@ class ClientExchangeProxyControllerSpec extends SpecBaseWithAuth with MockitoSug
 
       when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("400"))
 
-      val req: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, "/serviceId/credentialId/agentId/clientlist")
+      val req: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, "/GTR_GBD/credentialId/agentId/clientlist")
       val res: Future[Result] =
-        controller.updateClientList(serviceId = "serviceId", credentialId = "credentialId", agentId = "agentId")(req)
+        controller.updateClientList(serviceId = "GTR_GBD", credentialId = "credentialId", agentId = "agentId")(req)
 
       status(res) mustBe BAD_REQUEST
       contentType(res) mustBe Some(JSON)
@@ -73,9 +73,9 @@ class ClientExchangeProxyControllerSpec extends SpecBaseWithAuth with MockitoSug
 
       when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("500"))
 
-      val req: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, "/serviceId/credentialId/agentId/clientlist")
+      val req: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, "/GTR_GBD/credentialId/agentId/clientlist")
       val res: Future[Result] =
-        controller.updateClientList(serviceId = "serviceId", credentialId = "credentialId", agentId = "agentId")(req)
+        controller.updateClientList(serviceId = "GTR_GBD", credentialId = "credentialId", agentId = "agentId")(req)
 
       status(res) mustBe INTERNAL_SERVER_ERROR
       contentType(res) mustBe Some(JSON)
@@ -86,9 +86,9 @@ class ClientExchangeProxyControllerSpec extends SpecBaseWithAuth with MockitoSug
 
       when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(None)
 
-      val req: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, "/serviceId/credentialId/agentId/clientlist")
+      val req: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, "/GTR_GBD/credentialId/agentId/clientlist")
       val res: Future[Result] =
-        controller.updateClientList(serviceId = "serviceId", credentialId = "credentialId", agentId = "agentId")(req)
+        controller.updateClientList(serviceId = "GTR_GBD", credentialId = "credentialId", agentId = "agentId")(req)
 
       status(res) mustBe INTERNAL_SERVER_ERROR
       contentType(res) mustBe Some(JSON)
