@@ -128,19 +128,11 @@ class AgentController @Inject() (
       } else if (credentialId.trim().isEmpty) {
         BadRequest(Json.obj("error" -> "credentialId must be provided"))
       } else {
-        val identifier = enrolmentHelper.agentEnrolmentsOpt(request, Regime.fromString(regime).get)
-        identifier match {
-          case Some(agentReference) =>
-            logger.info(s"hasClient: agentReference is $agentReference")
-            val regNoDigitIs9 = regNumber.takeRight(1).equals("9")
-            agentReference.takeRight(3).toIntOption.getOrElse(200) match {
-              case 400                => BadRequest(Json.obj("error" -> "Bad request"))
-              case 500                => InternalServerError(Json.obj("error" -> "Could not check hasClient"))
-              case 999                => Ok(Json.obj("hasClient" -> false))
-              case _ if regNoDigitIs9 => Ok(Json.obj("hasClient" -> false))
-              case _                  => Ok(Json.obj("hasClient" -> true))
-            }
-          case None => InternalServerError
+        regNumber.takeRight(3).toIntOption.getOrElse(200) match {
+          case 400 => BadRequest(Json.obj("error" -> "Bad request"))
+          case 500 => InternalServerError(Json.obj("error" -> "Could not check hasClient"))
+          case 999 => Ok(Json.obj("hasClient" -> false))
+          case _   => Ok(Json.obj("hasClient" -> true))
         }
       }
     Future.successful(result)

@@ -84,21 +84,18 @@ If it is empty it returns:
 
 ---
 
-## agentReference encoding convention
+## regNumber encoding convention
 
-Once the regime is valid, the stub derives its behaviour from the agentReference which is passed in the Enrolment header.
+Once the regime is valid, the stub derives its behaviour from the regNumber.
 
 **Last 3 digits** control the HTTP status code returned:
 
 | Last 3 digits                      | Response                  |
 |------------------------------------|---------------------------|
 | `400`                              | 400 BAD_REQUEST           |
-| None                               | 500 INTERNAL_SERVER_ERROR |
 | `500`                              | 500 INTERNAL_SERVER_ERROR |
 | `999`                              | 200 OK - False            |
-| anything  & RegNumber ends with `9` | 200 OK - False            |
 | anything else                      | 200 OK - True             |  
-
 
 ---
 
@@ -166,8 +163,7 @@ Response:
 Request:
 
 ```
-GET /gambling/agent/has-client/MGD/XKM00000001007?credentialId=CRED-ABC-123
-agentReference in Enrolment header ends with 500
+GET /gambling/agent/has-client/MGD/XKM00000001500?credentialId=CRED-ABC-123
 ```
 
 Response:

@@ -250,8 +250,6 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "returns 200 with hasClient true for all valid regimes (case-insensitive)" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("agent-ref-123"))
-
       Seq("MGD", "mgd", "GBD", "gbd", "PBD", "pbd", "RGD", "rgd").foreach { regime =>
         val req: FakeRequest[AnyContentAsEmpty.type] =
           FakeRequest(
@@ -267,8 +265,6 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
 
     "returns 200 with hasClient true when regNumber ends with 0 to 8" in new Setup {
 
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("agent-ref-123"))
-
       val req: FakeRequest[AnyContentAsEmpty.type] =
         FakeRequest(
           GET,
@@ -280,56 +276,35 @@ class AgentControllerSpec extends SpecBaseWithAuth with MockitoSugar {
       (contentAsJson(res) \ "hasClient").as[Boolean] mustBe true
     }
 
-    "returns 200 with hasClient FALSE when regNumber ends with 9" in new Setup {
-
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("agent-ref-123"))
+    "returns 200 with hasClient FALSE when regNumber ends with 999" in new Setup {
 
       val req: FakeRequest[AnyContentAsEmpty.type] =
         FakeRequest(
           GET,
-          "/has-client/MGD/XWM00000001779?credentialId=CRED-ABC-123"
+          "/has-client/MGD/XWM00000001999?credentialId=CRED-ABC-123"
         )
-      val res: Future[Result] = controller.hasClient("MGD", "XWM00000001779", "CRED-ABC-123")(req)
+      val res: Future[Result] = controller.hasClient("MGD", "XWM00000001999", "CRED-ABC-123")(req)
 
       status(res) mustBe OK
       (contentAsJson(res) \ "hasClient").as[Boolean] mustBe false
     }
 
-    "returns 200 with hasClient false when agentReference ends with 999" in new Setup {
-
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("555999"))
+    "returns 400 with error message when regNumber ends 400" in new Setup {
 
       val req: FakeRequest[AnyContentAsEmpty.type] =
-        FakeRequest(
-          GET,
-          "/has-client/MGD/XMM01234567890?credentialId=CRED-ABC-123"
-        )
-      val res: Future[Result] = controller.hasClient("MGD", "XMM01234567890", "CRED-ABC-123")(req)
-
-      status(res) mustBe OK
-      (contentAsJson(res) \ "hasClient").as[Boolean] mustBe false
-    }
-
-    "returns 400 with error message when agentReference ends 400" in new Setup {
-
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("555400"))
-
-      val req: FakeRequest[AnyContentAsEmpty.type] =
-        FakeRequest(GET, "/has-client/MGD/XWM00000001770?credentialId=CRED-ABC-123")
-      val res: Future[Result] = controller.hasClient("MGD", "XWM00000001770", "CRED-ABC-123")(req)
+        FakeRequest(GET, "/has-client/MGD/XWM00000001400?credentialId=CRED-ABC-123")
+      val res: Future[Result] = controller.hasClient("MGD", "XWM00000001400", "CRED-ABC-123")(req)
 
       status(res) mustBe BAD_REQUEST
       contentType(res) mustBe Some(JSON)
       (contentAsJson(res) \ "error").as[String] mustBe "Bad request"
     }
 
-    "returns 500 with error message when agentReference ends 500" in new Setup {
-
-      when(mockEnrolmentsHelper.agentEnrolmentsOpt(any(), any())).thenReturn(Some("555500"))
+    "returns 500 with error message when regNumber ends 500" in new Setup {
 
       val req: FakeRequest[AnyContentAsEmpty.type] =
-        FakeRequest(GET, "/has-client/MGD/XWM00000001770?credentialId=CRED-ABC-123")
-      val res: Future[Result] = controller.hasClient("MGD", "XWM00000001770", "CRED-ABC-123")(req)
+        FakeRequest(GET, "/has-client/MGD/XWM00000001500?credentialId=CRED-ABC-123")
+      val res: Future[Result] = controller.hasClient("MGD", "XWM00000001500", "CRED-ABC-123")(req)
 
       status(res) mustBe INTERNAL_SERVER_ERROR
       contentType(res) mustBe Some(JSON)
