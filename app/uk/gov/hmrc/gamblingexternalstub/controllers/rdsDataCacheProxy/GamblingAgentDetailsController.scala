@@ -27,8 +27,17 @@ class GamblingAgentDetailsController @Inject() (
 ) extends BackendController(cc) {
 
   def getAgentDetails(agentReference: String): Action[AnyContent] = Action { _ =>
-    agentReference.trim match {
-      case s if s.nonEmpty =>
+    val ref = agentReference.trim
+    (if (ref.isEmpty) 500 else ref.takeRight(3).toIntOption.getOrElse(200)) match {
+      case 400 =>
+        BadRequest(Json.obj("code" -> "INVALID_REQUEST", "message" -> "Bad request"))
+      case 401 =>
+        Unauthorized(Json.obj("code" -> "UNAUTHORIZED", "message" -> "Unauthorized to access this resource"))
+      case 404 =>
+        NotFound(Json.obj("code" -> "RECORD_NOT_FOUND", "message" -> "Record not found"))
+      case 500 =>
+        InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
+      case _ =>
         Ok(
           Json.obj(
             "businessName"      -> "Gambling company 1",
@@ -45,8 +54,6 @@ class GamblingAgentDetailsController @Inject() (
             "email"             -> "user@example.com"
           )
         )
-      case _ =>
-        InternalServerError(Json.obj("code" -> "UNEXPECTED_ERROR", "message" -> "Unexpected error occurred"))
     }
   }
 }

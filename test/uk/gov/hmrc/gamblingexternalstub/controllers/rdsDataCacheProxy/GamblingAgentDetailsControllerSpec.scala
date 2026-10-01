@@ -41,6 +41,15 @@ class GamblingAgentDetailsControllerSpec extends AnyWordSpec with Matchers with 
       Seq("NOTFOUND", "error", "%20AGENT001%20").foreach(ref => status(get(ref)) shouldBe OK)
     }
 
+    "return the matching error for references ending in 400/401/404/500" in {
+      Seq(
+        "XAM00000000400"       -> BAD_REQUEST,
+        "%20XAM00000000401%20" -> UNAUTHORIZED,
+        "XAM00000000404"       -> NOT_FOUND,
+        "XAM00000000500"       -> INTERNAL_SERVER_ERROR
+      ).foreach { case (ref, expected) => status(get(ref)) shouldBe expected }
+    }
+
     "return 500 for a blank reference" in {
       val result = get("%20%20")
       status(result)                              shouldBe INTERNAL_SERVER_ERROR
