@@ -46,7 +46,6 @@ The reference is trimmed, then the last 3 characters are read as the status code
 | Ends in `401` (e.g. `XAM00000000401`) | 401 Unauthorized |
 | Ends in `404` (e.g. `XAM00000000404`) | 404 Not Found |
 | Ends in `500` (e.g. `XAM00000000500`) | 500 Internal Server Error |
-| Blank (whitespace only) | 500 Internal Server Error |
 | Anything else | 200 OK success response |
 
 ## Examples

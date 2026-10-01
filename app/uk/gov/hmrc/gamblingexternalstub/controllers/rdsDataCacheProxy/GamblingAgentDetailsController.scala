@@ -27,8 +27,7 @@ class GamblingAgentDetailsController @Inject() (
 ) extends BackendController(cc) {
 
   def getAgentDetails(agentReference: String): Action[AnyContent] = Action { _ =>
-    val ref = agentReference.trim
-    (if (ref.isEmpty) 500 else ref.takeRight(3).toIntOption.getOrElse(200)) match {
+    agentReference.trim.takeRight(3).toIntOption.getOrElse(200) match {
       case 400 =>
         BadRequest(Json.obj("code" -> "INVALID_REQUEST", "message" -> "Bad request"))
       case 401 =>

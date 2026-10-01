@@ -37,8 +37,8 @@ class GamblingAgentDetailsControllerSpec extends AnyWordSpec with Matchers with 
       (contentAsJson(result) \ "email").as[String]        shouldBe "user@example.com"
     }
 
-    "return agent details for any non-empty reference" in {
-      Seq("NOTFOUND", "error", "%20AGENT001%20").foreach(ref => status(get(ref)) shouldBe OK)
+    "return agent details for any reference without an error suffix" in {
+      Seq("NOTFOUND", "error", "%20AGENT001%20", "%20%20").foreach(ref => status(get(ref)) shouldBe OK)
     }
 
     "return the matching error for references ending in 400/401/404/500" in {
@@ -48,12 +48,6 @@ class GamblingAgentDetailsControllerSpec extends AnyWordSpec with Matchers with 
         "XAM00000000404"       -> NOT_FOUND,
         "XAM00000000500"       -> INTERNAL_SERVER_ERROR
       ).foreach { case (ref, expected) => status(get(ref)) shouldBe expected }
-    }
-
-    "return 500 for a blank reference" in {
-      val result = get("%20%20")
-      status(result)                              shouldBe INTERNAL_SERVER_ERROR
-      (contentAsJson(result) \ "code").as[String] shouldBe "UNEXPECTED_ERROR"
     }
   }
 }
