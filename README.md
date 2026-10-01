@@ -1053,6 +1053,14 @@ See [docs/has-client.md](docs/has-client.md) for full details including regime v
 
 See [docs/update-clientlist.md](docs/update-clientlist.md) for full details including all response scenarios, and example curl commands.
 
+---
+
+### 38. GetAgentDetails (Agent) (RDS)
+
+`GET /gambling/agent-details/:agentReference`
+
+See [docs/agent-details.md](docs/agent-details.md) for full details including reference encoding convention, all response scenarios, and example curl commands.
+
 
 ## License
 
