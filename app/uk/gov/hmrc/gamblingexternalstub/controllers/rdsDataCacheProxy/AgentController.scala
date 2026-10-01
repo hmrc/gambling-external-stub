@@ -20,6 +20,7 @@ import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.gamblingexternalstub.actions.AuthAction
+import uk.gov.hmrc.gamblingexternalstub.controllers.BaseController
 import uk.gov.hmrc.gamblingexternalstub.models.Regime
 import uk.gov.hmrc.gamblingexternalstub.models.agent.ClientListDownloadStatus.{Failed, InProgress, InitiateDownload, Succeeded}
 import uk.gov.hmrc.gamblingexternalstub.utils.{EnrolmentsHelper, ResourceHelper}
@@ -35,7 +36,8 @@ class AgentController @Inject() (
   cc: ControllerComponents
 )(using ExecutionContext)
     extends BackendController(cc)
-    with Logging {
+    with Logging
+    with BaseController {
 
   private val responsePath = "/data/agent"
   private val getAllClients_200_ResponsePath = s"$responsePath/getAllClients-200-response.json"
@@ -60,7 +62,7 @@ class AgentController @Inject() (
         val identifier = enrolmentHelper.agentEnrolmentsOpt(request, Regime.fromString(regime).get)
         identifier match {
           case Some(agentReference) =>
-            logger.info(s"getClientListDownloadStatus: agentReference is $agentReference")
+            logger.info(s"RDS getClientListDownloadStatus: agentReference is $agentReference")
             agentReference.takeRight(3).toIntOption.getOrElse(200) match {
               case 400 => BadRequest(Json.obj("error" -> "Bad request"))
               case 500 => InternalServerError(Json.obj("error" -> "Could not map client list download status"))
@@ -69,9 +71,11 @@ class AgentController @Inject() (
               case 103 => Ok(Json.obj("status" -> Failed.toString))
               case _   => Ok(Json.obj("status" -> Succeeded.toString))
             }
-          case None => InternalServerError
+          case None => InternalServerError(Json.obj("error" -> "agentReference not provided"))
         }
       }
+
+    logResult("RDS getClientListDownloadStatus returns", result)
     Future.successful(result)
   }
 
@@ -97,16 +101,17 @@ class AgentController @Inject() (
         val identifier = enrolmentHelper.agentEnrolmentsOpt(request, Regime.fromString(regime).get)
         identifier match {
           case Some(agentReference) =>
-            logger.info(s"getAllClients: agentReference is $agentReference")
+            logger.info(s"RDS getAllClients: agentReference is $agentReference")
             agentReference.takeRight(3).toIntOption.getOrElse(200) match {
               case 400 => BadRequest(Json.obj("error" -> "Bad request"))
               case 500 => InternalServerError(Json.obj("error" -> "Could not get client list"))
               case 123 => Ok(resourceHelper.resourceAsString(getAllClients_200_Alt_ResponsePath))
               case _   => Ok(resourceHelper.resourceAsString(getAllClients_200_ResponsePath))
             }
-          case None => InternalServerError
+          case None => InternalServerError(Json.obj("error" -> "agentReference not provided"))
         }
       }
+    logResult("RDS getAllClients returns", result)
     Future.successful(result)
   }
 
@@ -135,6 +140,7 @@ class AgentController @Inject() (
           case _   => Ok(Json.obj("hasClient" -> true))
         }
       }
+    logResult(s"RDS hasClient for regNumber=$regNumber returns", result)
     Future.successful(result)
   }
 }

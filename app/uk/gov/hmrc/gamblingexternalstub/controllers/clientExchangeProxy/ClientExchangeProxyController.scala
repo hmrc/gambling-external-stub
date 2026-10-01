@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.gamblingexternalstub.controllers.clientExchangeProxy
 
+import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.gamblingexternalstub.actions.AuthAction
-import uk.gov.hmrc.gamblingexternalstub.models.Regime
-import uk.gov.hmrc.gamblingexternalstub.utils.EnrolmentsHelper
+import uk.gov.hmrc.gamblingexternalstub.controllers.BaseController
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.{Inject, Singleton}
@@ -29,9 +29,10 @@ import scala.xml.Elem
 @Singleton()
 class ClientExchangeProxyController @Inject() (
   authorise: AuthAction,
-  enrolmentHelper: EnrolmentsHelper,
   cc: ControllerComponents
-)() extends BackendController(cc) {
+)() extends BackendController(cc)
+    with Logging
+    with BaseController {
 
   def updateClientList(serviceId: String, credentialId: String, agentId: String): Action[AnyContent] = authorise { implicit request =>
 
@@ -41,15 +42,27 @@ class ClientExchangeProxyController @Inject() (
           <BusinessServiceInterval>2000</BusinessServiceInterval>
         </gwe:AsynchronousProcessWaitTime>
 
-    val identifier = enrolmentHelper.agentEnrolmentsOpt(request, Regime.fromString(serviceId.takeRight(3)).get)
-    identifier match {
-      case Some(agentReference) =>
-        agentReference.takeRight(3).toIntOption.getOrElse(200) match {
-          case 400 => BadRequest(Json.obj("error" -> "Invalid ServiceId"))
-          case 500 => InternalServerError(Json.obj("error" -> "Server Error"))
-          case _   => Ok(responseXML)
+    val result =
+      if (!List("MGD", "GTR_GBD", "GTR_PBD", "GTR_RGD").contains(serviceId.toUpperCase)) {
+        BadRequest(
+          Json.obj(
+            "code"    -> "INVALID_REGIME",
+            "message" -> "Invalid Regime Code"
+          )
+        )
+      } else if (credentialId.trim().isEmpty) {
+        BadRequest(Json.obj("error" -> "credentialId must be provided"))
+      } else {
+        logger.info(s"ClientExchangeProxy updateClientList: agentReference is $agentId")
+        agentId.takeRight(3) match {
+          case "400" => BadRequest(Json.obj("error" -> "Invalid ServiceId"))
+          case "500" => InternalServerError(Json.obj("error" -> "Server Error"))
+          case ""    => BadRequest(Json.obj("error" -> "agentReference not provided"))
+          case _     => Ok(responseXML)
         }
-      case None => InternalServerError(Json.obj("error" -> "Server Error"))
-    }
+      }
+
+    logResult(s"ClientExchangeProxy updateClientList for $agentId returns ", result)
+    result
   }
 }

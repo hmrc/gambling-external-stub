@@ -27,7 +27,45 @@ Path & Query parameters:
 ---
 
 ## Validation
-Currently there is no validation in the stub
+## credentialId validation
+
+The `credentialId` query param is validated to check it is NOT EMPTY
+
+If it is empty it returns:
+
+```
+400 BAD_REQUEST
+```
+
+```json
+{
+  "error": "credentialId must be provided"
+}
+```
+
+## serviceId validation
+
+The `serviceId` query param has the following valid values (case-insensitive):
+
+| Value     | Regime               |
+|-----------|----------------------|
+| `gtr_gbd` | General Betting Duty |
+| `gtr_pbd` | Pool Betting Duty    |
+| `gtr_rgd` | Remote Gaming Duty   |
+| `mgd`     | Machine Games Duty   |
+
+Any other value returns:
+
+```
+400 BAD_REQUEST
+```
+
+```json
+{
+  "code": "INVALID_REGIME",
+  "message": "Invalid Regime Code"
+}
+```
 
 ---
 
