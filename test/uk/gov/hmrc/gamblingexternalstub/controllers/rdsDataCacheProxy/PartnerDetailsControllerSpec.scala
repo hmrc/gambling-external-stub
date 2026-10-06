@@ -45,7 +45,7 @@ class PartnerDetailsControllerSpec extends AnyWordSpec with Matchers with SpecBa
       (json \ "partners" \ 0 \ "mgdRegNumber").as[String]          shouldBe "XGM00000001774"
       (json \ "partners" \ 0 \ "businessPartnerNumber").as[String] shouldBe "0100049899"
       (json \ "partners" \ 0 \ "businessType").as[Int]             shouldBe 1
-      (json \ "partners" \ 0 \ "tradingName").as[String]        shouldBe "soleProp Trading Name"
+      (json \ "partners" \ 0 \ "tradingName").as[String]           shouldBe "soleProp Trading Name"
     }
 
     "return full partner details for XGM00000001784" in new Context {
@@ -227,8 +227,6 @@ class PartnerDetailsControllerSpec extends AnyWordSpec with Matchers with SpecBa
           |  ],
           |  "systemDate": "2026-07-31"
           |}""".stripMargin
-
-
 
 //      """{
 //          |  "partners": [

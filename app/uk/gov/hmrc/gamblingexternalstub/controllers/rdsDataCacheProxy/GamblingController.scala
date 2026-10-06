@@ -32,7 +32,17 @@ class GamblingController @Inject() (
     with Logging {
 
   private lazy val businessNames =
-    Seq("XGM00000001761", "XGM00000001762", "XGM00000001763", "XGM00000001764", "XGM00000001765", "XGM00000001774", "XGM00000001784", "XGM00000001794", "business-name").map { registration =>
+    Seq(
+      "XGM00000001761",
+      "XGM00000001762",
+      "XGM00000001763",
+      "XGM00000001764",
+      "XGM00000001765",
+      "XGM00000001774",
+      "XGM00000001784",
+      "XGM00000001794",
+      "business-name"
+    ).map { registration =>
       registration -> Using
         .resource(
           getClass.getResourceAsStream(s"/data/business-name/$registration.json")
@@ -49,17 +59,35 @@ class GamblingController @Inject() (
         .as[JsObject]
     }.toMap
 
-  private lazy val mgdDetails = Seq("XGM00000001761", "XGM00000001762", "XGM00000001763", "XGM00000001764", "XGM00000001765", "XGM00000001774", "XGM00000001784", "XGM00000001794", "mgd-details").map {
-    registration =>
-      registration -> Using
-        .resource(
-          getClass.getResourceAsStream(s"/data/mgd-details/$registration.json")
-        )(Json.parse)
-        .as[JsObject]
+  private lazy val mgdDetails = Seq("XGM00000001761",
+                                    "XGM00000001762",
+                                    "XGM00000001763",
+                                    "XGM00000001764",
+                                    "XGM00000001765",
+                                    "XGM00000001774",
+                                    "XGM00000001784",
+                                    "XGM00000001794",
+                                    "mgd-details"
+                                   ).map { registration =>
+    registration -> Using
+      .resource(
+        getClass.getResourceAsStream(s"/data/mgd-details/$registration.json")
+      )(Json.parse)
+      .as[JsObject]
   }.toMap
 
   private lazy val returnSummaries =
-    Seq("XGM00000001761", "XGM00000001762", "XGM00000001763", "XGM00000001764", "XGM00000001765", "XGM00000001774", "XGM00000001784", "XGM00000001794", "return-summary").map { registration =>
+    Seq(
+      "XGM00000001761",
+      "XGM00000001762",
+      "XGM00000001763",
+      "XGM00000001764",
+      "XGM00000001765",
+      "XGM00000001774",
+      "XGM00000001784",
+      "XGM00000001794",
+      "return-summary"
+    ).map { registration =>
       registration -> Using
         .resource(
           getClass.getResourceAsStream(s"/data/return-summary/$registration.json")
@@ -68,7 +96,17 @@ class GamblingController @Inject() (
     }.toMap
 
   private lazy val mgdCertificates =
-    Seq("XGM00000001761", "XGM00000001762", "XGM00000001763", "XGM00000001764", "XGM00000001765", "XGM00000001774", "XGM00000001784", "XGM00000001794", "mgd-certificate").map { registration =>
+    Seq(
+      "XGM00000001761",
+      "XGM00000001762",
+      "XGM00000001763",
+      "XGM00000001764",
+      "XGM00000001765",
+      "XGM00000001774",
+      "XGM00000001784",
+      "XGM00000001794",
+      "mgd-certificate"
+    ).map { registration =>
       registration -> Using
         .resource(
           getClass.getResourceAsStream(s"/data/mgd-certificate/$registration.json")
@@ -77,7 +115,17 @@ class GamblingController @Inject() (
     }.toMap
 
   private lazy val businessDetails =
-    Seq("XGM00000001761", "XGM00000001762", "XGM00000001763", "XGM00000001764", "XGM00000001765", "XGM00000001774", "XGM00000001784", "XGM00000001794", "business-details").map { registration =>
+    Seq(
+      "XGM00000001761",
+      "XGM00000001762",
+      "XGM00000001763",
+      "XGM00000001764",
+      "XGM00000001765",
+      "XGM00000001774",
+      "XGM00000001784",
+      "XGM00000001794",
+      "business-details"
+    ).map { registration =>
       registration -> Using
         .resource(
           getClass.getResourceAsStream(s"/data/business-details/$registration.json")
@@ -227,7 +275,7 @@ class GamblingController @Inject() (
         Ok(businessDetails("XGM00000001784") ++ Json.obj("systemDate" -> LocalDate.now()))
 
       case "XGM00000001794" =>
-        Ok(businessDetails("XGM00000001794") ++ Json.obj("systemDate" -> LocalDate.now()))  
+        Ok(businessDetails("XGM00000001794") ++ Json.obj("systemDate" -> LocalDate.now()))
 
       case reg =>
         Ok(businessDetails("business-details") ++ Json.obj("mgdRegNumber" -> reg, "systemDate" -> LocalDate.now()))
@@ -279,7 +327,7 @@ class GamblingController @Inject() (
         Ok(mgdCertificates("XGM00000001774"))
 
       case "XGM00000001794" =>
-        Ok(mgdCertificates("XGM00000001794"))  
+        Ok(mgdCertificates("XGM00000001794"))
 
       case reg =>
         val certificate = mgdCertificates("mgd-certificate")
@@ -417,7 +465,7 @@ class GamblingController @Inject() (
               postcode     = Some("LS1 1AA")
             )
           )
-        )  
+        )
 
       case reg =>
         Ok(Json.toJson(baseOperator(reg)))
@@ -466,7 +514,7 @@ class GamblingController @Inject() (
         Ok(tradeClassDetails("XGM00000001784"))
 
       case "XGM00000001794" =>
-        Ok(tradeClassDetails("XGM00000001794"))  
+        Ok(tradeClassDetails("XGM00000001794"))
 
       case reg =>
         Ok(tradeClassDetails("trade-class"))
@@ -506,7 +554,7 @@ class GamblingController @Inject() (
         Ok(mgdDetails("XGM00000001764"))
 
       case "XGM00000001765" =>
-        Ok(mgdDetails("XGM00000001765"))  
+        Ok(mgdDetails("XGM00000001765"))
 
       case "XGM00000001774" =>
         Ok(mgdDetails("XGM00000001774"))

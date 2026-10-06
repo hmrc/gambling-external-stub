@@ -31,7 +31,6 @@ class GamblingLicensesAndPremisesControllerSpec extends AnyWordSpec with Matcher
   private val app = applicationBuilder().build()
   private val controller = app.injector.instanceOf[GamblingLicensesAndPremisesController]
 
-
   "GamblingLicensesAndPremisesController#getPremisesDetails" should {
 
     "return all 100 RDS premises for XGM00000001764" in {

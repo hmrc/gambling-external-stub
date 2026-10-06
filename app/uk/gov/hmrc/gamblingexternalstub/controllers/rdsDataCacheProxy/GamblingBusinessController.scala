@@ -65,7 +65,7 @@ class GamblingBusinessController @Inject() (
           Ok(Json.toJson(fullModel(sanitized)))
 
         case "XGM00000001794" =>
-          Ok(Json.toJson(fullModel(sanitized)))  
+          Ok(Json.toJson(fullModel(sanitized)))
 
         case "XGM00000000400" =>
           BadRequest(
