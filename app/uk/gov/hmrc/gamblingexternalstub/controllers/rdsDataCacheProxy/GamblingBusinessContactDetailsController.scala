@@ -54,8 +54,14 @@ class GamblingBusinessContactDetailsController @Inject() (
       case "XGM00000001765" =>
         Ok(Json.toJson(businessContactDetails(mgdRegNumber)))
 
-      case "XGM00000000200" =>
-        Ok(Json.toJson(BusinessContactDetails.noData))
+      case "XGM00000001774" =>
+        Ok(Json.toJson(businessContactDetails(mgdRegNumber)))
+
+      case "XGM00000001784" =>
+        Ok(Json.toJson(businessContactDetails(mgdRegNumber)))
+
+      case "XGM00000001794" =>
+        Ok(Json.toJson(businessContactDetails(mgdRegNumber)))
 
       case "XGM00000000400" =>
         BadRequest(
@@ -104,6 +110,9 @@ class GamblingBusinessContactDetailsController @Inject() (
             "message" -> "Unexpected error occurred"
           )
         )
+
+      case "XGM00000000200" =>
+        Ok(Json.toJson(BusinessContactDetails.noData))
 
       case _ =>
         Ok(Json.toJson(businessContactDetails(mgdRegNumber)))

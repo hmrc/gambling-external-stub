@@ -1,30 +1,30 @@
 {
   "partners": [
     {
-      "mgdRegNumber": "XJM00000000570",
+      "mgdRegNumber": "XGM00000001774",
       "businessPartnerNumber": "0100049899",
       "dateOfJoining": "2024-01-01",
-      "dateOfLeaving": "2025-01-01",
       "solePropTitle": "Mx",
       "solePropFirstName": "solePropFirstName",
       "solePropLastName": "solePropLastName",
-      "businessName": "Partner1",
-      "tradingName": "tradingName",
+      "businessName": "soleProp businessName",
+      "tradingName": "soleProp Trading Name",
       "dateOfBirth": "1999-09-09",
       "nino": "ni123456789no",
       "crn": "123456789",
+      "utr": "1111111111",
       "dateOfIncorporation": "2024-01-01",
-      "countryOfIncorporation": "countryOfIncorporation",
-      "foreignCorporateRef": "foreignCorporateRef",
+      "countryOfIncorporation": "Netherlands",
+      "foreignCorporateRef": "foreign Corporate Ref",
       "adi": "adi",
       "iomOrCiFlag": "false",
-      "phoneNumber": "phoneNumber",
-      "mobilePhoneNumber": "mobilePhoneNumber",
-      "faxNumber": "faxNumber",
-      "emailAddr": "emailAddr",
+      "phoneNumber": "0752 212 121",
+      "mobilePhoneNumber": "0752 212 121",
+      "faxNumber": "0752 212 121",
+      "emailAddr": "emailAddr@example.com",
       "isFutureLeaveDate": 0,
       "isFutureJoinDate": 0,
-      "businessType": 2
+      "businessType": 1
     }
   ],
   "systemDate": "2026-09-18"

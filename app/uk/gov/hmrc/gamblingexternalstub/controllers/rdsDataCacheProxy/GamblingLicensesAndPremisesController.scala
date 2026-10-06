@@ -39,7 +39,7 @@ class GamblingLicensesAndPremisesController @Inject() (
 
   private lazy val emptyPremisesDetails = Using
     .resource(
-      getClass.getResourceAsStream("/data/premises-details/XYM00000000699.json")
+      getClass.getResourceAsStream("/data/premises-details/premises-details.json")
     )(Json.parse)
     .as[Response]
 
@@ -96,8 +96,8 @@ class GamblingLicensesAndPremisesController @Inject() (
           Ok(Json.toJson(fullModel(sanitized)))
 
         // some missing data
-        case "XGM00000001762" =>
-          Ok(Json.toJson(partialModel(sanitized)))
+        case "XGM00000001763" =>
+          Ok(Json.toJson(fullModel(sanitized)))
 
         case "XGM00000000400" =>
           BadRequest(

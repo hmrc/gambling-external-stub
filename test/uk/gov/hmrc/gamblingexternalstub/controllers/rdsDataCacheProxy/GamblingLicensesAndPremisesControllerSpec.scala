@@ -31,7 +31,6 @@ class GamblingLicensesAndPremisesControllerSpec extends AnyWordSpec with Matcher
   private val app = applicationBuilder().build()
   private val controller = app.injector.instanceOf[GamblingLicensesAndPremisesController]
 
-  private val fixedDate = LocalDate.parse("2026-01-01")
 
   "GamblingLicensesAndPremisesController#getPremisesDetails" should {
 
@@ -58,38 +57,7 @@ class GamblingLicensesAndPremisesControllerSpec extends AnyWordSpec with Matcher
       val result = controller.getPremisesDetails("MGD", "XGM00000001763")(FakeRequest())
 
       status(result)                                shouldBe OK
-      (contentAsJson(result) \ "totalRows").as[Int] shouldBe 1000
-    }
-
-    "return premises details" in {
-      val result = controller.getPremisesDetails("MGD", "GAM999")(FakeRequest())
-
-      status(result) shouldBe OK
-      contentAsJson(result) shouldBe Json.toJson(
-        Response(
-          totalRows = Some(1000),
-          premises = Seq(
-            PremisesDetails(
-              mgdRegNumber = "GAM999",
-              address1     = Some("Flat 55"),
-              address2     = Some("20 Market Calle"),
-              address3     = Some("Barcelona"),
-              address4     = None,
-              postcode     = Some("08001"),
-              Some(fixedDate)
-            ),
-            PremisesDetails(
-              mgdRegNumber = "GAM999",
-              address1     = Some("Flat 1"),
-              address2     = Some("10 Market Calle"),
-              address3     = Some("Madrid"),
-              address4     = None,
-              postcode     = Some("28058"),
-              Some(fixedDate)
-            )
-          )
-        )
-      )
+      (contentAsJson(result) \ "totalRows").as[Int] shouldBe 1
     }
 
     "return nothing for XYM00000000699" in {
@@ -133,38 +101,20 @@ class GamblingLicensesAndPremisesControllerSpec extends AnyWordSpec with Matcher
       contentAsJson(result) shouldBe Json.toJson(
         LicenseDetails(
           "XGM00000001761",
-          haveGamblingLicenceNo = Some("1"),
-          gamblingLicenceNo     = Some("123-456789-A-123456-789"),
-          heldByLandlord        = Some("1"),
-          localAuthority        = Some("1"),
+          haveGamblingLicenceNo = Some("0"),
+          heldByLandlord        = Some("0"),
+          localAuthority        = Some("0"),
           familyEntertainment   = Some("0"),
           clubGaming            = Some("0"),
-          clubLicence           = Some("1"),
+          clubLicence           = Some("0"),
           prizeGaming           = Some("0"),
-          onPremises            = Some("1"),
+          onPremises            = Some("0"),
           clubPremises          = Some("0"),
           regCert               = Some("0"),
           bookmaking            = Some("0"),
           bingo                 = Some("0"),
           amusement             = Some("0"),
           serveAlcohol          = Some("0"),
-          premisesNotCovered    = Some("0"),
-          systemDate            = Some(LocalDate.now())
-        )
-      )
-    }
-
-    "return OK and partial model for XGM00000001762" in {
-      val result = controller.getLicenseDetails("MGD", "XGM00000001762")(FakeRequest())
-
-      status(result) shouldBe OK
-      contentAsJson(result) shouldBe Json.toJson(
-        LicenseDetails(
-          mgdRegNumber          = "XGM00000001762",
-          haveGamblingLicenceNo = Some("1"),
-          gamblingLicenceNo     = Some("123-456789-A-123456-789"),
-          heldByLandlord        = Some("1"),
-          localAuthority        = Some("1"),
           systemDate            = Some(LocalDate.now())
         )
       )

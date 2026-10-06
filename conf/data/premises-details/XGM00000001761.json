@@ -1,0 +1,21 @@
+{
+  "totalRows": 2,
+  "premises": [
+    {
+      "mgdRegNumber": "XGM00000001761",
+      "address1": "Flat 1761",
+      "address2": "1761 Market Calle",
+      "address3": "Barcelona",
+      "postcode": "08001",
+      "systemDate": "2026-01-01"
+    },
+    {
+      "mgdRegNumber": "XGM00000001761",
+      "address1": "Flat 1761-2",
+      "address2": "1761-2 Market Calle",
+      "address3": "Madrid",
+      "postcode": "28058",
+      "systemDate": "2026-01-01"
+    }
+  ]
+}

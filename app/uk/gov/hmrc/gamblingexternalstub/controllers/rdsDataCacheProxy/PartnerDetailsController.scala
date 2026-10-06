@@ -39,19 +39,23 @@ class PartnerDetailsController @Inject() (
       val sanitized = mgdRegNumber.trim.toUpperCase()
       sanitized match {
         // full data
-        case "XPM00000000600" =>
-          Ok(Json.toJson(XPM00000000600))
+        case "XGM00000001764" =>
+          Ok(Json.toJson(XGM00000001764(sanitized)))
 
         // full data - after auth changes
-        case "XMM00000001177" =>
-          Ok(Json.toJson(XMM00000001177(sanitized)))
+        case "XGM00000001774" =>
+          Ok(Json.toJson(XGM00000001774(sanitized)))
 
         // no data - after auth changes
-        case "XPM00000000985" =>
-          Ok(Json.toJson(XPM00000000985(sanitized)))
+        case "XGM00000001784" =>
+          Ok(Json.toJson(XGM00000001784(sanitized)))
+
+        // no data - after auth changes
+        case "XGM00000001794" =>
+          Ok(Json.toJson(XGM00000001794(sanitized)))
 
         // some missing data
-        case "XJM00000000570" =>
+        case "XGM00000001760" =>
           Ok(Json.toJson(partialModel(sanitized)))
 
         case "XGM00000000560" =>

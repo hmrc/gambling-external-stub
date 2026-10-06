@@ -1,10 +1,10 @@
 {
-  "totalRows": 1000,
+  "totalRows": 1,
   "premises": [
     {
       "mgdRegNumber": "XGM00000001763",
-      "address1": "Flat 55",
-      "address2": "10 Random Road",
+      "address1": "Flat 74",
+      "address2": "74 Random Road",
       "address3": "Gateshead",
       "systemDate": "2026-01-01"
     }
