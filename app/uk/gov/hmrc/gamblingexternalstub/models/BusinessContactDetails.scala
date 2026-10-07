@@ -34,7 +34,7 @@ object BusinessContactDetails {
 
   lazy val noData: BusinessContactDetails = Using
     .resource(
-      getClass.getResourceAsStream("/data/business-contact-details/XGM00000000200.json")
+      getClass.getResourceAsStream("/data/business-contact-details/noDataBusinessContactDetails.json")
     )(Json.parse)
     .as[BusinessContactDetails]
 }

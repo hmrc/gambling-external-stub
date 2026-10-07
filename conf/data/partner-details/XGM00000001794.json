@@ -1,9 +1,9 @@
 {
   "partners": [
     {
-      "mgdRegNumber": "XPM00000000985",
+      "mgdRegNumber": "XGM00000001794",
+      "businessPartnerNumber": "0100017941",
       "dateOfJoining": "2013-02-01",
-      "dateOfLeaving": "1999-12-31",
       "solePropTitle": "Mr",
       "solePropFirstName": "STEPHEN",
       "solePropMiddleName": "ADAM",
@@ -22,9 +22,9 @@
       "businessType": 1
     },
     {
-      "mgdRegNumber": "XPM00000000985",
+      "mgdRegNumber": "XGM00000001794",
+      "businessPartnerNumber": "0100017942",
       "dateOfJoining": "2012-10-15",
-      "dateOfLeaving": "1999-12-31",
       "businessName": "BDP PARTNERS",
       "tradingName": "BDP PARTNERS",
       "utr": "5177008741",
@@ -40,9 +40,9 @@
       "businessType": 4
     },
     {
-      "mgdRegNumber": "XPM00000000985",
+      "mgdRegNumber": "XGM00000001794",
+      "businessPartnerNumber": "0100017943",
       "dateOfJoining": "2012-10-15",
-      "dateOfLeaving": "1999-12-31",
       "businessName": "BROADVIEW BUILDERS LIMITED",
       "tradingName": "BROADVIEW BUILDERS LIMITED",
       "dateOfIncorporation": "1991-12-19",
@@ -60,11 +60,11 @@
       "businessType": 5
     },
     {
-      "mgdRegNumber": "XPM00000000985",
-      "dateOfJoining": "2012-10-15",
-      "dateOfLeaving": "1999-12-31",
-      "businessName": "JB PARTNERS",
-      "tradingName": "JB PARTNERS",
+      "mgdRegNumber": "XGM00000001794",
+      "businessPartnerNumber": "0100017944",
+      "dateOfJoining": "2031-10-15",
+      "businessName": "JB PARTNERS businessName",
+      "tradingName": "JB PARTNERS tradingName",
       "utr": "2177013303",
       "address1": "44 HIGH STREET",
       "address2": "WORTHING",
@@ -74,15 +74,15 @@
       "mobilePhoneNumber": "01452 252526",
       "faxNumber": "01452 252527",
       "isFutureLeaveDate": 0,
-      "isFutureJoinDate": 0,
+      "isFutureJoinDate": 1,
       "businessType": 4
     },
     {
-      "mgdRegNumber": "XPM00000000985",
-      "dateOfJoining": "2012-10-15",
-      "dateOfLeaving": "1999-12-31",
-      "businessName": "BELLEVUE PROPERTY INVESTMENTS LIMITED",
-      "tradingName": "BELLEVUE PROPERTY INVESTMENTS LIMITED",
+      "mgdRegNumber": "XGM00000001794",
+      "businessPartnerNumber": "0100017945",
+      "dateOfJoining": "2027-10-15",
+      "businessName": "BELLEVUE PROPERTY INVESTMENTS LIMITED BN",
+      "tradingName": "BELLEVUE PROPERTY INVESTMENTS LIMITED TN",
       "dateOfIncorporation": "1992-01-20",
       "address1": "109 SILVERDALE AVE",
       "address2": "WALTON-ON-THAMES",
@@ -93,13 +93,14 @@
       "mobilePhoneNumber": "0044 111 111 1112",
       "faxNumber": "0044 111 111 1113",
       "isFutureLeaveDate": 0,
-      "isFutureJoinDate": 0,
+      "isFutureJoinDate": 1,
       "businessType": 5
     },
     {
-      "mgdRegNumber": "XPM00000000985",
+      "mgdRegNumber": "XGM00000001794",
+      "businessPartnerNumber": "0100017946",
       "dateOfJoining": "2012-10-15",
-      "dateOfLeaving": "1999-12-31",
+      "dateOfLeaving": "2030-12-31",
       "solePropTitle": "Mr",
       "solePropFirstName": "T",
       "solePropLastName": "PERRY",
@@ -112,14 +113,15 @@
       "phoneNumber": "12",
       "mobilePhoneNumber": "13",
       "faxNumber": "14",
-      "isFutureLeaveDate": 0,
+      "isFutureLeaveDate": 1,
       "isFutureJoinDate": 0,
       "businessType": 1
     },
     {
-      "mgdRegNumber": "XPM00000000985",
+      "mgdRegNumber": "XGM00000001794",
+      "businessPartnerNumber": "0100017947",
       "dateOfJoining": "2012-10-15",
-      "dateOfLeaving": "1999-12-31",
+      "dateOfLeaving": "2999-12-31",
       "solePropTitle": "Mrs",
       "solePropFirstName": "ELLEN",
       "solePropLastName": "EGGPLANT",
@@ -129,14 +131,15 @@
       "address2": "BRIGHTON",
       "postcode": "BN44 7TL",
       "iomOrCiFlag": "false",
-      "isFutureLeaveDate": 0,
+      "isFutureLeaveDate": 1,
       "isFutureJoinDate": 0,
       "businessType": 1
     },
     {
-      "mgdRegNumber": "XPM00000000985",
+      "mgdRegNumber": "XGM00000001794",
+      "businessPartnerNumber": "0100017948",
       "dateOfJoining": "2012-10-15",
-      "dateOfLeaving": "1999-12-31",
+      "dateOfLeaving": "2027-04-30",
       "businessName": "PARTNER 2",
       "tradingName": "PARTNER 2",
       "utr": "4177013315",
@@ -147,16 +150,17 @@
       "phoneNumber": "1",
       "mobilePhoneNumber": "2",
       "faxNumber": "3",
-      "isFutureLeaveDate": 0,
+      "isFutureLeaveDate": 1,
       "isFutureJoinDate": 0,
       "businessType": 4
     },
     {
-      "mgdRegNumber": "XPM00000000985",
+      "mgdRegNumber": "XGM00000001794",
+      "businessPartnerNumber": "010001799",
       "dateOfJoining": "2012-10-15",
-      "dateOfLeaving": "1999-12-31",
-      "businessName": "PARTNER 03",
-      "tradingName": "PARTNER 03",
+      "dateOfLeaving": "2028-01-31",
+      "businessName": "businessName",
+      "tradingName": "tradingName",
       "utr": "2177013303",
       "address1": "7 TOWERS STREET",
       "address2": "LIVERPOOL",
@@ -165,14 +169,15 @@
       "phoneNumber": "33",
       "mobilePhoneNumber": "34",
       "faxNumber": "12",
-      "isFutureLeaveDate": 0,
+      "isFutureLeaveDate": 1,
       "isFutureJoinDate": 0,
-      "businessType": 4
+      "businessType": 3
     },
     {
-      "mgdRegNumber": "XPM00000000985",
+      "mgdRegNumber": "XGM00000001794",
+      "businessPartnerNumber": "010001800",
       "dateOfJoining": "2012-10-15",
-      "dateOfLeaving": "1999-12-31",
+      "dateOfLeaving": "2029-01-31",
       "solePropTitle": "Mr",
       "solePropFirstName": "H",
       "solePropLastName": "HOLLAND",
@@ -185,14 +190,14 @@
       "phoneNumber": "0044 666 666 666",
       "mobilePhoneNumber": "0044 666 666 667",
       "faxNumber": "0044 666 666 668",
-      "isFutureLeaveDate": 0,
+      "isFutureLeaveDate": 1,
       "isFutureJoinDate": 0,
       "businessType": 1
     },
     {
-      "mgdRegNumber": "XPM00000000985",
+      "mgdRegNumber": "XGM00000001794",
+      "businessPartnerNumber": "010001801",
       "dateOfJoining": "2012-10-15",
-      "dateOfLeaving": "1999-12-31",
       "businessName": "B.G. MIDDLETON (DEVELOPMENTS) LIMITED",
       "tradingName": "B.G. MIDDLETON (DEVELOPMENTS) LIMITED",
       "dateOfIncorporation": "1991-05-31",
@@ -207,7 +212,7 @@
       "faxNumber": "0044 111 111 1133",
       "isFutureLeaveDate": 0,
       "isFutureJoinDate": 0,
-      "businessType": 5
+      "businessType": 2
     }
   ],
   "systemDate": "2026-08-06"

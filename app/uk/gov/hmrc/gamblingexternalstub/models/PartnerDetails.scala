@@ -69,33 +69,33 @@ object PartnerFormats {
     )(Json.parse)
     .as[PartnerDetails]
 
-  private lazy val partialData = Using
-    .resource(
-      getClass.getResourceAsStream("/data/partner-details/XJM00000000570.json")
-    )(Json.parse)
-    .as[PartnerDetails]
-
   private lazy val noData = Using
     .resource(
       getClass.getResourceAsStream("/data/partner-details/partner-details.json")
     )(Json.parse)
     .as[PartnerDetails]
 
-  private lazy val xmm00000001177Data = Using
+  private lazy val XGM00000001764 = Using
     .resource(
-      getClass.getResourceAsStream("/data/partner-details/XMM00000001177.json")
+      getClass.getResourceAsStream("/data/partner-details/XGM00000001764.json")
     )(Json.parse)
     .as[PartnerDetails]
 
-  private lazy val xpm00000000985Data = Using
+  private lazy val XGM00000001774 = Using
     .resource(
-      getClass.getResourceAsStream("/data/partner-details/XPM00000000985.json")
+      getClass.getResourceAsStream("/data/partner-details/XGM00000001774.json")
     )(Json.parse)
     .as[PartnerDetails]
 
-  private lazy val hundredPartnersData = Using
+  private lazy val XGM00000001784 = Using
     .resource(
-      getClass.getResourceAsStream("/data/partner-details/XPM00000000600.json")
+      getClass.getResourceAsStream("/data/partner-details/XGM00000001784.json")
+    )(Json.parse)
+    .as[PartnerDetails]
+
+  private lazy val XGM00000001794 = Using
+    .resource(
+      getClass.getResourceAsStream("/data/partner-details/XGM00000001794.json")
     )(Json.parse)
     .as[PartnerDetails]
 
@@ -105,35 +105,21 @@ object PartnerFormats {
       systemDate = baseDate
     )
 
-  def partialModel(mgdRegNumber: String): PartnerDetails =
-    partialData.copy(
-      partners   = partialData.partners.map(_.copy(mgdRegNumber = mgdRegNumber)),
-      systemDate = baseDate
-    )
-
   def noDataModel(mgdRegNumber: String): PartnerDetails =
     noData.copy(
       partners   = noData.partners.map(_.copy(mgdRegNumber = mgdRegNumber)),
       systemDate = baseDate
     )
 
-  def `XMM00000001177`(mgdRegNumber: String): PartnerDetails = xmm00000001177Data
+  def `XGM00000001764`(mgdRegNumber: String): PartnerDetails = XGM00000001764
 
-  def `XPM00000000985`(mgdRegNumber: String): PartnerDetails = xpm00000000985Data
+  def `XGM00000001774`(mgdRegNumber: String): PartnerDetails = XGM00000001774
 
-  def `XPM00000000600`: PartnerDetails = mockPartnerDetails
+  def `XGM00000001784`(mgdRegNumber: String): PartnerDetails = XGM00000001784
+
+  def `XGM00000001794`(mgdRegNumber: String): PartnerDetails = XGM00000001794
 
   private val baseDate = Some(LocalDate.now())
 
   // Retain the original relative dates when loading the static partner data.
-  private lazy val mockPartnerDetails: PartnerDetails = hundredPartnersData.copy(
-    partners = hundredPartnersData.partners.zipWithIndex.map { case (partner, index) =>
-      val days = index.toLong + 1
-      partner.copy(
-        dateOfJoining = baseDate.map(_.plusDays(days)),
-        dateOfLeaving = partner.dateOfLeaving.flatMap(_ => baseDate.map(_.plusYears(1).plusDays(days)))
-      )
-    },
-    systemDate = baseDate
-  )
 }

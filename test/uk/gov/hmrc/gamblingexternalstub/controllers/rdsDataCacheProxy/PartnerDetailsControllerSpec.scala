@@ -35,58 +35,31 @@ class PartnerDetailsControllerSpec extends AnyWordSpec with Matchers with SpecBa
 
   "PartnerDetailsController#getPartnerDetails" should {
 
-    "return full partner details for XPM00000000600" in {
-      val result = controller.getPartnerDetails("MGD", "XPM00000000600")(FakeRequest())
+    "return full partner details for XGM00000001774" in {
+      val result = controller.getPartnerDetails("MGD", "XGM00000001774")(FakeRequest())
 
       status(result) shouldBe OK
 
       val json = contentAsJson(result)
 
-      (json \ "partners" \ 0 \ "mgdRegNumber").as[String]          shouldBe "XPM00000000600"
-      (json \ "partners" \ 0 \ "businessPartnerNumber").as[String] shouldBe "BPN000000001"
+      (json \ "partners" \ 0 \ "mgdRegNumber").as[String]          shouldBe "XGM00000001774"
+      (json \ "partners" \ 0 \ "businessPartnerNumber").as[String] shouldBe "0100049899"
       (json \ "partners" \ 0 \ "businessType").as[Int]             shouldBe 1
-      (json \ "partners" \ 0 \ "tradingName").asOpt[String]        shouldBe None
+      (json \ "partners" \ 0 \ "tradingName").as[String]           shouldBe "soleProp Trading Name"
     }
 
-    "return full partner details for XMM00000001177" in new Context {
+    "return full partner details for XGM00000001784" in new Context {
 
-      val result: Future[Result] = controller.getPartnerDetails("MGD", "XMM00000001177")(FakeRequest())
+      val result: Future[Result] = controller.getPartnerDetails("MGD", "XGM00000001784")(FakeRequest())
 
       status(result) shouldBe OK
 
       val json: JsValue = contentAsJson(result)
       val jsonRes: PartnerDetails = Json.parse(json.toString).as[PartnerDetails]
-      val expected: PartnerDetails = Json.parse(jsonForXMM00000001177).as[PartnerDetails]
+      val expected: PartnerDetails = Json.parse(jsonForXGM00000001784).as[PartnerDetails]
 
       jsonRes shouldBe expected
 
-    }
-
-    "return full partner details for XPM00000000985" in new Context {
-
-      val result: Future[Result] = controller.getPartnerDetails("MGD", "XPM00000000985")(FakeRequest())
-
-      status(result) shouldBe OK
-
-      val json: JsValue = contentAsJson(result)
-      val jsonRes: PartnerDetails = Json.parse(json.toString).as[PartnerDetails]
-      val expected: PartnerDetails = Json.parse(jsonForXPM00000000985).as[PartnerDetails]
-
-      jsonRes shouldBe expected
-
-    }
-
-    "return partial partner details for XJM00000000570" in {
-      val result = controller.getPartnerDetails("mGd", " XJM00000000570 ")(FakeRequest())
-
-      status(result) shouldBe OK
-
-      val json = contentAsJson(result)
-
-      (json \ "partners" \ 0 \ "mgdRegNumber").as[String]              shouldBe "XJM00000000570"
-      (json \ "partners" \ 0 \ "businessPartnerNumber").asOpt[String]  shouldBe Some("0100049899")
-      (json \ "partners" \ 0 \ "businessName").as[String]              shouldBe "Partner1"
-      (json \ "partners" \ 0 \ "countryOfIncorporation").asOpt[String] shouldBe Some("countryOfIncorporation")
     }
 
     "return no partner details for XGM00000001763" in {
@@ -158,42 +131,99 @@ class PartnerDetailsControllerSpec extends AnyWordSpec with Matchers with SpecBa
   }
 
   sealed trait Context {
-    val jsonForXMM00000001177: String =
+    val jsonForXGM00000001784: String =
       """{
-          |  "partners": [
-          |    {
-          |      "mgdRegNumber": "XMM00000001177",
-          |      "dateOfJoining": "2013-02-01",
-          |      "dateOfLeaving": "1999-12-31",
-          |      "businessName": "Corporate Body Name",
-          |      "tradingName": "Trading Name",
-          |      "utr": "4444444444",
-          |      "crn": "01234556",
-          |      "dateOfIncorporation": "2012-10-29",
-          |      "address1": "1 address",
-          |      "address2": "2 address",
-          |      "postcode": "AD34 4FD",
-          |      "adi": "add",
-          |      "iomOrCiFlag": "false",
-          |      "isFutureLeaveDate": 0,
-          |      "isFutureJoinDate": 0,
-          |      "businessType": 2
-          |    },
-          |    {
-          |      "mgdRegNumber": "XMM00000001177",
-          |      "dateOfJoining": "2013-02-01",
-          |      "dateOfLeaving": "1999-12-31",
-          |      "businessName": "Unicorporated Body Name",
-          |      "tradingName": "Trading Name",
-          |      "utr": "4444444444",
-          |      "address1": "1 Address Line 1",
-          |      "address2": "2 Address Line 2",
-          |      "postcode": "AD23 9JJ",
-          |      "iomOrCiFlag": "false",
-          |      "isFutureLeaveDate": 0,
-          |      "isFutureJoinDate": 0,
-          |      "businessType": 3
-          |    }
+          | "partners": [
+          |  {
+          |    "mgdRegNumber": "XGM00000001784",
+          |    "businessPartnerNumber": "0100017841",
+          |    "dateOfJoining": "2013-02-01",
+          |    "businessName": "Corporate Body Name",
+          |   "tradingName": "Corporate Trading Name",
+          |   "utr": "4444444444",
+          |   "crn": "01234556",
+          |   "dateOfIncorporation": "2012-10-29",
+          |   "address1": "1 address",
+          |   "address2": "2 address",
+          |   "postcode": "AD34 4FD",
+          |   "adi": "add",
+          |   "iomOrCiFlag": "false",
+          |   "isFutureLeaveDate": 0,
+          |   "isFutureJoinDate": 0,
+          |   "businessType": 2
+          | },
+          | {
+          |   "mgdRegNumber": "XGM00000001784",
+          |   "businessPartnerNumber": "0100017842",
+          |   "dateOfJoining": "2013-02-01",
+          |   "businessName": "Unicorporated Body Name",
+          |   "tradingName": "Unicorporated Trading Name",
+          |   "utr": "4444444444",
+          |   "address1": "1 Address Line 1",
+          |   "address2": "2 Address Line 2",
+          |   "postcode": "AD23 9JJ",
+          |   "iomOrCiFlag": "false",
+          |   "isFutureLeaveDate": 0,
+          |   "isFutureJoinDate": 0,
+          |   "businessType": 3
+          | },
+          | {
+          |   "mgdRegNumber": "XGM00000001784",
+          |   "businessPartnerNumber": "0100017843",
+          |   "dateOfJoining": "2013-02-01",
+          |   "businessName": "Partnership Body Name",
+          |   "tradingName": "Partnership Trading Name",
+          |   "utr": "4444444444",
+          |   "address1": "1 Address Line 1",
+          |   "address2": "2 Address Line 2",
+          |   "postcode": "AD23 9JJ",
+          |   "iomOrCiFlag": "false",
+          |   "isFutureLeaveDate": 0,
+          |   "isFutureJoinDate": 0,
+          |   "businessType": 4
+          | },
+          | {
+          |   "mgdRegNumber": "XGM00000001784",
+          |   "businessPartnerNumber": "0100017844",
+          |   "dateOfJoining": "2027-04-29",
+          |   "businessName": "LLP Body Name",
+          |   "tradingName": "LLP Trading Name",
+          |   "utr": "4444444444",
+          |   "address1": "1 Address Line 1",
+          |   "address2": "2 Address Line 2",
+          |   "postcode": "AD23 9JJ",
+          |   "iomOrCiFlag": "false",
+          |   "isFutureLeaveDate": 0,
+          |   "isFutureJoinDate": 1,
+          |   "businessType": 5
+          | },
+          | {
+          |   "mgdRegNumber": "XGM00000001784",
+          |   "businessPartnerNumber": "0100017845",
+          |   "dateOfJoining": "2025-01-01",
+          |   "dateOfLeaving": "2027-04-30",
+          |   "solePropTitle": "Mx",
+          |   "solePropFirstName": "solePropFirstName",
+          |   "solePropLastName": "solePropLastName",
+          |   "businessName": "Sole Proprietor Business Name",
+          |   "tradingName": "Sole Proprietor Trading Name",
+          |   "dateOfBirth": "1999-09-09",
+          |   "nino": "ni123456789no",
+          |   "crn": "123456789",
+          |   "utr": "1111111111",
+          |   "dateOfIncorporation": "2024-01-01",
+          |   "countryOfIncorporation": "Netherlands",
+          |   "foreignCorporateRef": "foreign Corporate Ref",
+          |   "adi": "adi",
+          |   "iomOrCiFlag": "false",
+          |   "phoneNumber": "0752 212 121",
+          |   "mobilePhoneNumber": "0752 212 121",
+          |   "faxNumber": "0752 212 121",
+          |   "emailAddr": "emailAddr@example.com",
+          |   "isFutureLeaveDate": 1,
+          |   "isFutureJoinDate": 0,
+          |   "businessType": 1
+          |   }
           |  ],
           |  "systemDate": "2026-07-31"
           |}""".stripMargin

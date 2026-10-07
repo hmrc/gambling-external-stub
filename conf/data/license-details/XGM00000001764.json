@@ -1,5 +1,5 @@
 {
-  "mgdRegNumber": "XGM00000001761",
+  "mgdRegNumber": "XGM00000001764",
   "haveGamblingLicenceNo": "0",
   "heldByLandlord": "0",
   "localAuthority": "0",
@@ -9,10 +9,10 @@
   "prizeGaming": "0",
   "onPremises": "0",
   "clubPremises": "0",
-  "regCert": "0",
-  "bookmaking": "0",
-  "bingo": "0",
-  "amusement": "0",
-  "serveAlcohol": "0",
-  "systemDate": "2026-09-18"
+  "regCert": "1",
+  "bookmaking": "1",
+  "bingo": "1",
+  "amusement": "1",
+  "serveAlcohol": "1",
+  "systemDate": "2026-10-18"
 }
