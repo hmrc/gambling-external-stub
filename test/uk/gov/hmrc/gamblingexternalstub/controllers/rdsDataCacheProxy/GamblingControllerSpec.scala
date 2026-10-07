@@ -309,7 +309,7 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 //        MgdCertificate.sample1("XGM00000001761")
 //      )
 //    }
-
+//
 //    "return OK for XGM00000001762" in {
 //      val result = controller.getMgdCertificate("XGM00000001762")(FakeRequest())
 //
@@ -352,7 +352,7 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 //        )
 //      )
 //    }
-
+//
 //    "return default response" in {
 //      val result = controller.getMgdCertificate("GAM9999999999")(FakeRequest())
 //
@@ -416,49 +416,49 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
   "GamblingController#getMgdDetails" should {
 
-//    "return multiple previous and associated registrations for XGM00000001761" in {
-//      val result = controller.getMgdDetails("XGM00000001761")(FakeRequest())
-//      status(result) shouldBe OK
-//      val json = contentAsJson(result)
-//      (json \ "mgdRegNumber").as[String]        shouldBe "XGM00000001761"
-//      (json \ "isBusinessSeasonal").as[Int]     shouldBe 1
-//      (json \ "previousMgdrn1").as[String]      shouldBe "XMM00000000448"
-//      (json \ "previousMgdrn2").asOpt[String]   shouldBe None
-//      (json \ "previousMgdrn3").asOpt[String]   shouldBe None
-//      (json \ "associatedMgdrn1").as[String]    shouldBe "XZM00000000469"
-//      (json \ "associatedMgdrn2").asOpt[String] shouldBe None
-//      (json \ "associatedMgdrn3").asOpt[String] shouldBe None
-//      (json \ "systemDate").as[String]          shouldBe "2026-06-06"
-//    }
-//
-//    "return full linked history for default reg number (XGM00000001762)" in {
-//      val result = controller.getMgdDetails("XGM00000001762")(FakeRequest())
-//      status(result) shouldBe OK
-//      val json = contentAsJson(result)
-//      (json \ "mgdRegNumber").as[String]        shouldBe "XGM00000001762"
-//      (json \ "isBusinessSeasonal").asOpt[Int]  shouldBe None
-//      (json \ "previousMgdrn1").as[String]      shouldBe "XMM00000000448"
-//      (json \ "previousMgdrn2").as[String]      shouldBe "XBM00000000451"
-//      (json \ "previousMgdrn3").as[String]      shouldBe "XYM00000000466"
-//      (json \ "associatedMgdrn1").asOpt[String] shouldBe None
-//      (json \ "associatedMgdrn2").asOpt[String] shouldBe None
-//      (json \ "associatedMgdrn3").asOpt[String] shouldBe None
-//      (json \ "systemDate").as[String]          shouldBe "2026-06-06"
-//    }
+    "return multiple previous and associated registrations for XGM00000001761" in {
+      val result = controller.getMgdDetails("XGM00000001761")(FakeRequest())
+      status(result) shouldBe OK
+      val json = contentAsJson(result)
+      (json \ "mgdRegNumber").as[String]        shouldBe "XGM00000001761"
+      (json \ "isBusinessSeasonal").as[Int]     shouldBe 1
+      (json \ "previousMgdrn1").as[String]      shouldBe "XMM00000000448"
+      (json \ "previousMgdrn2").asOpt[String]   shouldBe None
+      (json \ "previousMgdrn3").asOpt[String]   shouldBe None
+      (json \ "associatedMgdrn1").as[String]    shouldBe "XZM00000000469"
+      (json \ "associatedMgdrn2").asOpt[String] shouldBe None
+      (json \ "associatedMgdrn3").asOpt[String] shouldBe None
+      (json \ "systemDate").as[String]          shouldBe "2026-06-06"
+    }
 
-//    "return empty data response for XMM00000000993" in {
-//      val result = controller.getMgdDetails("XMM00000000993")(FakeRequest())
-//      status(result) shouldBe OK
-//      val json = contentAsJson(result)
-//      (json \ "mgdRegNumber").as[String]        shouldBe "XMM00000000993"
-//      (json \ "isBusinessSeasonal").asOpt[Int]  shouldBe None
-//      (json \ "previousMgdrn1").asOpt[String]   shouldBe None
-//      (json \ "previousMgdrn2").asOpt[String]   shouldBe None
-//      (json \ "previousMgdrn3").asOpt[String]   shouldBe None
-//      (json \ "associatedMgdrn1").asOpt[String] shouldBe None
-//      (json \ "associatedMgdrn2").asOpt[String] shouldBe None
-//      (json \ "associatedMgdrn3").asOpt[String] shouldBe None
-//    }
+    "return full linked history for default reg number (XGM00000001762)" in {
+      val result = controller.getMgdDetails("XGM00000001762")(FakeRequest())
+      status(result) shouldBe OK
+      val json = contentAsJson(result)
+      (json \ "mgdRegNumber").as[String]        shouldBe "XGM00000001762"
+      (json \ "isBusinessSeasonal").asOpt[Int]  shouldBe None
+      (json \ "previousMgdrn1").as[String]      shouldBe "XMM00000000448"
+      (json \ "previousMgdrn2").as[String]      shouldBe "XBM00000000451"
+      (json \ "previousMgdrn3").as[String]      shouldBe "XYM00000000466"
+      (json \ "associatedMgdrn1").asOpt[String] shouldBe None
+      (json \ "associatedMgdrn2").asOpt[String] shouldBe None
+      (json \ "associatedMgdrn3").asOpt[String] shouldBe None
+      (json \ "systemDate").as[String]          shouldBe "2026-06-06"
+    }
+
+    "return empty data response for XMM00000000993" in {
+      val result = controller.getMgdDetails("XMM00000000993")(FakeRequest())
+      status(result) shouldBe OK
+      val json = contentAsJson(result)
+      (json \ "mgdRegNumber").as[String]        shouldBe "XMM00000000993"
+      (json \ "isBusinessSeasonal").asOpt[Int]  shouldBe None
+      (json \ "previousMgdrn1").asOpt[String]   shouldBe None
+      (json \ "previousMgdrn2").asOpt[String]   shouldBe None
+      (json \ "previousMgdrn3").asOpt[String]   shouldBe None
+      (json \ "associatedMgdrn1").asOpt[String] shouldBe None
+      (json \ "associatedMgdrn2").asOpt[String] shouldBe None
+      (json \ "associatedMgdrn3").asOpt[String] shouldBe None
+    }
 
     "return BAD_REQUEST for invalid mgdRegNumber" in {
       val result = controller.getMgdDetails("invalid")(FakeRequest())

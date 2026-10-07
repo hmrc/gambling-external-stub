@@ -33,17 +33,13 @@ class GamblingLicensesAndPremisesController @Inject() (
 
   private val supportedRegimes = List(Regime.MGD)
 
-  private lazy val premisesDetails = Using.resource(
-    getClass.getResourceAsStream("/data/premises-details/XGM00000001764.json")
-  )(Json.parse)
-
-  private lazy val emptyPremisesDetails = Using
+  private lazy val xgm00000001764 = Using
     .resource(
-      getClass.getResourceAsStream("/data/premises-details/premises-details.json")
+      getClass.getResourceAsStream("/data/premises-details/XGM00000001764.json")
     )(Json.parse)
     .as[Response]
 
-  private lazy val partialPremisesDetails = Using
+  private lazy val xgm00000001763 = Using
     .resource(
       getClass.getResourceAsStream("/data/premises-details/XGM00000001763.json")
     )(Json.parse)
@@ -65,13 +61,9 @@ class GamblingLicensesAndPremisesController @Inject() (
 
         case "error" => errorResponse
 
-        case "XGM00000001764" => Ok(premisesDetails)
+        case "XGM00000001763" => Ok(Json.toJson(xgm00000001763))
 
-        case "XYM00000000699" =>
-          Ok(Json.toJson(emptyPremisesDetails))
-
-        case "XGM00000001763" =>
-          Ok(Json.toJson(partialPremisesDetails))
+        case "XGM00000001764" => Ok(Json.toJson(xgm00000001764))
 
         case reg =>
           Ok(
@@ -91,13 +83,12 @@ class GamblingLicensesAndPremisesController @Inject() (
     } else {
       val sanitized = mgdRegNumber.trim.toUpperCase()
       sanitized match {
-        // full data
+
         case "XGM00000001761" =>
           Ok(Json.toJson(fullModel(sanitized)))
 
-        // some missing data
-        case "XGM00000001763" =>
-          Ok(Json.toJson(fullModel(sanitized)))
+        case "XGM00000001764" =>
+          Ok(Json.toJson(partialModel(sanitized)))
 
         case "XGM00000000400" =>
           BadRequest(

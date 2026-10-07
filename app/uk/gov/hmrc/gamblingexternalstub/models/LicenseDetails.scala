@@ -53,7 +53,7 @@ object LicenseDetails {
 
   private lazy val partialData = Using
     .resource(
-      getClass.getResourceAsStream("/data/license-details/XGM00000001762.json")
+      getClass.getResourceAsStream("/data/license-details/XGM00000001764.json")
     )(Json.parse)
     .as[LicenseDetails]
 

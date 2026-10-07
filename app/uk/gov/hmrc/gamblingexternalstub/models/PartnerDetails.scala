@@ -69,15 +69,21 @@ object PartnerFormats {
     )(Json.parse)
     .as[PartnerDetails]
 
-  private lazy val partialData = Using
-    .resource(
-      getClass.getResourceAsStream("/data/partner-details/XGM00000001774.json")
-    )(Json.parse)
-    .as[PartnerDetails]
-
   private lazy val noData = Using
     .resource(
       getClass.getResourceAsStream("/data/partner-details/partner-details.json")
+    )(Json.parse)
+    .as[PartnerDetails]
+
+  private lazy val XGM00000001764 = Using
+    .resource(
+      getClass.getResourceAsStream("/data/partner-details/XGM00000001764.json")
+    )(Json.parse)
+    .as[PartnerDetails]
+
+  private lazy val XGM00000001774 = Using
+    .resource(
+      getClass.getResourceAsStream("/data/partner-details/XGM00000001774.json")
     )(Json.parse)
     .as[PartnerDetails]
 
@@ -93,27 +99,9 @@ object PartnerFormats {
     )(Json.parse)
     .as[PartnerDetails]
 
-  private lazy val XGM00000001774 = Using
-    .resource(
-      getClass.getResourceAsStream("/data/partner-details/XGM00000001774.json")
-    )(Json.parse)
-    .as[PartnerDetails]
-
-  private lazy val XGM00000001764 = Using
-    .resource(
-      getClass.getResourceAsStream("/data/partner-details/XGM00000001764.json")
-    )(Json.parse)
-    .as[PartnerDetails]
-
   def fullModel(mgdRegNumber: String): PartnerDetails =
     fullData.copy(
       partners   = fullData.partners.map(_.copy(mgdRegNumber = mgdRegNumber)),
-      systemDate = baseDate
-    )
-
-  def partialModel(mgdRegNumber: String): PartnerDetails =
-    partialData.copy(
-      partners   = partialData.partners.map(_.copy(mgdRegNumber = mgdRegNumber)),
       systemDate = baseDate
     )
 

@@ -119,6 +119,32 @@ class GamblingLicensesAndPremisesControllerSpec extends AnyWordSpec with Matcher
       )
     }
 
+    "return OK and full model for XGM00000001764" in {
+      val result = controller.getLicenseDetails("MGD", "XGM00000001764")(FakeRequest())
+
+      status(result) shouldBe OK
+      contentAsJson(result) shouldBe Json.toJson(
+        LicenseDetails(
+          "XGM00000001764",
+          haveGamblingLicenceNo = Some("0"),
+          heldByLandlord        = Some("0"),
+          localAuthority        = Some("0"),
+          familyEntertainment   = Some("0"),
+          clubGaming            = Some("0"),
+          clubLicence           = Some("0"),
+          prizeGaming           = Some("0"),
+          onPremises            = Some("0"),
+          clubPremises          = Some("0"),
+          regCert               = Some("1"),
+          bookmaking            = Some("1"),
+          bingo                 = Some("1"),
+          amusement             = Some("1"),
+          serveAlcohol          = Some("1"),
+          systemDate            = Some(LocalDate.now())
+        )
+      )
+    }
+
     "return default response" in {
       val result = controller.getLicenseDetails("MGD", "GAM999")(FakeRequest())
 
