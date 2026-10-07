@@ -45,15 +45,27 @@ final case class LicenseDetails(
 object LicenseDetails {
   implicit val format: OFormat[LicenseDetails] = Json.format[LicenseDetails]
 
-  private lazy val fullData = Using
+  private lazy val xgm00000001761Data = Using
     .resource(
       getClass.getResourceAsStream("/data/license-details/XGM00000001761.json")
     )(Json.parse)
     .as[LicenseDetails]
 
-  private lazy val partialData = Using
+  private lazy val xgm00000001763Data = Using
+    .resource(
+      getClass.getResourceAsStream("/data/license-details/XGM00000001763.json")
+    )(Json.parse)
+    .as[LicenseDetails]
+
+  private lazy val xgm00000001764Data = Using
     .resource(
       getClass.getResourceAsStream("/data/license-details/XGM00000001764.json")
+    )(Json.parse)
+    .as[LicenseDetails]
+
+  private lazy val xgm00000001765Data = Using
+    .resource(
+      getClass.getResourceAsStream("/data/license-details/XGM00000001765.json")
     )(Json.parse)
     .as[LicenseDetails]
 
@@ -63,11 +75,17 @@ object LicenseDetails {
     )(Json.parse)
     .as[LicenseDetails]
 
-  def fullModel(mgdRegNumber: String): LicenseDetails =
-    fullData.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.now()))
+  def xgm00000001761Model(mgdRegNumber: String): LicenseDetails =
+    xgm00000001761Data.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.now()))
 
-  def partialModel(mgdRegNumber: String): LicenseDetails =
-    partialData.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.now()))
+  def xgm00000001763Model(mgdRegNumber: String): LicenseDetails =
+    xgm00000001763Data.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.now()))
+
+  def xgm00000001764Model(mgdRegNumber: String): LicenseDetails =
+    xgm00000001764Data.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.now()))
+
+  def xgm00000001765Model(mgdRegNumber: String): LicenseDetails =
+    xgm00000001765Data.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.now()))
 
   def noDataModel(): LicenseDetails = noData
 
