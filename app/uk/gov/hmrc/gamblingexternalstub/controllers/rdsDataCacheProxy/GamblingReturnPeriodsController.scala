@@ -19,23 +19,24 @@ package uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy
 import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import uk.gov.hmrc.gamblingexternalstub.models.*
-import uk.gov.hmrc.gamblingexternalstub.models.GamblingReturnPeriodsFormats.*
+import uk.gov.hmrc.gamblingexternalstub.models._
+import uk.gov.hmrc.gamblingexternalstub.models.GamblingReturnPeriodsFormats._
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.Inject
 
 class GamblingReturnPeriodsController @Inject() (
-  cc: ControllerComponents
-) extends BackendController(cc)
-    with Logging {
+                                                  cc: ControllerComponents
+                                                ) extends BackendController(cc)
+  with Logging {
 
   private val supportedRegimes = List(Regime.MGD)
 
   def getReturnPeriods(
-    regime: String,
-    regNumber: String
-  ): Action[AnyContent] = Action { _ =>
+                        regime: String,
+                        regNumber: String
+                      ): Action[AnyContent] = Action { _ =>
+
     if (
       !Regime
         .fromString(regime.trim.toLowerCase())
@@ -48,9 +49,11 @@ class GamblingReturnPeriodsController @Inject() (
         )
       )
     } else {
+
       val sanitized = regNumber.trim.toUpperCase()
 
       sanitized match {
+
         case "XGM00000001761" =>
           Ok(Json.toJson(fullModel(sanitized)))
 
@@ -85,12 +88,7 @@ class GamblingReturnPeriodsController @Inject() (
           )
 
         case _ =>
-          NotFound(
-            Json.obj(
-              "code"    -> "RECORD_NOT_FOUND",
-              "message" -> "Record not found"
-            )
-          )
+          Ok(Json.toJson(noDataModel()))
       }
     }
   }
