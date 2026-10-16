@@ -20,13 +20,10 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.{JsNull, Json}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.gamblingexternalstub.base.SpecBase
 
-class GamblingReturnPeriodsControllerSpec
-  extends AnyWordSpec
-    with Matchers
-    with SpecBase {
+class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with SpecBase {
 
   private val app =
     applicationBuilder().build()
@@ -63,9 +60,12 @@ class GamblingReturnPeriodsControllerSpec
       (json \ "hasExistingNstpValues").as[String] shouldBe "0"
 
       (json \ "systemDate").as[String] shouldBe
-        java.time.LocalDate.now().format(
-          java.time.format.DateTimeFormatter.ofPattern("dd-MMM-yy")
-        ).toUpperCase(java.util.Locale.ENGLISH)
+        java.time.LocalDate
+          .now()
+          .format(
+            java.time.format.DateTimeFormatter.ofPattern("dd-MMM-yy")
+          )
+          .toUpperCase(java.util.Locale.ENGLISH)
     }
 
     "return return periods from the JSON fixture for XGM00000001762" in {
@@ -88,9 +88,12 @@ class GamblingReturnPeriodsControllerSpec
       (json \ "hasExistingNstpValues").as[String] shouldBe "1"
 
       (json \ "systemDate").as[String] shouldBe
-        java.time.LocalDate.now().format(
-          java.time.format.DateTimeFormatter.ofPattern("dd-MMM-yy")
-        ).toUpperCase(java.util.Locale.ENGLISH)
+        java.time.LocalDate
+          .now()
+          .format(
+            java.time.format.DateTimeFormatter.ofPattern("dd-MMM-yy")
+          )
+          .toUpperCase(java.util.Locale.ENGLISH)
     }
 
     "return return periods from the JSON fixture for XGM00000001763" in {

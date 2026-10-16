@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.gamblingexternalstub.models
 
-import play.api.libs.functional.syntax._
-import play.api.libs.json._
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.*
 
 import java.time.LocalDate
 import java.time.format.{DateTimeFormatter, DateTimeFormatterBuilder}
@@ -25,21 +25,21 @@ import java.util.Locale
 import scala.util.Using
 
 final case class GamblingReturnPeriods(
-                                        mgdRegNumber: String,
-                                        returnPeriodsId: Option[Int] = None,
-                                        nstpEndDate1: Option[LocalDate] = None,
-                                        nstpEndDate2: Option[LocalDate] = None,
-                                        nstpEndDate3: Option[LocalDate] = None,
-                                        nstpEndDate4: Option[LocalDate] = None,
-                                        nstpEndDate5: Option[LocalDate] = None,
-                                        nstpEndDate6: Option[LocalDate] = None,
-                                        nstpEndDate7: Option[LocalDate] = None,
-                                        nstpEndDate8: Option[LocalDate] = None,
-                                        isInLastNstp: Option[String] = None,
-                                        finalPeriodWarning: Option[String] = None,
-                                        hasExistingNstpValues: Option[String] = None,
-                                        systemDate: Option[LocalDate] = None
-                                      )
+  mgdRegNumber: String,
+  returnPeriodsId: Option[Int] = None,
+  nstpEndDate1: Option[LocalDate] = None,
+  nstpEndDate2: Option[LocalDate] = None,
+  nstpEndDate3: Option[LocalDate] = None,
+  nstpEndDate4: Option[LocalDate] = None,
+  nstpEndDate5: Option[LocalDate] = None,
+  nstpEndDate6: Option[LocalDate] = None,
+  nstpEndDate7: Option[LocalDate] = None,
+  nstpEndDate8: Option[LocalDate] = None,
+  isInLastNstp: Option[String] = None,
+  finalPeriodWarning: Option[String] = None,
+  hasExistingNstpValues: Option[String] = None,
+  systemDate: Option[LocalDate] = None
+)
 
 object GamblingReturnPeriodsFormats {
 
@@ -94,7 +94,7 @@ object GamblingReturnPeriodsFormats {
         (__ \ "finalPeriodWarning").readNullable[String] and
         (__ \ "hasExistingNstpValues").readNullable[String] and
         (__ \ "systemDate").readNullable[LocalDate]
-      )(GamblingReturnPeriods.apply _)
+    )(GamblingReturnPeriods.apply _)
 
   private def optionalIntWrites(value: Option[Int]): JsValue =
     value.map(JsNumber(_)).getOrElse(JsNull)
@@ -184,19 +184,19 @@ object GamblingReturnPeriodsFormats {
   def fullModel(mgdRegNumber: String): GamblingReturnPeriods =
     fullData.copy(
       mgdRegNumber = mgdRegNumber,
-      systemDate = Some(LocalDate.now())
+      systemDate   = Some(LocalDate.now())
     )
 
   def partialModel(mgdRegNumber: String): GamblingReturnPeriods =
     partialData.copy(
       mgdRegNumber = mgdRegNumber,
-      systemDate = Some(LocalDate.now())
+      systemDate   = Some(LocalDate.now())
     )
 
   def noNstpValuesModel(mgdRegNumber: String): GamblingReturnPeriods =
     noNstpValuesData.copy(
       mgdRegNumber = mgdRegNumber,
-      systemDate = Some(LocalDate.now())
+      systemDate   = Some(LocalDate.now())
     )
 
   def noDataModel(): GamblingReturnPeriods =
