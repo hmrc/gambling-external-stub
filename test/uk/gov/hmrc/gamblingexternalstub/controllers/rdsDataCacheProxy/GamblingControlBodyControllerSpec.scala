@@ -40,7 +40,7 @@ class GamblingControlBodyControllerSpec extends AnyWordSpec with Matchers with S
       contentAsJson(result) shouldBe Json.toJson(
         ControlBodyDetails(
           mgdRegNumber           = "XGM00000001761",
-          businessPartnerNumber  = Some("0100053091"),
+          businessPartnerNumber  = Some("0100051761"),
           dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
           dateOfLeaving          = Some(LocalDate.of(2023, 3, 1)),
           solePropTitle          = Some("Mx"),
@@ -65,11 +65,11 @@ class GamblingControlBodyControllerSpec extends AnyWordSpec with Matchers with S
           country                = Some("Spain"),
           adi                    = Some("adi"),
           isIomOrCiFlag          = Some("0"),
-          phoneNumber            = Some("phoneNumber"),
-          mobilePhoneNumber      = Some("mobilePhoneNumber"),
-          faxNumber              = Some("faxNumber"),
-          emailAddr              = Some("emailAddr"),
-          typeOfControllingBody  = Some(BusinessType.CorporateBody),
+          phoneNumber            = Some("9999"),
+          mobilePhoneNumber      = Some("8888"),
+          faxNumber              = Some("7777"),
+          emailAddr              = Some("emailAddr@example.com"),
+          typeOfControllingBody  = Some(BusinessType.SoleProprietor),
           isRepMemSameAsCb       = Some("0"),
           isUkIncorporated       = Some("0"),
           systemDate             = Some(LocalDate.now())
@@ -84,14 +84,14 @@ class GamblingControlBodyControllerSpec extends AnyWordSpec with Matchers with S
       contentAsJson(result) shouldBe Json.toJson(
         ControlBodyDetails(
           mgdRegNumber           = "XGM00000001762",
-          businessPartnerNumber  = Some("0100053091"),
+          businessPartnerNumber  = Some("0100051762"),
           dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
-          dateOfLeaving          = Some(LocalDate.of(2023, 3, 1)),
+          dateOfLeaving          = Some(LocalDate.of(2027, 3, 1)),
           solePropTitle          = Some("Mx"),
           solePropFirstName      = Some("solePropFirstName"),
           solePropLastName       = Some("solePropLastName"),
-          businessName           = Some("BRUCE HOPKINS LIMITED"),
-          tradingName            = Some("Trading name 1"),
+          businessName           = Some("Corporate Body business Name"),
+          tradingName            = Some("Corporate Body Trading name"),
           dateOfBirth            = Some(LocalDate.of(1998, 6, 24)),
           nino                   = Some("AB123456C"),
           crn                    = Some("12345678"),
@@ -100,13 +100,13 @@ class GamblingControlBodyControllerSpec extends AnyWordSpec with Matchers with S
           foreignCorporateRef    = Some("foreignCorporateRef"),
           adi                    = Some("adi"),
           isIomOrCiFlag          = Some("0"),
-          phoneNumber            = Some("phoneNumber"),
-          mobilePhoneNumber      = Some("mobilePhoneNumber"),
-          faxNumber              = Some("faxNumber"),
-          emailAddr              = Some("emailAddr"),
+          phoneNumber            = Some("9999"),
+          mobilePhoneNumber      = Some("8888"),
+          faxNumber              = Some("7777"),
+          emailAddr              = Some("emailAddr@example.com"),
           typeOfControllingBody  = Some(BusinessType.CorporateBody),
           isRepMemSameAsCb       = Some("0"),
-          isUkIncorporated       = Some("0"),
+          isUkIncorporated       = None,
           systemDate             = Some(LocalDate.now())
         )
       )
@@ -149,7 +149,6 @@ class GamblingControlBodyControllerSpec extends AnyWordSpec with Matchers with S
         "code"    -> "INVALID_REQUEST",
         "message" -> "Bad request"
       )
-
     }
 
     "return Unauthorized for XGM00000000401" in {
@@ -160,7 +159,6 @@ class GamblingControlBodyControllerSpec extends AnyWordSpec with Matchers with S
         "code"    -> "UNAUTHORIZED",
         "message" -> "Unauthorized to access this resource"
       )
-
     }
 
     "return InternalServerError for XGM00000000500" in {
@@ -171,8 +169,6 @@ class GamblingControlBodyControllerSpec extends AnyWordSpec with Matchers with S
         "code"    -> "UNEXPECTED_ERROR",
         "message" -> "Unexpected error occurred"
       )
-
     }
   }
-
 }

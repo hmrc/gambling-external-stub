@@ -1,0 +1,16 @@
+{
+  "mgdRegNumber": "",
+  "returnPeriodsId": 1,
+  "nstpEndDate1": null,
+  "nstpEndDate2": null,
+  "nstpEndDate3": null,
+  "nstpEndDate4": null,
+  "nstpEndDate5": null,
+  "nstpEndDate6": null,
+  "nstpEndDate7": null,
+  "nstpEndDate8": null,
+  "isInLastNstp": "0",
+  "finalPeriodWarning": "0",
+  "hasExistingNstpValues": "0",
+  "systemDate": "2026-10-01"
+}

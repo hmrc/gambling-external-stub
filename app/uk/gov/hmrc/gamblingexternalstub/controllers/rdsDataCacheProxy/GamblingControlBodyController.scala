@@ -19,7 +19,7 @@ package uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy
 import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import uk.gov.hmrc.gamblingexternalstub.models.ControlBodyDetails.{fullModel, noDataModel, partialModel}
+import uk.gov.hmrc.gamblingexternalstub.models.ControlBodyDetails.{fullModel, morePartialModel, noDataModel, otherModel, otherModels, partialModel}
 import uk.gov.hmrc.gamblingexternalstub.models.*
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
@@ -38,13 +38,21 @@ class GamblingControlBodyController @Inject() (
     } else {
       val sanitized = mgdRegNumber.trim.toUpperCase()
       sanitized match {
-        // full data
+
         case "XGM00000001761" =>
           Ok(Json.toJson(fullModel(sanitized)))
 
-        // some missing data
         case "XGM00000001762" =>
           Ok(Json.toJson(partialModel(sanitized)))
+
+        case "XGM00000001763" =>
+          Ok(Json.toJson(morePartialModel(sanitized)))
+
+        case "XGM00000001764" =>
+          Ok(Json.toJson(otherModel(sanitized)))
+
+        case "XGM00000001765" =>
+          Ok(Json.toJson(otherModels(sanitized)))
 
         case "XGM00000000400" =>
           BadRequest(

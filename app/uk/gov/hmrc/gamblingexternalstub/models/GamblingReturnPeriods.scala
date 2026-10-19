@@ -16,11 +16,13 @@
 
 package uk.gov.hmrc.gamblingexternalstub.models
 
+import play.api.libs.functional.syntax.*
 import play.api.libs.json.*
 
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import java.time.format.{DateTimeFormatter, DateTimeFormatterBuilder}
 import java.util.Locale
+import scala.util.Using
 
 final case class GamblingReturnPeriods(
   mgdRegNumber: String,
@@ -42,7 +44,57 @@ final case class GamblingReturnPeriods(
 object GamblingReturnPeriodsFormats {
 
   private val nstpDateFormatter: DateTimeFormatter =
-    DateTimeFormatter.ofPattern("dd-MMM-yy", Locale.ENGLISH)
+    new DateTimeFormatterBuilder()
+      .parseCaseInsensitive()
+      .appendPattern("dd-MMM-yy")
+      .toFormatter(Locale.ENGLISH)
+
+  private val systemDateFormatter: DateTimeFormatter =
+    DateTimeFormatter.ISO_LOCAL_DATE
+
+  /*
+   * The fixtures may contain ISO dates (yyyy-MM-dd) or NSTP dates
+   * (dd-MMM-yy). Support both when reading the JSON.
+   */
+  private implicit val localDateReads: Reads[LocalDate] =
+    Reads.of[String].flatMapResult { value =>
+      try {
+        JsSuccess(LocalDate.parse(value, systemDateFormatter))
+      } catch {
+        case _: java.time.format.DateTimeParseException =>
+          try {
+            JsSuccess(LocalDate.parse(value, nstpDateFormatter))
+          } catch {
+            case exception: java.time.format.DateTimeParseException =>
+              JsError(
+                s"Invalid date '$value'. Expected yyyy-MM-dd or dd-MMM-yy"
+              )
+          }
+      }
+    }
+
+  /*
+   * Read all fields from the JSON fixture.
+   *
+   * readNullable supports both null and missing optional fields.
+   */
+  implicit val gamblingReturnPeriodsReads: Reads[GamblingReturnPeriods] =
+    (
+      (__ \ "mgdRegNumber").read[String] and
+        (__ \ "returnPeriodsId").readNullable[Int] and
+        (__ \ "nstpEndDate1").readNullable[LocalDate] and
+        (__ \ "nstpEndDate2").readNullable[LocalDate] and
+        (__ \ "nstpEndDate3").readNullable[LocalDate] and
+        (__ \ "nstpEndDate4").readNullable[LocalDate] and
+        (__ \ "nstpEndDate5").readNullable[LocalDate] and
+        (__ \ "nstpEndDate6").readNullable[LocalDate] and
+        (__ \ "nstpEndDate7").readNullable[LocalDate] and
+        (__ \ "nstpEndDate8").readNullable[LocalDate] and
+        (__ \ "isInLastNstp").readNullable[String] and
+        (__ \ "finalPeriodWarning").readNullable[String] and
+        (__ \ "hasExistingNstpValues").readNullable[String] and
+        (__ \ "systemDate").readNullable[LocalDate]
+    )(GamblingReturnPeriods.apply _)
 
   private def optionalIntWrites(value: Option[Int]): JsValue =
     value.map(JsNumber(_)).getOrElse(JsNull)
@@ -52,20 +104,25 @@ object GamblingReturnPeriodsFormats {
 
   private def optionalNstpDateWrites(value: Option[LocalDate]): JsValue =
     value
-      .map(date => JsString(date.format(nstpDateFormatter).toUpperCase(Locale.ENGLISH)))
+      .map(date =>
+        JsString(
+          date.format(nstpDateFormatter).toUpperCase(Locale.ENGLISH)
+        )
+      )
       .getOrElse(JsNull)
 
   private def optionalSystemDateWrites(value: Option[LocalDate]): JsValue =
     value
       .map(date =>
         JsString(
-          date
-            .format(nstpDateFormatter)
-            .toUpperCase(Locale.ENGLISH)
+          date.format(nstpDateFormatter).toUpperCase(Locale.ENGLISH)
         )
       )
       .getOrElse(JsNull)
 
+  /*
+   * Preserve the existing response JSON structure and date formatting.
+   */
   implicit val gamblingReturnPeriodsWrites: OWrites[GamblingReturnPeriods] =
     OWrites { returnPeriods =>
       Json.obj(
@@ -86,42 +143,76 @@ object GamblingReturnPeriodsFormats {
       )
     }
 
-  def fullModel(mgdRegNumber: String): GamblingReturnPeriods =
-    GamblingReturnPeriods(
-      mgdRegNumber          = mgdRegNumber,
-      returnPeriodsId       = Some(1),
-      nstpEndDate1          = Some(LocalDate.of(2024, 10, 14)),
-      nstpEndDate2          = Some(LocalDate.of(2025, 1, 14)),
-      nstpEndDate3          = Some(LocalDate.of(2025, 4, 15)),
-      nstpEndDate4          = Some(LocalDate.of(2025, 7, 15)),
-      nstpEndDate5          = Some(LocalDate.of(2025, 10, 14)),
-      nstpEndDate6          = Some(LocalDate.of(2026, 1, 14)),
-      nstpEndDate7          = Some(LocalDate.of(2026, 4, 15)),
-      nstpEndDate8          = Some(LocalDate.of(2026, 7, 17)),
-      isInLastNstp          = Some("1"),
-      finalPeriodWarning    = Some("0"),
-      hasExistingNstpValues = Some("1"),
-      systemDate            = Some(LocalDate.of(2026, 5, 31))
+  /*
+   * Load a JSON fixture from the classpath and convert it into a model.
+   *
+   * Files under conf/data/return-periods/ are accessed using
+   * /data/return-periods/<filename>.
+   */
+  private def loadFixture(filename: String): GamblingReturnPeriods = {
+    val resourcePath = s"/data/return-periods/$filename"
+
+    val inputStream =
+      Option(getClass.getResourceAsStream(resourcePath))
+        .getOrElse {
+          throw new IllegalStateException(
+            s"Could not find return-periods fixture: $resourcePath"
+          )
+        }
+
+    Using.resource(inputStream) { stream =>
+      Json.parse(stream).as[GamblingReturnPeriods]
+    }
+  }
+
+  private lazy val xgm00000001761Data: GamblingReturnPeriods =
+    loadFixture("XGM00000001761.json")
+
+  private lazy val xgm00000001762Data: GamblingReturnPeriods =
+    loadFixture("XGM00000001762.json")
+
+  private lazy val xgm00000001763Data: GamblingReturnPeriods =
+    loadFixture("XGM00000001763.json")
+
+  private lazy val xgm00000001764Data: GamblingReturnPeriods =
+    loadFixture("XGM00000001764.json")
+
+  private lazy val xgm00000001765Data: GamblingReturnPeriods =
+    loadFixture("XGM00000001765.json")
+
+  private lazy val noData: GamblingReturnPeriods =
+    loadFixture("return-periods.json")
+
+  def xgm00000001761Model(mgdRegNumber: String): GamblingReturnPeriods =
+    xgm00000001761Data.copy(
+      mgdRegNumber = mgdRegNumber,
+      systemDate   = Some(LocalDate.now())
     )
 
-  def partialModel(mgdRegNumber: String): GamblingReturnPeriods =
-    GamblingReturnPeriods(
-      mgdRegNumber          = mgdRegNumber,
-      returnPeriodsId       = Some(2),
-      nstpEndDate1          = Some(LocalDate.of(2026, 3, 31)),
-      isInLastNstp          = Some("0"),
-      finalPeriodWarning    = Some("0"),
-      hasExistingNstpValues = Some("1"),
-      systemDate            = Some(LocalDate.of(2026, 5, 31))
+  def xgm00000001762Model(mgdRegNumber: String): GamblingReturnPeriods =
+    xgm00000001762Data.copy(
+      mgdRegNumber = mgdRegNumber,
+      systemDate   = Some(LocalDate.now())
     )
 
-  def noNstpValuesModel(mgdRegNumber: String): GamblingReturnPeriods =
-    GamblingReturnPeriods(
-      mgdRegNumber          = mgdRegNumber,
-      returnPeriodsId       = Some(1),
-      isInLastNstp          = Some("0"),
-      finalPeriodWarning    = Some("0"),
-      hasExistingNstpValues = Some("0"),
-      systemDate            = Some(LocalDate.of(2026, 5, 31))
+  def xgm00000001763Model(mgdRegNumber: String): GamblingReturnPeriods =
+    xgm00000001763Data.copy(
+      mgdRegNumber = mgdRegNumber,
+      systemDate   = Some(LocalDate.now())
     )
+
+  def xgm00000001764Model(mgdRegNumber: String): GamblingReturnPeriods =
+    xgm00000001764Data.copy(
+      mgdRegNumber = mgdRegNumber,
+      systemDate   = Some(LocalDate.now())
+    )
+
+  def xgm00000001765Model(mgdRegNumber: String): GamblingReturnPeriods =
+    xgm00000001765Data.copy(
+      mgdRegNumber = mgdRegNumber,
+      systemDate   = Some(LocalDate.now())
+    )
+
+  def noDataModel(): GamblingReturnPeriods =
+    noData
 }

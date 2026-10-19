@@ -61,6 +61,12 @@ Check code coverage:
 sbt clean coverage test it/test coverageReport
 ```
 
+Check format coverage:
+
+```
+sbt scalafmtAll
+```
+
 ---
 
 ## Endpoints

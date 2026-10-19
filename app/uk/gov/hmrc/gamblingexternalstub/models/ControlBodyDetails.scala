@@ -65,7 +65,7 @@ object ControlBodyDetails {
   def fullModel(mgdRegNumber: String): ControlBodyDetails =
     ControlBodyDetails(
       mgdRegNumber           = mgdRegNumber,
-      businessPartnerNumber  = Some("0100053091"),
+      businessPartnerNumber  = Some("0100051761"),
       dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
       dateOfLeaving          = Some(LocalDate.of(2023, 3, 1)),
       solePropTitle          = Some("Mx"),
@@ -90,11 +90,11 @@ object ControlBodyDetails {
       country                = Some("Spain"),
       adi                    = Some("adi"),
       isIomOrCiFlag          = Some("0"),
-      phoneNumber            = Some("phoneNumber"),
-      mobilePhoneNumber      = Some("mobilePhoneNumber"),
-      faxNumber              = Some("faxNumber"),
-      emailAddr              = Some("emailAddr"),
-      typeOfControllingBody  = Some(BusinessType.CorporateBody),
+      phoneNumber            = Some("9999"),
+      mobilePhoneNumber      = Some("8888"),
+      faxNumber              = Some("7777"),
+      emailAddr              = Some("emailAddr@example.com"),
+      typeOfControllingBody  = Some(BusinessType.SoleProprietor),
       isRepMemSameAsCb       = Some("0"),
       isUkIncorporated       = Some("0"),
       systemDate             = Some(LocalDate.now())
@@ -103,14 +103,14 @@ object ControlBodyDetails {
   def partialModel(mgdRegNumber: String): ControlBodyDetails =
     ControlBodyDetails(
       mgdRegNumber           = mgdRegNumber,
-      businessPartnerNumber  = Some("0100053091"),
+      businessPartnerNumber  = Some("0100051762"),
       dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
-      dateOfLeaving          = Some(LocalDate.of(2023, 3, 1)),
+      dateOfLeaving          = Some(LocalDate.of(2027, 3, 1)),
       solePropTitle          = Some("Mx"),
       solePropFirstName      = Some("solePropFirstName"),
       solePropLastName       = Some("solePropLastName"),
-      businessName           = Some("BRUCE HOPKINS LIMITED"),
-      tradingName            = Some("Trading name 1"),
+      businessName           = Some("Corporate Body business Name"),
+      tradingName            = Some("Corporate Body Trading name"),
       dateOfBirth            = Some(LocalDate.of(1998, 6, 24)),
       nino                   = Some("AB123456C"),
       crn                    = Some("12345678"),
@@ -119,15 +119,103 @@ object ControlBodyDetails {
       foreignCorporateRef    = Some("foreignCorporateRef"),
       adi                    = Some("adi"),
       isIomOrCiFlag          = Some("0"),
-      phoneNumber            = Some("phoneNumber"),
-      mobilePhoneNumber      = Some("mobilePhoneNumber"),
-      faxNumber              = Some("faxNumber"),
-      emailAddr              = Some("emailAddr"),
+      phoneNumber            = Some("9999"),
+      mobilePhoneNumber      = Some("8888"),
+      faxNumber              = Some("7777"),
+      emailAddr              = Some("emailAddr@example.com"),
       typeOfControllingBody  = Some(BusinessType.CorporateBody),
       isRepMemSameAsCb       = Some("0"),
-      isUkIncorporated       = Some("0"),
+      isUkIncorporated       = None,
+      systemDate             = Some(LocalDate.now())
+    )
+
+  def morePartialModel(mgdRegNumber: String): ControlBodyDetails =
+    ControlBodyDetails(
+      mgdRegNumber           = mgdRegNumber,
+      businessPartnerNumber  = Some("0100051763"),
+      dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
+      dateOfLeaving          = Some(LocalDate.of(2027, 3, 1)),
+      solePropTitle          = Some("Mrs"),
+      solePropFirstName      = Some("solePropFirstName"),
+      solePropLastName       = Some("solePropLastName"),
+      businessName           = Some("Unincorporated business Name"),
+      tradingName            = Some("Unincorporated Trading name"),
+      dateOfBirth            = None,
+      nino                   = None,
+      crn                    = None,
+      dateOfIncorporation    = None,
+      countryOfIncorporation = None,
+      foreignCorporateRef    = None,
+      adi                    = None,
+      isIomOrCiFlag          = Some("0"),
+      phoneNumber            = None,
+      mobilePhoneNumber      = None,
+      faxNumber              = None,
+      emailAddr              = None,
+      typeOfControllingBody  = Some(BusinessType.CorporateBody),
+      isRepMemSameAsCb       = Some("0"),
+      isUkIncorporated       = None,
+      systemDate             = Some(LocalDate.now())
+    )
+
+  def otherModel(mgdRegNumber: String): ControlBodyDetails =
+    ControlBodyDetails(
+      mgdRegNumber           = mgdRegNumber,
+      businessPartnerNumber  = Some("0100051764"),
+      dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
+      dateOfLeaving          = Some(LocalDate.of(2027, 3, 1)),
+      solePropTitle          = Some("Mx"),
+      solePropFirstName      = Some("solePropFirstName"),
+      solePropLastName       = Some("solePropLastName"),
+      businessName           = Some("Partnership business Name"),
+      tradingName            = Some("Partnership Trading name"),
+      dateOfBirth            = Some(LocalDate.of(1998, 6, 24)),
+      nino                   = Some("AB123456C"),
+      crn                    = Some("12345678"),
+      dateOfIncorporation    = Some(LocalDate.of(2020, 2, 15)),
+      countryOfIncorporation = Some("Spain"),
+      foreignCorporateRef    = Some("foreignCorporateRef"),
+      adi                    = Some("adi"),
+      isIomOrCiFlag          = Some("0"),
+      phoneNumber            = Some("666 6666"),
+      mobilePhoneNumber      = Some("5555 555 555"),
+      faxNumber              = Some("4444 444 444"),
+      emailAddr              = Some("emailAddr@example.com"),
+      typeOfControllingBody  = Some(BusinessType.Partnership),
+      isRepMemSameAsCb       = Some("0"),
+      isUkIncorporated       = Some("1"),
+      systemDate             = Some(LocalDate.now())
+    )
+
+  def otherModels(mgdRegNumber: String): ControlBodyDetails =
+    ControlBodyDetails(
+      mgdRegNumber           = mgdRegNumber,
+      businessPartnerNumber  = Some("0100051765"),
+      dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
+      dateOfLeaving          = Some(LocalDate.of(2026, 3, 1)),
+      solePropTitle          = Some("Mx"),
+      solePropFirstName      = Some("solePropFirstName"),
+      solePropLastName       = Some("solePropLastName"),
+      businessName           = Some("LLP Body business Name"),
+      tradingName            = Some("LLP Body Trading name"),
+      dateOfBirth            = Some(LocalDate.of(1998, 6, 24)),
+      nino                   = Some("AB123456C"),
+      crn                    = Some("12345678"),
+      dateOfIncorporation    = Some(LocalDate.of(2020, 2, 15)),
+      countryOfIncorporation = Some("United Kingdom"),
+      foreignCorporateRef    = Some("foreignCorporateRef"),
+      adi                    = Some("adi"),
+      isIomOrCiFlag          = Some("1"),
+      phoneNumber            = Some("666 6666"),
+      mobilePhoneNumber      = Some("5555 555 555"),
+      faxNumber              = Some("4444 444 444"),
+      emailAddr              = Some("emailAddr@example.com"),
+      typeOfControllingBody  = Some(BusinessType.LimitedLiabilityPartnership),
+      isRepMemSameAsCb       = Some("0"),
+      isUkIncorporated       = Some("1"),
       systemDate             = Some(LocalDate.now())
     )
 
   def noDataModel(): ControlBodyDetails = ControlBodyDetails(mgdRegNumber = "")
+
 }

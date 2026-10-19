@@ -33,7 +33,7 @@ class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with
 
   "GamblingReturnPeriodsController#getReturnPeriods" should {
 
-    "return full return periods for XGM00000001761" in {
+    "return return periods from the JSON fixture for XGM00000001761" in {
 
       val result =
         controller.getReturnPeriods(
@@ -43,20 +43,32 @@ class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with
 
       status(result) shouldBe OK
 
-      val json =
-        contentAsJson(result)
+      val json = contentAsJson(result)
 
-      (json \ "mgdRegNumber").as[String]          shouldBe "XGM00000001761"
-      (json \ "returnPeriodsId").as[Int]          shouldBe 1
-      (json \ "nstpEndDate1").as[String]          shouldBe "14-OCT-24"
-      (json \ "nstpEndDate8").as[String]          shouldBe "17-JUL-26"
-      (json \ "isInLastNstp").as[String]          shouldBe "1"
-      (json \ "finalPeriodWarning").as[String]    shouldBe "0"
-      (json \ "hasExistingNstpValues").as[String] shouldBe "1"
-      (json \ "systemDate").as[String]            shouldBe "31-MAY-26"
+      (json \ "mgdRegNumber").as[String] shouldBe "XGM00000001761"
+
+      // The fixture has no NSTP dates.
+      (json \ "nstpEndDate1").toOption shouldBe Some(JsNull)
+      (json \ "nstpEndDate2").toOption shouldBe Some(JsNull)
+      (json \ "nstpEndDate3").toOption shouldBe Some(JsNull)
+      (json \ "nstpEndDate4").toOption shouldBe Some(JsNull)
+      (json \ "nstpEndDate5").toOption shouldBe Some(JsNull)
+      (json \ "nstpEndDate6").toOption shouldBe Some(JsNull)
+      (json \ "nstpEndDate7").toOption shouldBe Some(JsNull)
+      (json \ "nstpEndDate8").toOption shouldBe Some(JsNull)
+
+      (json \ "hasExistingNstpValues").as[String] shouldBe "0"
+
+      (json \ "systemDate").as[String] shouldBe
+        java.time.LocalDate
+          .now()
+          .format(
+            java.time.format.DateTimeFormatter.ofPattern("dd-MMM-yy")
+          )
+          .toUpperCase(java.util.Locale.ENGLISH)
     }
 
-    "return partial return periods for XGM00000001762" in {
+    "return return periods from the JSON fixture for XGM00000001762" in {
 
       val result =
         controller.getReturnPeriods(
@@ -66,18 +78,25 @@ class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with
 
       status(result) shouldBe OK
 
-      val json =
-        contentAsJson(result)
+      val json = contentAsJson(result)
 
-      (json \ "mgdRegNumber").as[String]          shouldBe "XGM00000001762"
-      (json \ "returnPeriodsId").as[Int]          shouldBe 2
-      (json \ "nstpEndDate1").as[String]          shouldBe "31-MAR-26"
-      (json \ "nstpEndDate2").toOption            shouldBe Some(JsNull)
+      (json \ "mgdRegNumber").as[String] shouldBe "XGM00000001762"
+
+      // Values come from XGM00000001762.json.
+      (json \ "nstpEndDate1").as[String] shouldBe "31-MAY-26"
+
       (json \ "hasExistingNstpValues").as[String] shouldBe "1"
-      (json \ "systemDate").as[String]            shouldBe "31-MAY-26"
+
+      (json \ "systemDate").as[String] shouldBe
+        java.time.LocalDate
+          .now()
+          .format(
+            java.time.format.DateTimeFormatter.ofPattern("dd-MMM-yy")
+          )
+          .toUpperCase(java.util.Locale.ENGLISH)
     }
 
-    "return an existing operator with no NSTP values for XGM00000001763" in {
+    "return return periods from the JSON fixture for XGM00000001763" in {
 
       val result =
         controller.getReturnPeriods(
@@ -87,39 +106,33 @@ class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with
 
       status(result) shouldBe OK
 
-      val json =
-        contentAsJson(result)
+      val json = contentAsJson(result)
 
-      (json \ "mgdRegNumber").as[String]          shouldBe "XGM00000001763"
-      (json \ "returnPeriodsId").as[Int]          shouldBe 1
-      (json \ "nstpEndDate1").toOption            shouldBe Some(JsNull)
-      (json \ "nstpEndDate2").toOption            shouldBe Some(JsNull)
-      (json \ "nstpEndDate3").toOption            shouldBe Some(JsNull)
-      (json \ "nstpEndDate4").toOption            shouldBe Some(JsNull)
-      (json \ "nstpEndDate5").toOption            shouldBe Some(JsNull)
-      (json \ "nstpEndDate6").toOption            shouldBe Some(JsNull)
-      (json \ "nstpEndDate7").toOption            shouldBe Some(JsNull)
-      (json \ "nstpEndDate8").toOption            shouldBe Some(JsNull)
-      (json \ "isInLastNstp").as[String]          shouldBe "0"
-      (json \ "finalPeriodWarning").as[String]    shouldBe "0"
-      (json \ "hasExistingNstpValues").as[String] shouldBe "0"
-      (json \ "systemDate").as[String]            shouldBe "31-MAY-26"
+      (json \ "mgdRegNumber").as[String] shouldBe "XGM00000001763"
+
+      (json \ "returnPeriodsId").as[Int] shouldBe 3
+
+      (json \ "isInLastNstp").as[String] shouldBe "1"
+
+      (json \ "hasExistingNstpValues").as[String] shouldBe "1"
     }
 
-    "return NOT_FOUND for an unknown registration number" in {
+    "return the default fixture for an unknown registration number" in {
 
       val result =
         controller.getReturnPeriods(
           "MGD",
-          "XGM00000001764"
+          "XGM00000009999"
         )(FakeRequest())
 
-      status(result) shouldBe NOT_FOUND
+      status(result) shouldBe OK
 
-      contentAsJson(result) shouldBe Json.obj(
-        "code"    -> "RECORD_NOT_FOUND",
-        "message" -> "Record not found"
-      )
+      val json = contentAsJson(result)
+
+      // The default fixture is returned unchanged by noDataModel().
+      (json \ "mgdRegNumber").as[String] shouldBe ""
+
+      (json \ "nstpEndDate1").toOption shouldBe Some(JsNull)
     }
 
     "return BAD_REQUEST for an unrecognised regime" in {
