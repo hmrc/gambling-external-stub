@@ -55,13 +55,19 @@ class GamblingReturnPeriodsController @Inject() (
       sanitized match {
 
         case "XGM00000001761" =>
-          Ok(Json.toJson(fullModel(sanitized)))
+          Ok(Json.toJson(xgm00000001761Model(sanitized)))
 
         case "XGM00000001762" =>
-          Ok(Json.toJson(partialModel(sanitized)))
+          Ok(Json.toJson(xgm00000001762Model(sanitized)))
 
         case "XGM00000001763" =>
-          Ok(Json.toJson(noNstpValuesModel(sanitized)))
+          Ok(Json.toJson(xgm00000001763Model(sanitized)))
+
+        case "XGM00000001764" =>
+          Ok(Json.toJson(xgm00000001764Model(sanitized)))
+
+        case "XGM00000001765" =>
+          Ok(Json.toJson(xgm00000001765Model(sanitized)))
 
         case "XGM00000000560" =>
           BadRequest(

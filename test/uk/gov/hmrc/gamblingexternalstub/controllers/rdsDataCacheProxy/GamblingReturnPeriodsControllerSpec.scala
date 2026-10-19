@@ -83,7 +83,7 @@ class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with
       (json \ "mgdRegNumber").as[String] shouldBe "XGM00000001762"
 
       // Values come from XGM00000001762.json.
-      (json \ "nstpEndDate1").as[String] shouldBe "28-FEB-26"
+      (json \ "nstpEndDate1").as[String] shouldBe "31-MAY-26"
 
       (json \ "hasExistingNstpValues").as[String] shouldBe "1"
 
@@ -112,7 +112,7 @@ class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with
 
       (json \ "returnPeriodsId").as[Int] shouldBe 3
 
-      (json \ "isInLastNstp").as[String] shouldBe "0"
+      (json \ "isInLastNstp").as[String] shouldBe "1"
 
       (json \ "hasExistingNstpValues").as[String] shouldBe "1"
     }

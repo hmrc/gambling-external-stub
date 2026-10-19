@@ -69,7 +69,7 @@ class GamblingControlBodyControllerSpec extends AnyWordSpec with Matchers with S
           mobilePhoneNumber      = Some("8888"),
           faxNumber              = Some("7777"),
           emailAddr              = Some("emailAddr@example.com"),
-          typeOfControllingBody  = Some(BusinessType.CorporateBody),
+          typeOfControllingBody  = Some(BusinessType.SoleProprietor),
           isRepMemSameAsCb       = Some("0"),
           isUkIncorporated       = Some("0"),
           systemDate             = Some(LocalDate.now())
@@ -149,7 +149,6 @@ class GamblingControlBodyControllerSpec extends AnyWordSpec with Matchers with S
         "code"    -> "INVALID_REQUEST",
         "message" -> "Bad request"
       )
-
     }
 
     "return Unauthorized for XGM00000000401" in {
@@ -160,7 +159,6 @@ class GamblingControlBodyControllerSpec extends AnyWordSpec with Matchers with S
         "code"    -> "UNAUTHORIZED",
         "message" -> "Unauthorized to access this resource"
       )
-
     }
 
     "return InternalServerError for XGM00000000500" in {
@@ -171,8 +169,6 @@ class GamblingControlBodyControllerSpec extends AnyWordSpec with Matchers with S
         "code"    -> "UNEXPECTED_ERROR",
         "message" -> "Unexpected error occurred"
       )
-
     }
   }
-
 }

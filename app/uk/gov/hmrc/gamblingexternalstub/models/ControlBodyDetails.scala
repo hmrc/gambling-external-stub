@@ -129,7 +129,34 @@ object ControlBodyDetails {
       systemDate             = Some(LocalDate.now())
     )
 
-  def noDataModel(): ControlBodyDetails = ControlBodyDetails(mgdRegNumber = "")
+  def morePartialModel(mgdRegNumber: String): ControlBodyDetails =
+    ControlBodyDetails(
+      mgdRegNumber           = mgdRegNumber,
+      businessPartnerNumber  = Some("0100051763"),
+      dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
+      dateOfLeaving          = Some(LocalDate.of(2027, 3, 1)),
+      solePropTitle          = Some("Mrs"),
+      solePropFirstName      = Some("solePropFirstName"),
+      solePropLastName       = Some("solePropLastName"),
+      businessName           = Some("Unincorporated business Name"),
+      tradingName            = Some("Unincorporated Trading name"),
+      dateOfBirth            = None,
+      nino                   = None,
+      crn                    = None,
+      dateOfIncorporation    = None,
+      countryOfIncorporation = None,
+      foreignCorporateRef    = None,
+      adi                    = None,
+      isIomOrCiFlag          = Some("0"),
+      phoneNumber            = None,
+      mobilePhoneNumber      = None,
+      faxNumber              = None,
+      emailAddr              = None,
+      typeOfControllingBody  = Some(BusinessType.CorporateBody),
+      isRepMemSameAsCb       = Some("0"),
+      isUkIncorporated       = None,
+      systemDate             = Some(LocalDate.now())
+    )
 
   def otherModel(mgdRegNumber: String): ControlBodyDetails =
     ControlBodyDetails(
@@ -188,4 +215,7 @@ object ControlBodyDetails {
       isUkIncorporated       = Some("1"),
       systemDate             = Some(LocalDate.now())
     )
+
+  def noDataModel(): ControlBodyDetails = ControlBodyDetails(mgdRegNumber = "")
+
 }

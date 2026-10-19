@@ -165,36 +165,50 @@ object GamblingReturnPeriodsFormats {
     }
   }
 
-  private lazy val fullData: GamblingReturnPeriods =
+  private lazy val xgm00000001761Data: GamblingReturnPeriods =
     loadFixture("XGM00000001761.json")
 
-  private lazy val partialData: GamblingReturnPeriods =
+  private lazy val xgm00000001762Data: GamblingReturnPeriods =
     loadFixture("XGM00000001762.json")
 
-  private lazy val noNstpValuesData: GamblingReturnPeriods =
+  private lazy val xgm00000001763Data: GamblingReturnPeriods =
     loadFixture("XGM00000001763.json")
+
+  private lazy val xgm00000001764Data: GamblingReturnPeriods =
+    loadFixture("XGM00000001764.json")
+
+  private lazy val xgm00000001765Data: GamblingReturnPeriods =
+    loadFixture("XGM00000001765.json")
 
   private lazy val noData: GamblingReturnPeriods =
     loadFixture("return-periods.json")
 
-  /*
-   * Return a fixture with the requested registration number.
-   * Keep the system date dynamic, as in BusinessAddressDetails.
-   */
-  def fullModel(mgdRegNumber: String): GamblingReturnPeriods =
-    fullData.copy(
+  def xgm00000001761Model(mgdRegNumber: String): GamblingReturnPeriods =
+    xgm00000001761Data.copy(
       mgdRegNumber = mgdRegNumber,
       systemDate   = Some(LocalDate.now())
     )
 
-  def partialModel(mgdRegNumber: String): GamblingReturnPeriods =
-    partialData.copy(
+  def xgm00000001762Model(mgdRegNumber: String): GamblingReturnPeriods =
+    xgm00000001762Data.copy(
       mgdRegNumber = mgdRegNumber,
       systemDate   = Some(LocalDate.now())
     )
 
-  def noNstpValuesModel(mgdRegNumber: String): GamblingReturnPeriods =
-    noNstpValuesData.copy(
+  def xgm00000001763Model(mgdRegNumber: String): GamblingReturnPeriods =
+    xgm00000001763Data.copy(
+      mgdRegNumber = mgdRegNumber,
+      systemDate   = Some(LocalDate.now())
+    )
+
+  def xgm00000001764Model(mgdRegNumber: String): GamblingReturnPeriods =
+    xgm00000001764Data.copy(
+      mgdRegNumber = mgdRegNumber,
+      systemDate   = Some(LocalDate.now())
+    )
+
+  def xgm00000001765Model(mgdRegNumber: String): GamblingReturnPeriods =
+    xgm00000001765Data.copy(
       mgdRegNumber = mgdRegNumber,
       systemDate   = Some(LocalDate.now())
     )
