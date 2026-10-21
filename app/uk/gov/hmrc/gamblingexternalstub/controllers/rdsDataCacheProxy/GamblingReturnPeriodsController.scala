@@ -69,6 +69,9 @@ class GamblingReturnPeriodsController @Inject() (
         case "XGM00000001765" =>
           Ok(Json.toJson(xgm00000001765Model(sanitized)))
 
+        case "XGM00000001774" =>
+          Ok(Json.toJson(xgm00000001774Model(sanitized)))
+
         case "XGM00000000560" =>
           BadRequest(
             Json.obj(
