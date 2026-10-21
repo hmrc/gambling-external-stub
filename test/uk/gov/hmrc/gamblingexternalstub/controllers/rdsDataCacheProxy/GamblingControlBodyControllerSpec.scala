@@ -33,22 +33,22 @@ class GamblingControlBodyControllerSpec extends AnyWordSpec with Matchers with S
 
   "GamblingLicensesAndPremisesController#getControlBodyDetails" should {
 
-    "return OK and full model for XGM00000001761" in {
-      val result = controller.getControlBodyDetails("MGD", "XGM00000001761")(FakeRequest())
+    "return OK and full model for XGM00000001762" in {
+      val result = controller.getControlBodyDetails("MGD", "XGM00000001762")(FakeRequest())
 
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
         ControlBodyDetails(
-          mgdRegNumber           = "XGM00000001761",
-          businessPartnerNumber  = Some("0100051761"),
+          mgdRegNumber           = "XGM00000001762",
+          businessPartnerNumber  = Some("0100051762"),
           dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
           dateOfLeaving          = Some(LocalDate.of(2023, 3, 1)),
-          solePropTitle          = Some("Mx"),
-          solePropFirstName      = Some("solePropFirstName"),
-          solePropMiddleName     = Some("solePropMiddleName"),
-          solePropLastName       = Some("solePropLastName"),
-          businessName           = Some("BRUCE HOPKINS LIMITED"),
-          tradingName            = Some("Trading name 1"),
+          solePropTitle          = Some("Mr"),
+          solePropFirstName      = Some("ControllingBody SoleProprietor FirstName"),
+          solePropMiddleName     = Some("ControllingBody SoleProprietor MiddleName"),
+          solePropLastName       = Some("ControllingBody SoleProprietor LastName"),
+          businessName           = Some("ControllingBody SoleProprietor business name 62"),
+          tradingName            = Some("ControllingBody SoleProprietor trading name 62"),
           dateOfBirth            = Some(LocalDate.of(1998, 6, 24)),
           nino                   = Some("AB123456C"),
           utr                    = Some(5202020208L),
@@ -77,21 +77,21 @@ class GamblingControlBodyControllerSpec extends AnyWordSpec with Matchers with S
       )
     }
 
-    "return OK and partial model for XGM00000001762" in {
-      val result = controller.getControlBodyDetails("MGD", "XGM00000001762")(FakeRequest())
+    "return OK and partial model for XGM00000001772" in {
+      val result = controller.getControlBodyDetails("MGD", "XGM00000001772")(FakeRequest())
 
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
         ControlBodyDetails(
-          mgdRegNumber           = "XGM00000001762",
-          businessPartnerNumber  = Some("0100051762"),
+          mgdRegNumber           = "XGM00000001772",
+          businessPartnerNumber  = Some("0100051772"),
           dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
           dateOfLeaving          = Some(LocalDate.of(2027, 3, 1)),
-          solePropTitle          = Some("Mx"),
-          solePropFirstName      = Some("solePropFirstName"),
-          solePropLastName       = Some("solePropLastName"),
-          businessName           = Some("Corporate Body business Name"),
-          tradingName            = Some("Corporate Body Trading name"),
+          solePropTitle          = None,
+          solePropFirstName      = None,
+          solePropLastName       = None,
+          businessName           = Some("ControllingBody CorporateBody business name 72"),
+          tradingName            = Some("ControllingBody CorporateBody trading name 72"),
           dateOfBirth            = Some(LocalDate.of(1998, 6, 24)),
           nino                   = Some("AB123456C"),
           crn                    = Some("12345678"),
@@ -105,7 +105,7 @@ class GamblingControlBodyControllerSpec extends AnyWordSpec with Matchers with S
           faxNumber              = Some("7777"),
           emailAddr              = Some("emailAddr@example.com"),
           typeOfControllingBody  = Some(BusinessType.CorporateBody),
-          isRepMemSameAsCb       = Some("0"),
+          isRepMemSameAsCb       = Some("1"),
           isUkIncorporated       = None,
           systemDate             = Some(LocalDate.now())
         )

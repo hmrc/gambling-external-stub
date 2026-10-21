@@ -39,10 +39,10 @@ class GamblingControlBodyController @Inject() (
       val sanitized = mgdRegNumber.trim.toUpperCase()
       sanitized match {
 
-        case "XGM00000001761" =>
+        case "XGM00000001762" =>
           Ok(Json.toJson(fullModel(sanitized)))
 
-        case "XGM00000001762" =>
+        case "XGM00000001772" =>
           Ok(Json.toJson(partialModel(sanitized)))
 
         case "XGM00000001763" =>

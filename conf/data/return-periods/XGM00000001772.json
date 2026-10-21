@@ -1,0 +1,16 @@
+{
+  "mgdRegNumber": "XGM00000001772",
+  "returnPeriodsId": 2,
+  "nstpEndDate1": "20-NOV-25",
+  "nstpEndDate2": "20-FEB-26",
+  "nstpEndDate3": "31-MAY-26",
+  "nstpEndDate4": "31-AUG-26",
+  "nstpEndDate5": "30-NOV-26",
+  "nstpEndDate6": "28-FEB-27",
+  "nstpEndDate7": "31-MAY-27",
+  "nstpEndDate8": "31-AUG-27",
+  "isInLastNstp": "0",
+  "finalPeriodWarning": "0",
+  "hasExistingNstpValues": "1",
+  "systemDate": "2026-10-01"
+}

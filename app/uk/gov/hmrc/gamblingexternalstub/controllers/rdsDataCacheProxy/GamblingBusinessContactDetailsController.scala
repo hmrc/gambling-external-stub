@@ -54,6 +54,9 @@ class GamblingBusinessContactDetailsController @Inject() (
       case "XGM00000001765" =>
         Ok(Json.toJson(businessContactDetails(mgdRegNumber)))
 
+      case "XGM00000001772" =>
+        Ok(Json.toJson(businessContactDetails(mgdRegNumber)))
+
       case "XGM00000001774" =>
         Ok(Json.toJson(businessContactDetails(mgdRegNumber)))
 
