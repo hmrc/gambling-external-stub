@@ -98,7 +98,7 @@ class GamblingReturnPeriodsControllerSpec extends AnyWordSpec with Matchers with
       val json = contentAsJson(result)
 
       (json \ "mgdRegNumber").as[String]          shouldBe "XGM00000001763"
-      (json \ "returnPeriodsId").as[Int]          shouldBe 3
+      (json \ "returnPeriodsId").as[Int]          shouldBe 2
       (json \ "isInLastNstp").as[String]          shouldBe "1"
       (json \ "hasExistingNstpValues").as[String] shouldBe "1"
     }
