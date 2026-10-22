@@ -180,6 +180,12 @@ object GamblingReturnPeriodsFormats {
   private lazy val xgm00000001765Data: GamblingReturnPeriods =
     loadFixture("XGM00000001765.json")
 
+  private lazy val xgm00000001772Data: GamblingReturnPeriods =
+    loadFixture("XGM00000001772.json")
+
+  private lazy val xgm00000001774Data: GamblingReturnPeriods =
+    loadFixture("XGM00000001774.json")
+
   private lazy val noData: GamblingReturnPeriods =
     loadFixture("return-periods.json")
 
@@ -209,6 +215,18 @@ object GamblingReturnPeriodsFormats {
 
   def xgm00000001765Model(mgdRegNumber: String): GamblingReturnPeriods =
     xgm00000001765Data.copy(
+      mgdRegNumber = mgdRegNumber,
+      systemDate   = Some(LocalDate.now())
+    )
+
+  def xgm00000001772Model(mgdRegNumber: String): GamblingReturnPeriods =
+    xgm00000001772Data.copy(
+      mgdRegNumber = mgdRegNumber,
+      systemDate   = Some(LocalDate.now())
+    )
+
+  def xgm00000001774Model(mgdRegNumber: String): GamblingReturnPeriods =
+    xgm00000001774Data.copy(
       mgdRegNumber = mgdRegNumber,
       systemDate   = Some(LocalDate.now())
     )

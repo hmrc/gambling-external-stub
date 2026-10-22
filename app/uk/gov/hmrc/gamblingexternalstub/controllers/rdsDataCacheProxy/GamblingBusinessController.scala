@@ -20,7 +20,7 @@ import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.gamblingexternalstub.models.*
-import uk.gov.hmrc.gamblingexternalstub.models.BusinessAddressDetails.{fullModel, iomCIUKModel, noDataModel, nonMandatoryModel, nonUKModel, partialModel}
+import uk.gov.hmrc.gamblingexternalstub.models.BusinessAddressDetails.{extraDataModel, fullModel, iomCIUKModel, noDataModel, nonMandatoryModel, nonUKModel, partialModel}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.Inject
@@ -38,25 +38,24 @@ class GamblingBusinessController @Inject() (
     } else {
       val sanitized = mgdRegNumber.trim.toUpperCase()
       sanitized match {
-        // full data
+
         case "XGM00000001761" =>
           Ok(Json.toJson(fullModel(sanitized)))
 
-        // some missing data
         case "XGM00000001762" =>
           Ok(Json.toJson(partialModel(sanitized)))
 
-        // non uk data
         case "XGM00000001763" =>
           Ok(Json.toJson(nonUKModel(sanitized)))
 
-        // iom ci uk data
         case "XGM00000001764" =>
           Ok(Json.toJson(iomCIUKModel(sanitized)))
 
-        // no data
         case "XGM00000001765" =>
           Ok(Json.toJson(nonMandatoryModel(sanitized)))
+
+        case "XGM00000001772" =>
+          Ok(Json.toJson(extraDataModel(sanitized)))
 
         case "XGM00000001774" =>
           Ok(Json.toJson(fullModel(sanitized)))
