@@ -40,7 +40,7 @@ class GamblingControlBodyControllerSpec extends AnyWordSpec with Matchers with S
       contentAsJson(result) shouldBe Json.toJson(
         ControlBodyDetails(
           mgdRegNumber           = "XGM00000001762",
-          businessPartnerNumber  = Some("0100051762"),
+          businessPartnerNumber  = Some("0100001762"),
           dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
           dateOfLeaving          = Some(LocalDate.of(2023, 3, 1)),
           solePropTitle          = Some("Mr"),
@@ -84,7 +84,7 @@ class GamblingControlBodyControllerSpec extends AnyWordSpec with Matchers with S
       contentAsJson(result) shouldBe Json.toJson(
         ControlBodyDetails(
           mgdRegNumber           = "XGM00000001772",
-          businessPartnerNumber  = Some("0100051772"),
+          businessPartnerNumber  = Some("0100001772"),
           dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
           dateOfLeaving          = Some(LocalDate.of(2027, 3, 1)),
           solePropTitle          = None,

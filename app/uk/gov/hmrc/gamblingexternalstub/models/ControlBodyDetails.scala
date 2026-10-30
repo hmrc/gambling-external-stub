@@ -62,10 +62,10 @@ object ControlBodyDetails {
   implicit val controlBodyDetailsFormat: OFormat[ControlBodyDetails] =
     Json.format[ControlBodyDetails]
 
-  def fullModel(mgdRegNumber: String): ControlBodyDetails =
+  def xgm00000001762(mgdRegNumber: String): ControlBodyDetails =
     ControlBodyDetails(
       mgdRegNumber           = mgdRegNumber,
-      businessPartnerNumber  = Some("0100051762"),
+      businessPartnerNumber  = Some("0100001762"),
       dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
       dateOfLeaving          = Some(LocalDate.of(2023, 3, 1)),
       solePropTitle          = Some("Mr"),
@@ -100,10 +100,10 @@ object ControlBodyDetails {
       systemDate             = Some(LocalDate.now())
     )
 
-  def partialModel(mgdRegNumber: String): ControlBodyDetails =
+  def xgm00000001772(mgdRegNumber: String): ControlBodyDetails =
     ControlBodyDetails(
       mgdRegNumber           = mgdRegNumber,
-      businessPartnerNumber  = Some("0100051772"),
+      businessPartnerNumber  = Some("0100001772"),
       dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
       dateOfLeaving          = Some(LocalDate.of(2027, 3, 1)),
       solePropTitle          = None,
@@ -129,10 +129,10 @@ object ControlBodyDetails {
       systemDate             = Some(LocalDate.now())
     )
 
-  def morePartialModel(mgdRegNumber: String): ControlBodyDetails =
+  def xgm00000001782(mgdRegNumber: String): ControlBodyDetails =
     ControlBodyDetails(
       mgdRegNumber           = mgdRegNumber,
-      businessPartnerNumber  = Some("0100051763"),
+      businessPartnerNumber  = Some("0100001782"),
       dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
       dateOfLeaving          = Some(LocalDate.of(2027, 3, 1)),
       solePropTitle          = None,
@@ -158,10 +158,10 @@ object ControlBodyDetails {
       systemDate             = Some(LocalDate.now())
     )
 
-  def otherModel(mgdRegNumber: String): ControlBodyDetails =
+  def xgm00000001792(mgdRegNumber: String): ControlBodyDetails =
     ControlBodyDetails(
       mgdRegNumber           = mgdRegNumber,
-      businessPartnerNumber  = Some("0100051764"),
+      businessPartnerNumber  = Some("0100001792"),
       dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
       dateOfLeaving          = Some(LocalDate.of(2027, 3, 1)),
       solePropTitle          = None,
@@ -187,10 +187,10 @@ object ControlBodyDetails {
       systemDate             = Some(LocalDate.now())
     )
 
-  def otherModels(mgdRegNumber: String): ControlBodyDetails =
+  def xgm00000001796(mgdRegNumber: String): ControlBodyDetails =
     ControlBodyDetails(
       mgdRegNumber           = mgdRegNumber,
-      businessPartnerNumber  = Some("0100051765"),
+      businessPartnerNumber  = Some("0100001796"),
       dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
       dateOfLeaving          = Some(LocalDate.of(2026, 3, 1)),
       solePropTitle          = None,

@@ -109,8 +109,11 @@ class GamblingController @Inject() (
       "XGM00000001765",
       "XGM00000001772",
       "XGM00000001774",
+      "XGM00000001782",
       "XGM00000001784",
+      "XGM00000001792",
       "XGM00000001794",
+      "XGM00000001796",
       "mgd-certificate"
     ).map { registration =>
       registration -> Using
@@ -129,8 +132,11 @@ class GamblingController @Inject() (
       "XGM00000001765",
       "XGM00000001772",
       "XGM00000001774",
+      "XGM00000001782",
       "XGM00000001784",
+      "XGM00000001792",
       "XGM00000001794",
+      "XGM00000001796",
       "business-details"
     ).map { registration =>
       registration -> Using
@@ -287,11 +293,20 @@ class GamblingController @Inject() (
       case "XGM00000001774" =>
         Ok(businessDetails("XGM00000001774") ++ Json.obj("systemDate" -> LocalDate.now()))
 
+      case "XGM00000001782" =>
+        Ok(businessDetails("XGM00000001782"))
+
       case "XGM00000001784" =>
         Ok(businessDetails("XGM00000001784") ++ Json.obj("systemDate" -> LocalDate.now()))
 
+      case "XGM00000001792" =>
+        Ok(businessDetails("XGM00000001792"))
+
       case "XGM00000001794" =>
         Ok(businessDetails("XGM00000001794") ++ Json.obj("systemDate" -> LocalDate.now()))
+
+      case "XGM00000001796" =>
+        Ok(businessDetails("XGM00000001796"))
 
       case reg =>
         Ok(businessDetails("business-details") ++ Json.obj("mgdRegNumber" -> reg, "systemDate" -> LocalDate.now()))
@@ -342,11 +357,20 @@ class GamblingController @Inject() (
       case "XGM00000001774" =>
         Ok(mgdCertificates("XGM00000001774"))
 
+      case "XGM00000001782" =>
+        Ok(mgdCertificates("XGM00000001782"))
+
       case "XGM00000001784" =>
-        Ok(mgdCertificates("XGM00000001774"))
+        Ok(mgdCertificates("XGM00000001784"))
+
+      case "XGM00000001792" =>
+        Ok(mgdCertificates("XGM00000001792"))
 
       case "XGM00000001794" =>
         Ok(mgdCertificates("XGM00000001794"))
+
+      case "XGM00000001796" =>
+        Ok(mgdCertificates("XGM00000001796"))
 
       case reg =>
         val certificate = mgdCertificates("mgd-certificate")
