@@ -138,7 +138,7 @@ object ControlBodyDetails {
       solePropTitle          = None,
       solePropFirstName      = None,
       solePropLastName       = None,
-      businessName           = None,
+      businessName           = Some("Unincorporated business Name"),
       tradingName            = None,
       dateOfBirth            = None,
       nino                   = None,
