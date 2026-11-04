@@ -62,10 +62,10 @@ object ControlBodyDetails {
   implicit val controlBodyDetailsFormat: OFormat[ControlBodyDetails] =
     Json.format[ControlBodyDetails]
 
-  def fullModel(mgdRegNumber: String): ControlBodyDetails =
+  def xgm00000001762(mgdRegNumber: String): ControlBodyDetails =
     ControlBodyDetails(
       mgdRegNumber           = mgdRegNumber,
-      businessPartnerNumber  = Some("0100051762"),
+      businessPartnerNumber  = Some("0100001762"),
       dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
       dateOfLeaving          = Some(LocalDate.of(2023, 3, 1)),
       solePropTitle          = Some("Mr"),
@@ -76,8 +76,8 @@ object ControlBodyDetails {
       tradingName            = Some("ControllingBody SoleProprietor trading name 62"),
       dateOfBirth            = Some(LocalDate.of(1998, 6, 24)),
       nino                   = Some("AB123456C"),
-      utr                    = Some(5202020208L),
-      vrn                    = Some(127207785L),
+      utr                    = Some(5177008741L),
+      vrn                    = Some(252525279L),
       crn                    = Some("12345678"),
       dateOfIncorporation    = Some(LocalDate.of(2020, 2, 15)),
       countryOfIncorporation = Some("Spain"),
@@ -100,10 +100,10 @@ object ControlBodyDetails {
       systemDate             = Some(LocalDate.now())
     )
 
-  def partialModel(mgdRegNumber: String): ControlBodyDetails =
+  def xgm00000001772(mgdRegNumber: String): ControlBodyDetails =
     ControlBodyDetails(
       mgdRegNumber           = mgdRegNumber,
-      businessPartnerNumber  = Some("0100051772"),
+      businessPartnerNumber  = Some("0100001772"),
       dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
       dateOfLeaving          = Some(LocalDate.of(2027, 3, 1)),
       solePropTitle          = None,
@@ -129,17 +129,17 @@ object ControlBodyDetails {
       systemDate             = Some(LocalDate.now())
     )
 
-  def morePartialModel(mgdRegNumber: String): ControlBodyDetails =
+  def xgm00000001782(mgdRegNumber: String): ControlBodyDetails =
     ControlBodyDetails(
       mgdRegNumber           = mgdRegNumber,
-      businessPartnerNumber  = Some("0100051763"),
+      businessPartnerNumber  = Some("0100001782"),
       dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
       dateOfLeaving          = Some(LocalDate.of(2027, 3, 1)),
       solePropTitle          = None,
       solePropFirstName      = None,
       solePropLastName       = None,
       businessName           = Some("Unincorporated business Name"),
-      tradingName            = Some("Unincorporated Trading name"),
+      tradingName            = None,
       dateOfBirth            = None,
       nino                   = None,
       crn                    = None,
@@ -158,10 +158,10 @@ object ControlBodyDetails {
       systemDate             = Some(LocalDate.now())
     )
 
-  def otherModel(mgdRegNumber: String): ControlBodyDetails =
+  def xgm00000001792(mgdRegNumber: String): ControlBodyDetails =
     ControlBodyDetails(
       mgdRegNumber           = mgdRegNumber,
-      businessPartnerNumber  = Some("0100051764"),
+      businessPartnerNumber  = Some("0100001792"),
       dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
       dateOfLeaving          = Some(LocalDate.of(2027, 3, 1)),
       solePropTitle          = None,
@@ -187,10 +187,10 @@ object ControlBodyDetails {
       systemDate             = Some(LocalDate.now())
     )
 
-  def otherModels(mgdRegNumber: String): ControlBodyDetails =
+  def xgm00000001796(mgdRegNumber: String): ControlBodyDetails =
     ControlBodyDetails(
       mgdRegNumber           = mgdRegNumber,
-      businessPartnerNumber  = Some("0100051765"),
+      businessPartnerNumber  = Some("0100001796"),
       dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
       dateOfLeaving          = Some(LocalDate.of(2026, 3, 1)),
       solePropTitle          = None,
@@ -199,15 +199,21 @@ object ControlBodyDetails {
       businessName           = Some("LLP Body business Name"),
       tradingName            = Some("LLP Body Trading name"),
       dateOfBirth            = Some(LocalDate.of(1998, 6, 24)),
-      nino                   = Some("AB123456C"),
-      crn                    = Some("12345678"),
+      nino                   = None,
+      crn                    = None,
       dateOfIncorporation    = Some(LocalDate.of(2020, 2, 15)),
       countryOfIncorporation = Some("United Kingdom"),
-      foreignCorporateRef    = Some("foreignCorporateRef"),
-      adi                    = Some("adi"),
-      isIomOrCiFlag          = Some("1"),
-      phoneNumber            = Some("666 6666"),
-      mobilePhoneNumber      = Some("5555 555 555"),
+      foreignCorporateRef    = Some("123456789"),
+      address1               = Some("Address 1"),
+      address2               = Some("Address 2"),
+      address3               = Some("Address 3"),
+      address4               = Some("Address 4"),
+      postcode               = Some("NE27 0QQ"),
+      country                = Some("United Kingdom"),
+      adi                    = Some("Additional Address"),
+      isIomOrCiFlag          = Some("0"),
+      phoneNumber            = None,
+      mobilePhoneNumber      = None,
       faxNumber              = Some("4444 444 444"),
       emailAddr              = Some("emailAddr@example.com"),
       typeOfControllingBody  = Some(BusinessType.LimitedLiabilityPartnership),

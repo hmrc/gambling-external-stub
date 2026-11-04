@@ -203,20 +203,20 @@ class GamblingControllerSpec extends AnyWordSpec with Matchers with SpecBase {
       )
     }
 
-    "return OK for XGM00000001762" in {
-      val result = controller.getBusinessName("XGM00000001762")(FakeRequest())
+    "return OK for XGM00000001763" in {
+      val result = controller.getBusinessName("XGM00000001763")(FakeRequest())
 
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
         BusinessName(
-          "XGM00000001762",
-          Some("Mrs"),
-          Some("Corporate"),
-          None,
+          "XGM00000001763",
+          Some("Ms"),
+          Some("Unincorporated"),
+          Some("MN"),
           Some("Body"),
-          Some("CB Business Name"),
-          Some(2),
-          Some("CB Trading Name"),
+          Some("UCB Business Name"),
+          Some(3),
+          Some("UCB Trading Name"),
           Some(LocalDate.of(2026, 1, 1))
         )
       )

@@ -53,13 +53,13 @@ class GamblingBusinessControllerSpec extends AnyWordSpec with Matchers with Spec
       )
     }
 
-    "return OK and partial model for XGM00000001762" in {
-      val result = controller.getBusinessAddressDetails("MGD", "XGM00000001762")(FakeRequest())
+    "return OK and partial model for XGM00000001771" in {
+      val result = controller.getBusinessAddressDetails("MGD", "XGM00000001771")(FakeRequest())
 
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
         BusinessAddressDetails(
-          mgdRegNumber = "XGM00000001762",
+          mgdRegNumber = "XGM00000001771",
           adi          = Some("1st floor"),
           address1     = Some("address1"),
           postcode     = Some("EH8 7AU"),
