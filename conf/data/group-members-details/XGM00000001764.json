@@ -1,4 +1,6 @@
 {
+  "groupMembers": [
+    {
   "mgdRegNumber": "XGM00000001764",
   "businessPartnerNumber": "1",
   "businessName": "1",
@@ -9,5 +11,6 @@
   "dateOfLeaving": "2026-05-31",
   "emailAddr": "1",
   "systemDate": "2026-05-31"
+    }
+  ]
 }
-

@@ -34,37 +34,45 @@ final case class GroupMembers(
   systemDate: Option[LocalDate]
 )
 
+final case class GroupMemberRecords (
+  groupMembers: Seq[GroupMembers]
+)
+
 object GroupMembers {
   implicit val format: OFormat[GroupMembers] = Json.format[GroupMembers]
+}
+
+object GroupMemberRecords {
+  implicit val format: OFormat[GroupMemberRecords] = Json.format[GroupMemberRecords]
 
   private lazy val xgm00000001761Data = Using
     .resource(
       getClass.getResourceAsStream("/data/group-members-details/XGM00000001761.json")
     )(Json.parse)
-    .as[GroupMembers]
-  
+    .as[GroupMemberRecords]
+
+
+  def xgm00000001761Model(mgdRegNumber: String): GroupMemberRecords =
+    xgm00000001761Data
+
 
   private lazy val xgm00000001764Data = Using
     .resource(
       getClass.getResourceAsStream("/data/group-members-details/XGM00000001764.json")
     )(Json.parse)
-    .as[GroupMembers]
-  
+    .as[GroupMemberRecords]
+
 
   private lazy val noData = Using
     .resource(
       getClass.getResourceAsStream("/data/group-members-details/group-members-details.json")
     )(Json.parse)
-    .as[GroupMembers]
+    .as[GroupMemberRecords]
 
-  def xgm00000001761Model(mgdRegNumber: String): GroupMembers =
-    xgm00000001761Data.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.now()))
-  
 
-  def xgm00000001764Model(mgdRegNumber: String): GroupMembers =
-    xgm00000001764Data.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.now()))
-  
+  def xgm00000001764Model(mgdRegNumber: String): GroupMemberRecords =
+    xgm00000001764Data
 
-  def noDataModel(): GroupMembers = noData
 
+  def noDataModel(): GroupMemberRecords = noData
 }

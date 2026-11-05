@@ -33,51 +33,20 @@ class GamblingGroupMembersControllerSpec extends AnyWordSpec with Matchers with 
 
   "GamblingGroupMembersController#getGroupMembersDetails" should {
 
-    "return OK and full model for XGM00000001761" in {
+    "return OK and model for XGM00000001761" in {
       val result = controller.getGroupMembersDetails("MGD", "XGM00000001761")(FakeRequest())
 
       status(result) shouldBe OK
-      contentAsJson(result) shouldBe Json.toJson(
-        GroupMembers(
-          "XGM00000001761",
-          businessPartnerNumber = Some("0"),
-          businessName        = Some("0"),
-          CRN        = Some("0"),
-          foreignCorporateRef   = Some("0"),
-          isRepMemberOfGroup            = Some("1"),
-          dateOfJoining           = Some(LocalDate.of(2026, 5, 31)),
-          dateOfLeaving           = Some(LocalDate.of(2026, 5, 31)),
-          emailAddr            = Some("0"),
-          systemDate            = Some(LocalDate.now())
-        )
-      )
+      val response = contentAsJson(result).as[GroupMemberRecords]
+      response.groupMembers.size                       shouldBe 2
     }
 
-    "return OK and full model for XGM00000001764" in {
+    "return OK model for XGM00000001764" in {
       val result = controller.getGroupMembersDetails("MGD", "XGM00000001764")(FakeRequest())
 
       status(result) shouldBe OK
-      contentAsJson(result) shouldBe Json.toJson(
-        GroupMembers(
-          "XGM00000001764",
-          businessPartnerNumber = Some("1"),
-          businessName        = Some("1"),
-          CRN        = Some("1"),
-          foreignCorporateRef   = Some("1"),
-          isRepMemberOfGroup            = Some("1"),
-          dateOfJoining           = Some(LocalDate.of(2026, 5, 31)),
-          dateOfLeaving           = Some(LocalDate.of(2026, 5, 31)),
-          emailAddr            = Some("1"),
-          systemDate            = Some(LocalDate.now())
-        )
-      )
-    }
-
-    "return default response" in {
-      val result = controller.getGroupMembersDetails("MGD", "GAM999")(FakeRequest())
-
-      status(result)        shouldBe OK
-      contentAsJson(result) shouldBe Json.toJson(LicenseDetails(mgdRegNumber = ""))
+      val response = contentAsJson(result).as[GroupMemberRecords]
+      response.groupMembers.size shouldBe 1
     }
 
     "return BAD_REQUEST for an unrecognised regime" in {

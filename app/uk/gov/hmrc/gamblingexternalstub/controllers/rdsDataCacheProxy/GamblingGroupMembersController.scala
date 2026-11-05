@@ -20,7 +20,7 @@ import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.gamblingexternalstub.models.*
-import uk.gov.hmrc.gamblingexternalstub.models.GroupMembers.{noDataModel, xgm00000001761Model, xgm00000001764Model}
+import uk.gov.hmrc.gamblingexternalstub.models.GroupMemberRecords.{noDataModel, xgm00000001761Model, xgm00000001764Model}
 
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
