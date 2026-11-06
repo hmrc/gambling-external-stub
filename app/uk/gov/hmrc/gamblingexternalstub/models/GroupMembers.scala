@@ -25,7 +25,7 @@ final case class GroupMembers(
   mgdRegNumber: String,
   businessPartnerNumber: Option[String],
   businessName: Option[String],
-  CRN: Option[String],
+  crn: Option[String],
   foreignCorporateRef: Option[String],
   isRepMemberOfGroup: Option[String],
   dateOfJoining: Option[LocalDate],
