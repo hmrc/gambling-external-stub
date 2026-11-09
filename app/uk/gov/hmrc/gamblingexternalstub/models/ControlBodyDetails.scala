@@ -222,6 +222,22 @@ object ControlBodyDetails {
       systemDate             = Some(LocalDate.now())
     )
 
-  def noDataModel(): ControlBodyDetails = ControlBodyDetails(mgdRegNumber = "")
+//  def noDataModel(): ControlBodyDetails = ControlBodyDetails(mgdRegNumber = "")
+
+  def noDataModel(mgdRegNumber: String): ControlBodyDetails =
+    ControlBodyDetails(
+      mgdRegNumber     = mgdRegNumber,
+      dateOfJoining    = Some(LocalDate.of(2020, 1, 15)),
+      businessName     = Some("'Control-Body 0-9 Business-Name'"),
+      address1         = Some("Address 1"),
+      address2         = Some("Address 2"),
+      address3         = Some("Address 3"),
+      address4         = Some("Address 4"),
+      postcode         = Some("NE27 0QQ"),
+      country          = Some("United Kingdom"),
+      isIomOrCiFlag    = Some("0"),
+      isRepMemSameAsCb = Some("0"),
+      systemDate       = Some(LocalDate.now())
+    )
 
 }

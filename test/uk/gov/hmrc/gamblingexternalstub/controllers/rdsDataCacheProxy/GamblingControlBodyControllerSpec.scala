@@ -115,8 +115,23 @@ class GamblingControlBodyControllerSpec extends AnyWordSpec with Matchers with S
     "return default response" in {
       val result = controller.getControlBodyDetails("MGD", "GAM999")(FakeRequest())
 
-      status(result)        shouldBe OK
-      contentAsJson(result) shouldBe Json.toJson(ControlBodyDetails(mgdRegNumber = ""))
+      status(result) shouldBe OK
+      contentAsJson(result) shouldBe Json.toJson(
+        ControlBodyDetails(
+          mgdRegNumber     = "GAM999",
+          dateOfJoining    = Some(LocalDate.of(2020, 1, 15)),
+          businessName     = Some("'Control-Body 0-9 Business-Name'"),
+          address1         = Some("Address 1"),
+          address2         = Some("Address 2"),
+          address3         = Some("Address 3"),
+          address4         = Some("Address 4"),
+          postcode         = Some("NE27 0QQ"),
+          country          = Some("United Kingdom"),
+          isIomOrCiFlag    = Some("0"),
+          isRepMemSameAsCb = Some("0"),
+          systemDate       = Some(LocalDate.now())
+        )
+      )
     }
 
     "return BAD_REQUEST for an unrecognised regime" in {
