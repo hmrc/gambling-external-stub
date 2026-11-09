@@ -3,13 +3,13 @@
     {
   "mgdRegNumber": "XGM00000001764",
   "businessPartnerNumber": "1",
-  "businessName": "1",
+  "businessName": "Random Business Name",
   "crn": "1",
   "foreignCorporateRef": "1",
   "isRepMemberOfGroup": "1",
   "dateOfJoining": "2026-05-31",
   "dateOfLeaving": "2026-05-31",
-  "emailAddr": "1",
+  "emailAddr": "",
   "systemDate": "2026-05-31"
     }
   ]
