@@ -80,7 +80,7 @@ class GamblingControlBodyController @Inject() (
 
         // no data
         case reg =>
-          Ok(Json.toJson(noDataModel()))
+          Ok(Json.toJson(noDataModel(mgdRegNumber)))
       }
 
     }
