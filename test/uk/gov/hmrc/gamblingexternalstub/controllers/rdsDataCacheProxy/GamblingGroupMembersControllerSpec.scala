@@ -38,7 +38,7 @@ class GamblingGroupMembersControllerSpec extends AnyWordSpec with Matchers with 
 
       status(result) shouldBe OK
       val response = contentAsJson(result).as[GroupMemberRecords]
-      response.groupMembers.size                       shouldBe 2
+      response.groupMembers.size shouldBe 2
     }
 
     "return OK model for XGM00000001764" in {

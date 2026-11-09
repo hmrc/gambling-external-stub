@@ -34,7 +34,7 @@ final case class GroupMembers(
   systemDate: Option[LocalDate]
 )
 
-final case class GroupMemberRecords (
+final case class GroupMemberRecords(
   groupMembers: Seq[GroupMembers]
 )
 
@@ -51,10 +51,8 @@ object GroupMemberRecords {
     )(Json.parse)
     .as[GroupMemberRecords]
 
-
   def xgm00000001761Model(mgdRegNumber: String): GroupMemberRecords =
     xgm00000001761Data
-
 
   private lazy val xgm00000001764Data = Using
     .resource(
@@ -62,17 +60,14 @@ object GroupMemberRecords {
     )(Json.parse)
     .as[GroupMemberRecords]
 
-
   private lazy val noData = Using
     .resource(
       getClass.getResourceAsStream("/data/group-members-details/group-members-details.json")
     )(Json.parse)
     .as[GroupMemberRecords]
 
-
   def xgm00000001764Model(mgdRegNumber: String): GroupMemberRecords =
     xgm00000001764Data
-
 
   def noDataModel(): GroupMemberRecords = noData
 }

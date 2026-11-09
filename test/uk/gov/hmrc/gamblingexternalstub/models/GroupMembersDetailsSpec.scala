@@ -33,45 +33,45 @@ class GroupMembersDetailsSpec extends AnyWordSpec with Matchers {
       val model = GroupMembers(
         "XRM00000000574",
         businessPartnerNumber = Some("0"),
-        businessName        = Some("0"),
-        crn        = Some("0"),
+        businessName          = Some("0"),
+        crn                   = Some("0"),
         foreignCorporateRef   = Some("0"),
-        isRepMemberOfGroup            = Some("1"),
-        dateOfJoining           = Some(fixedDate),
-        dateOfLeaving           = Some(fixedDate),
-        emailAddr            = Some("0"),
-        systemDate   = Some(fixedDate)
+        isRepMemberOfGroup    = Some("1"),
+        dateOfJoining         = Some(fixedDate),
+        dateOfLeaving         = Some(fixedDate),
+        emailAddr             = Some("0"),
+        systemDate            = Some(fixedDate)
       )
 
       val json = Json.toJson(model)
 
       json shouldBe Json.obj(
-        "mgdRegNumber" -> "XRM00000000574",
-        "businessPartnerNumber"     -> "0",
-        "businessName"     -> "0",
-        "crn"     -> "0",
-        "foreignCorporateRef"     -> "0",
-        "isRepMemberOfGroup"     -> "1",
-        "dateOfJoining"     -> Some(fixedDate),
-        "dateOfLeaving"     -> Some(fixedDate),
-        "emailAddr"     -> "0",
-        "systemDate"   -> Some(fixedDate)
+        "mgdRegNumber"          -> "XRM00000000574",
+        "businessPartnerNumber" -> "0",
+        "businessName"          -> "0",
+        "crn"                   -> "0",
+        "foreignCorporateRef"   -> "0",
+        "isRepMemberOfGroup"    -> "1",
+        "dateOfJoining"         -> Some(fixedDate),
+        "dateOfLeaving"         -> Some(fixedDate),
+        "emailAddr"             -> "0",
+        "systemDate"            -> Some(fixedDate)
       )
     }
 
     "deserialize JSON" in {
 
       val json = Json.obj(
-        "mgdRegNumber" -> "XRM00000000574",
-        "businessPartnerNumber"     -> "4",
-        "businessName"     -> "4",
-        "crn"     -> "4",
-        "foreignCorporateRef"     -> "4",
-        "isRepMemberOfGroup"     -> "1",
-        "dateOfJoining"     -> Some(fixedDate),
-        "dateOfLeaving"     -> Some(fixedDate),
-        "emailAddr"     -> "1",
-        "systemDate"   -> Some(fixedDate)
+        "mgdRegNumber"          -> "XRM00000000574",
+        "businessPartnerNumber" -> "4",
+        "businessName"          -> "4",
+        "crn"                   -> "4",
+        "foreignCorporateRef"   -> "4",
+        "isRepMemberOfGroup"    -> "1",
+        "dateOfJoining"         -> Some(fixedDate),
+        "dateOfLeaving"         -> Some(fixedDate),
+        "emailAddr"             -> "1",
+        "systemDate"            -> Some(fixedDate)
       )
 
       val result = json.as[GroupMembers]
@@ -79,14 +79,14 @@ class GroupMembersDetailsSpec extends AnyWordSpec with Matchers {
       result shouldBe GroupMembers(
         "XRM00000000574",
         businessPartnerNumber = Some("4"),
-        businessName        = Some("4"),
-        crn        = Some("4"),
+        businessName          = Some("4"),
+        crn                   = Some("4"),
         foreignCorporateRef   = Some("4"),
-        isRepMemberOfGroup            = Some("1"),
-        dateOfJoining           = Some(fixedDate),
-        dateOfLeaving           = Some(fixedDate),
-        emailAddr            = Some("1"),
-        systemDate   = Some(fixedDate)
+        isRepMemberOfGroup    = Some("1"),
+        dateOfJoining         = Some(fixedDate),
+        dateOfLeaving         = Some(fixedDate),
+        emailAddr             = Some("1"),
+        systemDate            = Some(fixedDate)
       )
     }
 
@@ -99,16 +99,16 @@ class GroupMembersDetailsSpec extends AnyWordSpec with Matchers {
       val result = json.as[GroupMembers]
 
       result shouldBe GroupMembers(
-        mgdRegNumber = "XRM00000000574",
+        mgdRegNumber          = "XRM00000000574",
         businessPartnerNumber = None,
-        businessName        = None,
-        crn        = None,
+        businessName          = None,
+        crn                   = None,
         foreignCorporateRef   = None,
-        isRepMemberOfGroup            = None,
-        dateOfJoining           = None,
-        dateOfLeaving           = None,
-        emailAddr            = None,
-        systemDate   = None
+        isRepMemberOfGroup    = None,
+        dateOfJoining         = None,
+        dateOfLeaving         = None,
+        emailAddr             = None,
+        systemDate            = None
       )
     }
   }

@@ -26,7 +26,7 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.Inject
 
-class GamblingGroupMembersController @Inject()(
+class GamblingGroupMembersController @Inject() (
   cc: ControllerComponents
 ) extends BackendController(cc)
     with Logging {
@@ -42,11 +42,9 @@ class GamblingGroupMembersController @Inject()(
 
         case "XGM00000001761" =>
           Ok(Json.toJson(xgm00000001761Model(sanitized)))
-          
 
         case "XGM00000001764" =>
           Ok(Json.toJson(xgm00000001764Model(sanitized)))
-          
 
         case "XGM00000000400" =>
           BadRequest(
