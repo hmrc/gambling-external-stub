@@ -100,11 +100,11 @@ object MemberDetails {
     .as[MemberDetails]
 
   def xgm00000001761Model(mgdRegNumber: String): MemberDetails =
-    xgm00000001761Data.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.now()))
+    xgm00000001761Data.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.of(2026,11,11)))
   
 
   def xgm00000001764Model(mgdRegNumber: String): MemberDetails =
-    xgm00000001764Data.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.now()))
+    xgm00000001764Data.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.of(2026,11,11)))
   
 
   def noDataModel(): MemberDetails = noData

@@ -33,7 +33,7 @@ class GamblingMemberDetailsController @Inject()(
 
   private val supportedRegimes = List(Regime.MGD)
 
-  def getMemberDetails(regime: String, mgdRegNumber: String): Action[AnyContent] = Action { _ =>
+  def getMemberDetails(regime: String, mgdRegNumber: String, partnerNumber: String): Action[AnyContent] = Action { _ =>
     if (!Regime.fromString(regime.trim.toLowerCase()).exists(supportedRegimes.contains)) {
       BadRequest(Json.obj("code" -> "INVALID_REGIME", "message" -> s"Regime $regime is not supported"))
     } else {

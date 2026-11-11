@@ -34,7 +34,7 @@ class GamblingMemberDetailsControllerSpec extends AnyWordSpec with Matchers with
   "GamblingMemberDetailsController#getMemberDetails" should {
 
     "return OK and full model for XGM00000001761" in {
-      val result = controller.getMemberDetails("MGD", "XGM00000001761")(FakeRequest())
+      val result = controller.getMemberDetails("MGD", "XGM00000001761", "")(FakeRequest())
       
 
       status(result) shouldBe OK
@@ -49,7 +49,7 @@ class GamblingMemberDetailsControllerSpec extends AnyWordSpec with Matchers with
           prizeGaming = Some("0"), onPremises = Some("1"), clubPremises = Some("0"), regCert = Some("0"), bookmaking = Some("0"), bingo = Some("0"), amusement = Some("0"),
           serveAlcohol = Some("0"), premisesNotCovered = Some("0"), previousMgdrn1 = Some("XAM00000000327"), previousMgdrn2 = Some("XNM00000000457"), previousMgdrn3 = Some("XHM00000000177"), associatedMgdrn1 = Some("XYM00000000287"),
           associatedMgdrn2 = Some(""), associatedMgdrn3 = Some(""), dateOfJoining = Some(LocalDate.of(2013,2,1)), dateOfLeaving = Some(LocalDate.of(2023,3,1)), isRepMemSameAsCb = Some("0"),
-          isUkIncorporated = Some("0"), isRepMemberOfGroup = Some("1"), systemDate = Some(LocalDate.of(2026,11,4)),
+          isUkIncorporated = Some("0"), isRepMemberOfGroup = Some("1"), systemDate = Some(LocalDate.of(2026,11,11)),
           premises = Seq(PremisesDetails("XCM00000001236", Some(" 1.Dalford court "),
             Some(" TeLford "), Some(" Shropshire "),
             Some(" "),
@@ -63,7 +63,7 @@ class GamblingMemberDetailsControllerSpec extends AnyWordSpec with Matchers with
     }
 
     "return OK and partial model for XGM00000001764" in {
-      val result = controller.getMemberDetails("MGD", "XGM00000001764")(FakeRequest())
+      val result = controller.getMemberDetails("MGD", "XGM00000001764", "")(FakeRequest())
 
       status(result) shouldBe OK
       val response = contentAsJson(result).as[MemberDetails]
@@ -76,7 +76,7 @@ class GamblingMemberDetailsControllerSpec extends AnyWordSpec with Matchers with
 
     "return BAD_REQUEST for an unrecognised regime" in {
       val regime = "nope"
-      val result = controller.getMemberDetails(regime, "XWM00003100200")(FakeRequest())
+      val result = controller.getMemberDetails(regime, "XWM00003100200", "")(FakeRequest())
 
       status(result) shouldBe BAD_REQUEST
       contentAsJson(result) shouldBe Json.obj(
@@ -87,7 +87,7 @@ class GamblingMemberDetailsControllerSpec extends AnyWordSpec with Matchers with
 
     "return BAD_REQUEST for an unsupported regime" in {
       val regime = "PBD"
-      val result = controller.getMemberDetails(regime, "XWM00003100200")(FakeRequest())
+      val result = controller.getMemberDetails(regime, "XWM00003100200", "")(FakeRequest())
 
       status(result) shouldBe BAD_REQUEST
       contentAsJson(result) shouldBe Json.obj(
@@ -97,7 +97,7 @@ class GamblingMemberDetailsControllerSpec extends AnyWordSpec with Matchers with
     }
 
     "return BadRequest for XGM00000000400" in {
-      val result = controller.getMemberDetails("MGD", "XGM00000000400")(FakeRequest())
+      val result = controller.getMemberDetails("MGD", "XGM00000000400", "")(FakeRequest())
 
       status(result) shouldBe BAD_REQUEST
       contentAsJson(result) shouldBe Json.obj(
@@ -108,7 +108,7 @@ class GamblingMemberDetailsControllerSpec extends AnyWordSpec with Matchers with
     }
 
     "return Unauthorized for XGM00000000401" in {
-      val result = controller.getMemberDetails("MGD", "XGM00000000401")(FakeRequest())
+      val result = controller.getMemberDetails("MGD", "XGM00000000401", "")(FakeRequest())
 
       status(result) shouldBe UNAUTHORIZED
       contentAsJson(result) shouldBe Json.obj(
@@ -119,7 +119,7 @@ class GamblingMemberDetailsControllerSpec extends AnyWordSpec with Matchers with
     }
 
     "return InternalServerError for XGM00000000500" in {
-      val result = controller.getMemberDetails("MGD", "XGM00000000500")(FakeRequest())
+      val result = controller.getMemberDetails("MGD", "XGM00000000500", "")(FakeRequest())
 
       status(result) shouldBe INTERNAL_SERVER_ERROR
       contentAsJson(result) shouldBe Json.obj(
