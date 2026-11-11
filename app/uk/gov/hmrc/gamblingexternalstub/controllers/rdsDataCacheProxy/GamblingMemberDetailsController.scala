@@ -37,15 +37,16 @@ class GamblingMemberDetailsController @Inject()(
     if (!Regime.fromString(regime.trim.toLowerCase()).exists(supportedRegimes.contains)) {
       BadRequest(Json.obj("code" -> "INVALID_REGIME", "message" -> s"Regime $regime is not supported"))
     } else {
-      val sanitized = mgdRegNumber.trim.toUpperCase()
-      sanitized match {
+      val sanitizedReg = mgdRegNumber.trim.toUpperCase()
+      val sanitizedPartnerNum = partnerNumber
+      sanitizedReg + sanitizedPartnerNum match {
 
-        case "XGM00000001761" =>
-          Ok(Json.toJson(xgm00000001761Model(sanitized)))
+        case "XGM000000017610100053091" =>
+          Ok(Json.toJson(xgm00000001761Model(sanitizedReg)))
           
 
-        case "XGM00000001764" =>
-          Ok(Json.toJson(xgm00000001764Model(sanitized)))
+        case "XGM000000017640100053091" =>
+          Ok(Json.toJson(xgm00000001764Model(sanitizedReg)))
           
 
         case "XGM00000000400" =>

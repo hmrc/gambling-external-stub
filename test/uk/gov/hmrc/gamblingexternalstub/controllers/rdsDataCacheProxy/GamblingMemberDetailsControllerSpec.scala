@@ -34,7 +34,7 @@ class GamblingMemberDetailsControllerSpec extends AnyWordSpec with Matchers with
   "GamblingMemberDetailsController#getMemberDetails" should {
 
     "return OK and full model for XGM00000001761" in {
-      val result = controller.getMemberDetails("MGD", "XGM00000001761", "")(FakeRequest())
+      val result = controller.getMemberDetails("MGD", "XGM00000001761", "0100053091")(FakeRequest())
       
 
       status(result) shouldBe OK
@@ -63,7 +63,7 @@ class GamblingMemberDetailsControllerSpec extends AnyWordSpec with Matchers with
     }
 
     "return OK and partial model for XGM00000001764" in {
-      val result = controller.getMemberDetails("MGD", "XGM00000001764", "")(FakeRequest())
+      val result = controller.getMemberDetails("MGD", "XGM00000001764", "0100053091")(FakeRequest())
 
       status(result) shouldBe OK
       val response = contentAsJson(result).as[MemberDetails]
