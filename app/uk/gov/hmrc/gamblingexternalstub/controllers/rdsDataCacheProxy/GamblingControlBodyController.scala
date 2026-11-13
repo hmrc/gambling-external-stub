@@ -19,7 +19,7 @@ package uk.gov.hmrc.gamblingexternalstub.controllers.rdsDataCacheProxy
 import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import uk.gov.hmrc.gamblingexternalstub.models.ControlBodyDetails.{fullModel, morePartialModel, noDataModel, otherModel, otherModels, partialModel}
+import uk.gov.hmrc.gamblingexternalstub.models.ControlBodyDetails.{noDataModel, xgm00000001762, xgm00000001772, xgm00000001782, xgm00000001792, xgm00000001796}
 import uk.gov.hmrc.gamblingexternalstub.models.*
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
@@ -40,19 +40,19 @@ class GamblingControlBodyController @Inject() (
       sanitized match {
 
         case "XGM00000001762" =>
-          Ok(Json.toJson(fullModel(sanitized)))
+          Ok(Json.toJson(xgm00000001762(sanitized)))
 
         case "XGM00000001772" =>
-          Ok(Json.toJson(partialModel(sanitized)))
+          Ok(Json.toJson(xgm00000001772(sanitized)))
 
-        case "XGM00000001763" =>
-          Ok(Json.toJson(morePartialModel(sanitized)))
+        case "XGM00000001782" =>
+          Ok(Json.toJson(xgm00000001782(sanitized)))
 
-        case "XGM00000001764" =>
-          Ok(Json.toJson(otherModel(sanitized)))
+        case "XGM00000001792" =>
+          Ok(Json.toJson(xgm00000001792(sanitized)))
 
-        case "XGM00000001765" =>
-          Ok(Json.toJson(otherModels(sanitized)))
+        case "XGM00000001796" =>
+          Ok(Json.toJson(xgm00000001796(sanitized)))
 
         case "XGM00000000400" =>
           BadRequest(

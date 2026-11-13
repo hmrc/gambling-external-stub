@@ -67,12 +67,6 @@ object BusinessAddressDetails {
     )(Json.parse)
     .as[BusinessAddressDetails]
 
-  private lazy val extraDataOne = Using
-    .resource(
-      getClass.getResourceAsStream("/data/business-address/XGM00000001772.json")
-    )(Json.parse)
-    .as[BusinessAddressDetails]
-
   private lazy val noData = Using
     .resource(
       getClass.getResourceAsStream("/data/business-address/business-address.json")
@@ -93,9 +87,6 @@ object BusinessAddressDetails {
 
   def nonMandatoryModel(mgdRegNumber: String): BusinessAddressDetails =
     nonMandatoryData.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.now()))
-
-  def extraDataModel(mgdRegNumber: String): BusinessAddressDetails =
-    extraDataOne.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.now()))
 
   def noDataModel(): BusinessAddressDetails = noData
 
