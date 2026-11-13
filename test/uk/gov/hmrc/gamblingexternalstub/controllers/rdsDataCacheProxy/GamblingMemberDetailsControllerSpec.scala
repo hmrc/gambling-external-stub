@@ -43,7 +43,7 @@ class GamblingMemberDetailsControllerSpec extends AnyWordSpec with Matchers with
           "XGM00000001761",
           businessPartnerNumber = Some("0100053091"), businessName = Some("BRUCE HOPKINS LIMITED"), tradingName = Some(" Trading name 1"), crn = Some(""),
           dateOfIncorporation = Some(LocalDate.of(2020,2,15)), countryOfIncorporation = Some("Spain"), foreignCorporateRef = Some(""), utr = Some(5202020208L), vrn = Some(127207785L), tradeClass = Some(1L),
-          busActDescription = Some(""), phoneNumber = Some(""), mobilePhoneNumber = Some(""), faxNumber = Some(""), emailAddr = Some(""), adi = Some(""),
+          businessActivityDesc = Some(""), phoneNumber = Some(""), mobilePhoneNumber = Some(""), faxNumber = Some(""), emailAddr = Some(""), adi = Some(""),
           address1 = Some("Address 1"), address2 = Some("Address 2"), address3 = Some("Address 3"), address4 = Some(""), postcode = Some(""), isIomOrCiFlag = Some("0"), haveGamblingLicenceNo = Some("1"),
           gamblingLicenceNo = Some("123-456789-A-123456-789"), heldByLandlord = Some("1"), localAuthority = Some("1"), familyEntertainment = Some("0"), clubGaming = Some("0"), clubLicence = Some("1"),
           prizeGaming = Some("0"), onPremises = Some("1"), clubPremises = Some("0"), regCert = Some("0"), bookmaking = Some("0"), bingo = Some("0"), amusement = Some("0"),

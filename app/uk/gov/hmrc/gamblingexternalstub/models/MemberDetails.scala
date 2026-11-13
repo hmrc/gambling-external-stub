@@ -33,7 +33,7 @@ final case class MemberDetails(
   utr: Option[Long],
   vrn: Option[Long],
   tradeClass: Option[Long],
-  busActDescription: Option[String],
+  businessActivityDesc: Option[String],
   phoneNumber: Option[String],
   mobilePhoneNumber: Option[String],
   faxNumber: Option[String],
