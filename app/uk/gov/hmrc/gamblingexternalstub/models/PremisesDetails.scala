@@ -16,9 +16,10 @@
 
 package uk.gov.hmrc.gamblingexternalstub.models
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.*
 
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 case class PremisesDetails(
   mgdRegNumber: String,
@@ -36,9 +37,18 @@ case class Response(
 )
 
 object PremisesDetails {
-  implicit val format: OFormat[PremisesDetails] = Json.format[PremisesDetails]
+
+  implicit val localDateFormat: Format[LocalDate] =
+    Format(
+      Reads.localDateReads(DateTimeFormatter.ISO_LOCAL_DATE),
+      Writes.DefaultLocalDateWrites
+    )
+
+  implicit val format: OFormat[PremisesDetails] =
+    Json.format[PremisesDetails]
 }
 
 object Response {
-  implicit val format: OFormat[Response] = Json.format[Response]
+  implicit val format: OFormat[Response] =
+    Json.format[Response]
 }
