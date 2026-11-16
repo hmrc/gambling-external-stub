@@ -1,0 +1,28 @@
+{
+  "groupMembers": [
+    {
+      "mgdRegNumber": "XWM00000001020",
+      "businessPartnerNumber": "0100053091",
+      "businessName": "BRUCE HOPKINS LIMITED",
+      "crn": "",
+      "foreignCorporateRef": "",
+      "isRepMemberOfGroup": "1",
+      "dateOfJoining": "2013-02-01",
+      "dateOfLeaving": "2023-03-01",
+      "emailAddr": "",
+      "systemDate": "2026-05-31"
+    },
+    {
+      "mgdRegNumber": "XWM00000001020",
+      "businessPartnerNumber": "0100053091",
+      "businessName": "BRUCE HOPKINS LIMITED",
+      "crn": "",
+      "foreignCorporateRef": "",
+      "isRepMemberOfGroup": "1",
+      "dateOfJoining": "2013-02-01",
+      "dateOfLeaving": "2023-03-01",
+      "emailAddr": "",
+      "systemDate": "2026-05-31"
+    }
+  ]
+}
