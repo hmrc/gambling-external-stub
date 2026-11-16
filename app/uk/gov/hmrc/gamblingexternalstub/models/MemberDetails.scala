@@ -84,14 +84,12 @@ object MemberDetails {
       getClass.getResourceAsStream("/data/member-details/XGM00000001761.json")
     )(Json.parse)
     .as[MemberDetails]
-  
 
   private lazy val xgm00000001764Data = Using
     .resource(
       getClass.getResourceAsStream("/data/member-details/XGM00000001764.json")
     )(Json.parse)
     .as[MemberDetails]
-  
 
   private lazy val noData = Using
     .resource(
@@ -100,12 +98,10 @@ object MemberDetails {
     .as[MemberDetails]
 
   def xgm00000001761Model(mgdRegNumber: String): MemberDetails =
-    xgm00000001761Data.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.of(2026,11,11)))
-  
+    xgm00000001761Data.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.of(2026, 11, 11)))
 
   def xgm00000001764Model(mgdRegNumber: String): MemberDetails =
-    xgm00000001764Data.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.of(2026,11,11)))
-  
+    xgm00000001764Data.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.of(2026, 11, 11)))
 
   def noDataModel(): MemberDetails = noData
 

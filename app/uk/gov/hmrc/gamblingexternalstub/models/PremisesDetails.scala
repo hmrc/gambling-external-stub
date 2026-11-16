@@ -16,25 +16,25 @@
 
 package uk.gov.hmrc.gamblingexternalstub.models
 
-import play.api.libs.json._
+import play.api.libs.json.*
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 case class PremisesDetails(
-                            mgdRegNumber: String,
-                            address1: Option[String],
-                            address2: Option[String],
-                            address3: Option[String],
-                            address4: Option[String],
-                            postcode: Option[String],
-                            systemDate: Option[LocalDate]
-                          )
+  mgdRegNumber: String,
+  address1: Option[String],
+  address2: Option[String],
+  address3: Option[String],
+  address4: Option[String],
+  postcode: Option[String],
+  systemDate: Option[LocalDate]
+)
 
 case class Response(
-                     totalRows: Option[Int],
-                     premises: Seq[PremisesDetails]
-                   )
+  totalRows: Option[Int],
+  premises: Seq[PremisesDetails]
+)
 
 object PremisesDetails {
 
@@ -42,7 +42,6 @@ object PremisesDetails {
     Format(
       Reads.localDateReads(DateTimeFormatter.ISO_LOCAL_DATE),
       Writes.DefaultLocalDateWrites
-
     )
 
   implicit val format: OFormat[PremisesDetails] =

@@ -35,28 +35,78 @@ class GamblingMemberDetailsControllerSpec extends AnyWordSpec with Matchers with
 
     "return OK and full model for XGM00000001761" in {
       val result = controller.getMemberDetails("MGD", "XGM00000001761", "0100053091")(FakeRequest())
-      
 
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
         MemberDetails(
           "XGM00000001761",
-          businessPartnerNumber = Some("0100053091"), businessName = Some("BRUCE HOPKINS LIMITED"), tradingName = Some(" Trading name 1"), crn = Some(""),
-          dateOfIncorporation = Some(LocalDate.of(2020,2,15)), countryOfIncorporation = Some("Spain"), foreignCorporateRef = Some(""), utr = Some(5202020208L), vrn = Some(127207785L), tradeClass = Some(1L),
-          businessActivityDesc = Some(""), phoneNumber = Some(""), mobilePhoneNumber = Some(""), faxNumber = Some(""), emailAddr = Some(""), adi = Some(""),
-          address1 = Some("Address 1"), address2 = Some("Address 2"), address3 = Some("Address 3"), address4 = Some(""), postcode = Some(""), isIomOrCiFlag = Some("0"), haveGamblingLicenceNo = Some("1"),
-          gamblingLicenceNo = Some("123-456789-A-123456-789"), heldByLandlord = Some("1"), localAuthority = Some("1"), familyEntertainment = Some("0"), clubGaming = Some("0"), clubLicence = Some("1"),
-          prizeGaming = Some("0"), onPremises = Some("1"), clubPremises = Some("0"), regCert = Some("0"), bookmaking = Some("0"), bingo = Some("0"), amusement = Some("0"),
-          serveAlcohol = Some("0"), premisesNotCovered = Some("0"), previousMgdrn1 = Some("XAM00000000327"), previousMgdrn2 = Some("XNM00000000457"), previousMgdrn3 = Some("XHM00000000177"), associatedMgdrn1 = Some("XYM00000000287"),
-          associatedMgdrn2 = Some(""), associatedMgdrn3 = Some(""), dateOfJoining = Some(LocalDate.of(2013,2,1)), dateOfLeaving = Some(LocalDate.of(2023,3,1)), isRepMemSameAsCb = Some("0"),
-          isUkIncorporated = Some("0"), isRepMemberOfGroup = Some("1"), systemDate = Some(LocalDate.of(2026,11,11)),
-          premises = Seq(PremisesDetails("XCM00000001236", Some(" 1.Dalford court "),
-            Some(" TeLford "), Some(" Shropshire "),
-            Some(" "),
-            Some("TF3 2BP"), Some(LocalDate.of(2026,6,30))),PremisesDetails("XCM00000001236", Some(" 2.Dalford court "),
-            Some(" TeLford "), Some(" Shropshire "),
-            Some(" "),
-            Some("TF3 2BP"), Some(LocalDate.of(2026,6,30)))
+          businessPartnerNumber  = Some("0100053091"),
+          businessName           = Some("BRUCE HOPKINS LIMITED"),
+          tradingName            = Some(" Trading name 1"),
+          crn                    = Some(""),
+          dateOfIncorporation    = Some(LocalDate.of(2020, 2, 15)),
+          countryOfIncorporation = Some("Spain"),
+          foreignCorporateRef    = Some(""),
+          utr                    = Some(5202020208L),
+          vrn                    = Some(127207785L),
+          tradeClass             = Some(1L),
+          businessActivityDesc   = Some(""),
+          phoneNumber            = Some(""),
+          mobilePhoneNumber      = Some(""),
+          faxNumber              = Some(""),
+          emailAddr              = Some(""),
+          adi                    = Some(""),
+          address1               = Some("Address 1"),
+          address2               = Some("Address 2"),
+          address3               = Some("Address 3"),
+          address4               = Some(""),
+          postcode               = Some(""),
+          isIomOrCiFlag          = Some("0"),
+          haveGamblingLicenceNo  = Some("1"),
+          gamblingLicenceNo      = Some("123-456789-A-123456-789"),
+          heldByLandlord         = Some("1"),
+          localAuthority         = Some("1"),
+          familyEntertainment    = Some("0"),
+          clubGaming             = Some("0"),
+          clubLicence            = Some("1"),
+          prizeGaming            = Some("0"),
+          onPremises             = Some("1"),
+          clubPremises           = Some("0"),
+          regCert                = Some("0"),
+          bookmaking             = Some("0"),
+          bingo                  = Some("0"),
+          amusement              = Some("0"),
+          serveAlcohol           = Some("0"),
+          premisesNotCovered     = Some("0"),
+          previousMgdrn1         = Some("XAM00000000327"),
+          previousMgdrn2         = Some("XNM00000000457"),
+          previousMgdrn3         = Some("XHM00000000177"),
+          associatedMgdrn1       = Some("XYM00000000287"),
+          associatedMgdrn2       = Some(""),
+          associatedMgdrn3       = Some(""),
+          dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
+          dateOfLeaving          = Some(LocalDate.of(2023, 3, 1)),
+          isRepMemSameAsCb       = Some("0"),
+          isUkIncorporated       = Some("0"),
+          isRepMemberOfGroup     = Some("1"),
+          systemDate             = Some(LocalDate.of(2026, 11, 11)),
+          premises = Seq(
+            PremisesDetails("XCM00000001236",
+                            Some(" 1.Dalford court "),
+                            Some(" TeLford "),
+                            Some(" Shropshire "),
+                            Some(" "),
+                            Some("TF3 2BP"),
+                            Some(LocalDate.of(2026, 6, 30))
+                           ),
+            PremisesDetails("XCM00000001236",
+                            Some(" 2.Dalford court "),
+                            Some(" TeLford "),
+                            Some(" Shropshire "),
+                            Some(" "),
+                            Some("TF3 2BP"),
+                            Some(LocalDate.of(2026, 6, 30))
+                           )
           )
         )
       )
@@ -67,12 +117,11 @@ class GamblingMemberDetailsControllerSpec extends AnyWordSpec with Matchers with
 
       status(result) shouldBe OK
       val response = contentAsJson(result).as[MemberDetails]
-      response.utr                shouldBe Some(5202020208L)
-      response.associatedMgdrn1   shouldBe Some("XYM00000000287")
-      response.amusement shouldBe Some("0")
-      response.clubPremises   shouldBe Some("0")
+      response.utr              shouldBe Some(5202020208L)
+      response.associatedMgdrn1 shouldBe Some("XYM00000000287")
+      response.amusement        shouldBe Some("0")
+      response.clubPremises     shouldBe Some("0")
     }
-
 
     "return BAD_REQUEST for an unrecognised regime" in {
       val regime = "nope"
