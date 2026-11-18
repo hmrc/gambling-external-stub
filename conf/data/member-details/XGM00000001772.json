@@ -1,7 +1,6 @@
 {
-
-  "mgdRegNumber": "XWM00000001020",
-  "businessPartnerNumber": "0100053091",
+  "mgdRegNumber": "XGM00000001772",
+  "businessPartnerNumber": "0100001772",
   "businessName": "BRUCE HOPKINS LIMITED",
   "tradingName": " Trading name 1",
   "crn": "",
@@ -53,7 +52,7 @@
   "systemDate": "2026-05-31",
   "premises": [
     {
-      "mgdRegNumber": "XCM00000001236",
+      "mgdRegNumber": "XGM00000001772",
       "address1": " 1.Dalford court ",
       "address2": " TeLford ",
       "address3": " Shropshire ",
@@ -62,7 +61,7 @@
       "systemDate": "2026-06-30"
     },
     {
-      "mgdRegNumber": "XCM00000001236",
+      "mgdRegNumber": "XGM00000001772",
       "address1": " 2.Dalford court ",
       "address2": " TeLford ",
       "address3": " Shropshire ",

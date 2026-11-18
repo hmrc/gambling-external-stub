@@ -29,7 +29,7 @@ class ControlBodyDetailsSpec extends AnyWordSpec with Matchers {
     "serialize to JSON when defined" in {
 
       val model = ControlBodyDetails(
-        mgdRegNumber           = "XGM00000001761",
+        mgdRegNumber           = "XGM00000001762",
         businessPartnerNumber  = Some("0100053091"),
         dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
         dateOfLeaving          = Some(LocalDate.of(2023, 3, 1)),
@@ -68,7 +68,7 @@ class ControlBodyDetailsSpec extends AnyWordSpec with Matchers {
       val json = Json.toJson(model)
 
       json shouldBe Json.obj(
-        "mgdRegNumber"           -> "XGM00000001761",
+        "mgdRegNumber"           -> "XGM00000001762",
         "businessPartnerNumber"  -> "0100053091",
         "dateOfJoining"          -> LocalDate.of(2013, 2, 1),
         "dateOfLeaving"          -> LocalDate.of(2023, 3, 1),
@@ -108,7 +108,7 @@ class ControlBodyDetailsSpec extends AnyWordSpec with Matchers {
     "deserialize JSON" in {
 
       val json = Json.obj(
-        "mgdRegNumber"           -> "XGM00000001761",
+        "mgdRegNumber"           -> "XGM00000001762",
         "businessPartnerNumber"  -> "0100053091",
         "dateOfJoining"          -> LocalDate.of(2013, 2, 1),
         "dateOfLeaving"          -> LocalDate.of(2023, 3, 1),
@@ -147,7 +147,7 @@ class ControlBodyDetailsSpec extends AnyWordSpec with Matchers {
       val result = json.as[ControlBodyDetails]
 
       result shouldBe ControlBodyDetails(
-        mgdRegNumber           = "XGM00000001761",
+        mgdRegNumber           = "XGM00000001762",
         businessPartnerNumber  = Some("0100053091"),
         dateOfJoining          = Some(LocalDate.of(2013, 2, 1)),
         dateOfLeaving          = Some(LocalDate.of(2023, 3, 1)),

@@ -79,15 +79,15 @@ final case class MemberDetails(
 object MemberDetails {
   implicit val format: OFormat[MemberDetails] = Json.format[MemberDetails]
 
-  private lazy val xgm00000001761Data = Using
+  private lazy val xgm00000001762Data = Using
     .resource(
-      getClass.getResourceAsStream("/data/member-details/XGM00000001761.json")
+      getClass.getResourceAsStream("/data/member-details/XGM00000001762.json")
     )(Json.parse)
     .as[MemberDetails]
 
-  private lazy val xgm00000001764Data = Using
+  private lazy val xgm00000001772Data = Using
     .resource(
-      getClass.getResourceAsStream("/data/member-details/XGM00000001764.json")
+      getClass.getResourceAsStream("/data/member-details/XGM00000001772.json")
     )(Json.parse)
     .as[MemberDetails]
 
@@ -97,11 +97,11 @@ object MemberDetails {
     )(Json.parse)
     .as[MemberDetails]
 
-  def xgm00000001761Model(mgdRegNumber: String): MemberDetails =
-    xgm00000001761Data.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.of(2026, 11, 11)))
+  def xgm00000001762Model(mgdRegNumber: String): MemberDetails =
+    xgm00000001762Data.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.of(2026, 11, 11)))
 
-  def xgm00000001764Model(mgdRegNumber: String): MemberDetails =
-    xgm00000001764Data.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.of(2026, 11, 11)))
+  def xgm00000001772Model(mgdRegNumber: String): MemberDetails =
+    xgm00000001772Data.copy(mgdRegNumber = mgdRegNumber, systemDate = Some(LocalDate.of(2026, 11, 11)))
 
   def noDataModel(): MemberDetails = noData
 

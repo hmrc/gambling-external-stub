@@ -20,7 +20,7 @@ import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.gamblingexternalstub.models.*
-import uk.gov.hmrc.gamblingexternalstub.models.GroupMemberRecords.{noDataModel, xgm00000001761Model, xgm00000001764Model}
+import uk.gov.hmrc.gamblingexternalstub.models.GroupMemberRecords.*
 
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
@@ -40,11 +40,11 @@ class GamblingGroupMembersController @Inject() (
       val sanitized = mgdRegNumber.trim.toUpperCase()
       sanitized match {
 
-        case "XGM00000001761" =>
-          Ok(Json.toJson(xgm00000001761Model(sanitized)))
+        case "XGM00000001762" =>
+          Ok(Json.toJson(xgm00000001762Model(sanitized)))
 
-        case "XGM00000001764" =>
-          Ok(Json.toJson(xgm00000001764Model(sanitized)))
+        case "XGM00000001772" =>
+          Ok(Json.toJson(xgm00000001772Model(sanitized)))
 
         case "XGM00000000400" =>
           BadRequest(

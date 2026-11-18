@@ -45,18 +45,15 @@ object GroupMembers {
 object GroupMemberRecords {
   implicit val format: OFormat[GroupMemberRecords] = Json.format[GroupMemberRecords]
 
-  private lazy val xgm00000001761Data = Using
+  private lazy val xgm00000001762Data = Using
     .resource(
-      getClass.getResourceAsStream("/data/group-members-details/XGM00000001761.json")
+      getClass.getResourceAsStream("/data/group-members-details/XGM00000001762.json")
     )(Json.parse)
     .as[GroupMemberRecords]
 
-  def xgm00000001761Model(mgdRegNumber: String): GroupMemberRecords =
-    xgm00000001761Data
-
-  private lazy val xgm00000001764Data = Using
+  private lazy val xgm00000001772Data = Using
     .resource(
-      getClass.getResourceAsStream("/data/group-members-details/XGM00000001764.json")
+      getClass.getResourceAsStream("/data/group-members-details/XGM00000001772.json")
     )(Json.parse)
     .as[GroupMemberRecords]
 
@@ -66,8 +63,12 @@ object GroupMemberRecords {
     )(Json.parse)
     .as[GroupMemberRecords]
 
-  def xgm00000001764Model(mgdRegNumber: String): GroupMemberRecords =
-    xgm00000001764Data
-
   def noDataModel(): GroupMemberRecords = noData
+
+  def xgm00000001762Model(mgdRegNumber: String): GroupMemberRecords =
+    xgm00000001762Data
+
+  def xgm00000001772Model(mgdRegNumber: String): GroupMemberRecords =
+    xgm00000001772Data
+
 }
