@@ -371,13 +371,13 @@ class GamblingController @Inject() (
         Ok(businessDetails("XGM00000001765") ++ Json.obj("systemDate" -> LocalDate.now()))
 
       case "XGM00000001771" =>
-        Ok(businessDetails("XGM00000001771"))  
+        Ok(businessDetails("XGM00000001771"))
 
       case "XGM00000001772" =>
         Ok(businessDetails("XGM00000001772"))
 
       case "XGM00000001773" =>
-        Ok(businessDetails("XGM00000001773"))  
+        Ok(businessDetails("XGM00000001773"))
 
       case "XGM00000001774" =>
         Ok(businessDetails("XGM00000001774") ++ Json.obj("systemDate" -> LocalDate.now()))
@@ -395,7 +395,7 @@ class GamblingController @Inject() (
         Ok(businessDetails("XGM00000001784") ++ Json.obj("systemDate" -> LocalDate.now()))
 
       case "XGM00000001791" =>
-        Ok(businessDetails("XGM00000001791"))  
+        Ok(businessDetails("XGM00000001791"))
 
       case "XGM00000001792" =>
         Ok(businessDetails("XGM00000001792"))
