@@ -20,7 +20,7 @@ import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.gamblingexternalstub.models.*
-import uk.gov.hmrc.gamblingexternalstub.models.MemberDetails.{noDataModel, xgm00000001761Model, xgm00000001764Model}
+import uk.gov.hmrc.gamblingexternalstub.models.MemberDetails.*
 
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
@@ -41,11 +41,11 @@ class GamblingMemberDetailsController @Inject() (
       val sanitizedPartnerNum = partnerNumber
       sanitizedReg + sanitizedPartnerNum match {
 
-        case "XGM000000017610100053091" =>
-          Ok(Json.toJson(xgm00000001761Model(sanitizedReg)))
+        case "XGM000000017620100001762" =>
+          Ok(Json.toJson(xgm00000001762Model(sanitizedReg)))
 
-        case "XGM000000017640100053091" =>
-          Ok(Json.toJson(xgm00000001764Model(sanitizedReg)))
+        case "XGM000000017720100001772" =>
+          Ok(Json.toJson(xgm00000001772Model(sanitizedReg)))
 
         case "XGM00000000400" =>
           BadRequest(

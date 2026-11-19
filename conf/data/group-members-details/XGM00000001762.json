@@ -1,9 +1,9 @@
 {
   "groupMembers": [
     {
-      "mgdRegNumber": "XWM00000001020",
-      "businessPartnerNumber": "0100053091",
-      "businessName": "BRUCE HOPKINS LIMITED",
+      "mgdRegNumber": "XGM00000001762",
+      "businessPartnerNumber": "0100001762",
+      "businessName": "XGM00000001762 0100001762",
       "crn": "",
       "foreignCorporateRef": "",
       "isRepMemberOfGroup": "1",
@@ -13,9 +13,9 @@
       "systemDate": "2026-05-31"
     },
     {
-      "mgdRegNumber": "XWM00000001020",
-      "businessPartnerNumber": "0100053091",
-      "businessName": "BRUCE HOPKINS LIMITED",
+      "mgdRegNumber": "XGM00000001762",
+      "businessPartnerNumber": "0200001762",
+      "businessName": "XGM00000001762 0200001762",
       "crn": "",
       "foreignCorporateRef": "",
       "isRepMemberOfGroup": "1",

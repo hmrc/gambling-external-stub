@@ -33,14 +33,14 @@ class GamblingMemberDetailsControllerSpec extends AnyWordSpec with Matchers with
 
   "GamblingMemberDetailsController#getMemberDetails" should {
 
-    "return OK and full model for XGM00000001761" in {
-      val result = controller.getMemberDetails("MGD", "XGM00000001761", "0100053091")(FakeRequest())
+    "return OK and full model for XGM00000001762" in {
+      val result = controller.getMemberDetails("MGD", "XGM00000001762", "0100001762")(FakeRequest())
 
       status(result) shouldBe OK
       contentAsJson(result) shouldBe Json.toJson(
         MemberDetails(
-          "XGM00000001761",
-          businessPartnerNumber  = Some("0100053091"),
+          "XGM00000001762",
+          businessPartnerNumber  = Some("0100001762"),
           businessName           = Some("BRUCE HOPKINS LIMITED"),
           tradingName            = Some(" Trading name 1"),
           crn                    = Some(""),
@@ -91,7 +91,7 @@ class GamblingMemberDetailsControllerSpec extends AnyWordSpec with Matchers with
           isRepMemberOfGroup     = Some("1"),
           systemDate             = Some(LocalDate.of(2026, 11, 11)),
           premises = Seq(
-            PremisesDetails("XCM00000001236",
+            PremisesDetails("XGM00000001762",
                             Some(" 1.Dalford court "),
                             Some(" TeLford "),
                             Some(" Shropshire "),
@@ -99,7 +99,7 @@ class GamblingMemberDetailsControllerSpec extends AnyWordSpec with Matchers with
                             Some("TF3 2BP"),
                             Some(LocalDate.of(2026, 6, 30))
                            ),
-            PremisesDetails("XCM00000001236",
+            PremisesDetails("XGM00000001762",
                             Some(" 2.Dalford court "),
                             Some(" TeLford "),
                             Some(" Shropshire "),
@@ -112,8 +112,8 @@ class GamblingMemberDetailsControllerSpec extends AnyWordSpec with Matchers with
       )
     }
 
-    "return OK and partial model for XGM00000001764" in {
-      val result = controller.getMemberDetails("MGD", "XGM00000001764", "0100053091")(FakeRequest())
+    "return OK and partial model for XGM00000001772" in {
+      val result = controller.getMemberDetails("MGD", "XGM00000001772", "0100001772")(FakeRequest())
 
       status(result) shouldBe OK
       val response = contentAsJson(result).as[MemberDetails]

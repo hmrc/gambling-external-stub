@@ -33,16 +33,16 @@ class GamblingGroupMembersControllerSpec extends AnyWordSpec with Matchers with 
 
   "GamblingGroupMembersController#getGroupMembersDetails" should {
 
-    "return OK and model for XGM00000001761" in {
-      val result = controller.getGroupMembersDetails("MGD", "XGM00000001761")(FakeRequest())
+    "return OK and model for XGM00000001762" in {
+      val result = controller.getGroupMembersDetails("MGD", "XGM00000001762")(FakeRequest())
 
       status(result) shouldBe OK
       val response = contentAsJson(result).as[GroupMemberRecords]
       response.groupMembers.size shouldBe 2
     }
 
-    "return OK model for XGM00000001764" in {
-      val result = controller.getGroupMembersDetails("MGD", "XGM00000001764")(FakeRequest())
+    "return OK model for XGM00000001772" in {
+      val result = controller.getGroupMembersDetails("MGD", "XGM00000001772")(FakeRequest())
 
       status(result) shouldBe OK
       val response = contentAsJson(result).as[GroupMemberRecords]

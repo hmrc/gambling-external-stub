@@ -1,0 +1,16 @@
+{
+  "groupMembers": [
+    {
+      "mgdRegNumber": "XGM00000001772",
+      "businessPartnerNumber": "0100001772",
+      "businessName": "XGM00000001772 0100001772",
+      "crn": "1",
+      "foreignCorporateRef": "1",
+      "isRepMemberOfGroup": "1",
+      "dateOfJoining": "2025-05-31",
+      "dateOfLeaving": "2026-05-31",
+      "emailAddr": "test@example.com",
+      "systemDate": "2026-11-18"
+    }
+  ]
+}
