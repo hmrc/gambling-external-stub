@@ -13,8 +13,12 @@
       },
       {
         "regNumber": "XVM00000123495",
-        "clientName": "No Cli Ref",
+        "clientName": "Blank Cli Ref",
         "agentOwnRef": ""
+      },
+      {
+        "regNumber": "XVM00000124495",
+        "clientName": "Cli Ref NONE"
       }
     ],
   "totalCount": 2,
