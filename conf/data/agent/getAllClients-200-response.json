@@ -529,9 +529,34 @@
       "regNumber": "XMM00000001106",
       "clientName": "Vijay Construction Ltd",
       "agentOwnRef": "EZ00275"
+    },
+    {
+      "regNumber": "XGM00000001761",
+      "clientName": "Variations 1 Sole Proprietor",
+      "agentOwnRef": "EZ00275"
+    },
+    {
+      "regNumber": "XGM00000001762",
+      "clientName": "Variations 2 Corporate Body",
+      "agentOwnRef": "EZ00275"
+    },
+    {
+      "regNumber": "XGM00000001763",
+      "clientName": "Variations 3 Unincorporate Body",
+      "agentOwnRef": "EZ00275"
+    },
+    {
+      "regNumber": "XGM00000001764",
+      "clientName": "Variations 4 Partner Details",
+      "agentOwnRef": "EZ00275"
+    },
+    {
+      "regNumber": "XGM00000001765",
+      "clientName": "Variations 5 Limited Liability Partnership",
+      "agentOwnRef": "EZ00275"
     }
   ],
-  "totalCount": 106,
+  "totalCount": 111,
   "clientNameStartingCharacters": [
     "A",
     "B",
