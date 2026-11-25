@@ -10,6 +10,15 @@
         "regNumber": "XVM00000000495",
         "clientName": "Alternate XYZ Builders",
         "agentOwnRef": "GH005"
+      },
+      {
+        "regNumber": "XVM00000123495",
+        "clientName": "Blank Cli Ref",
+        "agentOwnRef": ""
+      },
+      {
+        "regNumber": "XVM00000124495",
+        "clientName": "Cli Ref NONE"
       }
     ],
   "totalCount": 2,
